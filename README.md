@@ -1,4 +1,4 @@
-## MDS: MarqVision Design System
+# MDS: MarqVision Design System
 
 ## Project Structure
 - components: Button, Checkbox, Dropdown 과 같은 컴포넌트가 위치합니다
@@ -17,3 +17,27 @@
 ## Conribution
 
 
+### Rules
+1. 컴포넌트를 새로 만들거나 prop이 추가되는 등 새로운 새용 방법이 나온다면 반드시 Storybook에 해당 케이스를 추가하세요.
+   
+2. 모든 컴포넌트의 이름에는 "MDS" prefix를 붙입니다.
+```jsx
+<MDSTypogrpahy /> // Good ✅
+<Typography /> // bad 👎
+```
+3. 모듈 export시 `export const COMPONENT_NAME` 형태로 export 합니다.
+  
+
+### Storybook 실행시키기
+```bash
+# marqvision-web root
+$ npm run mds2
+
+# or 
+
+# marqvision-web/packages/mds-v2
+$ npm run storybook
+```
+
+### Chromatic에 배포하기
+TBD

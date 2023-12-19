@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 
 const meta = {
-  title: 'MDS/Button',
+  title: '2. Components/Button',
   component: MDSButton,
   parameters: {
     layout: 'centered',

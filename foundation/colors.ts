@@ -1,4 +1,4 @@
-const RAW_COLORS = {
+export const RAW_COLORS = {
   white: '#ffffff',
   whiteAlpha50: 'rgba(255, 255, 255, 0.5)',
   whiteAlpha40: 'rgba(255, 255, 255, 0.4)',
@@ -154,7 +154,7 @@ const RAW_COLORS = {
   blueTeal: 'linear-gradient(90deg,rgba(95, 193, 210, 1) 0%,rgba(79, 121, 236, 1) 100%)',
 };
 
-const COLOR_TOKENS = {
+export const COLOR_TOKENS = {
   bg: {
     fill: {
       neutral: {

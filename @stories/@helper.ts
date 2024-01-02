@@ -30,5 +30,3 @@ function createColorTitleArray(obj: Record<string, any>, path = ''): { color: st
 }
 
 export const MDSTHEME_COLORS = extractKeys(MDSThemeValue.color);
-
-console.log(">>>> MDSTHEME_COLORS", MDSTHEME_COLORS);

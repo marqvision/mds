@@ -28,6 +28,15 @@ export type Features = {
    * T24, T20: h1, h2 / T18, T16, T14, T13, T12: p
    */
   as?: ElementType;
+
+  /**
+   * 타이포그래피의 work-break 속성.
+   * 기본값은 normal입니다.
+   * 
+   * break-word를 사용하고 싶다면 다음 문서를 참고하세요
+   * https://developer.mozilla.org/docs/Web/CSS/word-break#break-word
+   */
+  wordBreak?: 'normal' | 'keep-all' | 'break-all';
 };
 
 export type MDSTypographyProps = Features & HTMLAttributes<HTMLSpanElement>;

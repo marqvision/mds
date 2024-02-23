@@ -1,3 +1,8 @@
+import { ThemeProvider } from '@emotion/react';
+import { MDSThemeValue } from '../foundation';
+import { MDSResetCSS } from '../foundation/resetCSS';
+import React from 'react';
+
 /** @type { import('@storybook/react').Preview } */
 const preview = {
   parameters: {
@@ -15,5 +20,14 @@ const preview = {
     },
   },
 };
+
+export const decorators = [
+  (Story) => (
+    <ThemeProvider theme={MDSThemeValue}>
+      <MDSResetCSS />
+      <Story />
+    </ThemeProvider>
+  ),
+];
 
 export default preview;

@@ -1,0 +1,21 @@
+type PathImpl<T, Key extends keyof T> =
+  Key extends string
+  ? T[Key] extends Record<string, any>
+    ? T[Key] extends ArrayLike<any>
+      ? Key | `${Key}.${PathImpl<T[Key], Exclude<keyof T[Key], keyof any[]>>}`
+      : `${Key}.${PathImpl<T[Key], keyof T[Key]>}`
+    : Key
+  : never;
+
+declare type Path<T> = PathImpl<T, keyof T> | keyof T;
+
+type PathValue<T, P extends Path<T>> =
+  P extends `${infer Key}.${infer Rest}`
+  ? Key extends keyof T
+    ? Rest extends Path<T[Key]>
+      ? PathValue<T[Key], Rest>
+      : never
+    : never
+  : P extends keyof T
+    ? T[P]
+    : never;

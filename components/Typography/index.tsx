@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { resolveColor } from '../../@system/resolvers';
 import {
   resolveFontSize,
   resolveFontWeight as resolveFontWeightStyles,
@@ -6,7 +7,6 @@ import {
   resolveTagName,
 } from './@utils';
 import { Features, MDSTypographyProps } from './@types';
-import { resolveColor } from '../../@system/resolvers';
 
 const TypographStyles = styled.span<Required<Features>>`
   ${({ variant, weight, color, lineClamp, wordBreak }) => {
@@ -26,7 +26,7 @@ const TypographStyles = styled.span<Required<Features>>`
   }}
 `;
 
-export const MDSTypogrpahy = ({
+export const MDSTypography = ({
   variant = 'T16',
   weight = 'medium',
   color = 'content.neutral.default',

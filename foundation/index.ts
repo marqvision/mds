@@ -7,3 +7,5 @@ export const MDSThemeValue = {
 
 
 export type MDSTheme = typeof MDSThemeValue;
+
+export { MDSResetCSS } from './resetCSS';

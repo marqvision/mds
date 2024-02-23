@@ -2,7 +2,7 @@
   "name": "@marqvision/mds-v2",
   "version": "2.0.0",
   "description": "Common design system for MaqrVision web applications",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",

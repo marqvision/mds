@@ -367,3 +367,20 @@ export const ColorTokens = () => {
     </div>
   );
 };
+
+export const WithEmotionTheme = () => {
+  const Box = styled.div`
+    ${({ theme }) =>  `
+      background: ${theme.color.bg.fill.teal.default};
+      border: 10px solid ${theme._raw_color.blue100};
+      padding: 32px;
+      border-radius: 8px;
+      width: 300px;
+      height: 300px;
+    `};
+  `;
+
+  return (
+    <Box />
+  )
+}

@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import {
-  resolveColor,
   resolveFontSize,
   resolveFontWeight as resolveFontWeightStyles,
   resolveLineClamp,
   resolveTagName,
 } from './@utils';
 import { Features, MDSTypographyProps } from './@types';
+import { resolveColor } from '../../@system/resolvers';
 
 const TypographStyles = styled.span<Required<Features>>`
   ${({ variant, weight, color, lineClamp, wordBreak }) => {

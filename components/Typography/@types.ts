@@ -1,5 +1,5 @@
 import { ElementType, HTMLAttributes } from 'react';
-import type { MDSTheme } from '../../foundation/index';
+import type { MDSTheme } from '../../foundation';
 
 export type Features = {
   /**

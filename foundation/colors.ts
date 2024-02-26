@@ -229,7 +229,7 @@ export const COLOR_TOKENS = {
         tint: RAW_COLORS.purple50,
         tintHover: RAW_COLORS.purple200,
         tintCompleted: RAW_COLORS.bluegrey200,
-        tintDisabled: RAW_COLORS.magenta50,
+        tintDisabled: RAW_COLORS.purple50,
       },
       inverse: {
         primary: '#7aacff',
@@ -284,7 +284,7 @@ export const COLOR_TOKENS = {
       purple: {
         default: RAW_COLORS.purple50,
         defaultHover: RAW_COLORS.purple200,
-        defaultDisabled: RAW_COLORS.magenta50,
+        defaultDisabled: RAW_COLORS.purple50,
       },
       inverse: {
         light: RAW_COLORS.bluegrey900,

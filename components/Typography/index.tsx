@@ -8,7 +8,7 @@ import {
 } from './@utils';
 import { Features, MDSTypographyProps } from './@types';
 
-const TypographStyles = styled.span<Required<Features>>`
+const TypographyStyles = styled.span<Required<Features>>`
   ${({ variant, weight, color, lineClamp, wordBreak }) => {
     const fontSize = resolveFontSize(variant);
     const fontWeightStyles = resolveFontWeightStyles(weight);
@@ -28,7 +28,7 @@ const TypographStyles = styled.span<Required<Features>>`
 
 export const MDSTypography = ({
   variant = 'T16',
-  weight = 'medium',
+  weight = 'regular',
   color = 'content.neutral.default',
   lineClamp = 0,
   as,
@@ -37,7 +37,7 @@ export const MDSTypography = ({
 }: MDSTypographyProps) => {
   const tagName = resolveTagName(variant, as);
   return (
-    <TypographStyles
+    <TypographyStyles
       variant={variant}
       weight={weight}
       lineClamp={lineClamp}

@@ -1,4 +1,3 @@
-import { MDSTheme, MDSThemeValue } from '../../foundation';
 import { Features, MDSTypographyProps } from './@types';
 
 export const resolveTagName = (variant: Features['variant'], as: MDSTypographyProps['as']) => {

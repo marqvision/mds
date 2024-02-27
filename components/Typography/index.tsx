@@ -17,6 +17,7 @@ const TypographyStyles = styled.span<Required<Features>>`
     const wordBreakStyles = `word-break: ${wordBreak};`
 
     return `
+      margin: 0;
       font-size: ${fontSize};
       color: ${fontColor};
       ${fontWeightStyles};

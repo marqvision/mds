@@ -1,9 +1,9 @@
-import { MDSTypogrpahy } from '../components/Typography';
+import { MDSTypography } from '../components/Typography';
 import { MDSTHEME_COLORS } from './@helper';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof MDSTypogrpahy> = {
-  component: MDSTypogrpahy,
+const meta: Meta<typeof MDSTypography> = {
+  component: MDSTypography,
   title: '2. Components/Typography',
   parameters: {
     layout: 'center',
@@ -33,7 +33,7 @@ const meta: Meta<typeof MDSTypogrpahy> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof MDSTypogrpahy>;
+type Story = StoryObj<typeof MDSTypography>;
 
 export const Primary: Story = {
   args: {
@@ -55,14 +55,14 @@ export const LineClamp: Story = {
   render: ({ lineClamp }) => {
     return (
       <div>
-        <MDSTypogrpahy variant="T24" lineClamp={lineClamp}>
+        <MDSTypography variant="T24" lineClamp={lineClamp}>
           아이코닉한 '베이비페이스 프린트'로 폭발적인 인기와 인지도를 얻으며 아시아 최고의 스트리트 스타일 브랜드로
           급부상했습니다. 현재 중국, 호주, 베트남, 말레이시아 등에서 30개 이상의 매장을 운영하고 있으며, 지속적으로
           아시아 이외의 지역에도 추가 매장을 오픈할 계획입니다.
-        </MDSTypogrpahy>
-        <MDSTypogrpahy color="content.primary.default" weight="bold" lineClamp={lineClamp}>
+        </MDSTypography>
+        <MDSTypography color="content.primary.default" weight="bold" lineClamp={lineClamp}>
           아크메드라비는 2017년부터 가장 핫한 트렌드를 시장에 선보이고 있는 젊은 스트리트 패션 브랜드입니다.
-        </MDSTypogrpahy>
+        </MDSTypography>
       </div>
     );
   },
@@ -79,14 +79,14 @@ export const WorkBreak: Story = {
   render: ({ wordBreak }) => {
     return (
       <div style={{ width: 250, height: 400, border: '1px solid black' }}>
-        <MDSTypogrpahy variant="T16" wordBreak={wordBreak}>
+        <MDSTypography variant="T16" wordBreak={wordBreak}>
           아이코닉한 '베이비페이스 프린트'로 폭발적인 인기와 인지도를 얻으며 아시아 최고의 스트리트 스타일 브랜드로
           급부상했습니다. 현재 중국, 호주, 베트남, 말레이시아 등에서 30개 이상의 매장을 운영하고 있으며, 지속적으로
           아시아 이외의 지역에도 추가 매장을 오픈할 계획입니다. Honorificabilitudinitatibus
           califragilisticexpialidocious
           Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
           グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
-        </MDSTypogrpahy>
+        </MDSTypography>
       </div>
     );
   },
@@ -102,205 +102,205 @@ export const Showcase: Story = {
       <div style={{ display: 'flex' }}>
         <div>
           <div>
-            <MDSTypogrpahy variant="T24" weight="bold" color={color}>
+            <MDSTypography variant="T24" weight="bold" color={color}>
               T24 Bold
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T24" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T24" weight="medium" color={color}>
               T24 medium
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T24" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T24" weight="regular" color={color}>
               T24 regular
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T24" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T24" weight="light" color={color}>
               T24 light
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T20" weight="bold" color={color}>
+            <MDSTypography variant="T20" weight="bold" color={color}>
               T20 Bold
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T20" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T20" weight="medium" color={color}>
               T20 medium
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T20" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T20" weight="regular" color={color}>
               T20 regular
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T20" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T20" weight="light" color={color}>
               T20 light
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T18" weight="bold" color={color}>
+            <MDSTypography variant="T18" weight="bold" color={color}>
               T18 Bold
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T18" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T18" weight="medium" color={color}>
               T18 medium
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T18" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T18" weight="regular" color={color}>
               T18 regular
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T18" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T18" weight="light" color={color}>
               T18 light
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T16" weight="bold" color={color}>
+            <MDSTypography variant="T16" weight="bold" color={color}>
               T16 Bold
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T16" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T16" weight="medium" color={color}>
               T16 medium
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T16" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T16" weight="regular" color={color}>
               T16 regular
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T16" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T16" weight="light" color={color}>
               T16 light
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T14" weight="bold" color={color}>
+            <MDSTypography variant="T14" weight="bold" color={color}>
               T14 Bold
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T14" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T14" weight="medium" color={color}>
               T14 medium
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T14" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T14" weight="regular" color={color}>
               T14 regular
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T14" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T14" weight="light" color={color}>
               T14 light
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T13" weight="bold" color={color}>
+            <MDSTypography variant="T13" weight="bold" color={color}>
               T13 Bold
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T13" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T13" weight="medium" color={color}>
               T13 medium
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T13" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T13" weight="regular" color={color}>
               T13 regular
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T13" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T13" weight="light" color={color}>
               T13 light
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T12" weight="bold" color={color}>
+            <MDSTypography variant="T12" weight="bold" color={color}>
               T12 Bold
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T12" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T12" weight="medium" color={color}>
               T12 medium
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T12" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T12" weight="regular" color={color}>
               T12 regular
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T12" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T12" weight="light" color={color}>
               T12 light
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
         </div>
         <div>
           <div>
-            <MDSTypogrpahy variant="T24" weight="bold" color={color}>
+            <MDSTypography variant="T24" weight="bold" color={color}>
               T24 볼드
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T24" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T24" weight="medium" color={color}>
               T24 미디엄
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T24" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T24" weight="regular" color={color}>
               T24 레귤러
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T24" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T24" weight="light" color={color}>
               T24 라이트
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T20" weight="bold" color={color}>
+            <MDSTypography variant="T20" weight="bold" color={color}>
               T20 볼드
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T20" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T20" weight="medium" color={color}>
               T20 미디엄
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T20" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T20" weight="regular" color={color}>
               T20 레귤러
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T20" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T20" weight="light" color={color}>
               T20 라이트
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
 
           <div>
-            <MDSTypogrpahy variant="T18" weight="bold" color={color}>
+            <MDSTypography variant="T18" weight="bold" color={color}>
               T18 볼드
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T18" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T18" weight="medium" color={color}>
               T18 미디엄
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T18" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T18" weight="regular" color={color}>
               T18 레귤러
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T18" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T18" weight="light" color={color}>
               T18 라이트
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T16" weight="bold" color={color}>
+            <MDSTypography variant="T16" weight="bold" color={color}>
               T16 볼드
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T16" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T16" weight="medium" color={color}>
               T16 미디엄
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T16" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T16" weight="regular" color={color}>
               T16 레귤러
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T16" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T16" weight="light" color={color}>
               T16 라이트
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
 
           <div>
-            <MDSTypogrpahy variant="T14" weight="bold" color={color}>
+            <MDSTypography variant="T14" weight="bold" color={color}>
               T14 볼드
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T14" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T14" weight="medium" color={color}>
               T14 미디엄
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T14" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T14" weight="regular" color={color}>
               T14 레귤러
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T14" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T14" weight="light" color={color}>
               T14 라이트
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
 
           <div>
-            <MDSTypogrpahy variant="T13" weight="bold" color={color}>
+            <MDSTypography variant="T13" weight="bold" color={color}>
               T13 볼드
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T13" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T13" weight="medium" color={color}>
               T13 미디엄
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T13" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T13" weight="regular" color={color}>
               T13 레귤러
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T13" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T13" weight="light" color={color}>
               T13 라이트
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
           <div>
-            <MDSTypogrpahy variant="T12" weight="bold" color={color}>
+            <MDSTypography variant="T12" weight="bold" color={color}>
               T12 볼드
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T12" weight="medium" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T12" weight="medium" color={color}>
               T12 미디엄
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T12" weight="regular" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T12" weight="regular" color={color}>
               T12 레귤러
-            </MDSTypogrpahy>
-            <MDSTypogrpahy variant="T12" weight="light" color={color}>
+            </MDSTypography>
+            <MDSTypography variant="T12" weight="light" color={color}>
               T12 라이트
-            </MDSTypogrpahy>
+            </MDSTypography>
           </div>
         </div>
       </div>

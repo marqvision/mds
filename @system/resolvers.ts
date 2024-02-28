@@ -1,4 +1,5 @@
 import { MDSTheme, MDSThemeValue } from '../foundation'
+import { Path } from './types';
 
 export const resolveColor = (color: Path<MDSTheme['color']>) => {
   const tokens = color?.split('.') || [];

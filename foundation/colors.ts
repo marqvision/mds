@@ -67,7 +67,7 @@ export const RAW_COLORS = {
   green400: '#5ccc5c',
   green500: '#29bc29',
   green600: '#00ad00',
-  green700: '#008c00',
+  green700: '#008000',
   green800: '#1c5e20',
   green900: '#004600',
   teal50: '#e5f5f7',
@@ -351,7 +351,7 @@ export const COLOR_TOKENS = {
       default: RAW_COLORS.white,
       defaultHover: RAW_COLORS.bluegray100,
       defaultCompleted: RAW_COLORS.bluegray400,
-      priamry: '#7aacff',
+      primary: '#7aacff',
     },
     selected: {
       default: RAW_COLORS.blue700, // content/primary/default 와 동일

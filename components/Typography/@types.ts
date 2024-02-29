@@ -5,7 +5,7 @@ import type { MDSTheme } from '../../foundation';
 export type Features = {
   /**
    * 타이포그래피의 종류.
-   * 기본값은 T14입니다.
+   * 기본값은 T16입니다.
    */
   variant?: 'T24' | 'T20' | 'T18' | 'T16' | 'T14' | 'T13' | 'T12';
   /**
@@ -20,7 +20,7 @@ export type Features = {
   lineClamp?: number;
   /**
    * 타이포그래피의 색상.
-   * 기본값은 content.neutral.default(=bluegrey900)입니다.
+   * 기본값은 content.neutral.default(=bluegray900)입니다.
    */
   color?: Path<MDSTheme['color']>;
 

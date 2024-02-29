@@ -8,13 +8,14 @@ import {
 } from './@utils';
 import { Features, MDSTypographyProps } from './@types';
 
-const TypographyStyles = styled.span<Required<Features>>`
-  ${({ variant, weight, color, lineClamp, wordBreak }) => {
+const TypographyStyles = styled.span<Features>`
+  ${({ variant, weight, color, lineClamp, wordBreak, whiteSpace }) => {
     const fontSize = resolveFontSize(variant);
     const fontWeightStyles = resolveFontWeightStyles(weight);
-    const fontColor = resolveColor(color);
-    const lineClampStyles = resolveLineClamp(lineClamp);
-    const wordBreakStyles = `word-break: ${wordBreak};`
+    const fontColor = resolveColor(color!);
+    const lineClampStyles = lineClamp !== undefined ? resolveLineClamp(lineClamp) : '';
+    const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';
+    const whiteSpaceStyles = whiteSpace ? `white-space: ${whiteSpace};` : '';
 
     return `
       margin: 0;
@@ -23,6 +24,7 @@ const TypographyStyles = styled.span<Required<Features>>`
       ${fontWeightStyles};
       ${lineClampStyles};
       ${wordBreakStyles};
+      ${whiteSpaceStyles};
     `;
   }}
 `;
@@ -31,9 +33,9 @@ export const MDSTypography = ({
   variant = 'T16',
   weight = 'regular',
   color = 'content.neutral.default',
-  lineClamp = 0,
+  lineClamp,
   as,
-  wordBreak = 'normal',
+  wordBreak,
   ...props
 }: MDSTypographyProps) => {
   const tagName = resolveTagName(variant, as);

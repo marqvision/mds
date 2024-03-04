@@ -32,12 +32,18 @@ export type Features = {
 
   /**
    * 타이포그래피의 work-break 속성.
-   * 기본값은 normal입니다.
+   * 기본값은 브라우저 기본값을 따릅니다.
    *
    * break-word를 사용하고 싶다면 다음 문서를 참고하세요
    * https://developer.mozilla.org/docs/Web/CSS/word-break#break-word
    */
   wordBreak?: 'normal' | 'keep-all' | 'break-all';
+
+  /**
+   * 타이포그래피의 white-space 속성.
+   * 기본값은 브라우저 기본값을 따릅니다.
+   */
+  whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap';
 };
 
 export type MDSTypographyProps = Features & HTMLAttributes<HTMLSpanElement>;

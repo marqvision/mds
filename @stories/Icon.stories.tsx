@@ -9,11 +9,13 @@ export default {
     layout: 'center',
   },
   tags: ['autodocs'],
+  args: {
+    color: 'color/content/neutral/default/normal'
+  },
   argTypes: {
     color: {
       control: 'select',
       options: MDSTHEME_COLORS,
-      defaultValue: 'content.neutral.default',
     },
     size: {
       control: 'number',

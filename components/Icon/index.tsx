@@ -17,7 +17,7 @@ import {
 } from './Arrows';
 
 const createIcon = (Icon: ({ color }: { color: string }) => ReactNode) => {
-  const IconComponent = ({ size = 24, color = 'content.neutral.default' }: MDSIconProps) => {
+  const IconComponent = ({ size = 24, color = 'color/content/neutral/default/normal' }: MDSIconProps) => {
     const props = {
       size: size || 24,
       color: resolveColor(color),

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { COLOR_TOKENS } from '../foundation/colors';
+import { MDSTypography } from '../components';
 
 export default {
   title: '1. Foundation/Colors',
@@ -13,6 +14,7 @@ const ColorPalette = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  gap: 4px;
 `;
 
 const ColorBox = styled.div<{ color: string; name: string }>`
@@ -40,7 +42,7 @@ const ColorWithAlphaBox = styled.div`
 const ColorItem = ({ title, colors }: { title: string; colors: { [name: string]: string } }) => {
   return (
     <div>
-      <h2>{title}</h2>
+      <MDSTypography>{title}</MDSTypography>
       <div>
         {Object.entries(colors).map(([name, color]) =>
           color.includes('rgba') ? (
@@ -298,79 +300,283 @@ export const RawColors = () => {
   );
 };
 
+const Container = styled.div`
+  & + & {
+    margin-top: 128px;
+  }
+`;
 export const ColorTokens = () => {
   return (
     <div>
-      <div>
-        <h1>BG - Fill</h1>
-        <ColorPalette>
-          <ColorItem title="Neautral" colors={COLOR_TOKENS.bg.fill.neutral} />
-          <ColorItem title="Primary" colors={COLOR_TOKENS.bg.fill.primary} />
-          <ColorItem title="Critical" colors={COLOR_TOKENS.bg.fill.critical} />
-          <ColorItem title="Success" colors={COLOR_TOKENS.bg.fill.success} />
-          <ColorItem title="Warning" colors={COLOR_TOKENS.bg.fill.warning} />
-          <ColorItem title="Teal" colors={COLOR_TOKENS.bg.fill.teal} />
-          <ColorItem title="Purple" colors={COLOR_TOKENS.bg.fill.purple} />
-          <ColorItem
-            title="Inverse"
-            colors={{
-              primary: COLOR_TOKENS.bg.fill.inverse.primary,
-              ...COLOR_TOKENS.bg.fill.inverse.white,
-            }}
-          />
-        </ColorPalette>
-      </div>
-      <div>
-        <h1>BG - surface</h1>
-        <ColorPalette>
-          <ColorItem title="Neautral" colors={COLOR_TOKENS.bg.surface.neutral} />
-          <ColorItem title="Primary" colors={COLOR_TOKENS.bg.surface.primary} />
-          <ColorItem title="Critical" colors={COLOR_TOKENS.bg.surface.critical} />
-          <ColorItem title="Success" colors={COLOR_TOKENS.bg.surface.success} />
-          <ColorItem title="Warning" colors={COLOR_TOKENS.bg.surface.warning} />
-          <ColorItem title="Teal" colors={COLOR_TOKENS.bg.surface.teal} />
-          <ColorItem title="Purple" colors={COLOR_TOKENS.bg.surface.purple} />
-          <ColorItem title="Inverse" colors={COLOR_TOKENS.bg.surface.inverse} />
-          <ColorItem title="Selected" colors={COLOR_TOKENS.bg.surface.selected} />
-        </ColorPalette>
-      </div>
-      <div>
-        <h1>Content</h1>
-        <ColorPalette>
-          <ColorItem title="onDefaultColor" colors={{ onDefaultColor: COLOR_TOKENS.content.onDefaultColor }} />
-          <ColorItem title="placeholder" colors={{ placeholder: COLOR_TOKENS.content.placeholder }} />
-          <ColorItem title="Neautral" colors={COLOR_TOKENS.content.neutral} />
-          <ColorItem title="Primary" colors={COLOR_TOKENS.content.primary} />
-          <ColorItem title="Critical" colors={COLOR_TOKENS.content.critical} />
-          <ColorItem title="Success" colors={COLOR_TOKENS.content.success} />
-          <ColorItem title="Warning" colors={COLOR_TOKENS.content.warning} />
-          <ColorItem title="Teal" colors={COLOR_TOKENS.content.teal} />
-          <ColorItem title="Purple" colors={COLOR_TOKENS.content.purple} />
-          <ColorItem title="Inverse" colors={COLOR_TOKENS.content.inverse} />
-          <ColorItem title="Selected" colors={COLOR_TOKENS.content.selected} />
-        </ColorPalette>
-      </div>
-      <div>
-        <h1>Border</h1>
-        <ColorPalette>
-          <ColorItem title="Neautral" colors={COLOR_TOKENS.border.neutral} />
-          <ColorItem title="Primary" colors={COLOR_TOKENS.border.primary} />
-          <ColorItem title="Critical" colors={COLOR_TOKENS.border.critical} />
-          <ColorItem title="Success" colors={COLOR_TOKENS.border.success} />
-          <ColorItem title="Warning" colors={COLOR_TOKENS.border.warning} />
-          <ColorItem title="Teal" colors={COLOR_TOKENS.border.teal} />
-          <ColorItem title="Purple" colors={COLOR_TOKENS.border.purple} />
-          <ColorItem title="Inverse" colors={COLOR_TOKENS.border.inverse} />
-          <ColorItem title="Selected" colors={COLOR_TOKENS.border.selected} />
-        </ColorPalette>
-      </div>
+      <Container>
+        <MDSTypography variant="T24">bg/fill</MDSTypography>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+          <div>
+            <MDSTypography variant="T20">neutral</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.fill.neutral.default} />
+              <ColorItem title="strong" colors={COLOR_TOKENS.bg.fill.neutral.strong} />
+              <ColorItem title="tint" colors={COLOR_TOKENS.bg.fill.neutral.tint} />
+              <ColorItem title="weak" colors={COLOR_TOKENS.bg.fill.neutral.weak} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">primary</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.fill.primary.default} />
+              <ColorItem title="tint" colors={COLOR_TOKENS.bg.fill.primary.tint} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">critical</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.fill.critical.default} />
+              <ColorItem title="tint" colors={COLOR_TOKENS.bg.fill.critical.tint} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">success</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.fill.success.default} />
+              <ColorItem title="tint" colors={COLOR_TOKENS.bg.fill.success.tint} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">warning</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.fill.warning.default} />
+              <ColorItem title="tint" colors={COLOR_TOKENS.bg.fill.warning.tint} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">teal</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.fill.teal.default} />
+              <ColorItem title="tint" colors={COLOR_TOKENS.bg.fill.teal.tint} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">purple</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.fill.purple.default} />
+              <ColorItem title="tint" colors={COLOR_TOKENS.bg.fill.purple.tint} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">inverse</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="white.default" colors={COLOR_TOKENS.bg.fill.inverse.white.default} />
+              <ColorItem title="white.tint" colors={COLOR_TOKENS.bg.fill.inverse.white.tint} />
+              <ColorItem title="primary" colors={{ primary: COLOR_TOKENS.bg.fill.inverse.primary }} />
+            </ColorPalette>
+          </div>
+        </div>
+      </Container>
+
+      <Container>
+        <MDSTypography variant="T24">bg/surface</MDSTypography>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+          <div>
+            <MDSTypography variant="T20">neutral</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.neutral.default} />
+              <ColorItem title="secondary" colors={COLOR_TOKENS.bg.surface.neutral.secondary} />
+              <ColorItem title="tertiary" colors={COLOR_TOKENS.bg.surface.neutral.tertiary} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">primary</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.primary.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">critical</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.critical.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">success</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.success.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">warning</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.warning.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">teal</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.teal.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">purple</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.purple.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">inverse</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.inverse} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">selected</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.bg.surface.selected.default} />
+            </ColorPalette>
+          </div>
+        </div>
+      </Container>
+
+      <Container>
+        <MDSTypography variant="T24">content</MDSTypography>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ height: 29 }} />
+            <ColorPalette>
+              <ColorItem
+                title="on_default_color"
+                colors={{ on_default_color: COLOR_TOKENS.content.on_default_color }}
+              />
+              <ColorItem title="placeholder" colors={{ placeholder: COLOR_TOKENS.content.placeholder }} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">neutral</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.neutral.default} />
+              <ColorItem title="secondary" colors={COLOR_TOKENS.content.neutral.secondary} />
+              <ColorItem title="tertiary" colors={COLOR_TOKENS.content.neutral.tertiary} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">primary</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.primary.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">critical</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.critical.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">success</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.success.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">warning</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.warning.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">teal</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.teal.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">purple</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.purple.default} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">inverse</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.inverse.default} />
+              <ColorItem title="_" colors={{ primary: COLOR_TOKENS.content.inverse.primary }} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">selected</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.content.selected.default} />
+            </ColorPalette>
+          </div>
+        </div>
+      </Container>
+
+      <Container>
+        <MDSTypography variant="T24">border</MDSTypography>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+          <div>
+            <MDSTypography variant="T20">neutral</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.border.neutral.default} />
+              <ColorItem title="_" colors={{ strong: COLOR_TOKENS.border.neutral.strong }} />
+              <ColorItem title="_" colors={{ weak: COLOR_TOKENS.border.neutral.weak }} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">primary</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.border.primary.default} />
+              <ColorItem title="weak" colors={COLOR_TOKENS.border.primary.weak} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">critical</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.border.critical.default} />
+              <ColorItem title="weak" colors={COLOR_TOKENS.border.critical.weak} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">success</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.border.success.default} />
+              <ColorItem title="weak" colors={COLOR_TOKENS.border.success.weak} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">warning</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.border.warning.default} />
+              <ColorItem title="weak" colors={COLOR_TOKENS.border.warning.weak} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">teal</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.border.teal.default} />
+              <ColorItem title="weak" colors={COLOR_TOKENS.border.teal.weak} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">purple</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="default" colors={COLOR_TOKENS.border.purple.default} />
+              <ColorItem title="weak" colors={COLOR_TOKENS.border.purple.weak} />
+            </ColorPalette>
+          </div>
+          <div>
+            <MDSTypography variant="T20">inverse</MDSTypography>
+            <ColorPalette>
+              <ColorItem title="white" colors={COLOR_TOKENS.border.inverse.white} />
+              <ColorItem title="_" colors={{ primary: COLOR_TOKENS.border.inverse.primary }} />
+            </ColorPalette>
+          </div>
+        </div>
+      </Container>
     </div>
   );
 };
 
 export const WithEmotionTheme = () => {
   const Box = styled.div`
-    ${({ theme }) =>  `
+    ${({ theme }) => `
       background: ${theme.color.bg.fill.teal.default};
       border: 10px solid ${theme._raw_color.blue100};
       padding: 32px;
@@ -380,7 +586,5 @@ export const WithEmotionTheme = () => {
     `};
   `;
 
-  return (
-    <Box />
-  )
-}
+  return <Box />;
+};

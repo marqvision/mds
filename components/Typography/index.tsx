@@ -32,7 +32,7 @@ const TypographyStyles = styled.span<Features>`
 export const MDSTypography = ({
   variant = 'T16',
   weight = 'regular',
-  color = 'content.neutral.default',
+  color = 'color/content/neutral/default/normal',
   lineClamp,
   as,
   wordBreak,

@@ -3,14 +3,14 @@ export type PathImpl<T, Key extends keyof T> =
   ? T[Key] extends Record<string, any>
     ? T[Key] extends ArrayLike<any>
       ? Key | `${Key}.${PathImpl<T[Key], Exclude<keyof T[Key], keyof any[]>>}`
-      : `${Key}.${PathImpl<T[Key], keyof T[Key]>}`
+      : `${Key}/${PathImpl<T[Key], keyof T[Key]>}`
     : Key
   : never;
 
 export type Path<T> = PathImpl<T, keyof T> | keyof T;
 
 export type PathValue<T, P extends Path<T>> =
-  P extends `${infer Key}.${infer Rest}`
+  P extends `${infer Key}/${infer Rest}`
   ? Key extends keyof T
     ? Rest extends Path<T[Key]>
       ? PathValue<T[Key], Rest>

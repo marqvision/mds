@@ -1,4 +1,5 @@
 import { Global, css } from '@emotion/react';
+import { COLOR_TOKENS } from './colors';
 export const MDSResetCSS = () => (
   <Global
     styles={css`
@@ -36,6 +37,17 @@ export const MDSResetCSS = () => (
       a,
       button {
         cursor: revert;
+      }
+      a {
+        color: ${COLOR_TOKENS.content.primary.default.normal};
+        text-decoration: underline;
+      }
+      a:hover {
+        color: ${COLOR_TOKENS.content.primary.default.hover};
+      }
+      a:visited,
+      a:active {
+        color: ${COLOR_TOKENS.content.primary.default.normal};
       }
 
       /* Remove list styles (bullets/numbers) */

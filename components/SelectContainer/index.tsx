@@ -132,7 +132,6 @@ const Wrapper = ({ onClick, selectedValue, children }: MDSSelectContainerProps) 
 
     // Compare if selectedValue is string type or array type
     if (typeof selectedValue === 'string') {
-      //TODO: add condition to disable click event in disabled list (eddie)
       if (selectedValue === childValueProps) {
         return cloneElement(child, {
           isSelected: true,

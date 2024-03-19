@@ -1,4 +1,4 @@
-import { cloneElement, Children, ReactElement } from 'react';
+import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import clsx from 'clsx';
 import styled from '@emotion/styled';
 import { IcoCheckFill } from '@marqvision/mds/assets';
@@ -125,43 +125,32 @@ const SelectContainerItemStyles = styled.div`
   }
 `;
 
-const Wrapper = ({ onClick, selectedValue, children }: MDSSelectContainerProps) => {
-  const modifiedChildrenWithProps = Children.map(children, (child: ReactElement<any>) => {
-    const childValueProps = child.props.value;
-    const childDisabledProps = child.props.disabled;
+const Wrapper = <T extends string | string[]>({ onClick, value, children }: MDSSelectContainerProps<T>) => {
+  const modifiedChildrenWithProps = Children.map(
+    children,
+    (child: ReactElement<MDSSelectContainerItemProps<T> & HTMLAttributes<HTMLDivElement>>) => {
+      const childValueProps = child.props.value;
+      const childDisabledProps = child.props.disabled;
+      const isSelected = Array.isArray(value) ? value.includes(childValueProps as string) : childValueProps === value;
 
-    // Compare if selectedValue is string type or array type
-    if (typeof selectedValue === 'string') {
-      if (selectedValue === childValueProps) {
-        return cloneElement(child, {
-          isSelected: true,
-          onClick: () => !childDisabledProps && onClick(childValueProps),
-        });
-      } else {
-        return cloneElement(child, {
-          isSelected: false,
-          onClick: () => !childDisabledProps && onClick(childValueProps),
-        });
-      }
-    } else {
-      if (selectedValue?.includes(childValueProps)) {
-        return cloneElement(child, {
-          isSelected: true,
-          onClick: () => !childDisabledProps && onClick(childValueProps),
-        });
-      } else {
-        return cloneElement(child, {
-          isSelected: false,
-          onClick: () => !childDisabledProps && onClick(childValueProps),
-        });
-      }
+      return cloneElement(child, {
+        isSelected,
+        onClick: () => !childDisabledProps && onClick(childValueProps),
+      });
     }
-  });
+  );
 
   return <SelectContainerStyles>{modifiedChildrenWithProps}</SelectContainerStyles>;
 };
 
-const Item = ({ main, title, isSelected, disabled, content, ...props }: MDSSelectContainerItemProps) => {
+const Item = <T extends string>({
+  main,
+  title,
+  content,
+  disabled,
+  isSelected,
+  ...props
+}: MDSSelectContainerItemProps<T>) => {
   const className = clsx({
     isSelected: isSelected,
     isNotSelected: !isSelected,
@@ -173,14 +162,14 @@ const Item = ({ main, title, isSelected, disabled, content, ...props }: MDSSelec
     <SelectContainerItemStyles className={className} {...props}>
       {isSelected && (
         <CheckedIconWrapperStyles className="checked-icon-wrapper">
-          <IcoCheckFill className="check-icon" style={{ width: '16px' }} />
+          <IcoCheckFill className="check-icon" />
         </CheckedIconWrapperStyles>
       )}
       {main?.icon && <MainIconWrapperStyles>{main.icon}</MainIconWrapperStyles>}
       <SelectContainerItemContentStyles>
         <SelectContainerTitleStyles>
           {title.icon}
-          <MDSTypography variant="T14" weight="medium" color={title.color} style={{ width: 'max-content' }}>
+          <MDSTypography variant="T14" weight="medium" color={title.color}>
             {title.label}
           </MDSTypography>
         </SelectContainerTitleStyles>

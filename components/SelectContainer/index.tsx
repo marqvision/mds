@@ -125,7 +125,7 @@ const SelectContainerItemStyles = styled.div`
   }
 `;
 
-const Wrapper = <T extends string | string[]>({ onClick, value, children }: MDSSelectContainerProps<T>) => {
+const Wrapper = <T extends string | string[]>({ onChange, value, children }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
     children,
     (child: ReactElement<MDSSelectContainerItemProps<T> & HTMLAttributes<HTMLDivElement>>) => {
@@ -135,7 +135,7 @@ const Wrapper = <T extends string | string[]>({ onClick, value, children }: MDSS
 
       return cloneElement(child, {
         isSelected,
-        onClick: () => !childDisabledProps && onClick(childValueProps),
+        onChange: () => !childDisabledProps && onChange(childValueProps),
       });
     }
   );

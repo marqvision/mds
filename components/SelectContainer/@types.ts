@@ -6,7 +6,7 @@ import { MDSTheme } from '../../foundation';
 
 export type ContainerFeatures<T> = {
   value: T;
-  onClick: (value: T) => void;
+  onChange: (value: T) => void;
   children: ReactElement | ReactElement[];
 };
 
@@ -26,5 +26,5 @@ export type ItemFeatures<T> = {
   isSelected?: boolean;
 };
 
-export type MDSSelectContainerProps<T> = ContainerFeatures<T> & Omit<HTMLAttributes<HTMLDivElement>, 'onClick'>;
+export type MDSSelectContainerProps<T> = ContainerFeatures<T> & Omit<HTMLAttributes<HTMLDivElement>, 'onChange'>;
 export type MDSSelectContainerItemProps<T> = ItemFeatures<T>;

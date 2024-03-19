@@ -26,5 +26,10 @@ export type ItemFeatures<T> = {
   isSelected?: boolean;
 };
 
+export type SelectContainerItemStyles = {
+  disabled?: boolean;
+  isSelected?: boolean;
+};
+
 export type MDSSelectContainerProps<T> = ContainerFeatures<T>;
 export type MDSSelectContainerItemProps<T> = ItemFeatures<T>;

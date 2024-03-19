@@ -2,7 +2,7 @@ import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import { IcoCheckFill } from '@marqvision/mds/assets';
 import { MDSTypography } from '../Typography';
-import { MDSSelectContainerProps, MDSSelectContainerItemProps } from './@types';
+import { MDSSelectContainerProps, MDSSelectContainerItemProps, SelectContainerItemStyles } from './@types';
 import { getCorrectContainerStyle } from './@utils';
 
 const SelectContainerStyles = styled.div`
@@ -47,7 +47,7 @@ const CheckedIconWrapperStyles = styled.div`
 `;
 
 const SelectContainerItemStyles = styled.div`
-  ${({ disabled, isSelected }: { disabled?: boolean; isSelected?: boolean }) => {
+  ${({ disabled, isSelected }: SelectContainerItemStyles) => {
     const containerStyle = getCorrectContainerStyle(disabled, isSelected);
 
     return ` 

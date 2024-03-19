@@ -125,7 +125,7 @@ const SelectContainerItemStyles = styled.div`
   }
 `;
 
-export const MDSSelectContainer = ({ onClick, selectedValue, children }: MDSSelectContainerProps) => {
+const Wrapper = ({ onClick, selectedValue, children }: MDSSelectContainerProps) => {
   const modifiedChildrenWithProps = Children.map(children, (child: ReactElement<any>) => {
     const childValueProps = child.props.value;
     const childDisabledProps = child.props.disabled;
@@ -136,24 +136,24 @@ export const MDSSelectContainer = ({ onClick, selectedValue, children }: MDSSele
       if (selectedValue === childValueProps) {
         return cloneElement(child, {
           isSelected: true,
-          onClick: () => onClick(childValueProps),
+          onClick: () => !childDisabledProps && onClick(childValueProps),
         });
       } else {
         return cloneElement(child, {
           isSelected: false,
-          onClick: () => onClick(childValueProps),
+          onClick: () => !childDisabledProps && onClick(childValueProps),
         });
       }
     } else {
       if (selectedValue?.includes(childValueProps)) {
         return cloneElement(child, {
           isSelected: true,
-          onClick: () => onClick(childValueProps),
+          onClick: () => !childDisabledProps && onClick(childValueProps),
         });
       } else {
         return cloneElement(child, {
           isSelected: false,
-          onClick: () => onClick(childValueProps),
+          onClick: () => !childDisabledProps && onClick(childValueProps),
         });
       }
     }
@@ -162,14 +162,7 @@ export const MDSSelectContainer = ({ onClick, selectedValue, children }: MDSSele
   return <SelectContainerStyles>{modifiedChildrenWithProps}</SelectContainerStyles>;
 };
 
-export const MDSSelectContainerItem = ({
-  main,
-  title,
-  isSelected,
-  disabled,
-  content,
-  ...props
-}: MDSSelectContainerItemProps) => {
+const Item = ({ main, title, isSelected, disabled, content, ...props }: MDSSelectContainerItemProps) => {
   const className = clsx({
     isSelected: isSelected,
     isNotSelected: !isSelected,
@@ -196,4 +189,9 @@ export const MDSSelectContainerItem = ({
       </SelectContainerItemContentStyles>
     </SelectContainerItemStyles>
   );
+};
+
+export const MDSSelectContainer = {
+  Wrapper,
+  Item,
 };

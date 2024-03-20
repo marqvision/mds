@@ -23,6 +23,24 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
     `;
   }
 
+  if (disabled) {
+    return ` 
+      outline: 1px solid ${MDSThemeValue.color.border.neutral.default.normal};
+  
+      p {
+        color: ${MDSThemeValue.color.content.neutral.default.disabled};
+      }
+  
+      .checked-icon-wrapper path {
+        fill: ${MDSThemeValue.color.content.primary.default.disabled};
+      }
+  
+      &:hover {
+        background-color: ${MDSThemeValue.color.bg.surface.neutral.default.disabled};
+      }
+    `;
+  }
+
   if (!isSelected) {
     return `
       background-color: ${MDSThemeValue.color.bg.surface.neutral.default.normal};
@@ -57,24 +75,6 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
         .checked-icon-wrapper path {
           fill: ${MDSThemeValue.color.content.primary.default.hover};
         }
-      }
-    `;
-  }
-
-  if (disabled) {
-    return ` 
-      outline: 1px solid ${MDSThemeValue.color.border.neutral.default.normal};
-  
-      p {
-        color: ${MDSThemeValue.color.content.neutral.default.disabled};
-      }
-  
-      .checked-icon-wrapper path {
-        fill: ${MDSThemeValue.color.content.primary.default.disabled};
-      }
-  
-      &:hover {
-        background-color: ${MDSThemeValue.color.bg.surface.neutral.default.disabled};
       }
     `;
   }

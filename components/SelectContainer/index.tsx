@@ -2,7 +2,7 @@ import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import { IcoCheckFill } from '@marqvision/mds/assets';
 import { MDSTypography } from '../Typography';
-import { MDSSelectContainerProps, MDSSelectContainerItemProps, SelectContainerItemStyles } from './@types';
+import { MDSSelectContainerProps, MDSSelectContainerItemProps, SelectContainerItemFeatures } from './@types';
 import { getCorrectContainerStyle } from './@utils';
 
 const SelectContainerStyles = styled.div`
@@ -46,8 +46,8 @@ const CheckedIconWrapperStyles = styled.div`
     `}
 `;
 
-const SelectContainerItemStyles = styled.div`
-  ${({ disabled, isSelected }: SelectContainerItemStyles) => {
+const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
+  ${({ disabled, isSelected }) => {
     const containerStyle = getCorrectContainerStyle(disabled, isSelected);
 
     return ` 
@@ -65,7 +65,7 @@ const SelectContainerItemStyles = styled.div`
   }}
 `;
 
-const Wrapper = <T extends string | string[]>({ value, children }: MDSSelectContainerProps<T>) => {
+const Wrapper = <T extends string | number | string[]>({ value, children }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
     children,
     (child: ReactElement<MDSSelectContainerItemProps<T> & HTMLAttributes<HTMLDivElement>>) => {
@@ -81,7 +81,7 @@ const Wrapper = <T extends string | string[]>({ value, children }: MDSSelectCont
   return <SelectContainerStyles>{modifiedChildrenWithProps}</SelectContainerStyles>;
 };
 
-const Item = <T extends string | string[]>({
+const Item = <T extends string | number>({
   main,
   value,
   title,
@@ -92,7 +92,12 @@ const Item = <T extends string | string[]>({
   ...props
 }: MDSSelectContainerItemProps<T>) => {
   return (
-    <SelectContainerItemStyles onClick={() => onClick(value)} disabled={disabled} isSelected={isSelected} {...props}>
+    <SelectContainerItemStyles
+      onClick={() => !disabled && onClick(value)}
+      disabled={disabled}
+      isSelected={isSelected}
+      {...props}
+    >
       {isSelected && (
         <CheckedIconWrapperStyles className="checked-icon-wrapper">
           <IcoCheckFill className="check-icon" />

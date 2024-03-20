@@ -26,7 +26,7 @@ export type ItemFeatures<T> = {
   isSelected?: boolean;
 };
 
-export type SelectContainerItemStyles = {
+export type SelectContainerItemFeatures = {
   disabled?: boolean;
   isSelected?: boolean;
 };

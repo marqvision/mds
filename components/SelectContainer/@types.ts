@@ -31,5 +31,7 @@ export type SelectContainerItemFeatures = {
   isSelected?: boolean;
 };
 
+export type UnwrapArray<T> = T extends (infer U)[] ? U : T;
+
 export type MDSSelectContainerProps<T> = ContainerFeatures<T>;
 export type MDSSelectContainerItemProps<T> = ItemFeatures<T>;

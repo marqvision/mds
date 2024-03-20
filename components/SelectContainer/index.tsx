@@ -2,7 +2,12 @@ import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import { CheckFill } from '../Icon';
 import { MDSTypography } from '../Typography';
-import { MDSSelectContainerProps, MDSSelectContainerItemProps, SelectContainerItemFeatures } from './@types';
+import {
+  MDSSelectContainerProps,
+  MDSSelectContainerItemProps,
+  SelectContainerItemFeatures,
+  UnwrapArray,
+} from './@types';
 import { getCorrectContainerStyle } from './@utils';
 
 const SelectContainerStyles = styled.div`
@@ -65,12 +70,14 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
   }}
 `;
 
-const Wrapper = <T extends string | number | string[]>({ value, children }: MDSSelectContainerProps<T>) => {
+const Wrapper = <T extends string | string[] | number | number[]>({ value, children }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
     children,
-    (child: ReactElement<MDSSelectContainerItemProps<T> & HTMLAttributes<HTMLDivElement>>) => {
+    (child: ReactElement<MDSSelectContainerItemProps<UnwrapArray<T>> & HTMLAttributes<HTMLDivElement>>) => {
       const childValueProps = child.props.value;
-      const isSelected = Array.isArray(value) ? value.includes(childValueProps as string) : childValueProps === value;
+      const isSelected = Array.isArray(value)
+        ? value.some((item) => item === childValueProps)
+        : childValueProps === value;
 
       return cloneElement(child, {
         isSelected,

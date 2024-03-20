@@ -4,12 +4,12 @@ import { MDSTheme } from '../../foundation';
 
 // Figma https://www.figma.com/file/3UJ0kZhf62nuG9erDNzLc6/MDS?type=design&node-id=8140-3261&mode=design&t=WFZGdzrmqN5f7Llc-0
 
-export type ContainerFeatures<T> = {
+type ContainerFeatures<T> = {
   value: T;
   children: ReactElement | ReactElement[];
 };
 
-export type ItemFeatures<T> = {
+type ItemFeatures<T> = {
   main?: {
     icon: ReactNode;
     color: Path<Pick<MDSTheme, 'color'>>;

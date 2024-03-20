@@ -1,6 +1,6 @@
 import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
-import { IcoCheckFill } from '@marqvision/mds/assets';
+import { CheckFill } from '../Icon';
 import { MDSTypography } from '../Typography';
 import { MDSSelectContainerProps, MDSSelectContainerItemProps, SelectContainerItemFeatures } from './@types';
 import { getCorrectContainerStyle } from './@utils';
@@ -100,7 +100,7 @@ const Item = <T extends string | number>({
     >
       {isSelected && (
         <CheckedIconWrapperStyles className="checked-icon-wrapper">
-          <IcoCheckFill className="check-icon" />
+          <CheckFill size={16} />
         </CheckedIconWrapperStyles>
       )}
       {main?.icon && <MainIconWrapperStyles>{main.icon}</MainIconWrapperStyles>}

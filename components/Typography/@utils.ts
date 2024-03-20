@@ -35,13 +35,14 @@ export const resolveFontWeight = (weight: Features['weight']) => {
       return 'font-family: "Visuelt-Regular", "Pretendard Variable"; font-weight: 400;';
   }
 };
+
 export const resolveLineClamp = (lineClamp: Features['lineClamp']) => {
-  if(lineClamp && lineClamp > 0) {
+  if (lineClamp && lineClamp > 0) {
     return `
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: ${lineClamp};
       -webkit-box-orient: vertical;
-    `
+    `;
   }
-}
+};

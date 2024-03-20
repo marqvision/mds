@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Path } from '../../@system/types';
 import { MDSTheme } from '../../foundation';
 

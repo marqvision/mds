@@ -15,7 +15,7 @@ import {
   SVGArrowUpFill,
   SVGArrowUpOutline,
 } from './Arrows';
-import { SVGCheckFill, SVGCheckOutline, SVGCloseDeleteOutline } from './Symbols';
+import { SVGCheckFill, SVGCheckOutline, SVGCloseDeleteOutline, SVGMinusBorder } from './Symbols';
 
 const createIcon = (Icon: ({ color }: { color: string }) => ReactNode) => {
   const IconComponent = ({ size = 24, color = 'color/content/neutral/default/normal' }: MDSIconProps) => {
@@ -48,8 +48,8 @@ const ArrowDownFill = createIcon(SVGArrowDownFill);
 
 const CheckFill = createIcon(SVGCheckFill);
 const CheckOutline = createIcon(SVGCheckOutline);
-
 const CloseOutline = createIcon(SVGCloseDeleteOutline);
+const MinusBorder = createIcon(SVGMinusBorder);
 
 export {
   ArrowLeftOutline,
@@ -67,4 +67,5 @@ export {
   CheckFill,
   CheckOutline,
   CloseOutline,
+  MinusBorder,
 };

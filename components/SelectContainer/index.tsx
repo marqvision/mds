@@ -1,7 +1,7 @@
 import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
-import { CheckFill } from '../Icon';
 import { MDSTypography } from '../Typography';
+import { MDSIcon } from '../Icon';
 import {
   MDSSelectContainerProps,
   MDSSelectContainerItemProps,
@@ -107,7 +107,7 @@ const Item = <T extends string | number>({
     >
       {isSelected && (
         <CheckedIconWrapperStyles className="checked-icon-wrapper">
-          <CheckFill size={16} />
+          <MDSIcon.Check variant='fill' size={16} />
         </CheckedIconWrapperStyles>
       )}
       {main?.icon && <MainIconWrapperStyles>{main.icon}</MainIconWrapperStyles>}

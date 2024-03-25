@@ -14,6 +14,7 @@ import {
   SVGArrowUpBorder,
   SVGArrowUpFill,
   SVGArrowUpOutline,
+  SVGArrowUndoOutline,
 } from './Arrows';
 import { SVGCheckFill, SVGCheckOutline, SVGCloseDeleteOutline, SVGMinusBorder } from './Symbols';
 
@@ -45,7 +46,7 @@ const ArrowUpFill = createIcon(SVGArrowUpFill);
 const ArrowDownOutline = createIcon(SVGArrowDownOutline);
 const ArrowDownBorder = createIcon(SVGArrowDownBorder);
 const ArrowDownFill = createIcon(SVGArrowDownFill);
-
+const ArrowUndoOutline = createIcon(SVGArrowUndoOutline);
 const CheckFill = createIcon(SVGCheckFill);
 const CheckOutline = createIcon(SVGCheckOutline);
 const CloseOutline = createIcon(SVGCloseDeleteOutline);
@@ -68,4 +69,5 @@ export {
   CheckOutline,
   CloseOutline,
   MinusBorder,
+  ArrowUndoOutline,
 };

@@ -15,11 +15,11 @@ $ npm run storybook
 # Contribution Guide
 
 ## Tech stack
+
 - core: react@18.2
 - style-library: emotion@11
 - headless-ui-frameworks: @mui/base, etc...
 - testing/docs: jest, storybook
-
 
 ## Project Structure
 
@@ -39,7 +39,7 @@ $ npm run storybook
 _이 문서에서는 MDS 개발 전반에 적용되는 Rule을 소개합니다. 각 컴포넌트별 룰은 해당 컴포넌트의 문서를 참고해주세요._
 
 > 💡 **RULE NO.1** 💡
-> 
+>
 > Storybook 상태를 반드시 최신으로 유지해주세요
 
 ### 1. Component 작성 가이드
@@ -89,22 +89,29 @@ _이 문서에서는 MDS 개발 전반에 적용되는 Rule을 소개합니다. 
    };
    ```
 
-3. 컴포넌트는 렌더링된 결과 html element의 attribute를 props로 받을 수 있어야 합니다.  
-    ```tsx
-    // <button>으로 렌더링되므로 html button의 attribute를 prop으로 받을 수 있어야 함
-    <MDSButton type='submit' popovertargetaction='hide'>Submit</MDSButton> 
+3. 컴포넌트는 렌더링된 결과 html element의 attribute를 props로 받을 수 있어야 합니다.
 
-    // 타입으로 HTMLAttributes<HTMLButtonElement>를 추가하여 이를 지원.
-    type MDSButtonProps = Features & HTMLAttributes<HTMLButtonElement>;
-    ```
+   ```tsx
+   // <button>으로 렌더링되므로 html button의 attribute를 prop으로 받을 수 있어야 함
+   <MDSButton type="submit" popovertargetaction="hide">
+     Submit
+   </MDSButton>;
+
+   // 타입으로 HTMLAttributes<HTMLButtonElement>를 추가하여 이를 지원.
+   type MDSButtonProps = Features & HTMLAttributes<HTMLButtonElement>;
+   ```
 
 4. props 네이밍 가이드
+
    1. rules
       - 기존 html attribute 이름으로 존재할법한 네이밍은 가급적 피해주세요 (예: type)
       - 기존 html attribute로 존재하지만 해당 기능을 확장하는 경우 주석에 명시해주세요 (예: maxLength)
    2. 주요 props
-      1. `variant`: 한 컴포넌트가 여러 모양으로 변환될 수 있을 때 사용합니다. 
+
+      1. `variant`: 한 컴포넌트가 여러 모양으로 변환될 수 있을 때 사용합니다.
+
          - type: `string union` 타입
+
          ```jsx
          <MDSIcon.ArrowLeft variant="border" />
          <MDSIcon.ArrowLeft variant="fill" />
@@ -112,13 +119,34 @@ _이 문서에서는 MDS 개발 전반에 적용되는 Rule을 소개합니다. 
          ```
 
       2. `size`, `width`, `height`: 한 컴포넌트가 여러 크기로 변환될 수 있을 때 사용합니다.
+
          - type: px단위는 `number`로, 이외의 단위는 `string` 혹은 `string union` 으로 잡아주세요.
+
          ```jsx
          <MDSIcon.ArrowLeft variant="border" size={32} /> // 32px
          <MDSButton variant="fill" size='small' />
          ```
 
       3. `as`: 컴포넌트가 렌더링 될 html 태그 요소를 설정합니다.
-         -  type: `React.ElementType`  
-  
+         - type: `React.ElementType`
 
+### 3. Style 작성 가이드
+
+1. 모든 스타일은 `emotion/styled` 문법으로 작성해주세요. [[참고: https://emotion.sh/docs/styled]]
+2. `MDStheme` 및 스타일을 결정하기 위한 변수는 emotion의 props 문법을 사용하여 구현해주세요
+   ```typescript
+   const Button1 = styled.button<{ primary: boolean }>`
+     color: ${(props) => (props.primary ? 'hotpink' : 'turquoise')};
+   `;
+   const Button2 = styled.button<{ primary: boolean }>`
+     ${({ theme: { color }, primary }) => `
+         color: ${primary ? color.content.neutral.default.normal : color.content.neutral.secondary.normal};
+      `}
+   `;
+   const Container = styled.div((props) => ({
+     display: 'flex',
+     flexDirection: props.column && 'column',
+   }));
+   ```
+3. `bluegray600`과 같은 컬러 사용은 지양해주시고, 만일 피그마에 해당 색상으로 작성된 요소가 있다면 디자이너에게 color token을 사용한 값으로 요청하신 뒤에 color token을 이용하여 작성해주세요
+   

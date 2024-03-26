@@ -4,7 +4,7 @@ import { MDSIcon, MDSIconProps } from '../components/Icon';
 import { MDSTypography } from '../components';
 import { MDSTHEME_COLORS } from './@helper';
 
-const meta: Meta<typeof MDSIcon.ArrowLeft> = {
+const meta: Meta<typeof MDSIcon.Check> = {
   title: '2. Components/Icon',
   parameters: {
     layout: 'center',
@@ -28,7 +28,6 @@ const meta: Meta<typeof MDSIcon.ArrowLeft> = {
 
 export default meta;
 
-
 const IconGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -48,7 +47,7 @@ export const Showcase = ({ variant, ...rest }: MDSIconProps) => {
   return (
     <>
       <IconGrid>
-        <IconItem>
+        {/* <IconItem>
           <MDSTypography>ArrowLeft</MDSTypography>
 
           <MDSIcon.ArrowLeft variant="outline" {...rest} />
@@ -75,7 +74,7 @@ export const Showcase = ({ variant, ...rest }: MDSIconProps) => {
           <MDSIcon.ArrowDown variant="outline" {...rest} />
           <MDSIcon.ArrowDown variant="border" {...rest} />
           <MDSIcon.ArrowDown variant="fill" {...rest} />
-        </IconItem>
+        </IconItem> */}
 
         <IconItem>
           <MDSTypography>Check</MDSTypography>
@@ -162,28 +161,34 @@ export const Showcase = ({ variant, ...rest }: MDSIconProps) => {
           <MDSIcon.Cards variant="fill" {...rest} />
         </IconItem>
 
-
-
         <IconItem>
           <MDSTypography>EyesVisibility</MDSTypography>
-          {/* @ts-ignore */}
           <MDSIcon.EyesVisibility variant="on" {...rest} />
-          {/* @ts-ignore */}
           <MDSIcon.EyesVisibility variant="off" {...rest} />
         </IconItem>
-
-
-
-
-
 
         <IconItem>
           <MDSTypography>Cards</MDSTypography>
           <MDSIcon.Cards variant="outline" {...rest} />
           <MDSIcon.Cards variant="fill" {...rest} />
         </IconItem>
-
       </IconGrid>
     </>
   );
 };
+
+// export const Showcase = () =>
+//   Object.entries(MDSIcon).map(([key, Icon]) => (
+//     <React.Fragment key={key}>
+//       <Icon variant="outline" />
+//       <Icon variant="border" />
+//       <Icon variant="fill" />
+//     </React.Fragment>
+//   ));
+
+export const EyesVisibility = () => (
+  <>
+    <MDSIcon.EyesVisibility variant="on" />
+    <MDSIcon.EyesVisibility variant="off" />
+  </>
+);

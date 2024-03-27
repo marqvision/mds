@@ -1,6 +1,6 @@
-import { Features } from './@types';
+import { Features } from '../@types';
 
-export const SVGArrowLeft = ({ variant }: Features) =>
+export const ArrowLeft = ({ variant }: Features<'ArrowLeft'>) =>
   variant === 'outline' ? (
     <path
       d="M14.71 6.71C14.32 6.32 13.69 6.32 13.3 6.71L8.71 11.3C8.32 11.69 8.32 12.32 8.71 12.71L13.3 17.3C13.69 17.69 14.32 17.69 14.71 17.3C15.1 16.91 15.1 16.28 14.71 15.89L10.83 12L14.71 8.12C15.1 7.73 15.09 7.09 14.71 6.71Z"
@@ -26,7 +26,7 @@ export const SVGArrowLeft = ({ variant }: Features) =>
     />
   );
 
-export const SVGArrowRight = ({ variant }: Features) =>
+export const ArrowRight = ({ variant }: Features<'ArrowRight'>) =>
   variant === 'outline' ? (
     <path
       d="M9.29 6.71001C8.9 7.10001 8.9 7.73001 9.29 8.12001L13.17 12L9.29 15.88C8.9 16.27 8.9 16.9 9.29 17.29C9.68 17.68 10.31 17.68 10.7 17.29L15.29 12.7C15.68 12.31 15.68 11.68 15.29 11.29L10.7 6.70001C10.32 6.32001 9.68 6.32001 9.29 6.71001Z"
@@ -52,7 +52,7 @@ export const SVGArrowRight = ({ variant }: Features) =>
     />
   );
 
-export const SVGArrowUp = ({ variant }: Features) =>
+export const ArrowUp = ({ variant }: Features<'ArrowUp'>) =>
   variant === 'outline' ? (
     <path
       d="M11.29 8.71L6.7 13.3C6.31 13.69 6.31 14.32 6.7 14.71C7.09 15.1 7.72 15.1 8.11 14.71L12 10.83L15.88 14.71C16.27 15.1 16.9 15.1 17.29 14.71C17.68 14.32 17.68 13.69 17.29 13.3L12.7 8.71C12.32 8.32 11.68 8.32 11.29 8.71Z"
@@ -78,7 +78,7 @@ export const SVGArrowUp = ({ variant }: Features) =>
     />
   );
 
-export const SVGArrowDown = ({ variant }: Features) =>
+export const ArrowDown = ({ variant }: Features<'ArrowDown'>) =>
   variant === 'outline' ? (
     <path
       d="M15.88 9.29L12 13.17L8.12001 9.29C7.73001 8.9 7.10001 8.9 6.71001 9.29C6.32001 9.68 6.32001 10.31 6.71001 10.7L11.3 15.29C11.69 15.68 12.32 15.68 12.71 15.29L17.3 10.7C17.69 10.31 17.69 9.68 17.3 9.29C16.91 8.91 16.27 8.9 15.88 9.29Z"

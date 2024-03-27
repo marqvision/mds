@@ -1,10 +1,11 @@
 import { Meta } from '@storybook/react';
 import styled from '@emotion/styled';
+import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 import { MDSIcon, MDSIconProps } from '../components/Icon';
 import { MDSTypography } from '../components';
 import { MDSTHEME_COLORS } from './@helper';
 
-const meta: Meta<typeof MDSIcon.Check> = {
+const meta: Meta<typeof MDSIcon.ArrowLeft> = {
   title: '2. Components/Icon',
   parameters: {
     layout: 'center',
@@ -18,10 +19,13 @@ const meta: Meta<typeof MDSIcon.Check> = {
     color: {
       control: 'select',
       options: MDSTHEME_COLORS,
+      description: '아이콘의 색상을 지정합니다.',
+      defaultValue: 'color/content/neutral/default/normal',
     },
     size: {
       control: 'number',
       defaultValue: 24,
+      description: '아이콘의 크기를 지정합니다.',
     },
   },
 };
@@ -34,161 +38,125 @@ const IconGrid = styled.div`
   gap: 16px;
   padding: 16px;
 `;
-const IconItem = styled.div`
-  width: 120px;
+const IconItem = styled.div<{ direction?: 'row' | 'column' }>`
+  // width: 200px;
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ direction }) => direction ?? 'column'};
   align-items: center;
   gap: 8px;
   position: relative;
 `;
 
-export const Showcase = ({ variant, ...rest }: MDSIconProps) => {
+export const Variants = (props: MDSIconProps) => {
   return (
     <>
-      <IconGrid>
-        {/* <IconItem>
-          <MDSTypography>ArrowLeft</MDSTypography>
-
-          <MDSIcon.ArrowLeft variant="outline" {...rest} />
-          <MDSIcon.ArrowLeft variant="border" {...rest} />
-          <MDSIcon.ArrowLeft variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>ArrowRight</MDSTypography>
-          <MDSIcon.ArrowRight variant="outline" {...rest} />
-          <MDSIcon.ArrowRight variant="border" {...rest} />
-          <MDSIcon.ArrowRight variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>ArrowUp</MDSTypography>
-          <MDSIcon.ArrowUp variant="outline" {...rest} />
-          <MDSIcon.ArrowUp variant="border" {...rest} />
-          <MDSIcon.ArrowUp variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>ArrowDown</MDSTypography>
-          <MDSIcon.ArrowDown variant="outline" {...rest} />
-          <MDSIcon.ArrowDown variant="border" {...rest} />
-          <MDSIcon.ArrowDown variant="fill" {...rest} />
-        </IconItem> */}
-
-        <IconItem>
-          <MDSTypography>Check</MDSTypography>
-          <MDSIcon.Check variant="outline" {...rest} />
-          <MDSIcon.Check variant="border" {...rest} />
-          <MDSIcon.Check variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>AddPlus</MDSTypography>
-          <MDSIcon.AddPlus variant="outline" {...rest} />
-          <MDSIcon.AddPlus variant="border" {...rest} />
-          <MDSIcon.AddPlus variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>Minus</MDSTypography>
-          <MDSIcon.Minus variant="outline" {...rest} />
-          <MDSIcon.Minus variant="border" {...rest} />
-          <MDSIcon.Minus variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>CloseDelete</MDSTypography>
-          <MDSIcon.CloseDelete variant="outline" {...rest} />
-          <MDSIcon.CloseDelete variant="border" {...rest} />
-          <MDSIcon.CloseDelete variant="fill" {...rest} />
-        </IconItem>
-        <IconItem>
-          <MDSTypography>Flag</MDSTypography>
-          <MDSIcon.Flag variant="outline" {...rest} />
-          <MDSIcon.Flag variant="border" {...rest} />
-          <MDSIcon.Flag variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>Help</MDSTypography>
-          <MDSIcon.Help variant="outline" {...rest} />
-          <MDSIcon.Help variant="border" {...rest} />
-          <MDSIcon.Help variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>ErrorWarning</MDSTypography>
-          <MDSIcon.ErrorWarning variant="outline" {...rest} />
-          <MDSIcon.ErrorWarning variant="border" {...rest} />
-          <MDSIcon.ErrorWarning variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>Priority</MDSTypography>
-          <MDSIcon.Priority variant="outline" {...rest} />
-          <MDSIcon.Priority variant="border" {...rest} />
-          <MDSIcon.Priority variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>Info</MDSTypography>
-          <MDSIcon.Info variant="border" {...rest} />
-          <MDSIcon.Info variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>Send</MDSTypography>
-          <MDSIcon.Send variant="outline" {...rest} />
-          <MDSIcon.Send variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>HourglassDelay</MDSTypography>
-          <MDSIcon.HourglassDelay variant="outline" {...rest} />
-          <MDSIcon.HourglassDelay variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>View</MDSTypography>
-          <MDSIcon.View variant="outline" {...rest} />
-          <MDSIcon.View variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>Cards</MDSTypography>
-          <MDSIcon.Cards variant="outline" {...rest} />
-          <MDSIcon.Cards variant="fill" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>EyesVisibility</MDSTypography>
-          <MDSIcon.EyesVisibility variant="on" {...rest} />
-          <MDSIcon.EyesVisibility variant="off" {...rest} />
-        </IconItem>
-
-        <IconItem>
-          <MDSTypography>Cards</MDSTypography>
-          <MDSIcon.Cards variant="outline" {...rest} />
-          <MDSIcon.Cards variant="fill" {...rest} />
-        </IconItem>
-      </IconGrid>
+      <MDSIcon.ArrowLeft {...props} variant="border" />
+      <MDSIcon.ArrowLeft {...props} variant="fill" />
+      <MDSIcon.ArrowLeft {...props} variant="outline" />
+      <MDSIcon.ChartCirclePie {...props} variant="outline3_1" />
+      <MDSIcon.ChartCirclePie {...props} variant="outline2_1_1" />
+      <MDSIcon.ChartCirclePie {...props} variant="fill_2_1_1" />
+      <MDSIcon.CommentAdd {...props} variant="left" />
+      <MDSIcon.CommentAdd {...props} variant="right" />
+      <MDSIcon.Home {...props} />
     </>
   );
 };
 
-// export const Showcase = () =>
-//   Object.entries(MDSIcon).map(([key, Icon]) => (
-//     <React.Fragment key={key}>
-//       <Icon variant="outline" />
-//       <Icon variant="border" />
-//       <Icon variant="fill" />
-//     </React.Fragment>
-//   ));
+const VariantSet = {
+  Default: ['outline', 'border', 'fill'],
+  OutlineFill: ['outline', 'fill'],
+  BorderFill: ['border', 'fill'],
+  Orientation: ['vertical', 'horizontal'],
+};
+const IconVariant = {
+  ArrowLeft: VariantSet['Default'],
+  ArrowRight: VariantSet['Default'],
+  ArrowUp: VariantSet['Default'],
+  ArrowDown: VariantSet['Default'],
 
-export const EyesVisibility = () => (
-  <>
-    <MDSIcon.EyesVisibility variant="on" />
-    <MDSIcon.EyesVisibility variant="off" />
-  </>
-);
+  Check: VariantSet['Default'],
+  AddPlus: VariantSet['Default'],
+  Minus: VariantSet['Default'],
+  CloseDelete: VariantSet['Default'],
+  Flag: [...VariantSet['Default'], 'border_circle'],
+  Help: VariantSet['Default'],
+  ErrorWarning: VariantSet['Default'],
+  Priority: VariantSet['Default'],
+  Info: VariantSet['BorderFill'],
+  Send: VariantSet['OutlineFill'],
+  HourglassDelay: VariantSet['OutlineFill'],
+  View: VariantSet['OutlineFill'],
+  Cards: VariantSet['OutlineFill'],
+  EyesVisibility: ['on', 'off'],
+  Trash: VariantSet['OutlineFill'],
+  Star: VariantSet['OutlineFill'],
+  Tips: VariantSet['OutlineFill'],
+  Verified: VariantSet['OutlineFill'],
+  Folder: VariantSet['OutlineFill'],
+  Label: VariantSet['OutlineFill'],
+  More: VariantSet['Orientation'],
+  NotificationsOff: VariantSet['OutlineFill'],
+  NotificationsOn: VariantSet['OutlineFill'],
+  Settings: VariantSet['OutlineFill'],
+  AccountProfile: VariantSet['OutlineFill'],
+  StoreMarket: VariantSet['OutlineFill'],
+  Image: VariantSet['OutlineFill'],
+  Images: VariantSet['OutlineFill'],
+  Pdf: VariantSet['OutlineFill'],
+  ChartBar: VariantSet['Default'],
+  Lock: VariantSet['OutlineFill'],
+  ClusterHubSellerIntel: VariantSet['OutlineFill'],
+  Email: VariantSet['OutlineFill'],
+  Celebration: VariantSet['OutlineFill'],
+  Pin: VariantSet['OutlineFill'],
+  AssignmentConfirm: VariantSet['OutlineFill'],
+  Document: VariantSet['OutlineFill'],
+  Ppt: VariantSet['OutlineFill'],
+  ChartCirclePie: ['outline3_1', 'outline2_1_1', 'fill_2_1_1'],
+  CopyContent: VariantSet['OutlineFill'],
+  Archive: VariantSet['OutlineFill'],
+  SellerPerson: VariantSet['OutlineFill'],
+  Group: VariantSet['OutlineFill'],
+  ServerDNS: VariantSet['OutlineFill'],
+  CommentAdd: ['left', 'right'],
+  SiteMapTree: VariantSet['OutlineFill'],
+  DragHandle: VariantSet['Orientation'],
+
+  // Editor
+  Circle: [...VariantSet['OutlineFill'], 'outline_small', 'fill_small'],
+  FormulaComponent: ['Ci', 'Li', 'Pi', 'Si'],
+};
+
+export const Showcase = (props: MDSIconProps) => {
+  return (
+    <IconGrid>
+      {Object.entries(MDSIcon).map(([key, _Icon]) => {
+        const Icon = _Icon as (props: MDSIconProps) => EmotionJSX.Element;
+        const variantList = Object.hasOwn(IconVariant, key) ? IconVariant[key as keyof typeof IconVariant] : [''];
+        return (
+          <IconItem key={key}>
+            <MDSTypography>{key}</MDSTypography>
+            <IconItem direction="row">
+              {variantList.map((v) =>
+                v === '' ? (
+                  <IconItem key={v}>
+                    {/* @ts-ignore */}
+                    <Icon {...props} />
+                    <MDSTypography variant="T12">{v}</MDSTypography>
+                  </IconItem>
+                ) : (
+                  <IconItem key={v}>
+                    {/* @ts-ignore */}
+                    <Icon {...props} variant={v} />
+                    <MDSTypography variant="T12">{v}</MDSTypography>
+                  </IconItem>
+                )
+              )}
+            </IconItem>
+          </IconItem>
+        );
+      })}
+    </IconGrid>
+  );
+};

@@ -6,7 +6,7 @@ import * as Symbols from './set/Symbols';
 import * as Editor from './set/Editor';
 import * as Animation from './set/Animation';
 
-export type MDSIconProps = Features & SVGAttributes<SVGElement>;
+export type MDSIconProps<IC = ''> = Features<IC> & SVGAttributes<SVGElement>;
 
 function createIcon<IC = ''>(Icon: (features: Features<IC>) => ReactNode) {
   const IconComponent = ({ size, color = 'color/content/neutral/default/normal', ...rest }: MDSIconProps<IC>) => {

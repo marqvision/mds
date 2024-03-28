@@ -1,6 +1,6 @@
 import { ReactNode, SVGAttributes } from 'react';
 import { resolveColor } from '../../@system/resolvers';
-import { Features } from './@types';
+import { Features, IconVariant } from './@types';
 import * as Arrows from './set/Arrows';
 import * as Symbols from './set/Symbols';
 import * as Editor from './set/Editor';
@@ -28,14 +28,15 @@ function createIcon<IC = ''>(Icon: (features: Features<IC>) => ReactNode) {
     const resolvedSize = resolveSize(Icon.name, size);
     const props = {
       color: resolveColor(color),
+      variant: 'variant' in rest ? rest.variant as Features<keyof IconVariant>['variant'] : undefined,
       ...resolvedSize,
     };
-    if (Icon.name === 'ArrowLeft') console.log('props', props);
+
     return (
       <svg width={props.width} height={props.height} viewBox={props.viewBox} color={props.color}>
         {/* todo-@jamie: fix types */}
         {/* @ts-ignore */}
-        {Object.hasOwn(rest, 'variant') ? <Icon variant={rest.variant} /> : <Icon />}
+        <Icon variant={props.variant} />
       </svg>
     );
   };
@@ -74,7 +75,6 @@ export const MDSIcon = {
   Label: createIcon(Symbols.Label),
   More: createIcon(Symbols.More),
   NotificationsOff: createIcon(Symbols.NotificationsOff),
-  // NotificationsOn: createIcon(Symbols.NotificationsOn),
   Settings: createIcon(Symbols.Settings),
   AccountProfile: createIcon(Symbols.AccountProfile),
   StoreMarket: createIcon(Symbols.StoreMarket),

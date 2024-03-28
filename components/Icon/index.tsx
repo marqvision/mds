@@ -4,40 +4,40 @@ import { Features, IconVariant } from './@types';
 import * as Arrows from './set/Arrows';
 import * as Symbols from './set/Symbols';
 import * as Editor from './set/Editor';
+import * as Animation from './set/Animation';
 
 export type MDSIconProps<IC = ''> = Features<IC> & SVGAttributes<SVGElement>;
 
-const resolveSize = (iconName: string, givenSize?: number) => {
-  if (iconName === 'NotificationsOn') {
-    return {
-      width: givenSize ? givenSize * (29 / 24) : 29,
-      height: givenSize || 24,
-      viewBox: '0 0 29 24',
-    };
-  } else {
-    return {
-      width: givenSize || 24,
-      height: givenSize || 24,
-      viewBox: '0 0 24 24',
-    };
-  }
-};
-
 function createIcon<IC = ''>(Icon: (features: Features<IC>) => ReactNode) {
   const IconComponent = ({ size, color = 'color/content/neutral/default/normal', ...rest }: MDSIconProps<IC>) => {
-    const resolvedSize = resolveSize(Icon.name, size);
     const props = {
       color: resolveColor(color),
-      variant: 'variant' in rest ? rest.variant as Features<keyof IconVariant>['variant'] : undefined,
-      ...resolvedSize,
+      variant: 'variant' in rest ? (rest.variant as Features<keyof IconVariant>['variant']) : undefined,
+      width: size || 24,
+      height: size || 24,
     };
 
     return (
-      <svg width={props.width} height={props.height} viewBox={props.viewBox} color={props.color}>
+      <svg width={props.width} height={props.height} viewBox="0 0 24 24" color={props.color}>
         {/* todo-@jamie: fix types */}
         {/* @ts-ignore */}
         <Icon variant={props.variant} />
       </svg>
+    );
+  };
+  IconComponent.displayName = `MDSIcon.${Icon.name}`;
+
+  return IconComponent;
+}
+
+function createAnimationIcon (Icon: (props: Record<string, unknown>) => ReactNode) {
+  const IconComponent = ({ color = 'color/content/neutral/default/normal', ...rest }: MDSIconProps) => {
+    const props = {
+      color: resolveColor(color),
+    };
+
+    return (
+      <Icon {...props} {...rest} />
     );
   };
   IconComponent.displayName = `MDSIcon.${Icon.name}`;
@@ -173,7 +173,6 @@ export const MDSIcon = {
   Pending: createIcon(Symbols.Pending),
   FolderAdd: createIcon(Symbols.FolderAdd),
   Chat: createIcon(Symbols.Chat),
-  IndicatorCircle: createIcon(Symbols.IndicatorCircle),
   Recipient: createIcon(Symbols.Recipient),
   Gavel: createIcon(Symbols.Gavel),
   Bank: createIcon(Symbols.Bank),
@@ -209,4 +208,7 @@ export const MDSIcon = {
   ShapeArrow: createIcon(Editor.ShapeArrow),
   FormulaComponent: createIcon(Editor.FormulaComponent),
   Eth: createIcon(Editor.Eth),
+
+  // Animation
+  IndicatorCircle: createAnimationIcon(Animation.IndicatorCircle),
 };

@@ -88,4 +88,4 @@ type ConditionalVariant<IconName> = IconName extends keyof IconVariant
     }
   : NonNullable<unknown>;
 
-export type Features<IconName> = BaseFeatures & ConditionalVariant<IconName>;
+export type Features<IconName = ''> = BaseFeatures & ConditionalVariant<IconName>;

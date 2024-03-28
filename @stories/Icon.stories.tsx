@@ -32,19 +32,33 @@ const meta: Meta<typeof MDSIcon.ArrowLeft> = {
 
 export default meta;
 
-const IconGrid = styled.div`
+const Grid = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   padding: 16px;
 `;
-const IconItem = styled.div<{ direction?: 'row' | 'column' }>`
-  // width: 200px;
+const Item = styled.div`
+  ${({ theme }) => `
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    
+    border: 1px dashed ${theme.color.content.neutral.default.normal};
+  `}
+`;
+const VariantBox = styled.div`
   display: flex;
-  flex-direction: ${({ direction }) => direction ?? 'column'};
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  position: relative;
+  justify-content: center;
+  gap: 16px;
+`;
+const VariantItem = styled.div`
+  text-align: center;
 `;
 
 export const Variants = (props: MDSIconProps) => {
@@ -59,6 +73,16 @@ export const Variants = (props: MDSIconProps) => {
       <MDSIcon.CommentAdd {...props} variant="left" />
       <MDSIcon.CommentAdd {...props} variant="right" />
       <MDSIcon.Home {...props} />
+    </>
+  );
+};
+
+export const Animation = (props: MDSIconProps) => {
+  return (
+    <>
+      <MDSIcon.IndicatorCircle {...props} />
+      <MDSIcon.IndicatorCircle {...props} strokeWidth={5} />
+      <MDSIcon.IndicatorCircle {...props} strokeWidth={7} />
     </>
   );
 };
@@ -97,7 +121,6 @@ const IconVariant = {
   Label: VariantSet['OutlineFill'],
   More: VariantSet['Orientation'],
   NotificationsOff: VariantSet['OutlineFill'],
-  NotificationsOn: VariantSet['OutlineFill'],
   Settings: VariantSet['OutlineFill'],
   AccountProfile: VariantSet['OutlineFill'],
   StoreMarket: VariantSet['OutlineFill'],
@@ -130,33 +153,33 @@ const IconVariant = {
 
 export const Showcase = (props: MDSIconProps) => {
   return (
-    <IconGrid>
+    <Grid>
       {Object.entries(MDSIcon).map(([key, _Icon]) => {
         const Icon = _Icon as (props: MDSIconProps) => EmotionJSX.Element;
-        const variantList = Object.hasOwn(IconVariant, key) ? IconVariant[key as keyof typeof IconVariant] : [''];
+        const variantList = key in IconVariant ? IconVariant[key as keyof typeof IconVariant] : [''];
         return (
-          <IconItem key={key}>
+          <Item key={key}>
             <MDSTypography>{key}</MDSTypography>
-            <IconItem direction="row">
+            <VariantBox>
               {variantList.map((v) =>
                 v === '' ? (
-                  <IconItem key={v}>
+                  <VariantItem key={v}>
                     {/* @ts-ignore */}
                     <Icon {...props} />
                     <MDSTypography variant="T12">{v}</MDSTypography>
-                  </IconItem>
+                  </VariantItem>
                 ) : (
-                  <IconItem key={v}>
+                  <VariantItem key={v}>
                     {/* @ts-ignore */}
                     <Icon {...props} variant={v} />
                     <MDSTypography variant="T12">{v}</MDSTypography>
-                  </IconItem>
+                  </VariantItem>
                 )
               )}
-            </IconItem>
-          </IconItem>
+            </VariantBox>
+          </Item>
         );
       })}
-    </IconGrid>
+    </Grid>
   );
 };

@@ -7,7 +7,7 @@ type VariantSet = {
   BorderFill: 'border' | 'fill';
   Orientation: 'vertical' | 'horizontal';
 };
-type IconVariant = {
+export type IconVariant = {
   // arrows
   ArrowLeft: VariantSet['Default'];
   ArrowRight: VariantSet['Default'];

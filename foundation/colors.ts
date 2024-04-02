@@ -345,7 +345,7 @@ export const COLOR_TOKENS = {
       selected: {
         default: {
           normal: RAW_COLORS.blue50, // surface/primary/default 와 동일
-          hover: RAW_COLORS.bluegray200, // surface/primary/defaultHover 와 동일
+          hover: RAW_COLORS.blue200, // surface/primary/defaultHover 와 동일
         },
       },
     },

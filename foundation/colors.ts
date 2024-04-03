@@ -345,7 +345,7 @@ export const COLOR_TOKENS = {
       selected: {
         default: {
           normal: RAW_COLORS.blue50, // surface/primary/default 와 동일
-          hover: RAW_COLORS.bluegray200, // surface/primary/defaultHover 와 동일
+          hover: RAW_COLORS.blue200, // surface/primary/defaultHover 와 동일
         },
       },
     },
@@ -537,6 +537,48 @@ export const COLOR_TOKENS = {
       default: {
         normal: RAW_COLORS.blue700, // border/primary/default 와 동일
         hover: RAW_COLORS.blue800, // border/primary/defaultHover 와 동일
+      },
+    },
+  },
+  comp: {
+    divider: {
+      color: {
+        default: RAW_COLORS.bluegray150,
+        weak: RAW_COLORS.bluegray100,
+        strong: RAW_COLORS.bluegray200,
+        circle: RAW_COLORS.bluegray400,
+      },
+    },
+    input: {
+      color: {
+        bg: {
+          normal: RAW_COLORS.white,
+          disabled: RAW_COLORS.bluegray100,
+        },
+        border: {
+          normal: RAW_COLORS.bluegray200,
+          active: RAW_COLORS.blue700,
+          error: RAW_COLORS.red600,
+          hover: RAW_COLORS.bluegray300,
+          disabled: RAW_COLORS.bluegray200,
+        },
+      },
+    },
+    table: {
+      color: {
+        bg: {
+          default: {
+            normal: RAW_COLORS.white,
+            hover: RAW_COLORS.bluegray50,
+          },
+          viewing: {
+            normal: RAW_COLORS.blue50,
+          },
+        },
+        border: {
+          header: RAW_COLORS.bluegray200,
+          body: RAW_COLORS.bluegray100,
+        },
       },
     },
   },

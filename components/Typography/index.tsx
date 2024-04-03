@@ -25,6 +25,7 @@ const TypographyStyles = styled.span<Features>`
       ${lineClampStyles};
       ${wordBreakStyles};
       ${whiteSpaceStyles};
+      line-height: 1.5;
     `;
   }}
 `;

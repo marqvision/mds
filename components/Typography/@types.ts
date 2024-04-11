@@ -1,8 +1,8 @@
-import { ElementType, HTMLAttributes } from 'react';
+import { ElementType } from 'react';
 import { Path } from '../../@system/types';
 import type { MDSTheme } from '../../foundation';
 
-export type Features = {
+export type Features<T extends ElementType = 'span'> = {
   /**
    * 타이포그래피의 종류.
    * 기본값은 T16입니다.
@@ -28,7 +28,7 @@ export type Features = {
    * 타이포그래피의 태그. 기본값은 variant에 따라 자동으로 결정됩니다.
    * T24, T20: h1, h2 / T18, T16, T14, T13, T12: p
    */
-  as?: ElementType;
+  as?: T;
 
   /**
    * 타이포그래피의 work-break 속성.
@@ -46,4 +46,4 @@ export type Features = {
   whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap';
 };
 
-export type MDSTypographyProps = Features & HTMLAttributes<HTMLSpanElement>;
+export type MDSTypographyProps<T extends ElementType = 'span'> = Features<T> & React.ComponentPropsWithoutRef<T>;

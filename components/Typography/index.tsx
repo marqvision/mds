@@ -1,3 +1,4 @@
+import { ElementType } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system/resolvers';
 import {
@@ -25,11 +26,12 @@ const TypographyStyles = styled.span<Features>`
       ${lineClampStyles};
       ${wordBreakStyles};
       ${whiteSpaceStyles};
+      line-height: 1.5;
     `;
   }}
 `;
 
-export const MDSTypography = ({
+export const MDSTypography = <T extends ElementType = 'span'>({
   variant = 'T16',
   weight = 'regular',
   color = 'color/content/neutral/default/normal',
@@ -37,7 +39,7 @@ export const MDSTypography = ({
   as,
   wordBreak,
   ...props
-}: MDSTypographyProps) => {
+}: MDSTypographyProps<T>) => {
   const tagName = resolveTagName(variant, as);
   return (
     <TypographyStyles

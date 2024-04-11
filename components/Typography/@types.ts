@@ -46,4 +46,4 @@ export type Features<T extends ElementType = 'span'> = {
   whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap';
 };
 
-export type MDSTypographyProps<T extends ElementType> = Features<T> & React.ComponentPropsWithoutRef<T>;
+export type MDSTypographyProps<T extends ElementType = 'span'> = Features<T> & React.ComponentPropsWithoutRef<T>;

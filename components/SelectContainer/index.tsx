@@ -7,12 +7,13 @@ import {
   MDSSelectContainerItemProps,
   SelectContainerItemFeatures,
   UnwrapArray,
+  StyledWrapperProps,
 } from './@types';
 import { getCorrectContainerStyle } from './@utils';
 
-const SelectContainerStyles = styled.div`
+const SelectContainerStyles = styled.div<StyledWrapperProps>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ orientation }) => orientation ? `row` : 'column'};
   gap: 8px;
 `;
 
@@ -70,7 +71,11 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
   }}
 `;
 
-const Wrapper = <T extends string | string[] | number | number[]>({ value, children }: MDSSelectContainerProps<T>) => {
+const Wrapper = <T extends string | string[] | number | number[]>({
+  value,
+  children,
+  orientation = 'horizontal',
+}: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
     children,
     (child: ReactElement<MDSSelectContainerItemProps<UnwrapArray<T>> & HTMLAttributes<HTMLDivElement>>) => {
@@ -85,7 +90,7 @@ const Wrapper = <T extends string | string[] | number | number[]>({ value, child
     }
   );
 
-  return <SelectContainerStyles>{modifiedChildrenWithProps}</SelectContainerStyles>;
+  return <SelectContainerStyles orientation={orientation}>{modifiedChildrenWithProps}</SelectContainerStyles>;
 };
 
 const Item = <T extends string | number>({
@@ -107,7 +112,7 @@ const Item = <T extends string | number>({
     >
       {isSelected && (
         <CheckedIconWrapperStyles className="checked-icon-wrapper">
-          <MDSIcon.Check variant='fill' size={16} />
+          <MDSIcon.Check variant="fill" size={16} />
         </CheckedIconWrapperStyles>
       )}
       {main?.icon && <MainIconWrapperStyles>{main.icon}</MainIconWrapperStyles>}

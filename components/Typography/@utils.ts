@@ -1,6 +1,10 @@
+import { ElementType } from 'react';
 import { Features, MDSTypographyProps } from './@types';
 
-export const resolveTagName = (variant: Features['variant'], as: MDSTypographyProps['as']) => {
+export const resolveTagName = <T extends ElementType>(
+  variant: Features['variant'],
+  as: MDSTypographyProps<T>['as']
+) => {
   if (as) return as;
   switch (variant) {
     case 'T24':

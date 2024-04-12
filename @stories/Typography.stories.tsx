@@ -92,6 +92,27 @@ export const WorkBreak: Story = {
   },
 };
 
+export const CustomizeTagName: Story = {
+  render: () => {
+    return (
+      <div>
+        <MDSTypography>
+          `variant` prop에 따라 태그가 자동으로 결정됩니다. T12 ~ T18까지는 p 요소로 렌더링됩니다.
+        </MDSTypography>
+        <MDSTypography variant="T20">`variant` prop이 T20 이면 h2 요소로 렌더링됩니다.</MDSTypography>
+        <MDSTypography variant="T24">`variant` prop이 T24 이면 h1 요소로 렌더링됩니다.</MDSTypography>
+        <MDSTypography>
+          `variant` prop이 T16이어도 `as` prop에 `div`를 할당하면 `div` 요소로 렌더링됩니다.
+        </MDSTypography>
+        <MDSTypography as="a" href="https://marqvision.com">
+          `as` prop에 a 태그를 넣으면 a 요소로 렌더링되며 a 요소의 모든 속성, 예를 들어 `href` 속성을 사용할 수
+          있습니다. 이 요소를 클릭하면 marqvision.com으로 이동합니다.
+        </MDSTypography>
+      </div>
+    );
+  },
+};
+
 export const Showcase: Story = {
   parameters: {
     layout: 'centered',

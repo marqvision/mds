@@ -21,7 +21,7 @@ type ItemFeatures<T> = {
   };
   value: T;
   onClick: (value: T) => void;
-  content: ReactNode;
+  content?: ReactNode;
   disabled?: boolean;
   isSelected?: boolean;
 };

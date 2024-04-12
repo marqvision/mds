@@ -9,7 +9,7 @@ import {
 } from './@utils';
 import { Features, MDSTypographyProps } from './@types';
 
-const TypographyStyles = styled.span<Features>`
+const TypographyStyles = styled.span<Features<any>>`
   ${({ variant, weight, color, lineClamp, wordBreak, whiteSpace }) => {
     const fontSize = resolveFontSize(variant);
     const fontWeightStyles = resolveFontWeightStyles(weight);

@@ -7,6 +7,11 @@ import { MDSTheme } from '../../foundation';
 type ContainerFeatures<T> = {
   value: T;
   children: ReactElement | ReactElement[];
+  orientation?: 'horizontal' | 'vertical';
+};
+
+export type StyledWrapperProps = {
+  orientation: 'horizontal' | 'vertical';
 };
 
 type ItemFeatures<T> = {
@@ -21,7 +26,7 @@ type ItemFeatures<T> = {
   };
   value: T;
   onClick: (value: T) => void;
-  content: ReactNode;
+  content?: ReactNode;
   disabled?: boolean;
   isSelected?: boolean;
 };

@@ -13,7 +13,7 @@ import { getCorrectContainerStyle } from './@utils';
 
 const SelectContainerStyles = styled.div<StyledWrapperProps>`
   display: flex;
-  flex-direction: ${({ orientation }) => orientation ? `row` : 'column'};
+  flex-direction: ${({ orientation }) => (orientation === 'horizontal' ? 'row' : 'column')};
   gap: 8px;
 `;
 

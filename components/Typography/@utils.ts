@@ -45,7 +45,6 @@ export const resolveLineClamp = (lineClamp: Features['lineClamp']) => {
     return `
       overflow: hidden;
       display: -webkit-box;
-      white-space: pre-wrap;
       overflow-wrap: anywhere;
       text-overflow: ellipsis;
       -webkit-box-orient: vertical;

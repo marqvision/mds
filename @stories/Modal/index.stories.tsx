@@ -1,15 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useArgs } from '@storybook/preview-api';
-import { MDSIcon, MDSModal, MDSTypography } from '../components';
+import { MDSIcon, MDSModal, MDSTypography } from '../../components';
+import { Doc } from './Doc';
 
 const meta: Meta<typeof MDSModal.Wrapper> = {
   title: '2. Components/Modal',
-};
-export default meta;
-
-export const Preview: StoryObj<typeof MDSModal.Wrapper> = {
+  tags: ['autodocs'],
   parameters: {
-    controls: { expanded: true },
+    docs: {
+      page: Doc,
+      layout: 'centered',
+    },
   },
   argTypes: {
     isOpen: {
@@ -19,6 +20,13 @@ export const Preview: StoryObj<typeof MDSModal.Wrapper> = {
   },
   args: {
     isOpen: true,
+  },
+};
+export default meta;
+
+export const Preview: StoryObj<typeof MDSModal.Wrapper> = {
+  parameters: {
+    controls: { expanded: true },
   },
   render: function Render() {
     const [{ isOpen }, setArgs] = useArgs();
@@ -94,9 +102,6 @@ export const ModalWrapper: StoryObj<typeof MDSModal.Wrapper> = {
 
 export const ModalHeader: StoryObj<typeof MDSModal.Header> = {
   parameters: {
-    backgrounds: {
-      default: 'dark',
-    },
     controls: { expanded: true },
   },
   argTypes: {
@@ -126,7 +131,7 @@ export const ModalHeader: StoryObj<typeof MDSModal.Header> = {
     isBorderBottom: true,
   },
   render: ({ icon, rightSideElement, ...restProps }) => (
-    <div style={{ backgroundColor: 'white', height: '400px', borderRadius: '8px' }}>
+    <MDSModal.Wrapper isOpen={true} height="200px">
       <MDSModal.Header
         {...restProps}
         rightSideElement={
@@ -140,7 +145,7 @@ export const ModalHeader: StoryObj<typeof MDSModal.Header> = {
       >
         header
       </MDSModal.Header>
-    </div>
+    </MDSModal.Wrapper>
   ),
 };
 
@@ -171,9 +176,6 @@ export const ModalContent: StoryObj<typeof MDSModal.Content> = {
 
 export const ModalAction: StoryObj<typeof MDSModal.Action> = {
   parameters: {
-    backgrounds: {
-      default: 'dark',
-    },
     controls: { expanded: true },
   },
   argTypes: {
@@ -198,17 +200,10 @@ export const ModalAction: StoryObj<typeof MDSModal.Action> = {
     ),
   },
   render: ({ children, ...restProps }) => (
-    <div
-      style={{
-        backgroundColor: 'white',
-        height: '400px',
-        borderRadius: '8px',
-        display: 'grid',
-        alignItems: 'flex-end',
-      }}
-    >
+    <MDSModal.Wrapper isOpen={true} height="200px">
+      <MDSModal.Content></MDSModal.Content>
       <MDSModal.Action {...restProps}>{children}</MDSModal.Action>
-    </div>
+    </MDSModal.Wrapper>
   ),
 };
 

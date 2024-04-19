@@ -11,14 +11,17 @@ export type ModalContext = {
 
 // Modal Wrapper
 type ModalCommonProps = {
-  // 기본값: 420px
+  // 기본값: 420px, modal 의 가로 크기를 지정합니다.
   width?: string;
+  // modal 의 최소 가로 크기를 지정합니다.
   minWidth?: string;
-  // 기본값: 100%
+  // 기본값: 100%, modal 의 최대 가로 크기를 지정합니다.
   maxWidth?: string;
+  // modal 의 세로 크기를 지정합니다.
   height?: string;
+  // modal 의 최소 세로 크기를 지정합니다.
   minHeight?: string;
-  // 기본값: 100%
+  // 기본값: 100%, modal 의 최대 세로 크기를 지정합니다.
   maxHeight?: string;
 };
 
@@ -54,6 +57,7 @@ export type ModalContentProps = React.PropsWithChildren<React.HTMLAttributes<HTM
 // Modal Action
 export type ModalActionProps = React.PropsWithChildren<
   React.HTMLAttributes<HTMLDivElement> & {
+    // 기본값: flex-end
     justifyContent?: CSS.Properties['justifyContent'];
   }
 >;

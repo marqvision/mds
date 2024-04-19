@@ -1,7 +1,5 @@
 import { ThemeProvider } from '@emotion/react';
-import { MDSThemeValue } from '../foundation';
-import { MDSResetCSS } from '../foundation/resetCSS';
-import React from 'react';
+import { MDSResetCSS, MDSThemeValue } from '../foundation';
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -15,7 +13,7 @@ const preview = {
     },
     docs: {
       autodocs: 'tag',
-      toc: true
+      toc: true,
     },
 
     options: {

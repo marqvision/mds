@@ -8,6 +8,7 @@ type ContainerFeatures<T> = {
   value: T;
   children: ReactElement | ReactElement[];
   orientation?: 'horizontal' | 'vertical';
+  variant?: 'left' | 'center';
 };
 
 export type StyledWrapperProps = {
@@ -23,17 +24,20 @@ type ItemFeatures<T> = {
     label: string;
     icon?: ReactNode;
     color?: Path<Pick<MDSTheme, 'color'>>;
+    tag?: ReactNode;
   };
   value: T;
   onClick: (value: T) => void;
   content?: ReactNode;
   disabled?: boolean;
   isSelected?: boolean;
+  isVariantCenter?: boolean;
 };
 
 export type SelectContainerItemFeatures = {
   disabled?: boolean;
   isSelected?: boolean;
+  isVariantCenter?: boolean;
 };
 
 export type UnwrapArray<T> = T extends (infer U)[] ? U : T;

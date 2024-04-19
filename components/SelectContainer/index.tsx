@@ -19,6 +19,8 @@ const SelectContainerStyles = styled.div<StyledWrapperProps>`
 
 const SelectContainerTitleStyles = styled.div`
   display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 const SelectContainerItemContentStyles = styled.div`
@@ -75,6 +77,7 @@ const Wrapper = <T extends string | string[] | number | number[]>({
   value,
   children,
   orientation = 'horizontal',
+  variant = 'left',
 }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
     children,
@@ -86,6 +89,7 @@ const Wrapper = <T extends string | string[] | number | number[]>({
 
       return cloneElement(child, {
         isSelected,
+        isVariantCenter: variant === 'center',
       });
     }
   );
@@ -101,6 +105,7 @@ const Item = <T extends string | number>({
   onClick,
   disabled,
   isSelected,
+  isVariantCenter,
   ...props
 }: MDSSelectContainerItemProps<T>) => {
   return (
@@ -115,13 +120,14 @@ const Item = <T extends string | number>({
           <MDSIcon.Check variant="fill" size={16} />
         </CheckedIconWrapperStyles>
       )}
-      {main?.icon && <MainIconWrapperStyles>{main.icon}</MainIconWrapperStyles>}
+      {!isVariantCenter && main?.icon && <MainIconWrapperStyles>{main.icon}</MainIconWrapperStyles>}
       <SelectContainerItemContentStyles>
         <SelectContainerTitleStyles>
           {title.icon}
           <MDSTypography variant="T14" weight="medium" color={title.color}>
             {title.label}
           </MDSTypography>
+          {title.tag}
         </SelectContainerTitleStyles>
         {content}
       </SelectContainerItemContentStyles>

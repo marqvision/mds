@@ -18,7 +18,7 @@ function createIcon<IC = ''>(Icon: (features: Features<IC>) => ReactNode) {
     };
 
     return (
-      <svg width={props.width} height={props.height} viewBox="0 0 24 24" color={props.color}>
+      <svg width={props.width} height={props.height} viewBox="0 0 24 24" color={props.color} {...rest}>
         {/* todo-@jamie: fix types */}
         {/* @ts-ignore */}
         <Icon variant={props.variant} />

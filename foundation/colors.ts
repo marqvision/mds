@@ -352,7 +352,9 @@ export const COLOR_TOKENS = {
   },
   content: {
     on_default_color: RAW_COLORS.white,
-    placeholder: RAW_COLORS.bluegray300,
+    placeholder: {
+      normal: RAW_COLORS.bluegray300,
+    },
     neutral: {
       default: {
         normal: RAW_COLORS.bluegray900,

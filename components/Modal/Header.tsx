@@ -38,11 +38,13 @@ export const Header = (props: ModalHeaderProps) => {
   const { icon, children, isBorderBottom = true, rightSideElement, onClose } = props;
   const { isScrollTop } = useContext(MDSModal.Context);
 
+  const titleTag = typeof children === 'string' ? undefined : 'div';
+
   return (
     <Wrapper isBorderBottom={isBorderBottom} isScrollTop={isScrollTop}>
       <Title>
         {icon}
-        <MDSTypography variant="T20" weight="bold">
+        <MDSTypography variant="T20" weight="bold" as={titleTag}>
           {children}
         </MDSTypography>
       </Title>

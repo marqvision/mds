@@ -1,14 +1,5 @@
 import { Canvas, Title } from '@storybook/blocks';
-import { Preview, WithoutAction, WithoutHeader } from './index.stories';
-
-const code = {
-  preview:
-    'const [isOpen, setIsOpen] = useState();\nconst handleClose = () => {\n  setIsOpen(false);\n};\n\nreturn (\n  <MDSModal.Wrapper onClose={handleClose} isOpen={isOpen}>\n    <MDSModal.Header onClose={handleClose}>\n      Title\n     </MDSModal.Header>\n    <MDSModal.Content>\n      Content\n     </MDSModal.Content>\n    <MDSModal.Action>\n      Action\n    </MDSModal.Action>\n  </MDSModal.Wrapper>\n);',
-  withoutHeader:
-    'const [isOpen, setIsOpen] = useState();\nconst handleClose = () => {\n  setIsOpen(false);\n};\n\nreturn (\n  <MDSModal.Wrapper onClose={handleClose} isOpen={isOpen}>\n    <MDSModal.Content>\n      Content\n     </MDSModal.Content>\n    <MDSModal.Action>\n      Action\n    </MDSModal.Action>\n  </MDSModal.Wrapper>\n);',
-  withoutAction:
-    'const [isOpen, setIsOpen] = useState();\nconst handleClose = () => {\n  setIsOpen(false);\n};\n\nreturn (\n  <MDSModal.Wrapper onClose={handleClose} isOpen={isOpen}>\n    <MDSModal.Header onClose={handleClose}>\n      Title\n     </MDSModal.Header>\n    <MDSModal.Content>\n      Content\n     </MDSModal.Content>\n  </MDSModal.Wrapper>\n);',
-};
+import { CustomTitle, JustifyContent, Preview, RightSideElement, WithoutAction, WithoutHeader } from './index.stories';
 
 export const Doc = () => {
   return (
@@ -22,36 +13,28 @@ export const Doc = () => {
       <hr />
       <h3 id="Preview">Preview</h3>
       <p>header, content, action 모두 함께 사용합니다</p>
-      <Canvas
-        of={Preview}
-        story={{ inline: false, height: '600px' }}
-        source={{
-          code: code.preview,
-        }}
-        sourceState="shown"
-      />
+      <Canvas of={Preview} story={{ inline: false, height: '400px' }} />
       <hr />
       <h3 id="WithoutHeader">WithoutHeader</h3>
       <p>header 없이 사용 할 수 있습니다</p>
-      <Canvas
-        of={WithoutHeader}
-        story={{ inline: false, height: '400px' }}
-        source={{
-          code: code.withoutHeader,
-        }}
-        sourceState="shown"
-      />
+      <Canvas of={WithoutHeader} story={{ inline: false, height: '400px' }} />
       <hr />
       <h3 id="WithoutAction">WithoutAction</h3>
       <p>action 없이 사용 할 수 있습니다</p>
-      <Canvas
-        of={WithoutAction}
-        story={{ inline: false, height: '400px' }}
-        source={{
-          code: code.withoutAction,
-        }}
-        sourceState="shown"
-      />
+      <Canvas of={WithoutAction} story={{ inline: false, height: '400px' }} />
+      <hr />
+      <h3 id="CustomTitle">Header - CustomTitle</h3>
+      <p>Header 의 Title 에는 text 외에 임의의 요소를 출력할 수 있습니다.</p>
+      <p>이 때 별도의 스타일을 지정하지 않는다면 Title 의 기본 스타일(T20, bold)을 상속받습니다.</p>
+      <Canvas of={CustomTitle} story={{ inline: false, height: '400px' }} />
+      <hr />
+      <h3 id="RightSideElement">Header - RightSideElement</h3>
+      <p>Header 의 오른쪽 공간에 임의의 요소를 추가할 수 있습니다</p>
+      <Canvas of={RightSideElement} story={{ inline: false, height: '400px' }} />
+      <hr />
+      <h3 id="ActionJustifyContent">Action - JustifyContent</h3>
+      <p>Action 에 justifyContent 를 직접 전달할 수 있습니다 (css - justify-content)</p>
+      <Canvas of={JustifyContent} story={{ inline: false, height: '400px' }} />
     </div>
   );
 };

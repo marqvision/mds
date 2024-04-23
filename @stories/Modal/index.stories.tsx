@@ -28,17 +28,17 @@ export const Preview: StoryObj<typeof MDSModal.Wrapper> = {
   parameters: {
     controls: { expanded: true },
   },
-  render: function Render() {
+  render: function Render(_) {
     const [{ isOpen }, setArgs] = useArgs();
     const handleClose = () => {
       setArgs({ isOpen: false });
     };
 
     return (
-      <MDSModal.Wrapper height="440px" onClose={handleClose} isOpen={isOpen}>
+      <MDSModal.Wrapper height="240px" onClose={handleClose} isOpen={isOpen}>
         <MDSModal.Header onClose={handleClose}>Title</MDSModal.Header>
         <MDSModal.Content>
-          {[...Array(50)].map((_, index) => (
+          {[...Array(10)].map((_, index) => (
             <MDSTypography key={index}>ReactElement {index}</MDSTypography>
           ))}
         </MDSModal.Content>
@@ -208,10 +208,10 @@ export const ModalAction: StoryObj<typeof MDSModal.Action> = {
 };
 
 export const WithoutHeader: StoryObj = {
-  render: () => (
+  render: (_) => (
     <MDSModal.Wrapper isOpen={true}>
       <MDSModal.Content>
-        {[...Array(50)].map((_, index) => (
+        {[...Array(20)].map((_, index) => (
           <MDSTypography key={index}>ReactElement {index}</MDSTypography>
         ))}
       </MDSModal.Content>
@@ -224,14 +224,110 @@ export const WithoutHeader: StoryObj = {
 };
 
 export const WithoutAction: StoryObj = {
-  render: () => (
+  render: (_) => (
     <MDSModal.Wrapper isOpen={true}>
       <MDSModal.Header onClose={() => {}}>header</MDSModal.Header>
       <MDSModal.Content>
-        {[...Array(50)].map((_, index) => (
+        {[...Array(20)].map((_, index) => (
           <MDSTypography key={index}>ReactElement {index}</MDSTypography>
         ))}
       </MDSModal.Content>
     </MDSModal.Wrapper>
   ),
+};
+
+export const RightSideElement: StoryObj<typeof MDSModal.Header> = {
+  parameters: {
+    controls: { expanded: true },
+  },
+  args: {
+    isBorderBottom: false,
+    rightSideElement: (
+      <MDSTypography weight="bold" color="color/content/critical/default/normal">
+        여기에 출력
+      </MDSTypography>
+    ),
+  },
+  render: (args) => {
+    return (
+      <MDSModal.Wrapper height="240px" isOpen={true}>
+        <MDSModal.Header {...args} onClose={() => {}}>
+          Title
+        </MDSModal.Header>
+        <MDSModal.Content>
+          {[...Array(10)].map((_, index) => (
+            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+          ))}
+        </MDSModal.Content>
+        <MDSModal.Action>
+          <MDSTypography onClick={() => {}} style={{ cursor: 'pointer' }}>
+            Close
+          </MDSTypography>
+          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+        </MDSModal.Action>
+      </MDSModal.Wrapper>
+    );
+  },
+};
+
+export const CustomTitle: StoryObj<typeof MDSModal.Header> = {
+  parameters: {
+    controls: { expanded: true },
+  },
+  render: (args) => {
+    return (
+      <MDSModal.Wrapper height="240px" isOpen={true}>
+        <MDSModal.Header {...args} onClose={() => {}}>
+          <p>Title</p>
+          <MDSTypography>Sub title</MDSTypography>
+        </MDSModal.Header>
+        <MDSModal.Content>
+          {[...Array(10)].map((_, index) => (
+            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+          ))}
+        </MDSModal.Content>
+        <MDSModal.Action>
+          <MDSTypography onClick={() => {}} style={{ cursor: 'pointer' }}>
+            Close
+          </MDSTypography>
+          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+        </MDSModal.Action>
+      </MDSModal.Wrapper>
+    );
+  },
+};
+
+export const JustifyContent: StoryObj<typeof MDSModal.Action> = {
+  parameters: {
+    controls: { expanded: true },
+  },
+  argTypes: {
+    justifyContent: {
+      options: ['flex-start', 'flex-end', 'space-between', 'space-around'],
+      control: {
+        type: 'radio',
+      },
+    },
+  },
+  args: {
+    justifyContent: 'space-between',
+  },
+  render: (args) => {
+    return (
+      <MDSModal.Wrapper height="240px" isOpen={true}>
+        <MDSModal.Header onClose={() => {}}>Title</MDSModal.Header>
+        <MDSModal.Content>
+          {[...Array(10)].map((_, index) => (
+            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+          ))}
+        </MDSModal.Content>
+        <MDSModal.Action {...args}>
+          <MDSTypography onClick={() => {}} style={{ cursor: 'pointer' }}>
+            Close
+          </MDSTypography>
+          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+        </MDSModal.Action>
+      </MDSModal.Wrapper>
+    );
+  },
 };

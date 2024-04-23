@@ -42,7 +42,7 @@ const Modal = styled.div<StyledModalWrapperProps>`
   ${({ maxHeight = '100%' }) => maxHeight && `max-height: ${maxHeight}`};
 `;
 
-const Context = createContext<ModalContext>({ isScrollTop: true, onScrollContent: () => null });
+export const Context = createContext<ModalContext>({ isScrollTop: true, onScrollContent: () => null });
 
 const Wrapper = (props: ModalWrapperProps) => {
   const { isOpen, onClose, children, ...restProps } = props;

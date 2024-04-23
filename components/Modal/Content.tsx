@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import styled from '@emotion/styled';
-import { MDSModal } from './index';
+import { Context } from './index';
 import { ModalContentProps } from './@types';
 
 const Wrapper = styled.div`
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 
 export const Content = (props: ModalContentProps) => {
   const { children, ...restProps } = props;
-  const { onScrollContent } = useContext(MDSModal.Context);
+  const { onScrollContent } = useContext(Context);
 
   return (
     <Wrapper onScroll={onScrollContent} {...restProps}>

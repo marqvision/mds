@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../Icon';
 import { MDSTypography } from '../Typography';
-import { MDSModal } from './index';
+import { Context } from './index';
 import { ModalHeaderProps, StyledModalHeaderProps } from './@types';
 
 const Wrapper = styled.div<StyledModalHeaderProps>`
@@ -36,7 +36,7 @@ const Close = styled(MDSIcon.CloseDelete)`
 
 export const Header = (props: ModalHeaderProps) => {
   const { icon, children, isBorderBottom = true, rightSideElement, onClose } = props;
-  const { isScrollTop } = useContext(MDSModal.Context);
+  const { isScrollTop } = useContext(Context);
 
   const titleTag = typeof children === 'string' ? undefined : 'div';
 

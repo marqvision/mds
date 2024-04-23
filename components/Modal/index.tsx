@@ -73,7 +73,6 @@ const Wrapper = (props: ModalWrapperProps) => {
 };
 
 export const MDSModal = {
-  Context,
   Wrapper,
   Header,
   Content,

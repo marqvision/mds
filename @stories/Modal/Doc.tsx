@@ -1,5 +1,13 @@
 import { Canvas, Title } from '@storybook/blocks';
-import { CustomTitle, JustifyContent, Preview, RightSideElement, WithoutAction, WithoutHeader } from './index.stories';
+import {
+  CustomTitle,
+  JustifyContent,
+  Preview,
+  RightSideElement,
+  TitleIcon,
+  WithoutAction,
+  WithoutHeader,
+} from './index.stories';
 
 export const Doc = () => {
   return (
@@ -22,6 +30,10 @@ export const Doc = () => {
       <h3 id="WithoutAction">WithoutAction</h3>
       <p>action 없이 사용 할 수 있습니다</p>
       <Canvas of={WithoutAction} story={{ inline: false, height: '400px' }} />
+      <hr />
+      <h3 id="TitleIcon">Header - Icon</h3>
+      <p>Header 에 아이콘을 추가할 수 있습니다.</p>
+      <Canvas of={TitleIcon} story={{ inline: false, height: '400px' }} />
       <hr />
       <h3 id="CustomTitle">Header - CustomTitle</h3>
       <p>Header 의 Title 에는 text 외에 임의의 요소를 출력할 수 있습니다.</p>

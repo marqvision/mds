@@ -270,6 +270,32 @@ export const RightSideElement: StoryObj<typeof MDSModal.Header> = {
   },
 };
 
+export const TitleIcon: StoryObj<typeof MDSModal.Header> = {
+  parameters: {
+    controls: { expanded: true },
+  },
+  render: (args) => {
+    return (
+      <MDSModal.Wrapper height="240px" isOpen={true}>
+        <MDSModal.Header {...args} icon={<MDSIcon.ErrorWarning variant="fill" />} onClose={() => {}}>
+          Title
+        </MDSModal.Header>
+        <MDSModal.Content>
+          {[...Array(10)].map((_, index) => (
+            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+          ))}
+        </MDSModal.Content>
+        <MDSModal.Action>
+          <MDSTypography onClick={() => {}} style={{ cursor: 'pointer' }}>
+            Close
+          </MDSTypography>
+          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+        </MDSModal.Action>
+      </MDSModal.Wrapper>
+    );
+  },
+};
+
 export const CustomTitle: StoryObj<typeof MDSModal.Header> = {
   parameters: {
     controls: { expanded: true },

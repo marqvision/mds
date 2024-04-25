@@ -13,7 +13,7 @@ const Overlay = styled.div<StyledModalOverlayProps>`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 1300; //Mui Popper 의 z-index 1300 으로 맞춤 (MuiPopper > Modal > MuiPopper 사용 가능)
   align-items: center;
   justify-content: center;
   width: 100vw;

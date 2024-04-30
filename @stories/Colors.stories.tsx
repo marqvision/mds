@@ -220,7 +220,7 @@ export const SystemColorTokens = () => {
             <div style={{ height: 29 }} />
             <ColorPalette>
               <Palette title="on_default_color" colors={{ on_default_color: color.content.on_default_color }} />
-              <Palette title="placeholder" colors={{ placeholder: color.content.placeholder }} />
+              <Palette title="placeholder" colors={{ placeholder: color.content.placeholder.normal }} />
             </ColorPalette>
           </div>
           <div>
@@ -372,6 +372,12 @@ export const ComponentColorTokens = () => {
             <Palette title="bg.default" colors={color.comp.table.color.bg.default} />
             <Palette title="bg.viewing" colors={color.comp.table.color.bg.viewing} />
             <Palette title="border" colors={color.comp.table.color.border} />
+          </ColorPalette>
+        </div>
+        <div>
+          <MDSTypography variant="T20">dimmed</MDSTypography>
+          <ColorPalette>
+            <Palette title="_" colors={color.comp.dimmed.color} />
           </ColorPalette>
         </div>
       </div>

@@ -1,30 +1,11 @@
 import React, { createContext, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
+import { MDSDimmed } from '../Dimmed';
 import { Header } from './Header';
 import { Content } from './Content';
 import { Action } from './Action';
-import { ModalContext, ModalWrapperProps, StyledModalOverlayProps, StyledModalWrapperProps } from './@types';
-
-const transition = '0.3s'; //TODO-@morgan: 디자인 팀 확인 필요
-
-const Overlay = styled.div<StyledModalOverlayProps>`
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1300; //Mui Popper 의 z-index 1300 으로 맞춤 (MuiPopper > Modal > MuiPopper 사용 가능)
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  padding: 20px;
-  background-color: ${({ theme }) => theme._raw_color.blackAlpha50};
-  overflow: hidden;
-  transition: opacity ${transition}, visibility ${transition};
-  opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
-`;
+import { ModalContext, ModalWrapperProps, StyledModalWrapperProps } from './@types';
 
 const Modal = styled.div<StyledModalWrapperProps>`
   display: flex;
@@ -53,21 +34,16 @@ const Wrapper = (props: ModalWrapperProps) => {
     setIsScrollTop(!event.currentTarget.scrollTop);
   };
 
-  const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget) return;
-    onClose?.();
-  };
-
   useLayoutEffect(() => {
     document.body.style.overflowY = isOpen ? 'hidden' : '';
   }, [isOpen]);
 
   return createPortal(
-    <Context.Provider value={{ isScrollTop, onScrollContent: handleScrollContent }}>
-      <Overlay isOpen={isOpen} onClick={handleClose}>
+    <MDSDimmed isOpen={isOpen} onClose={onClose}>
+      <Context.Provider value={{ isScrollTop, onScrollContent: handleScrollContent }}>
         <Modal {...restProps}>{isOpen && children}</Modal>
-      </Overlay>
-    </Context.Provider>,
+      </Context.Provider>
+    </MDSDimmed>,
     document.body
   );
 };

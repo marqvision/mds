@@ -33,7 +33,6 @@ export type ModalWrapperProps = React.PropsWithChildren<
     onClose?: () => void;
   }
 >;
-export type StyledModalOverlayProps = { isOpen: boolean };
 export type StyledModalWrapperProps = ModalCommonProps;
 
 // Modal Header

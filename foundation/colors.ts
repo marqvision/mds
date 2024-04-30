@@ -583,5 +583,10 @@ export const COLOR_TOKENS = {
         },
       },
     },
+    dimmed: {
+      color: {
+        default: RAW_COLORS.blackAlpha50,
+      },
+    },
   },
 };

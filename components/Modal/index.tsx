@@ -21,7 +21,7 @@ const Overlay = styled.div<StyledModalOverlayProps>`
   padding: 20px;
   background-color: ${({ theme }) => theme._raw_color.blackAlpha50};
   overflow: hidden;
-  transition: ${transition};
+  transition: opacity ${transition}, visibility ${transition};
   opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 `;

@@ -17,7 +17,7 @@ const Wrapper = styled.div<Props>`
   padding: 20px;
   background-color: ${({ theme }) => theme.color.comp.dimmed.color.default};
   overflow: hidden;
-  transition: ${transition};
+  transition: opacity ${transition}, visibility ${transition};
   opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 `;

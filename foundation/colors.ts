@@ -575,6 +575,7 @@ export const COLOR_TOKENS = {
           },
           viewing: {
             normal: RAW_COLORS.blue50,
+            hover: RAW_COLORS.blue100,
           },
         },
         border: {

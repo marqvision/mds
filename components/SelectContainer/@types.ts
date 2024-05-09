@@ -1,6 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
-import { Path } from '../../@system/types';
-import { MDSTheme } from '../../foundation';
+import { MDSThemeColorPath } from '../../foundation';
 
 // Figma https://www.figma.com/file/3UJ0kZhf62nuG9erDNzLc6/MDS?type=design&node-id=8140-3261&mode=design&t=WFZGdzrmqN5f7Llc-0
 
@@ -18,12 +17,12 @@ export type StyledWrapperProps = {
 type ItemFeatures<T> = {
   main?: {
     icon: ReactNode;
-    color: Path<Pick<MDSTheme, 'color'>>;
+    color: MDSThemeColorPath;
   };
   title: {
     label: string;
     icon?: ReactNode;
-    color?: Path<Pick<MDSTheme, 'color'>>;
+    color?: MDSThemeColorPath;
     tag?: ReactNode;
   };
   value: T;

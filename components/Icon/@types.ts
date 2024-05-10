@@ -1,5 +1,4 @@
-import { Path } from '../../@system/types';
-import type { MDSTheme } from '../../foundation';
+import type { MDSThemeColorPath } from '../../foundation';
 
 type VariantSet = {
   Default: 'outline' | 'border' | 'fill';
@@ -76,7 +75,7 @@ type BaseFeatures = {
   /**
    * 아이콘의 색상.
    */
-  color?: Path<Pick<MDSTheme, 'color'>>;
+  color?: MDSThemeColorPath;
 };
 type ConditionalVariant<IconName> = IconName extends keyof IconVariant
   ? {

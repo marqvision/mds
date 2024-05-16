@@ -30,15 +30,13 @@ function createIcon<IC = ''>(Icon: (features: Features<IC>) => ReactNode) {
   return IconComponent;
 }
 
-function createAnimationIcon (Icon: (props: Record<string, unknown>) => ReactNode) {
+function createAnimationIcon(Icon: (props: Record<string, unknown>) => ReactNode) {
   const IconComponent = ({ color = 'color/content/neutral/default/normal', ...rest }: MDSIconProps) => {
     const props = {
       color: resolveColor(color),
     };
 
-    return (
-      <Icon {...props} {...rest} />
-    );
+    return <Icon {...props} {...rest} />;
   };
   IconComponent.displayName = `MDSIcon.${Icon.name}`;
 
@@ -145,6 +143,7 @@ export const MDSIcon = {
   ChartNumber: createIcon(Symbols.ChartNumber),
   AutoMagic: createIcon(Symbols.AutoMagic),
   ChartLeaderBoard: createIcon(Symbols.ChartLeaderBoard),
+  ChartMonitoring: createIcon(Symbols.ChartMonitoring),
   CompareImage: createIcon(Symbols.CompareImage),
   ProtectionWarning: createIcon(Symbols.ProtectionWarning),
   Image: createIcon(Symbols.Image),

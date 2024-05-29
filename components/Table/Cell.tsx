@@ -18,14 +18,16 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }}
   ${({ onClick }) => onClick && 'cursor: pointer;'}
   
-  ${({ as, theme }) =>
-    as === 'th' &&
-    `
-    border-bottom: 1px solid ${theme.color.comp.table.color.border.header};
-    color: ${theme.color.content.neutral.secondary.normal};
+  th& {
+    ${({ theme }) => `
+      border-bottom: 1px solid ${theme.color.comp.table.color.border.header};
+      color: ${theme.color.content.neutral.secondary.normal};
     `}
+  }
 
-  &:first-child {
+  th&:first-child,
+  tbody:not(:has(td[rowspan])) &:first-child,
+  tbody:has(td[rowspan]) &[rowspan] {
     padding-left: 4px;
   }
 

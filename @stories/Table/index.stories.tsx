@@ -374,7 +374,7 @@ export const CellRowSpan: StoryObj<typeof MDSTable> = {
       </MDSTable.Head>
       <MDSTable.Body>
         <MDSTable.Row>
-          <MDSTable.Cell rowSpan={2}>rowspan 2</MDSTable.Cell>
+          <MDSTable.Cell rowSpan={5}>rowspan 5</MDSTable.Cell>
           <MDSTable.Cell>1-2</MDSTable.Cell>
           <MDSTable.Cell>1-3</MDSTable.Cell>
         </MDSTable.Row>
@@ -382,16 +382,28 @@ export const CellRowSpan: StoryObj<typeof MDSTable> = {
           <MDSTable.Cell>2-2</MDSTable.Cell>
           <MDSTable.Cell>2-3</MDSTable.Cell>
         </MDSTable.Row>
-      </MDSTable.Body>
-      <MDSTable.Body>
         <MDSTable.Row>
-          <MDSTable.Cell rowSpan={2}>rowspan 2</MDSTable.Cell>
           <MDSTable.Cell>3-2</MDSTable.Cell>
           <MDSTable.Cell>3-3</MDSTable.Cell>
         </MDSTable.Row>
         <MDSTable.Row>
           <MDSTable.Cell>4-2</MDSTable.Cell>
           <MDSTable.Cell>4-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>5-2</MDSTable.Cell>
+          <MDSTable.Cell>5-3</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Body>
+      <MDSTable.Body>
+        <MDSTable.Row>
+          <MDSTable.Cell rowSpan={2}>rowspan 2</MDSTable.Cell>
+          <MDSTable.Cell>6-2</MDSTable.Cell>
+          <MDSTable.Cell>6-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>7-2</MDSTable.Cell>
+          <MDSTable.Cell>7-3</MDSTable.Cell>
         </MDSTable.Row>
       </MDSTable.Body>
     </MDSTable>

@@ -9,8 +9,9 @@ const Wrapper = styled.tr<StyledTableRowProps>`
       theme.color.comp.table.color.bg[isViewingDetails ? 'viewing' : 'default'].normal};
   }
 
-  tbody:hover & td[rowspan],
-  &:hover td {
+  tbody:has(td[rowspan]:hover) & td,
+  tbody:has(td:not([rowspan]):hover) &:hover td,
+  tbody:has(td:not([rowspan]):hover) & td[rowspan] {
     background-color: ${({ isViewingDetails, theme }) =>
       theme.color.comp.table.color.bg[isViewingDetails ? 'viewing' : 'default'].hover};
   }

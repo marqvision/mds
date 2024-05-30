@@ -49,8 +49,8 @@ export type StyledTableCellProps = {
 };
 
 export type TableCellInnerProps = {
-  // cell 내용의 가로 정렬 위치를 지정합니다.
-  align?: 'center' | 'left' | 'right' | 'justify' | 'char';
+  // cell 에 text-align 스타일을 부여합니다.
+  align?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent' | 'justify-all';
 };
 
 export type TableCellProps = React.PropsWithChildren<StyledTableCellProps> & TdHTMLAttributes<HTMLTableCellElement>;

@@ -30,7 +30,7 @@ const parseTdToTH = (children: React.ReactElement | React.ReactElement[]) =>
       return cloneElement(child, { ...child.props, as: 'th' });
     }
     if (child.props.children.length) {
-      return parseTdToTH(child.props.children);
+      return cloneElement(child, { ...child.props, children: parseTdToTH(child.props.children) });
     }
     return child;
   });

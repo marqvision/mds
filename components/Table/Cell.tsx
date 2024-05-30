@@ -17,6 +17,8 @@ const Wrapper = styled.td<StyledTableCellProps>`
     `;
   }}
   ${({ onClick }) => onClick && 'cursor: pointer;'}
+  ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
+  ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
   vertical-align: ${({ valign }) => valign};
 
   th& {

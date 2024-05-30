@@ -42,6 +42,10 @@ export type StyledTableCellProps = {
   as?: React.ElementType;
   // cell 내용의 세로 정렬 위치를 지정합니다.
   valign?: 'bottom' | 'top' | 'middle' | 'baseline';
+  // cell 의 max-width 를 지정합니다.
+  maxWidth?: string | number;
+  // cell 의 min-width 를 지정합니다.
+  minWidth?: string | number;
 };
 
 export type TableCellInnerProps = {

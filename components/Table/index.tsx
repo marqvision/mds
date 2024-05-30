@@ -10,7 +10,7 @@ const Wrapper = styled.table<StyledTableProps>`
   position: relative;
   border-collapse: unset;
   border-spacing: 0;
-  height: 1px;
+  height: fit-content;
 
   ${({ isStickyLeft }) =>
     isStickyLeft &&

@@ -1,7 +1,7 @@
 import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
 import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../Typography/@utils';
-import { StyledTableCellProps, TableCellProps } from './@types';
+import { StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
 
 const Wrapper = styled.td<StyledTableCellProps>`
   padding: 0;
@@ -17,7 +17,8 @@ const Wrapper = styled.td<StyledTableCellProps>`
     `;
   }}
   ${({ onClick }) => onClick && 'cursor: pointer;'}
-  
+  vertical-align: ${({ valign }) => valign};
+
   th& {
     ${({ theme }) => `
       border-bottom: 1px solid ${theme.color.comp.table.color.border.header};
@@ -36,16 +37,16 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }
 `;
 
-const CellBox = styled.div<{ align: 'center' | 'left' | 'right' | 'justify' | 'char' }>`
+const CellBox = styled.div<TableCellInnerProps>`
   padding: 12px;
   text-align: ${({ align }) => align};
 `;
 
 export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCellElement>) => {
-  const { children, align = 'left', ...restProps } = props;
+  const { children, align = 'left', valign = 'middle', ...restProps } = props;
 
   return (
-    <Wrapper ref={ref} {...restProps}>
+    <Wrapper ref={ref} valign={valign} {...restProps}>
       <CellBox align={align}>{children}</CellBox>
     </Wrapper>
   );

@@ -35,11 +35,18 @@ export type TableRowProps = {
 } & StyledTableRowProps &
   HTMLAttributes<HTMLTableRowElement>;
 
+// Table cell
 export type StyledTableCellProps = {
   // 직접 사용하지 않습니다.
   // head 내에서 cell 을 th 으로 출력하기 위해 사용합니다.
   as?: React.ElementType;
+  // cell 내용의 세로 정렬 위치를 지정합니다.
+  valign?: 'bottom' | 'top' | 'middle' | 'baseline';
 };
 
-// Table cell
+export type TableCellInnerProps = {
+  // cell 내용의 가로 정렬 위치를 지정합니다.
+  align?: 'center' | 'left' | 'right' | 'justify' | 'char';
+};
+
 export type TableCellProps = React.PropsWithChildren<StyledTableCellProps> & TdHTMLAttributes<HTMLTableCellElement>;

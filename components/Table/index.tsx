@@ -10,6 +10,7 @@ const Wrapper = styled.table<StyledTableProps>`
   position: relative;
   border-collapse: unset;
   border-spacing: 0;
+  height: 1px;
 
   ${({ isStickyLeft }) =>
     isStickyLeft &&
@@ -20,11 +21,15 @@ const Wrapper = styled.table<StyledTableProps>`
         left: 0;
         z-index: 1;
         box-shadow: 5px 0px 5px -2px rgba(0, 0, 0, 0.06);
+        padding-right: 4px;
         
-        & + td {
+        & + td, & + th {
           padding-left: 4px;
         }
       }
+    }
+    & tbody:has(td[rowspan]) td:not([rowspan]):first-child {
+      padding-left: 4px;
     }
   `}
 
@@ -39,7 +44,7 @@ const Wrapper = styled.table<StyledTableProps>`
         box-shadow: -5px 0px 5px -2px rgba(0, 0, 0, 0.06);
         padding-right: 0;
         
-        & + td {
+        & + td, & + th {
           padding-right: 4px;
         }
       }

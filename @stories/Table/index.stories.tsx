@@ -319,6 +319,45 @@ export const AlignRightCell: StoryObj<typeof MDSTable> = {
   ),
 };
 
+export const ValignTopCell: StoryObj<typeof MDSTable> = {
+  parameters: {
+    controls: { expanded: true },
+    docs: {
+      description: {
+        story: 'cell 에 align 을 전달할 수 있습니다',
+      },
+    },
+  },
+  render: (_) => (
+    <MDSTable>
+      <MDSTable.Head>
+        <MDSTable.Row>
+          <MDSTable.Cell valign="top">top</MDSTable.Cell>
+          <MDSTable.Cell valign="middle">default middle</MDSTable.Cell>
+          <MDSTable.Cell valign="bottom">bottom</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Head>
+      <MDSTable.Body>
+        <MDSTable.Row>
+          <MDSTable.Cell valign="top" align="right" rowSpan={3}>
+            top
+          </MDSTable.Cell>
+          <MDSTable.Cell valign="middle">default middle</MDSTable.Cell>
+          <MDSTable.Cell valign="bottom" rowSpan={3}>
+            bottom
+          </MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell valign="middle">default middle</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell valign="middle">default middle</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Body>
+    </MDSTable>
+  ),
+};
+
 export const CellColSpan: StoryObj<typeof MDSTable> = {
   parameters: {
     controls: { expanded: true },

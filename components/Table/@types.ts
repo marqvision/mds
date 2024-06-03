@@ -1,4 +1,5 @@
 import React, { HTMLAttributes, TdHTMLAttributes } from 'react';
+import { MDSThemeColorPath } from '../../foundation';
 
 // Table
 export type StyledTableProps = {
@@ -36,6 +37,14 @@ export type TableRowProps = {
   HTMLAttributes<HTMLTableRowElement>;
 
 // Table cell
+export type BorderProps =
+  | boolean
+  | {
+      width?: number;
+      style?: 'dashed' | 'dotted' | 'double' | 'groove' | 'hidden' | 'inset' | 'none' | 'outset' | 'ridge' | 'solid';
+      color?: MDSThemeColorPath;
+    };
+
 export type StyledTableCellProps = {
   // 직접 사용하지 않습니다.
   // head 내에서 cell 을 th 으로 출력하기 위해 사용합니다.
@@ -46,6 +55,8 @@ export type StyledTableCellProps = {
   maxWidth?: string | number;
   // cell 의 min-width 를 지정합니다.
   minWidth?: string | number;
+  // cell 의 border-right 를 지정합니다.
+  borderRight?: BorderProps;
 };
 
 export type TableCellInnerProps = {

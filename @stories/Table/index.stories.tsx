@@ -448,3 +448,49 @@ export const CellRowSpan: StoryObj<typeof MDSTable> = {
     </MDSTable>
   ),
 };
+
+export const CellBorderRight: StoryObj<typeof MDSTable> = {
+  parameters: {
+    controls: { expanded: true },
+    docs: {
+      description: {
+        story: 'cell 에 border right 을 지정할 수 있습니다.',
+      },
+    },
+  },
+  render: (_) => (
+    <MDSTable>
+      <MDSTable.Head>
+        <MDSTable.Row>
+          <MDSTable.Cell borderRight>head border default</MDSTable.Cell>
+          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell>head</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Head>
+      <MDSTable.Body>
+        <MDSTable.Row>
+          <MDSTable.Cell borderRight>body border default</MDSTable.Cell>
+          <MDSTable.Cell>1-2</MDSTable.Cell>
+          <MDSTable.Cell>1-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell borderRight={{ color: 'color/content/critical/default/normal' }}>custom color</MDSTable.Cell>
+          <MDSTable.Cell>2-2</MDSTable.Cell>
+          <MDSTable.Cell>2-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell borderRight={{ width: 4 }}>custom width</MDSTable.Cell>
+          <MDSTable.Cell>3-2</MDSTable.Cell>
+          <MDSTable.Cell>3-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell borderRight={{ width: 2, color: 'color/content/primary/default/normal', style: 'dashed' }}>
+            custom style
+          </MDSTable.Cell>
+          <MDSTable.Cell>4-2</MDSTable.Cell>
+          <MDSTable.Cell>4-3</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Body>
+    </MDSTable>
+  ),
+};

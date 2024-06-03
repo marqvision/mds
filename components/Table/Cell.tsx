@@ -1,7 +1,8 @@
-import { forwardRef, Ref } from 'react';
+import { ElementType, forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
 import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../Typography/@utils';
-import { StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
+import { resolveColor } from '../../@system/resolvers';
+import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
 
 const Wrapper = styled.td<StyledTableCellProps>`
   padding: 0;
@@ -19,6 +20,7 @@ const Wrapper = styled.td<StyledTableCellProps>`
   ${({ onClick }) => onClick && 'cursor: pointer;'}
   ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
+  ${({ borderRight, as }) => resolveBorderStyles(borderRight, as)}
   vertical-align: ${({ valign }) => valign};
 
   th& {
@@ -54,3 +56,17 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
   );
 });
 TableCell.displayName = 'MDSTableCell';
+
+const resolveBorderStyles = (props?: BorderProps, as?: ElementType) => {
+  if (!props) return '';
+
+  const defaultColor = `color/comp/table/color/border/${as === 'th' ? 'header' : 'body'}` as const;
+
+  const borderStyles = {
+    width: (props !== true && props.width) || 1,
+    style: (props !== true && props.style) || 'solid',
+    color: resolveColor((props !== true && props.color) || defaultColor),
+  };
+
+  return `border-right: ${borderStyles.width}px ${borderStyles.style} ${borderStyles.color};`;
+};

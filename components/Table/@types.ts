@@ -53,4 +53,5 @@ export type TableCellInnerProps = {
   align?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent' | 'justify-all';
 };
 
-export type TableCellProps = React.PropsWithChildren<StyledTableCellProps> & TdHTMLAttributes<HTMLTableCellElement>;
+export type TableCellProps = React.PropsWithChildren<StyledTableCellProps & TableCellInnerProps> &
+  Omit<TdHTMLAttributes<HTMLTableCellElement>, 'align'>;

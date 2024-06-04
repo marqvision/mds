@@ -27,7 +27,7 @@ export type TBodyProps = React.PropsWithChildren & HTMLAttributes<HTMLTableSecti
 
 export type StyledTableRowProps = {
   // 설정 시 viewing details background color 가 적용됩니다
-  isViewingDetails?: boolean;
+  isSelected?: boolean;
 };
 
 // Table row

@@ -182,7 +182,7 @@ export const ViewDetails: StoryObj<typeof MDSTable> = {
         </MDSTable.Row>
       </MDSTable.Head>
       <MDSTable.Body>
-        <MDSTable.Row isViewingDetails>
+        <MDSTable.Row isSelected>
           <MDSTable.Cell>1-1 isViewingDetails</MDSTable.Cell>
           <MDSTable.Cell>1-2 isViewingDetails</MDSTable.Cell>
           <MDSTable.Cell>1-3 isViewingDetails</MDSTable.Cell>

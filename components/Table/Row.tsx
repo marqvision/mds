@@ -5,15 +5,15 @@ const Wrapper = styled.tr<StyledTableRowProps>`
   ${({ onClick }) => onClick && 'cursor: pointer;'}
 
   & td {
-    background-color: ${({ isViewingDetails, theme }) =>
-      theme.color.comp.table.color.bg[isViewingDetails ? 'viewing' : 'default'].normal};
+    background-color: ${({ isSelected, theme }) =>
+      theme.color.comp.table.color.bg[isSelected ? 'viewing' : 'default'].normal};
   }
 
   tbody:has(td[rowspan]:hover) & td,
   tbody:has(td:not([rowspan]):hover) &:hover td,
   tbody:has(td:not([rowspan]):hover) & td[rowspan] {
-    background-color: ${({ isViewingDetails, theme }) =>
-      theme.color.comp.table.color.bg[isViewingDetails ? 'viewing' : 'default'].hover};
+    background-color: ${({ isSelected, theme }) =>
+      theme.color.comp.table.color.bg[isSelected ? 'viewing' : 'default'].hover};
   }
 `;
 

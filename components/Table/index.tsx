@@ -12,7 +12,7 @@ const Wrapper = styled.table<StyledTableProps>`
   border-spacing: 0;
   height: fit-content;
 
-  ${({ isStickyLeft }) =>
+  ${({ isStickyLeft, theme }) =>
     isStickyLeft &&
     `
     & th, & tbody:has(td[rowspan]) td[rowspan], & tbody:not(:has(td[rowspan])) td {
@@ -22,6 +22,7 @@ const Wrapper = styled.table<StyledTableProps>`
         z-index: 1;
         box-shadow: 5px 0px 5px -2px rgba(0, 0, 0, 0.06);
         padding-right: 4px;
+        background-color: ${theme.color.bg.surface.neutral.default.normal};
         
         & + td, & + th {
           padding-left: 4px;
@@ -33,7 +34,7 @@ const Wrapper = styled.table<StyledTableProps>`
     }
   `}
 
-  ${({ isStickyRight }) =>
+  ${({ isStickyRight, theme }) =>
     isStickyRight &&
     `
     & th, & td {
@@ -43,6 +44,7 @@ const Wrapper = styled.table<StyledTableProps>`
         z-index: 1;
         box-shadow: -5px 0px 5px -2px rgba(0, 0, 0, 0.06);
         padding-right: 0;
+        background-color: ${theme.color.bg.surface.neutral.default.normal};
       }
       &:nth-last-child(2) {
         padding-right: 4px;

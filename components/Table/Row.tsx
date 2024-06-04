@@ -4,7 +4,7 @@ import { StyledTableRowProps, TableRowProps } from './@types';
 const Wrapper = styled.tr<StyledTableRowProps>`
   ${({ onClick }) => onClick && 'cursor: pointer;'}
 
-  & td {
+  & td, & th {
     background-color: ${({ isSelected, theme }) =>
       theme.color.comp.table.color.bg[isSelected ? 'viewing' : 'default'].normal};
   }

@@ -12,7 +12,7 @@ const Wrapper = styled.table<StyledTableProps>`
   border-spacing: 0;
   height: fit-content;
 
-  ${({ isStickyLeft, theme }) =>
+  ${({ isStickyLeft }) =>
     isStickyLeft &&
     `
     & th, & tbody:has(td[rowspan]) td[rowspan], & tbody:not(:has(td[rowspan])) td {
@@ -33,7 +33,7 @@ const Wrapper = styled.table<StyledTableProps>`
     }
   `}
 
-  ${({ isStickyRight, theme }) =>
+  ${({ isStickyRight }) =>
     isStickyRight &&
     `
     & th, & td {

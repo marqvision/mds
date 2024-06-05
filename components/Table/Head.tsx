@@ -4,7 +4,6 @@ import { StyledTableHeadProps, TableHeadProps } from './@types';
 
 const Wrapper = styled.thead<StyledTableHeadProps>`
   width: 100%;
-  background-color: ${({ theme }) => theme.color.comp.table.color.bg.default.normal};
 
   ${({ isStickyHeader }) =>
     isStickyHeader &&

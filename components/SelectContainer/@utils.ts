@@ -80,3 +80,18 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
     `;
   }
 };
+
+export const getLayoutStyle = (isCenter?: boolean) => {
+  if (isCenter) {
+    return ` 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+  }
+
+  return ` 
+    display: flex;
+    align-items: center;
+  `;
+};

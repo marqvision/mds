@@ -53,3 +53,5 @@ export const MDSTypography = <T extends ElementType = 'span'>({
     />
   );
 };
+
+export * from './@types';

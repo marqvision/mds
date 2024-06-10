@@ -403,7 +403,10 @@ export const StoreMarket = ({ variant }: Features<'StoreMarket'>) =>
   );
 
 export const Home = () => (
-  <path d="M12 2L2 9.5V21H6V14H18V21H22V9.5L12 2ZM14 19H10V14H14V19ZM18 12H6V10H18V12Z" fill="currentColor" />
+  <path
+    d="M10 19V14H14V19C14 19.55 14.45 20 15 20H18C18.55 20 19 19.55 19 19V12H20.7C21.16 12 21.38 11.43 21.03 11.13L12.67 3.59997C12.29 3.25997 11.71 3.25997 11.33 3.59997L2.97 11.13C2.63 11.43 2.84 12 3.3 12H5V19C5 19.55 5.45 20 6 20H9C9.55 20 10 19.55 10 19Z"
+    fill="currentColor"
+  />
 );
 
 export const Language = () => (

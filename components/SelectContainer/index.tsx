@@ -9,7 +9,7 @@ import {
   UnwrapArray,
   StyledWrapperProps,
 } from './@types';
-import { getCorrectContainerStyle } from './@utils';
+import { getCorrectContainerStyle, getLayoutStyle } from './@utils';
 
 const SelectContainerStyles = styled.div<StyledWrapperProps>`
   display: flex;
@@ -55,20 +55,20 @@ const CheckedIconWrapperStyles = styled.div`
 `;
 
 const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
-  ${({ disabled, isSelected }) => {
+  ${({ disabled, isSelected, isVariantCenter }) => {
     const containerStyle = getCorrectContainerStyle(disabled, isSelected);
+    const layoutStyle = getLayoutStyle(isVariantCenter);
 
     return ` 
       position: relative;
-      display: flex;
-      align-items: center;
       gap: 16px;
       padding: 12px 16px;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease-in-out; 
-
+      
       ${containerStyle}
+      ${layoutStyle}
     `;
   }}
 `;
@@ -113,6 +113,7 @@ const Item = <T extends string | number>({
       onClick={() => !disabled && onClick(value)}
       disabled={disabled}
       isSelected={isSelected}
+      isVariantCenter={isVariantCenter}
       {...props}
     >
       {isSelected && (

@@ -1,7 +1,7 @@
 import { ElementType, forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
 import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../Typography/@utils';
-import { resolveColor } from '../../@system/resolvers';
+import { resolveColor } from '../../@system';
 import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
 
 const Wrapper = styled.td<StyledTableCellProps>`
@@ -68,5 +68,11 @@ const resolveBorderStyles = (props?: BorderProps, as?: ElementType) => {
     color: resolveColor((props !== true && props.color) || defaultColor),
   };
 
-  return `border-right: ${borderStyles.width}px ${borderStyles.style} ${borderStyles.color};`;
+  return `
+    padding-right: 4px;
+    border-right: ${borderStyles.width}px ${borderStyles.style} ${borderStyles.color};
+    & + td, & + th {
+      padding-left: 4px;
+    }
+  `;
 };

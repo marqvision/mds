@@ -35,10 +35,13 @@ export const MDSDimmed = (props: Props) => {
     onClose?.();
   };
 
-  return createPortal(
-    <Wrapper isOpen={isOpen} onClick={handleClose}>
-      {isOpen && children}
-    </Wrapper>,
-    document.body
+  return (
+    isOpen &&
+    createPortal(
+      <Wrapper isOpen={isOpen} onClick={handleClose}>
+        {isOpen && children}
+      </Wrapper>,
+      document.body
+    )
   );
 };

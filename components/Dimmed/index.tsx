@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 
@@ -30,18 +30,24 @@ type Props = React.PropsWithChildren<{
 export const MDSDimmed = (props: Props) => {
   const { isOpen, onClose, children } = props;
 
+  //@morgan: mui portal 의 createPortal 타이밍에 맞추기 위해 동일하게 mountNode state 추가함
+  const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
+
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) return;
     onClose?.();
   };
 
-  return (
-    isOpen &&
-    createPortal(
-      <Wrapper isOpen={isOpen} onClick={handleClose}>
-        {isOpen && children}
-      </Wrapper>,
-      document.body
-    )
-  );
+  useEffect(() => {
+    setMountNode(document.body);
+  }, []);
+
+  return mountNode
+    ? createPortal(
+        <Wrapper isOpen={isOpen} onClick={handleClose}>
+          {isOpen && children}
+        </Wrapper>,
+        mountNode
+      )
+    : mountNode;
 };

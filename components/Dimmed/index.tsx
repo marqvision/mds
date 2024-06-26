@@ -34,6 +34,7 @@ export const MDSDimmed = (props: Props) => {
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
 
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
     if (event.target !== event.currentTarget) return;
     onClose?.();
   };

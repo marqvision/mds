@@ -579,8 +579,13 @@ export const COLOR_TOKENS = {
           },
         },
         border: {
-          header: RAW_COLORS.bluegray200,
-          body: RAW_COLORS.bluegray100,
+          horizontal: {
+            header: RAW_COLORS.bluegray200,
+            body: RAW_COLORS.bluegray100,
+          },
+          vertical: {
+            default: RAW_COLORS.bluegray150,
+          },
         },
       },
     },

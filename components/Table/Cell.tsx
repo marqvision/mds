@@ -1,4 +1,4 @@
-import { ElementType, forwardRef, Ref } from 'react';
+import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
 import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../Typography/@utils';
 import { resolveColor } from '../../@system';
@@ -7,7 +7,7 @@ import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps 
 const Wrapper = styled.td<StyledTableCellProps>`
   padding: 0;
   box-sizing: content-box;
-  border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.body};
+  border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.horizontal.body};
   ${() => {
     const fontSize = resolveFontSize('T14');
     const fontWeightStyles = resolveFontWeightStyles('regular');
@@ -20,12 +20,12 @@ const Wrapper = styled.td<StyledTableCellProps>`
   ${({ onClick }) => onClick && 'cursor: pointer;'}
   ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
-  ${({ borderRight, as }) => resolveBorderStyles(borderRight, as)}
+  ${({ borderRight }) => resolveBorderStyles(borderRight)}
   vertical-align: ${({ valign }) => valign};
 
   th& {
     ${({ theme }) => `
-      border-bottom: 1px solid ${theme.color.comp.table.color.border.header};
+      border-bottom: 1px solid ${theme.color.comp.table.color.border.horizontal.header};
       color: ${theme.color.content.neutral.secondary.normal};
     `}
   }
@@ -57,15 +57,13 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
 });
 TableCell.displayName = 'MDSTableCell';
 
-const resolveBorderStyles = (props?: BorderProps, as?: ElementType) => {
+const resolveBorderStyles = (props?: BorderProps) => {
   if (!props) return '';
-
-  const defaultColor = `color/comp/table/color/border/${as === 'th' ? 'header' : 'body'}` as const;
 
   const borderStyles = {
     width: (props !== true && props.width) || 1,
     style: (props !== true && props.style) || 'solid',
-    color: resolveColor((props !== true && props.color) || defaultColor),
+    color: resolveColor('color/comp/table/color/border/vertical/default'),
   };
 
   return `

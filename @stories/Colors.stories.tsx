@@ -371,7 +371,8 @@ export const ComponentColorTokens = () => {
           <ColorPalette>
             <Palette title="bg.default" colors={color.comp.table.color.bg.default} />
             <Palette title="bg.viewing" colors={color.comp.table.color.bg.viewing} />
-            <Palette title="border" colors={color.comp.table.color.border} />
+            <Palette title="border.horizontal" colors={color.comp.table.color.border.horizontal} />
+            <Palette title="border.vertical" colors={color.comp.table.color.border.vertical} />
           </ColorPalette>
         </div>
         <div>

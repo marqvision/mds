@@ -1,4 +1,4 @@
-import { Path } from '../@system/types';
+import { Path } from '../@system';
 import { RAW_COLORS, COLOR_TOKENS } from './colors';
 
 export const MDSThemeValue = {

@@ -1,7 +1,8 @@
 import { MDSTheme, MDSThemeValue } from '../foundation';
 import { Path } from './types';
 
-export const resolveColor = (color: Path<MDSTheme>) => {
+export const resolveColor = (color?: Path<MDSTheme>) => {
+  if (!color) return 'transparent';
   const tokens = color.split('/') || [];
 
   // @ts-ignore

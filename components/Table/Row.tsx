@@ -5,8 +5,17 @@ const Wrapper = styled.tr<StyledTableRowProps>`
   ${({ onClick }) => onClick && 'cursor: pointer;'}
 
   & td, & th {
-    background-color: ${({ isSelected, theme }) =>
-      theme.color.comp.table.color.bg[isSelected ? 'viewing' : 'default'].normal};
+    background-color: ${({ isSelected, isSecondary, theme }) => {
+      if (isSecondary) {
+        return theme.color.bg.surface.neutral.secondary.normal;
+      }
+
+      if (isSelected) {
+        return theme.color.comp.table.color.bg.viewing.normal;
+      }
+
+      return theme.color.comp.table.color.bg.default.normal;
+    }};
   }
 
   tbody:has(td[rowspan]:hover) & td,

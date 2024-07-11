@@ -28,11 +28,13 @@ export type TBodyProps = React.PropsWithChildren & HTMLAttributes<HTMLTableSecti
 export type StyledTableRowProps = {
   // 설정 시 viewing details background color 가 적용됩니다
   isSelected?: boolean;
+  isSecondary?: boolean;
 };
 
 // Table row
 export type TableRowProps = {
   children: React.ReactElement | React.ReactElement[];
+  isSecondary?: boolean;
 } & StyledTableRowProps &
   HTMLAttributes<HTMLTableRowElement>;
 

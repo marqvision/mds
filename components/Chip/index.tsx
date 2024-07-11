@@ -115,10 +115,10 @@ const LoadingSpinner = styled.i<LoadingSpinnerProps>`
     border-radius: 50%;
     animation: ${spin} 1s ease-out infinite;
 
-    ${({ size, color, variant }) => `
+    ${({ size }) => `
       border: ${theme.size[size].spinnerWidth} solid transparent;
-      border-top-color: ${resolveColor(theme.color[color][variant].hover.color)};
-      border-right-color: ${resolveColor(theme.color[color][variant].hover.color)};
+      border-top-color: inherit;
+      border-right-color: inherit;
     `}
   }
 `;

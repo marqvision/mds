@@ -19,6 +19,7 @@ const Chip = styled.button<StyledChipProps>`
   & h2 {
     color: inherit;
   }
+  ${({ isLoading }) => (isLoading === 'hideLabel' ? `& *:not(i) { opacity: 0; }` : '')}
 
   ${({ width }) => {
     return `
@@ -36,7 +37,7 @@ const Chip = styled.button<StyledChipProps>`
     `;
   }}
 
-  ${({ variant, color, isLoading, isDisabled, isCompleted, isClickable }) => {
+  ${({ variant, color, isDisabled, isCompleted, isClickable }) => {
     if (isDisabled) {
       return `
         color: ${resolveColor(theme.color[color][variant].disabled.color)};
@@ -54,7 +55,7 @@ const Chip = styled.button<StyledChipProps>`
     }
 
     return `
-        color: ${isLoading === 'hideLabel' ? 'transparent' : resolveColor(theme.color[color][variant].normal.color)};
+        color: ${resolveColor(theme.color[color][variant].normal.color)};
         background-color: ${resolveColor(theme.color[color][variant].normal.backgroundColor)};
         border-color: ${resolveColor(theme.color[color][variant].normal.borderColor)};
       
@@ -81,7 +82,8 @@ const spin = keyframes`
   }
 `;
 
-const LoadingSpinner = styled.div<LoadingSpinnerProps>`
+const LoadingSpinner = styled.i<LoadingSpinnerProps>`
+  display: block;
   padding: 2px;
 
   ${({ isCenter }) => `

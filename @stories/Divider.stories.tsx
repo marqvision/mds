@@ -79,13 +79,17 @@ export const Thickness: Story = {
   args: {
     thickness: 5,
   },
-  render: (props) => (
-    <Wrapper>
-      <MDSTypography>두께(dot 의 경우 크기)를 조절할 수 있습니다.</MDSTypography>
-      <MDSDivider {...props} />
-      <MDSDivider variant="dot" {...props} />
-    </Wrapper>
-  ),
+  render: (props) => {
+    const { length, intensity, variant, ...restProps } = props;
+
+    return (
+      <Wrapper>
+        <MDSTypography>두께(dot 의 경우 크기)를 조절할 수 있습니다.</MDSTypography>
+        <MDSDivider variant="line" length={length} intensity={intensity} {...restProps} />
+        <MDSDivider variant="dot" {...restProps} />
+      </Wrapper>
+    );
+  },
 };
 
 export const Length: Story = {
@@ -97,7 +101,7 @@ export const Length: Story = {
     <Wrapper>
       <MDSTypography>line 의 길이를 조절할 수 있습니다.</MDSTypography>
       <MDSDivider {...props} />
-      <MDSDivider orientation="vertical" {...props} />
+      <MDSDivider variant="line" orientation="vertical" {...props} />
     </Wrapper>
   ),
 };

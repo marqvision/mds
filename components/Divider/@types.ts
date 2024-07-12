@@ -14,35 +14,44 @@ export type StyledProps = {
   thickness: string;
 };
 
-export type Props = {
+type BaseProps = {
   /**
-   * Divider의 모양을 나타냅니다.
-   * @default 'line'
-   */
-  variant?: Variant;
-
-  /**
-   * variant=line인 경우 Divider의 강도를 나타냅니다. 이 값에 따라 색상이 변합니다.
-   * variant=dot인 경우에는 bluegray[400]으로 고정됩니다.
-   * @default 'default'
-   */
-  intensity?: Intensity;
-  /**
-   * variant=line인 경우 선의 방향을 나타냅니다.
+   * variant=line 인 경우 선의 방향을, dot 인 경우 정렬 방향을 나타냅니다.
    * @default 'horizontal'
    */
   orientation?: Orientation;
   /**
-   * variant=line인 경우 선의 길이를 나타냅니다. px단위와 %단위를 사용할 수 있습니다.
-   * @default '100%'
-   */
-  length?: number | string;
-
-  /**
-   * variant=line인 경우 선의 두께를 나타냅니다.
-   * shpe=dot인 경우 점의 크기를 나타냅니다.
+   * * variant=line 인 경우 선의 두께를 나타냅니다.
+   * * variant=dot 인 경우 점의 크기를 나타냅니다.
    * @default 1
    */
   thickness?: number;
   style?: CSSProperties;
 };
+
+type LineProps = BaseProps & {
+  variant?: 'line';
+  intensity?: Intensity;
+  length?: number | string;
+};
+
+type DotProps = BaseProps & {
+  /**
+   * Divider 의 모양을 나타냅니다.
+   * @default 'line'
+   */
+  variant: 'dot';
+  /**
+   * * variant=line 인 경우 Divider 의 강도를 나타냅니다. 이 값에 따라 색상이 변합니다.
+   * * variant=dot 인 경우에는 이 속성을 사용하지 않고 bluegray[400]으로 고정됩니다.
+   */
+  intensity?: never;
+  /**
+   * * variant=line 인 경우 선의 길이를 나타냅니다. px 단위와 %단위를 사용할 수 있습니다.
+   * * variant=dot 인 경우 사용하지 않습니다.
+   * @default '100%'
+   */
+  length?: never;
+};
+
+export type Props = DotProps | LineProps;

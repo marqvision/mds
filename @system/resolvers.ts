@@ -1,8 +1,7 @@
 import { MDSTheme, MDSThemeValue } from '../foundation';
 import { Path } from './types';
 
-export const resolveColor = (color?: Path<MDSTheme>) => {
-  if (!color) return 'transparent';
+export const resolveColor = (color: Path<MDSTheme>) => {
   const tokens = color.split('/') || [];
 
   // @ts-ignore
@@ -18,7 +17,7 @@ export const resolveColor = (color?: Path<MDSTheme>) => {
       currentColorObject = value;
     }
   }
-  
+
   if (typeof result !== 'string') {
     // color에 정확한 color값을 할당하지 않은 케이스.
     console.warn(

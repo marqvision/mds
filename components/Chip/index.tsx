@@ -39,24 +39,33 @@ const Chip = styled.button<StyledChipProps>`
 
   ${({ variant, color, isDisabled, isCompleted, isClickable }) => {
     if (isDisabled) {
+      const backgroundColor = theme.color[color][variant].disabled.backgroundColor;
+
       return `
         color: ${resolveColor(theme.color[color][variant].disabled.color)};
-        background-color: ${resolveColor(theme.color[color][variant].disabled.backgroundColor)};
+        ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''};
         border-color: ${resolveColor(theme.color[color][variant].disabled.borderColor)};
       `;
     }
 
     if (isCompleted) {
+      const labelColor = theme.color[color][variant].completed?.color;
+      const backgroundColor = theme.color[color][variant].completed?.backgroundColor;
+      const borderColor = theme.color[color][variant].completed?.borderColor;
+
       return `
-        color: ${resolveColor(theme.color[color][variant].completed?.color)};
-        background-color: ${resolveColor(theme.color[color][variant].completed?.backgroundColor)};
-        border-color: ${resolveColor(theme.color[color][variant].completed?.borderColor)};
+        ${labelColor ? `color: ${resolveColor(labelColor)};` : ''}
+        ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''}
+        ${borderColor ? `border-color: ${resolveColor(borderColor)};` : ''}
       `;
     }
 
+    const backgroundColor = theme.color[color][variant].normal.backgroundColor;
+    const hoverBackgroundColor = theme.color[color][variant].hover.backgroundColor;
+
     return `
         color: ${resolveColor(theme.color[color][variant].normal.color)};
-        background-color: ${resolveColor(theme.color[color][variant].normal.backgroundColor)};
+        ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''}
         border-color: ${resolveColor(theme.color[color][variant].normal.borderColor)};
       
       ${
@@ -65,7 +74,7 @@ const Chip = styled.button<StyledChipProps>`
             cursor: pointer;
             &:hover {
               color: ${resolveColor(theme.color[color][variant].hover.color)};
-              background-color: ${resolveColor(theme.color[color][variant].hover.backgroundColor)};
+              ${hoverBackgroundColor ? `background-color: ${resolveColor(hoverBackgroundColor)};` : ''}
               border-color: ${resolveColor(theme.color[color][variant].hover.borderColor)};
             }
           `

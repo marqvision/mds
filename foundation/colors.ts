@@ -267,19 +267,17 @@ export const COLOR_TOKENS = {
       },
       inverse: {
         primary: '#7aacff',
-        white: {
-          default: {
-            normal: RAW_COLORS.white,
-            hover: RAW_COLORS.bluegray200,
-            completed: RAW_COLORS.bluegray200,
-            disabled: RAW_COLORS.whiteAlpha40,
-          },
-          tint: {
-            normal: RAW_COLORS.whiteAlpha20,
-            hover: RAW_COLORS.whiteAlpha30,
-            completed: RAW_COLORS.bluegray200,
-            disabled: RAW_COLORS.whiteAlpha20,
-          },
+        default: {
+          normal: RAW_COLORS.white,
+          hover: RAW_COLORS.bluegray200,
+          completed: RAW_COLORS.bluegray200,
+          disabled: RAW_COLORS.whiteAlpha40,
+        },
+        tint: {
+          normal: RAW_COLORS.whiteAlpha20,
+          hover: RAW_COLORS.whiteAlpha30,
+          completed: RAW_COLORS.bluegray200,
+          disabled: RAW_COLORS.whiteAlpha20,
         },
       },
     },
@@ -422,7 +420,12 @@ export const COLOR_TOKENS = {
       },
     },
     inverse: {
-      default: { normal: RAW_COLORS.white, hover: RAW_COLORS.bluegray100, completed: RAW_COLORS.bluegray400 },
+      default: {
+        normal: RAW_COLORS.white,
+        hover: RAW_COLORS.bluegray100,
+        disabled: RAW_COLORS.whiteAlpha40,
+        completed: RAW_COLORS.bluegray400,
+      },
       primary: '#7aacff',
     },
     selected: {
@@ -528,7 +531,7 @@ export const COLOR_TOKENS = {
       },
     },
     inverse: {
-      white: {
+      default: {
         normal: RAW_COLORS.white,
         hover: RAW_COLORS.white,
         disabled: RAW_COLORS.bluegray400,

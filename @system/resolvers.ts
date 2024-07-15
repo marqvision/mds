@@ -17,7 +17,7 @@ export const resolveColor = (color: Path<MDSTheme>) => {
       currentColorObject = value;
     }
   }
-  
+
   if (typeof result !== 'string') {
     // color에 정확한 color값을 할당하지 않은 케이스.
     console.warn(

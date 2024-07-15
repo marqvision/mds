@@ -5,3 +5,4 @@ export * from './Modal';
 export * from './Dimmed';
 export * from './Table';
 export * from './Divider';
+export * from './Chip';

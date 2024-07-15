@@ -4,7 +4,7 @@ import { keyframes } from '@emotion/react';
 import { MDSTypography } from '../Typography';
 import { resolveColor } from '../../@system';
 import { ChipProps, IconProps, LoadingSpinnerProps, StyledChipProps } from './@types';
-import { theme } from './@constants';
+import { theme as ChipTheme } from './@constants';
 
 const Chip = styled.button<StyledChipProps>`
   position: relative;
@@ -30,28 +30,28 @@ const Chip = styled.button<StyledChipProps>`
 
   ${({ size }) => {
     return `
-      gap: ${theme.size[size].gap};
-      padding: ${theme.size[size].padding};
-      border-radius: ${theme.size[size].radius};
-      min-height: ${theme.size[size].minHeight};
+      gap: ${ChipTheme.size[size].gap};
+      padding: ${ChipTheme.size[size].padding};
+      border-radius: ${ChipTheme.size[size].radius};
+      min-height: ${ChipTheme.size[size].minHeight};
     `;
   }}
 
   ${({ variant, color, isDisabled, isCompleted, isClickable }) => {
     if (isDisabled) {
-      const backgroundColor = theme.color[color][variant].disabled.backgroundColor;
+      const backgroundColor = ChipTheme.color[color][variant].disabled.backgroundColor;
 
       return `
-        color: ${resolveColor(theme.color[color][variant].disabled.color)};
+        color: ${resolveColor(ChipTheme.color[color][variant].disabled.color)};
         ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''};
-        border-color: ${resolveColor(theme.color[color][variant].disabled.borderColor)};
+        border-color: ${resolveColor(ChipTheme.color[color][variant].disabled.borderColor)};
       `;
     }
 
     if (isCompleted) {
-      const labelColor = theme.color[color][variant].completed?.color;
-      const backgroundColor = theme.color[color][variant].completed?.backgroundColor;
-      const borderColor = theme.color[color][variant].completed?.borderColor;
+      const labelColor = ChipTheme.color[color][variant].completed?.color;
+      const backgroundColor = ChipTheme.color[color][variant].completed?.backgroundColor;
+      const borderColor = ChipTheme.color[color][variant].completed?.borderColor;
 
       return `
         ${labelColor ? `color: ${resolveColor(labelColor)};` : ''}
@@ -60,22 +60,22 @@ const Chip = styled.button<StyledChipProps>`
       `;
     }
 
-    const backgroundColor = theme.color[color][variant].normal.backgroundColor;
-    const hoverBackgroundColor = theme.color[color][variant].hover.backgroundColor;
+    const backgroundColor = ChipTheme.color[color][variant].normal.backgroundColor;
+    const hoverBackgroundColor = ChipTheme.color[color][variant].hover.backgroundColor;
 
     return `
-        color: ${resolveColor(theme.color[color][variant].normal.color)};
+        color: ${resolveColor(ChipTheme.color[color][variant].normal.color)};
         ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''}
-        border-color: ${resolveColor(theme.color[color][variant].normal.borderColor)};
+        border-color: ${resolveColor(ChipTheme.color[color][variant].normal.borderColor)};
       
       ${
         isClickable
           ? `
             cursor: pointer;
             &:hover {
-              color: ${resolveColor(theme.color[color][variant].hover.color)};
+              color: ${resolveColor(ChipTheme.color[color][variant].hover.color)};
               ${hoverBackgroundColor ? `background-color: ${resolveColor(hoverBackgroundColor)};` : ''}
-              border-color: ${resolveColor(theme.color[color][variant].hover.borderColor)};
+              border-color: ${resolveColor(ChipTheme.color[color][variant].hover.borderColor)};
             }
           `
           : ''
@@ -109,8 +109,8 @@ const LoadingSpinner = styled.i<LoadingSpinnerProps>`
   `}
 
   ${({ size }) => `
-    width: ${theme.size[size].icon}px;
-    height: ${theme.size[size].icon}px;
+    width: ${ChipTheme.size[size].icon}px;
+    height: ${ChipTheme.size[size].icon}px;
   `}
 
   &:after {
@@ -125,7 +125,7 @@ const LoadingSpinner = styled.i<LoadingSpinnerProps>`
     animation: ${spin} 1s ease-out infinite;
 
     ${({ size }) => `
-      border: ${theme.size[size].spinnerWidth} solid transparent;
+      border: ${ChipTheme.size[size].spinnerWidth} solid transparent;
       border-top-color: inherit;
       border-right-color: inherit;
     `}
@@ -134,7 +134,7 @@ const LoadingSpinner = styled.i<LoadingSpinnerProps>`
 
 const Icon = (props: IconProps) => {
   const { size, icon } = props;
-  return cloneElement(icon, { size: theme.size[size].icon, color: icon.props.color || 'currentColor' });
+  return cloneElement(icon, { size: ChipTheme.size[size].icon, color: icon.props.color || 'currentColor' });
 };
 
 export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
@@ -178,7 +178,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
         startIcon && <Icon size={size} icon={startIcon} />
       )}
 
-      <MDSTypography variant={theme.size[size].label} weight="medium">
+      <MDSTypography variant={ChipTheme.size[size].label} weight="medium">
         {label}
       </MDSTypography>
 

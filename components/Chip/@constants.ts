@@ -391,17 +391,17 @@ export const theme: ChipTheme = {
       },
       tint: {
         normal: {
-          color: 'color/content/teal/default/normal',
+          color: 'color/content/purple/default/normal',
           backgroundColor: 'color/bg/fill/purple/tint/normal',
           borderColor: 'color/bg/fill/purple/tint/normal',
         },
         hover: {
-          color: 'color/content/teal/default/hover',
+          color: 'color/content/purple/default/hover',
           backgroundColor: 'color/bg/fill/purple/tint/hover',
           borderColor: 'color/bg/fill/purple/tint/hover',
         },
         disabled: {
-          color: 'color/content/teal/default/disabled',
+          color: 'color/content/purple/default/disabled',
           backgroundColor: 'color/bg/fill/purple/tint/disabled',
           borderColor: 'color/bg/fill/purple/tint/disabled',
         },

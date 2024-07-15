@@ -153,6 +153,11 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
     ...restProps
   } = props;
 
+  if (isCompleted && (color !== 'bluegray' || !(variant === 'tint' || variant === 'border'))) {
+    console.warn('[WARN] MDSChip: isCompleted 는 bluegray + tint, bluegray + border 조합에서만 사용할 수 있습니다.');
+    return <></>;
+  }
+
   return (
     <Chip
       size={size}

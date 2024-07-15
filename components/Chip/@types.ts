@@ -88,6 +88,7 @@ export type ChipProps = {
   isDisabled?: boolean;
   /**
    * Chip 에 completed 상태 부여
+   * bluegray + tint, bluegray + border 에서만 사용
    **/
   isCompleted?: boolean;
   /**

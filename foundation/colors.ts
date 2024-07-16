@@ -552,8 +552,12 @@ export const COLOR_TOKENS = {
     },
   },
 
-  // todo: comp color들은 해당 컴포넌트들 내부로 옮기고 여기서는 제거하기.
-  // 옮기는 방법은 https://bitbucket.org/marqvision/marqvision-web/pull-requests/2574 PR 참고.
+
+  /**
+   * @deprecated
+   * - todo-@jamie: comp color들은 해당 컴포넌트들 내부로 옮기고 여기서는 제거하기.
+   * - https://bitbucket.org/marqvision/marqvision-web/pull-requests/2574 PR 참고.
+   */
   comp: {
     divider: {
       color: {

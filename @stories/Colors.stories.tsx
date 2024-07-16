@@ -143,8 +143,8 @@ export const SystemColorTokens = () => {
           <div>
             <MDSTypography variant="T20">inverse</MDSTypography>
             <ColorPalette>
-              <Palette title="white.default" colors={color.bg.fill.inverse.white.default} />
-              <Palette title="white.tint" colors={color.bg.fill.inverse.white.tint} />
+              <Palette title="white.default" colors={color.bg.fill.inverse.default} />
+              <Palette title="white.tint" colors={color.bg.fill.inverse.tint} />
               <Palette title="primary" colors={{ primary: color.bg.fill.inverse.primary }} />
             </ColorPalette>
           </div>
@@ -290,8 +290,8 @@ export const SystemColorTokens = () => {
             <MDSTypography variant="T20">neutral</MDSTypography>
             <ColorPalette>
               <Palette title="default" colors={color.border.neutral.default} />
-              <Palette title="_" colors={{ strong: color.border.neutral.strong }} />
-              <Palette title="_" colors={{ weak: color.border.neutral.weak }} />
+              <Palette title="_" colors={{ strong: color.border.neutral.strong.normal }} />
+              <Palette title="_" colors={{ weak: color.border.neutral.weak.normal }} />
             </ColorPalette>
           </div>
           <div>
@@ -339,8 +339,8 @@ export const SystemColorTokens = () => {
           <div>
             <MDSTypography variant="T20">inverse</MDSTypography>
             <ColorPalette>
-              <Palette title="white" colors={color.border.inverse.white} />
-              <Palette title="_" colors={{ primary: color.border.inverse.primary }} />
+              <Palette title="default" colors={color.border.inverse.default} />
+              <Palette title="_" colors={{ primary: color.border.inverse.primary.normal }} />
             </ColorPalette>
           </div>
         </div>

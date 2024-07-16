@@ -443,8 +443,12 @@ export const COLOR_TOKENS = {
         completed: RAW_COLORS.bluegray200,
         disabled: RAW_COLORS.bluegray150,
       },
-      strong: RAW_COLORS.bluegray300,
-      weak: RAW_COLORS.bluegray150,
+      strong: {
+        normal: RAW_COLORS.bluegray300,
+      },
+      weak: {
+        normal: RAW_COLORS.bluegray150,
+      }
     },
     primary: {
       weak: {
@@ -536,7 +540,9 @@ export const COLOR_TOKENS = {
         hover: RAW_COLORS.white,
         disabled: RAW_COLORS.bluegray400,
       },
-      primary: '#7aacff',
+      primary: {
+        normal: '#7aacff',
+      }
     },
     selected: {
       default: {
@@ -545,6 +551,9 @@ export const COLOR_TOKENS = {
       },
     },
   },
+
+  // todo: comp color들은 해당 컴포넌트들 내부로 옮기고 여기서는 제거하기.
+  // 옮기는 방법은 https://bitbucket.org/marqvision/marqvision-web/pull-requests/2574 PR 참고.
   comp: {
     divider: {
       color: {

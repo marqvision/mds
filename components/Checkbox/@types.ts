@@ -33,20 +33,21 @@ export type StyledWrapperProps = {
   color: Color;
   size: Size;
   type: 'normal' | 'disabled';
-  isChecked: boolean;
+  value: boolean | 'indeterminate';
   isTranslucent: boolean;
 };
 
 export type Props = {
   /**
    * 체크박스가 체크되었는지 여부를 나타냅니다.
+   * true, false 또는 'indeterminate' 값으로 전달합니다.
    */
-  isChecked: boolean;
+  value: boolean | 'indeterminate';
   /**
    * 체크박스 상태 변경을 처리하는 함수입니다.
    * 매개변수 'checked' 는 체크박스의 새로운 상태를 나타냅니다.
    */
-  onChange: (checked: boolean) => void;
+  onChange: (value: boolean) => void;
   /**
    * 체크박스의 색상을 지정합니다.
    * @default 'blue'
@@ -62,10 +63,4 @@ export type Props = {
    * @default false
    */
   isDisabled?: boolean;
-  /**
-   * 체크박스가 불확정 상태인지 여부를 나타냅니다.
-   * isChecked 값이 true 라면 checked 스타일로 우선 적용됩니다.
-   * @default false
-   */
-  isIndeterminate?: boolean;
 };

@@ -18,10 +18,9 @@ const Wrapper = styled.label<StyledWrapperProps>`
     overflow: hidden;
   `}
 
-  ${({ color, type, isChecked, isTranslucent }) => {
-    const mainColor = isChecked
-      ? CheckboxTheme.color[color].default[type]
-      : CheckboxTheme.color[color].unChecked.border[type];
+  ${({ color, type, value, isTranslucent }) => {
+    const mainColor =
+      value === false ? CheckboxTheme.color[color].unChecked.border[type] : CheckboxTheme.color[color].default[type];
     const fill = CheckboxTheme.color[color].unChecked.fill[type];
 
     return `
@@ -33,11 +32,11 @@ const Wrapper = styled.label<StyledWrapperProps>`
 `;
 
 export const MDSCheckbox = (props: Props) => {
-  const { isChecked, color = 'blue', size = 'medium', onChange, isDisabled = false, isIndeterminate = false } = props;
+  const { value, color = 'blue', size = 'medium', onChange, isDisabled = false } = props;
 
   const type = isDisabled ? 'disabled' : 'normal';
   const wrapperSize = CheckboxTheme.size[size];
-  const isTranslucent = isDisabled && !isChecked && color === 'white';
+  const isTranslucent = isDisabled && !value && color === 'white';
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.checked);
@@ -53,18 +52,18 @@ export const MDSCheckbox = (props: Props) => {
       color={color}
       size={size}
       type={type}
-      isChecked={isChecked || isIndeterminate}
+      value={value}
       isTranslucent={isTranslucent}
       onClick={stopPropagation}
     >
-      <input type="checkbox" disabled={isDisabled} onChange={handleChange} />
+      <input type="checkbox" checked={!!value} disabled={isDisabled} onChange={handleChange} />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={wrapperSize}
         height={wrapperSize}
         viewBox={`0 0 ${wrapperSize} ${wrapperSize}`}
       >
-        {isChecked ? Checked[size] : isIndeterminate ? Indeterminate[size] : UnChecked[size]}
+        {value === true ? Checked[size] : value === 'indeterminate' ? Indeterminate[size] : UnChecked[size]}
       </svg>
     </Wrapper>
   );

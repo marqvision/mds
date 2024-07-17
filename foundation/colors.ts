@@ -589,6 +589,10 @@ export const COLOR_TOKENS = {
             normal: RAW_COLORS.white,
             hover: RAW_COLORS.bluegray50,
           },
+          secondary: {
+            normal: RAW_COLORS.bluegray50,
+            hover: RAW_COLORS.bluegray150,
+          },
           viewing: {
             normal: RAW_COLORS.blue50,
             hover: RAW_COLORS.blue100,

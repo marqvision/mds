@@ -80,7 +80,7 @@ export const Thickness: Story = {
     thickness: 5,
   },
   render: (props) => {
-    const { length, intensity, variant, ...restProps } = props;
+    const { length, intensity, variant, color, ...restProps } = props;
 
     return (
       <Wrapper>
@@ -104,4 +104,21 @@ export const Length: Story = {
       <MDSDivider variant="line" orientation="vertical" {...props} />
     </Wrapper>
   ),
+};
+
+export const CustomColor: Story = {
+  args: {
+    color: 'color/content/primary/default/normal',
+  },
+  render: (props) => {
+    const { length, intensity, variant, ...restProps } = props;
+
+    return (
+      <Wrapper>
+        <MDSTypography>divider 기본 지정 컬러 외 다른 컬러를 적용할 수 있습니다.</MDSTypography>
+        <MDSDivider variant="line" length={length} {...restProps} />
+        <MDSDivider variant="dot" thickness={5} {...restProps} />
+      </Wrapper>
+    );
+  },
 };

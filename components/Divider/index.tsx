@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
+import { resolveColor } from '../../@system';
 import { Props, StyledProps } from './@types';
 import { theme } from './@constants';
 
 const Divider = styled.hr<StyledProps>`
   display: block;
 
-  ${({ intensity, variant }) => `
-    background-color: ${theme.color[variant][intensity]};
+  ${({ intensity, variant, color }) => `
+    background-color: ${color ? resolveColor(color) : theme.color[variant][intensity]};
   `}
 
   ${({ variant, orientation, length, thickness }) => {
@@ -43,6 +44,7 @@ export const MDSDivider = (props: Props) => {
     orientation = 'horizontal',
     length = '100%',
     thickness = 1,
+    color,
     variant = 'line',
     style,
   } = props;
@@ -55,6 +57,7 @@ export const MDSDivider = (props: Props) => {
       role="separator"
       variant={variant}
       intensity={intensity}
+      color={color}
       orientation={orientation}
       thickness={stringThickness}
       length={stringLength}

@@ -1,4 +1,5 @@
 import { CSSProperties } from 'react';
+import { MDSThemeColorPath } from '../../foundation';
 
 type Variant = 'line' | 'dot';
 type Orientation = 'horizontal' | 'vertical';
@@ -12,6 +13,7 @@ export type StyledProps = {
   orientation: Orientation;
   length: string;
   thickness: string;
+  color?: MDSThemeColorPath;
 };
 
 type BaseProps = {
@@ -31,9 +33,14 @@ type BaseProps = {
 
 type LineProps = BaseProps & {
   variant?: 'line';
-  intensity?: Intensity;
   length?: number | string;
-};
+} & ({
+  intensity?: Intensity;
+  color?: never;
+} | {
+  intensity?: never;
+  color?: MDSThemeColorPath;
+});
 
 type DotProps = BaseProps & {
   /**
@@ -46,6 +53,11 @@ type DotProps = BaseProps & {
    * * variant=dot 인 경우에는 이 속성을 사용하지 않고 bluegray[400]으로 고정됩니다.
    */
   intensity?: never;
+  /**
+   * * custom color 를 지정합니다.
+   * * variant=line 인 경우 intensity 와 동시에 사용할 수 없습니다.
+   */
+  color?: MDSThemeColorPath;
   /**
    * * variant=line 인 경우 선의 길이를 나타냅니다. px 단위와 %단위를 사용할 수 있습니다.
    * * variant=dot 인 경우 사용하지 않습니다.

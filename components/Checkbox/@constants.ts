@@ -49,7 +49,13 @@ export const theme: Theme = {
     },
   },
   size: {
-    small: 20,
-    medium: 24,
+    small: {
+      boxSize: 20,
+      padding: 6,
+    },
+    medium: {
+      boxSize: 24,
+      padding: 4,
+    },
   },
 };

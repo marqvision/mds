@@ -26,7 +26,13 @@ export type Theme = {
       };
     }
   >;
-  size: Record<Size, number>;
+  size: Record<
+    Size,
+    {
+      boxSize: number;
+      padding: number;
+    }
+  >;
 };
 
 export type StyledWrapperProps = {

@@ -7,15 +7,16 @@ import { theme as CheckboxTheme } from './@constants';
 
 const Wrapper = styled.label<StyledWrapperProps>`
   display: inline-block;
+  position: relative;
+  font-size: 0;
 
   & input {
     display: none;
   }
 
   ${({ size }) => `
-    width: ${CheckboxTheme.size[size]}px;
-    height: ${CheckboxTheme.size[size]}px;
-    overflow: hidden;
+    width: ${CheckboxTheme.size[size].boxSize}px;
+    height: ${CheckboxTheme.size[size].boxSize}px;
   `}
 
   ${({ color, type, value, isTranslucent }) => {
@@ -29,13 +30,38 @@ const Wrapper = styled.label<StyledWrapperProps>`
       ${isTranslucent ? `opacity: 0.5;` : ''};
     `;
   }}
+
+  &:after {
+    position: absolute;
+    display: inline-block;
+    content: '';
+    width: ${({ size }) => `calc(100% + ${CheckboxTheme.size[size].padding * 2}px)`};
+    height: ${({ size }) => `calc(100% + ${CheckboxTheme.size[size].padding * 2}px)`};
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+
+  &:hover:after {
+    ${({ theme, type }) => (type === 'normal' ? `background-color: ${theme._raw_color.blackAlpha5};` : '')};
+  }
+`;
+
+const Svg = styled.svg<{ isShow: boolean }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: ${({ isShow }) => (isShow ? '1' : '0')};
+  transition: 0.3s;
 `;
 
 export const MDSCheckbox = (props: Props) => {
   const { value, color = 'blue', size = 'medium', onChange, isDisabled = false } = props;
 
   const type = isDisabled ? 'disabled' : 'normal';
-  const wrapperSize = CheckboxTheme.size[size];
+  const boxSize = CheckboxTheme.size[size].boxSize;
   const isTranslucent = isDisabled && !value && color === 'white';
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,14 +83,33 @@ export const MDSCheckbox = (props: Props) => {
       onClick={stopPropagation}
     >
       <input type="checkbox" checked={!!value} disabled={isDisabled} onChange={handleChange} />
-      <svg
+      <Svg
         xmlns="http://www.w3.org/2000/svg"
-        width={wrapperSize}
-        height={wrapperSize}
-        viewBox={`0 0 ${wrapperSize} ${wrapperSize}`}
+        width={boxSize}
+        height={boxSize}
+        viewBox={`0 0 ${boxSize} ${boxSize}`}
+        isShow={value === true}
       >
-        {value === true ? Checked[size] : value === 'indeterminate' ? Indeterminate[size] : UnChecked[size]}
-      </svg>
+        {Checked[size]}
+      </Svg>
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={boxSize}
+        height={boxSize}
+        viewBox={`0 0 ${boxSize} ${boxSize}`}
+        isShow={value === 'indeterminate'}
+      >
+        {Indeterminate[size]}
+      </Svg>
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={boxSize}
+        height={boxSize}
+        viewBox={`0 0 ${boxSize} ${boxSize}`}
+        isShow={!value}
+      >
+        {UnChecked[size]}
+      </Svg>
     </Wrapper>
   );
 };

@@ -7,3 +7,4 @@ export * from './Table';
 export * from './Divider';
 export * from './Chip';
 export * from './Checkbox';
+export * from './RadioButton';

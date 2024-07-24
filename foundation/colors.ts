@@ -448,7 +448,7 @@ export const COLOR_TOKENS = {
       },
       weak: {
         normal: RAW_COLORS.bluegray150,
-      }
+      },
     },
     primary: {
       weak: {
@@ -542,7 +542,7 @@ export const COLOR_TOKENS = {
       },
       primary: {
         normal: '#7aacff',
-      }
+      },
     },
     selected: {
       default: {
@@ -551,7 +551,6 @@ export const COLOR_TOKENS = {
       },
     },
   },
-
 
   /**
    * @deprecated
@@ -591,7 +590,7 @@ export const COLOR_TOKENS = {
           },
           secondary: {
             normal: RAW_COLORS.bluegray50,
-            hover: RAW_COLORS.bluegray150,
+            hover: RAW_COLORS.bluegray100,
           },
           viewing: {
             normal: RAW_COLORS.blue50,

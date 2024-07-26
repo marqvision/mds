@@ -163,3 +163,18 @@ export const Clickable: Story = {
     </Wrapper>
   ),
 };
+
+export const Disabled: Story = {
+  args: {
+    isDisabled: true,
+    startIcon: <MDSIcon.Flag variant="outline" />,
+    endIcon: <MDSIcon.ArrowRight variant="outline" />,
+    onClick: () => {},
+  },
+  render: (args) => (
+    <Wrapper>
+      <MDSTypography>disabled 상태 시 클릭 이벤트 및 hover 효과가 제거됩니다.</MDSTypography>
+      <MDSTag {...args}>Diabled Tag</MDSTag>
+    </Wrapper>
+  ),
+};

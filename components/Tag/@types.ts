@@ -34,7 +34,6 @@ export type StyledTagProps = {
   variant: Variant;
   size: Size;
   color: Color;
-  isDisabled?: boolean;
   isClickable: boolean;
 };
 

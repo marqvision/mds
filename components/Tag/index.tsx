@@ -39,24 +39,15 @@ const Tag = styled.button<StyledTagProps>`
     `;
   }}
 
-  ${({ variant, color, isDisabled, isClickable }) => {
-    if (isDisabled) {
-      const backgroundColor = TagTheme.color[color][variant].disabled.backgroundColor;
-
-      return `
-        color: ${resolveColor(TagTheme.color[color][variant].disabled.color)};
-        ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''};
-        border-color: ${resolveColor(TagTheme.color[color][variant].disabled.borderColor)};
-      `;
-    }
-
-    const backgroundColor = TagTheme.color[color][variant].normal.backgroundColor;
+  ${({ variant, color, isClickable }) => {
+    const normalBackgroundColor = TagTheme.color[color][variant].normal.backgroundColor;
+    const disabledBackgroundColor = TagTheme.color[color][variant].disabled.backgroundColor;
     const hoverBackgroundColor = TagTheme.color[color][variant].hover.backgroundColor;
 
     return `
-        color: ${resolveColor(TagTheme.color[color][variant].normal.color)};
-        ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''}
-        border-color: ${resolveColor(TagTheme.color[color][variant].normal.borderColor)};
+      color: ${resolveColor(TagTheme.color[color][variant].normal.color)};
+      ${normalBackgroundColor ? `background-color: ${resolveColor(normalBackgroundColor)};` : ''}
+      border-color: ${resolveColor(TagTheme.color[color][variant].normal.borderColor)};
       
       ${
         isClickable
@@ -70,7 +61,12 @@ const Tag = styled.button<StyledTagProps>`
           `
           : ''
       }
-    `;
+      
+      &[disabled] {
+        color: ${resolveColor(TagTheme.color[color][variant].disabled.color)};
+        ${disabledBackgroundColor ? `background-color: ${resolveColor(disabledBackgroundColor)};` : ''};
+        border-color: ${resolveColor(TagTheme.color[color][variant].disabled.borderColor)};
+      `;
   }}
 `;
 
@@ -109,10 +105,9 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
       variant={variant}
       color={color}
       as={onClick ? 'button' : 'div'}
-      isClickable={!!onClick}
+      isClickable={!!onClick && !isDisabled}
       onClick={onClick}
       disabled={isDisabled}
-      isDisabled={isDisabled}
       {...restProps}
     >
       {startIcon && <Icon size={size} icon={startIcon} />}

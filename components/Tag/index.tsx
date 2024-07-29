@@ -1,9 +1,10 @@
-import React, { cloneElement } from 'react';
 import styled from '@emotion/styled';
+import React, { cloneElement } from 'react';
 import { resolveColor } from '../../@system';
 import { MDSTypography } from '../Typography';
 import { theme as TagTheme } from './@constants';
 import { IconProps, StyledTagProps, TagProps } from './@types';
+import { getNodeText } from './@utils';
 
 const Tag = styled.button<StyledTagProps>`
   position: relative;
@@ -97,7 +98,9 @@ const Icon = (props: IconProps) => {
 export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
   const { children: label, size, icon, color, variant, startIcon, endIcon, isDisabled, onClick, ...restProps } = props;
 
-  const displayLabel = size === 'x-small' && typeof label === 'string' ? label[0] : label;
+  const displayLabel = size === 'x-small'
+    ? getNodeText(label)[0] // x-small 사이즈 일때는 첫번째 한글자만 출력
+    : label;
 
   return (
     <Tag

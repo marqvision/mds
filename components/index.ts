@@ -8,4 +8,4 @@ export * from './Divider';
 export * from './Chip';
 export * from './Checkbox';
 export * from './Tag';
-
+export * from './RadioButton';

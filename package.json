@@ -9,6 +9,13 @@
     "build-storybook": "storybook build",
     "typecheck": "tsc --noEmit"
   },
+  "eslintConfig": {
+    "rules": {
+      "no-restricted-imports": ["error", {
+        "patterns": ["opscc-ui-web*", "contents*", "brand*", "folio*", "mds*", "shared*"]
+      }]
+    }
+  },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.0.2",
     "@storybook/addon-interactions": "^8.0.2",

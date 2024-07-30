@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, isValidElement } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { MDSTypography } from '../Typography';
@@ -183,11 +183,17 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
         startIcon && <Icon size={size} icon={startIcon} />
       )}
 
-      <MDSTypography variant={ChipTheme.size[size].label} weight="medium">
-        {label}
-      </MDSTypography>
+      {isValidElement(label) ? (
+        label
+      ) : (
+        <MDSTypography variant={ChipTheme.size[size].label} weight="medium">
+          {label}
+        </MDSTypography>
+      )}
 
       {endIcon && <Icon size={size} icon={endIcon} />}
     </Chip>
   );
 };
+
+export type { ChipProps } from './@types';

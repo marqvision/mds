@@ -40,7 +40,7 @@ const Tag = styled.button<StyledTagProps>`
   }}
 
   ${({ variant, color, isClickable }) => {
-    const themeColor = color === 'ai' ? TagTheme.color[color].fill : TagTheme.color[color][variant];
+    const themeColor = variant === 'ai' || !color ? TagTheme.color.ai : TagTheme.color[color][variant];
 
     const normalBackgroundColor = themeColor.normal.backgroundColor;
     const disabledBackgroundColor = themeColor.disabled.backgroundColor;
@@ -97,18 +97,7 @@ const Icon = (props: IconProps) => {
 };
 
 export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
-  const {
-    children: label,
-    size,
-    icon,
-    color,
-    variant = 'fill',
-    startIcon,
-    endIcon,
-    isDisabled,
-    onClick,
-    ...restProps
-  } = props;
+  const { children: label, size, icon, color, variant, startIcon, endIcon, isDisabled, onClick, ...restProps } = props;
 
   const displayLabel =
     size === 'x-small'

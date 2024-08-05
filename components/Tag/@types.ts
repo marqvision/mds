@@ -3,8 +3,8 @@ import { MDSThemeColorPath } from '../../foundation';
 import { Features as MDSTypographyFeatures } from '../Typography';
 import { token } from './@constants';
 
-export type Variant = 'fill' | 'tint' | 'border';
-export type Color = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'teal' | 'purple' | 'white' | 'ai';
+export type Variant = 'fill' | 'tint' | 'border' | 'ai';
+export type Color = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'teal' | 'purple' | 'white';
 export type Size = 'x-small' | 'small' | 'medium';
 export type Status = 'normal' | 'hover' | 'disabled';
 
@@ -21,10 +21,10 @@ type AiTheme = {
 };
 export type TagTheme = {
   color: Record<
-    Exclude<Color, 'ai'>,
-    Record<Variant, Record<Status, ColorTheme> & Partial<{ completed: ColorTheme }>>
+    Color,
+    Record<Exclude<Variant, 'ai'>, Record<Status, ColorTheme> & Partial<{ completed: ColorTheme }>>
   > &
-    Record<Extract<Color, 'ai'>, Record<Extract<Variant, 'fill'>, Record<Status, AiTheme>>>;
+    Record<Extract<Variant, 'ai'>, Record<Status, AiTheme>>;
   size: Record<
     Size,
     {
@@ -42,7 +42,7 @@ export type TagTheme = {
 export type StyledTagProps = {
   variant: Variant;
   size: Size;
-  color: Color;
+  color?: Color;
   isClickable: boolean;
 };
 
@@ -98,18 +98,18 @@ export type TagProps = (
 ) &
   (
     | {
-        color: Extract<Color, 'ai'>;
-        variant?: never;
+        variant: Extract<Variant, 'ai'>;
+        color?: never;
       }
     | {
         /**
-         * Tag 의 색상.
-         **/
-        color: Exclude<Color, 'ai'>;
-        /**
          * Tag 의 종류.
          **/
-        variant: Variant;
+        variant: Exclude<Variant, 'ai'>;
+        /**
+         * Tag 의 색상.
+         **/
+        color: Color;
       }
   ) &
   BaseProps;

@@ -23,7 +23,7 @@ const meta: Meta<typeof MDSTag> = {
   argTypes: {
     color: {
       control: 'select',
-      options: ['bluegray', 'blue', 'red', 'yellow', 'green', 'teal', 'purple', 'white', 'ai'],
+      options: ['bluegray', 'blue', 'red', 'yellow', 'green', 'teal', 'purple', 'white'],
     },
     size: {
       control: 'select',
@@ -31,7 +31,7 @@ const meta: Meta<typeof MDSTag> = {
     },
     variant: {
       control: 'select',
-      options: ['fill', 'tint', 'border'],
+      options: ['fill', 'tint', 'border', 'ai'],
     },
   },
 };
@@ -182,7 +182,7 @@ export const Disabled: Story = {
 
 export const LikelyCounterfeit: Story = {
   args: {
-    color: 'ai',
+    variant: 'ai',
     startIcon: <MDSIcon.Magic />,
     onClick: () => {},
   },

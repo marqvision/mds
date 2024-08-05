@@ -43,7 +43,7 @@ const Chip = styled.button<StyledChipProps>`
 
       return `
         color: ${resolveColor(ChipTheme.color[color][variant].disabled.color)};
-        ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''};
+        background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
         border-color: ${resolveColor(ChipTheme.color[color][variant].disabled.borderColor)};
       `;
     }
@@ -55,7 +55,7 @@ const Chip = styled.button<StyledChipProps>`
 
       return `
         ${labelColor ? `color: ${resolveColor(labelColor)};` : ''}
-        ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''}
+        background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
         ${borderColor ? `border-color: ${resolveColor(borderColor)};` : ''}
       `;
     }
@@ -65,7 +65,7 @@ const Chip = styled.button<StyledChipProps>`
 
     return `
         color: ${resolveColor(ChipTheme.color[color][variant].normal.color)};
-        ${backgroundColor ? `background-color: ${resolveColor(backgroundColor)};` : ''}
+        background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
         border-color: ${resolveColor(ChipTheme.color[color][variant].normal.borderColor)};
       
       ${

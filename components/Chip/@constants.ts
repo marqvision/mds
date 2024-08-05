@@ -466,7 +466,7 @@ export const theme: ChipTheme = {
         },
         hover: {
           color: 'color/content/inverse/default/hover',
-          backgroundColor: 'color/bg/fill/inverse/default/hover',
+          backgroundColor: 'color/bg/fill/inverse/borderbutton/hover',
           borderColor: 'color/border/inverse/default/hover',
         },
         disabled: {

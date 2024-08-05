@@ -279,6 +279,9 @@ export const COLOR_TOKENS = {
           completed: RAW_COLORS.bluegray200,
           disabled: RAW_COLORS.whiteAlpha20,
         },
+        borderbutton: {
+          hover: RAW_COLORS.whiteAlpha20,
+        },
       },
     },
     surface: {

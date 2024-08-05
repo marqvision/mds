@@ -459,6 +459,25 @@ export const theme: TagTheme = {
         },
       },
     },
+    ai: {
+      fill: {
+        normal: {
+          color: 'color/content/inverse/default/normal',
+          backgroundColor: 'linear-gradient(97deg, #4F79EC, #A829BD) border-box',
+          borderColor: 'transparent',
+        },
+        hover: {
+          color: 'color/content/inverse/default/normal',
+          backgroundColor: 'linear-gradient(97deg, #2D5FE9, #9700B0) border-box',
+          borderColor: 'transparent',
+        },
+        disabled: {
+          color: 'color/content/inverse/default/normal',
+          backgroundColor: 'linear-gradient(97deg, #4F79EC, #A829BD) border-box',
+          borderColor: 'transparent',
+        },
+      },
+    },
   },
   size: {
     'x-small': {

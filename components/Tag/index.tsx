@@ -1,10 +1,9 @@
-import styled from '@emotion/styled';
 import React, { cloneElement } from 'react';
-import { resolveColor } from '../../@system';
+import styled from '@emotion/styled';
 import { MDSTypography } from '../Typography';
 import { theme as TagTheme } from './@constants';
 import { IconProps, StyledTagProps, TagProps } from './@types';
-import { getNodeText } from './@utils';
+import { getColor, getNodeText } from './@utils';
 
 const Tag = styled.button<StyledTagProps>`
   position: relative;
@@ -41,32 +40,34 @@ const Tag = styled.button<StyledTagProps>`
   }}
 
   ${({ variant, color, isClickable }) => {
-    const normalBackgroundColor = TagTheme.color[color][variant].normal.backgroundColor;
-    const disabledBackgroundColor = TagTheme.color[color][variant].disabled.backgroundColor;
-    const hoverBackgroundColor = TagTheme.color[color][variant].hover.backgroundColor;
+    const themeColor = color === 'ai' ? TagTheme.color[color].fill : TagTheme.color[color][variant];
+
+    const normalBackgroundColor = themeColor.normal.backgroundColor;
+    const disabledBackgroundColor = themeColor.disabled.backgroundColor;
+    const hoverBackgroundColor = themeColor.hover.backgroundColor;
 
     return `
-      color: ${resolveColor(TagTheme.color[color][variant].normal.color)};
-      ${normalBackgroundColor ? `background-color: ${resolveColor(normalBackgroundColor)};` : ''}
-      border-color: ${resolveColor(TagTheme.color[color][variant].normal.borderColor)};
+      color: ${getColor(themeColor.normal.color)};
+      background: ${getColor(normalBackgroundColor)};
+      border-color: ${getColor(themeColor.normal.borderColor)};
       
       ${
         isClickable
           ? `
             cursor: pointer;
             &:hover {
-              color: ${resolveColor(TagTheme.color[color][variant].hover.color)};
-              ${hoverBackgroundColor ? `background-color: ${resolveColor(hoverBackgroundColor)};` : ''}
-              border-color: ${resolveColor(TagTheme.color[color][variant].hover.borderColor)};
+              color: ${getColor(themeColor.hover.color)};
+              background: ${getColor(hoverBackgroundColor)};
+              border-color: ${getColor(themeColor.hover.borderColor)};
             }
           `
           : ''
       }
       
       &[disabled] {
-        color: ${resolveColor(TagTheme.color[color][variant].disabled.color)};
-        ${disabledBackgroundColor ? `background-color: ${resolveColor(disabledBackgroundColor)};` : ''};
-        border-color: ${resolveColor(TagTheme.color[color][variant].disabled.borderColor)};
+        color: ${getColor(themeColor.disabled.color)};
+        background: ${getColor(disabledBackgroundColor)};
+        border-color: ${getColor(themeColor.disabled.borderColor)};
       `;
   }}
 `;
@@ -96,11 +97,23 @@ const Icon = (props: IconProps) => {
 };
 
 export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
-  const { children: label, size, icon, color, variant, startIcon, endIcon, isDisabled, onClick, ...restProps } = props;
+  const {
+    children: label,
+    size,
+    icon,
+    color,
+    variant = 'fill',
+    startIcon,
+    endIcon,
+    isDisabled,
+    onClick,
+    ...restProps
+  } = props;
 
-  const displayLabel = size === 'x-small'
-    ? getNodeText(label)[0] // x-small 사이즈 일때는 첫번째 한글자만 출력
-    : label;
+  const displayLabel =
+    size === 'x-small'
+      ? getNodeText(label)[0] // x-small 사이즈 일때는 첫번째 한글자만 출력
+      : label;
 
   return (
     <Tag

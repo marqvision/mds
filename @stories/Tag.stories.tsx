@@ -23,10 +23,15 @@ const meta: Meta<typeof MDSTag> = {
   argTypes: {
     color: {
       control: 'select',
+      options: ['bluegray', 'blue', 'red', 'yellow', 'green', 'teal', 'purple', 'white'],
     },
     size: {
       control: 'select',
       options: ['x-small', 'small', 'medium'],
+    },
+    variant: {
+      control: 'select',
+      options: ['fill', 'tint', 'border', 'ai'],
     },
   },
 };
@@ -121,22 +126,18 @@ export const ColoredIcon: Story = {
 };
 
 export const XSmallSize: Story = {
-  args: {
-    variant: 'border',
-    color: 'blue',
-  },
-  render: ({ variant, color }) => (
+  render: (_) => (
     <Wrapper>
       <MDSTypography>x-small 사이즈는 startIcon, endIcon 대신 icon 을 전달해 중앙에 출력합니다.</MDSTypography>
       <MDSTypography>children 으로 text 를 전달하면 첫번째 글자만 출력됩니다.</MDSTypography>
-      <MDSTag size="x-small" variant={variant} color={color}>
+      <MDSTag size="x-small" variant="border" color="blue">
         Tag
       </MDSTag>
-      <MDSTag size="x-small" variant={variant} color={color} icon={<MDSIcon.Flag variant="outline" />} />
+      <MDSTag size="x-small" variant="border" color="blue" icon={<MDSIcon.Flag variant="outline" />} />
       <MDSTag
         size="x-small"
-        variant={variant}
-        color={color}
+        variant="border"
+        color="blue"
         icon={<MDSIcon.Flag variant="outline" color="color/content/critical/default/normal" />}
       />
     </Wrapper>
@@ -175,6 +176,24 @@ export const Disabled: Story = {
     <Wrapper>
       <MDSTypography>disabled 상태 시 클릭 이벤트 및 hover 효과가 제거됩니다.</MDSTypography>
       <MDSTag {...args}>Diabled Tag</MDSTag>
+    </Wrapper>
+  ),
+};
+
+export const LikelyCounterfeit: Story = {
+  args: {
+    variant: 'ai',
+    startIcon: <MDSIcon.Magic />,
+    onClick: () => {},
+  },
+  render: (args) => (
+    <Wrapper>
+      <MDSTypography>
+        Gen AI 태그 스타일입니다.
+        <br />
+        그라데이션 효과가 적용되어 있습니다.
+      </MDSTypography>
+      <MDSTag {...args}>Likely counterfeit</MDSTag>
     </Wrapper>
   ),
 };

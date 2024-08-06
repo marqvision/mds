@@ -3,7 +3,7 @@ import { MDSThemeColorPath } from '../../foundation';
 import { Features as MDSTypographyFeatures } from '../Typography';
 import { token } from './@constants';
 
-export type Variant = 'fill' | 'tint' | 'border';
+export type Variant = 'fill' | 'tint' | 'border' | 'ai';
 export type Color = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'teal' | 'purple' | 'white';
 export type Size = 'x-small' | 'small' | 'medium';
 export type Status = 'normal' | 'hover' | 'disabled';
@@ -14,8 +14,17 @@ type ColorTheme = {
   backgroundColor?: MDSThemeColorPath;
   borderColor: MDSThemeColorPath;
 };
+type AiTheme = {
+  color: MDSThemeColorPath;
+  backgroundColor: string;
+  borderColor: string;
+};
 export type TagTheme = {
-  color: Record<Color, Record<Variant, Record<Status, ColorTheme> & Partial<{ completed: ColorTheme }>>>;
+  color: Record<
+    Color,
+    Record<Exclude<Variant, 'ai'>, Record<Status, ColorTheme> & Partial<{ completed: ColorTheme }>>
+  > &
+    Record<Extract<Variant, 'ai'>, Record<Status, AiTheme>>;
   size: Record<
     Size,
     {
@@ -33,7 +42,7 @@ export type TagTheme = {
 export type StyledTagProps = {
   variant: Variant;
   size: Size;
-  color: Color;
+  color?: Color;
   isClickable: boolean;
 };
 
@@ -43,14 +52,6 @@ export type IconProps = {
 };
 
 type BaseProps = {
-  /**
-   * Tag 의 종류.
-   **/
-  variant: Variant;
-  /**
-   * Tag 의 색상.
-   **/
-  color: Color;
   /**
    * Tag 버튼에 disabled 상태 부여.
    **/
@@ -95,4 +96,20 @@ export type TagProps = (
       endIcon?: React.ReactElement;
     }
 ) &
+  (
+    | {
+        variant: Extract<Variant, 'ai'>;
+        color?: never;
+      }
+    | {
+        /**
+         * Tag 의 종류.
+         **/
+        variant: Exclude<Variant, 'ai'>;
+        /**
+         * Tag 의 색상.
+         **/
+        color: Color;
+      }
+  ) &
   BaseProps;

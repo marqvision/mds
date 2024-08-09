@@ -63,6 +63,7 @@ export type IconVariant = {
   SiteMapTree: VariantSet['OutlineFill'];
   DragHandle: VariantSet['Orientation'];
   Note: VariantSet['OutlineFill'];
+  Thumbs: VariantSet['OutlineFill'];
 
   // Editor
   Circle: VariantSet['OutlineFill'] | 'outline_small' | 'fill_small';

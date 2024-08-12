@@ -15,10 +15,16 @@ const Chip = styled.button<StyledChipProps>`
   border-style: solid;
   user-select: none;
 
+  & i,
+  & svg {
+    flex-shrink: 0;
+  }
+
   & p,
   & h2 {
     color: inherit;
   }
+
   ${({ isLoading }) => (isLoading === 'hideLabel' ? `& *:not(i) { opacity: 0; }` : '')}
 
   ${({ width }) => {
@@ -186,7 +192,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       {isValidElement(label) ? (
         label
       ) : (
-        <MDSTypography variant={ChipTheme.size[size].label} weight="medium">
+        <MDSTypography variant={ChipTheme.size[size].label} weight="medium" lineClamp={1} wordBreak="break-all">
           {label}
         </MDSTypography>
       )}

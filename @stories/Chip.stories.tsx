@@ -49,7 +49,7 @@ export const Preview: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>기본형 width 값을 전달하지 않으면 hug 로 적용되어 내용에 맞게 사이즈가 조절됩니다.</MDSTypography>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -62,7 +62,7 @@ export const WidthFill: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>width: fill 지정 시 width: 100% 스타일이 지정됩니다.</MDSTypography>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -75,7 +75,7 @@ export const WidthFixed: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>width: hug 또는 fill 이외의 값 지정 시 입력한 width 사이즈가 지정됩니다.</MDSTypography>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -87,7 +87,7 @@ export const VariantFill: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -99,7 +99,7 @@ export const VariantTint: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -111,7 +111,7 @@ export const VariantBorder: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -124,7 +124,7 @@ export const StartIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>label 의 앞에 아이콘을 추가합니다.</MDSTypography>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -137,7 +137,7 @@ export const EndIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>label 의 뒤에 아이콘을 추가합니다.</MDSTypography>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -151,7 +151,7 @@ export const ColoredIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>color 가 지정된 아이콘을 전달할 경우 아이콘의 컬러를 우선 적용합니다.</MDSTypography>
-      <MDSChip {...args}>Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -161,6 +161,7 @@ export const Clickable: Story = {
     startIcon: <MDSIcon.Image variant="fill" />,
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
     onClick: () => {},
+    children: 'Clickable Chip',
   },
   render: (args) => (
     <Wrapper>
@@ -172,7 +173,7 @@ export const Clickable: Story = {
         로딩 상태에는 onClick 이벤트가 무시됩니다.
       </MDSTypography>
 
-      <MDSChip {...args}>Clickable Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -183,13 +184,14 @@ export const Loading: Story = {
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
     onClick: () => {},
     isLoading: true,
+    children: 'Loading Chip',
   },
   render: (args) => (
     <Wrapper>
       <MDSTypography>
         isLoading: true 전달 시 startIcon 대신 로딩 스피너가 그려지며, onClick 이벤트 및 hover 효과가 사라집니다.
       </MDSTypography>
-      <MDSChip {...args}>Loading Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };
@@ -200,6 +202,7 @@ export const LoadingHideLabel: Story = {
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
     onClick: () => {},
     isLoading: 'hideLabel',
+    children: 'Loading Chip',
   },
   render: (args) => (
     <Wrapper>
@@ -207,7 +210,7 @@ export const LoadingHideLabel: Story = {
         isLoading: hideLabel 전달 시 내부의 label, icon 대신 중앙에 로딩 스피너가 그려지며, onClick 이벤트 및 hover
         효과가 사라집니다.
       </MDSTypography>
-      <MDSChip {...args}>Loading Chip</MDSChip>
+      <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
 };

@@ -182,6 +182,7 @@ export const MDSIcon = {
   Note: createIcon(Symbols.Note),
   SiteMapTree: createIcon(Symbols.SiteMapTree),
   DragHandle: createIcon(Symbols.DragHandle),
+  Block: createIcon(Symbols.Block),
 
   // editor
   Bold: createIcon(Editor.Bold),

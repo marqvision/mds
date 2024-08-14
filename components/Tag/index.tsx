@@ -117,7 +117,7 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
     >
       {startIcon && <Icon size={size} icon={startIcon} />}
 
-      <MDSTypography variant={TagTheme.size[size].label} weight="medium">
+      <MDSTypography variant={TagTheme.size[size].label} weight="medium" >
         {displayLabel}
       </MDSTypography>
 

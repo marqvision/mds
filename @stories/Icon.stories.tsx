@@ -144,6 +144,7 @@ const IconVariant = {
   ServerDNS: VariantSet['OutlineFill'],
   CommentAdd: ['left', 'right'],
   SiteMapTree: VariantSet['OutlineFill'],
+  Note: VariantSet['OutlineFill'],
   DragHandle: VariantSet['Orientation'],
 
   // Editor

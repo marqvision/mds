@@ -5,6 +5,8 @@ import { theme as TagTheme } from './@constants';
 import { IconProps, StyledTagProps, TagProps } from './@types';
 import { getColor, getNodeText } from './@utils';
 
+export type MDSTagProps = TagProps;
+
 const Tag = styled.button<StyledTagProps>`
   position: relative;
   justify-content: center;

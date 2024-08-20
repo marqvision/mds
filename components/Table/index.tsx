@@ -42,7 +42,7 @@ const Wrapper = styled.table<StyledTableProps>`
         right: 0;
         z-index: 1;
         box-shadow: -5px 0px 5px -2px rgba(0, 0, 0, 0.06);
-        padding-right: 0;
+        padding-left: 4px;
       }
       &:nth-last-child(2) {
         padding-right: 4px;

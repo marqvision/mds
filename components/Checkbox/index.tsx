@@ -45,7 +45,7 @@ const Wrapper = styled.label<StyledWrapperProps>`
   }
 
   &:hover:after {
-    ${({ theme, type }) => (type === 'normal' ? `background-color: ${theme._raw_color.blackAlpha5};` : '')};
+    ${({ theme, type }) => (type === 'normal' ? `background-color: ${theme.color.border.target.default};` : '')};
   }
 `;
 

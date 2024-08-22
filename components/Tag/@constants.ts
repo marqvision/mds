@@ -48,6 +48,7 @@ export const theme: TagTheme = {
           color: 'color/content/on_default_color',
           backgroundColor: 'color/bg/fill/neutral/strong/hover',
           borderColor: 'color/bg/fill/neutral/strong/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/on_default_color',
@@ -65,6 +66,7 @@ export const theme: TagTheme = {
           color: 'color/content/neutral/default/hover',
           backgroundColor: 'color/bg/fill/neutral/tint/hover',
           borderColor: 'color/bg/fill/neutral/tint/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/neutral/default/disabled',
@@ -82,6 +84,7 @@ export const theme: TagTheme = {
           color: 'color/content/neutral/default/hover',
           backgroundColor: 'color/bg/fill/neutral/default/hover',
           borderColor: 'color/border/neutral/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/neutral/default/disabled',
@@ -101,6 +104,7 @@ export const theme: TagTheme = {
           color: 'color/content/on_default_color',
           backgroundColor: 'color/bg/fill/primary/default/hover',
           borderColor: 'color/bg/fill/primary/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/on_default_color',
@@ -118,6 +122,7 @@ export const theme: TagTheme = {
           color: 'color/content/primary/default/hover',
           backgroundColor: 'color/bg/fill/primary/tint/hover',
           borderColor: 'color/bg/fill/primary/tint/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/primary/default/disabled',
@@ -135,6 +140,7 @@ export const theme: TagTheme = {
           color: 'color/content/primary/default/hover',
           backgroundColor: 'color/bg/fill/neutral/default/hover',
           borderColor: 'color/border/primary/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/primary/default/disabled',
@@ -154,6 +160,7 @@ export const theme: TagTheme = {
           color: 'color/content/on_default_color',
           backgroundColor: 'color/bg/fill/critical/default/hover',
           borderColor: 'color/bg/fill/critical/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/on_default_color',
@@ -171,6 +178,7 @@ export const theme: TagTheme = {
           color: 'color/content/critical/default/hover',
           backgroundColor: 'color/bg/fill/critical/tint/hover',
           borderColor: 'color/bg/fill/critical/tint/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/critical/default/disabled',
@@ -188,6 +196,7 @@ export const theme: TagTheme = {
           color: 'color/content/critical/default/hover',
           backgroundColor: 'color/bg/fill/neutral/default/hover',
           borderColor: 'color/border/critical/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/critical/default/disabled',
@@ -207,6 +216,7 @@ export const theme: TagTheme = {
           color: 'color/content/on_default_color',
           backgroundColor: 'color/bg/fill/warning/default/hover',
           borderColor: 'color/bg/fill/warning/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/on_default_color',
@@ -224,6 +234,7 @@ export const theme: TagTheme = {
           color: 'color/content/warning/default/hover',
           backgroundColor: 'color/bg/fill/warning/tint/hover',
           borderColor: 'color/bg/fill/warning/tint/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/warning/default/disabled',
@@ -241,6 +252,7 @@ export const theme: TagTheme = {
           color: 'color/content/warning/default/hover',
           backgroundColor: 'color/bg/fill/neutral/default/hover',
           borderColor: 'color/border/warning/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/warning/default/disabled',
@@ -260,6 +272,7 @@ export const theme: TagTheme = {
           color: 'color/content/on_default_color',
           backgroundColor: 'color/bg/fill/success/default/hover',
           borderColor: 'color/bg/fill/success/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/on_default_color',
@@ -277,6 +290,7 @@ export const theme: TagTheme = {
           color: 'color/content/success/default/hover',
           backgroundColor: 'color/bg/fill/success/tint/hover',
           borderColor: 'color/bg/fill/success/tint/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/success/default/disabled',
@@ -294,6 +308,7 @@ export const theme: TagTheme = {
           color: 'color/content/success/default/hover',
           backgroundColor: 'color/bg/fill/neutral/default/hover',
           borderColor: 'color/border/success/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/success/default/disabled',
@@ -313,6 +328,7 @@ export const theme: TagTheme = {
           color: 'color/content/on_default_color',
           backgroundColor: 'color/bg/fill/teal/default/hover',
           borderColor: 'color/bg/fill/teal/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/on_default_color',
@@ -330,6 +346,7 @@ export const theme: TagTheme = {
           color: 'color/content/teal/default/hover',
           backgroundColor: 'color/bg/fill/teal/tint/hover',
           borderColor: 'color/bg/fill/teal/tint/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/teal/default/disabled',
@@ -347,6 +364,7 @@ export const theme: TagTheme = {
           color: 'color/content/teal/default/hover',
           backgroundColor: 'color/bg/fill/neutral/default/hover',
           borderColor: 'color/border/teal/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/teal/default/disabled',
@@ -366,6 +384,7 @@ export const theme: TagTheme = {
           color: 'color/content/on_default_color',
           backgroundColor: 'color/bg/fill/purple/default/hover',
           borderColor: 'color/bg/fill/purple/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/on_default_color',
@@ -383,6 +402,7 @@ export const theme: TagTheme = {
           color: 'color/content/purple/default/hover',
           backgroundColor: 'color/bg/fill/purple/tint/hover',
           borderColor: 'color/bg/fill/purple/tint/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/purple/default/disabled',
@@ -400,6 +420,7 @@ export const theme: TagTheme = {
           color: 'color/content/purple/default/hover',
           backgroundColor: 'color/bg/fill/neutral/default/hover',
           borderColor: 'color/border/purple/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/purple/default/disabled',
@@ -419,6 +440,7 @@ export const theme: TagTheme = {
           color: 'color/content/neutral/default/normal',
           backgroundColor: 'color/bg/fill/inverse/default/hover',
           borderColor: 'color/bg/fill/inverse/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/neutral/default/normal',
@@ -436,6 +458,7 @@ export const theme: TagTheme = {
           color: 'color/content/inverse/default/hover',
           backgroundColor: 'color/bg/fill/inverse/tint/hover',
           borderColor: 'color/bg/fill/inverse/tint/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/inverse/default/disabled',
@@ -452,6 +475,7 @@ export const theme: TagTheme = {
           color: 'color/content/inverse/default/hover',
           backgroundColor: 'color/bg/fill/inverse/default/hover',
           borderColor: 'color/border/inverse/default/hover',
+          clickAreaColor: 'color/border/target/default',
         },
         disabled: {
           color: 'color/content/inverse/default/disabled',
@@ -469,6 +493,7 @@ export const theme: TagTheme = {
         color: 'color/content/inverse/default/normal',
         backgroundColor: 'linear-gradient(97deg, #2D5FE9, #9700B0) border-box',
         borderColor: 'transparent',
+        clickAreaColor: 'color/border/target/ai',
       },
       disabled: {
         color: 'color/content/inverse/default/normal',
@@ -485,7 +510,8 @@ export const theme: TagTheme = {
       gap: token.gap.xs,
       radius: token.radius.xs,
       minHeight: token.minSize.xs,
-      borderWidth: '1.5px',
+      borderWidth: 1.5,
+      clickAreaPadding: 0,
     },
     small: {
       label: 'T12',
@@ -494,7 +520,8 @@ export const theme: TagTheme = {
       gap: token.gap.sm,
       radius: token.radius.sm,
       minHeight: token.minSize.sm,
-      borderWidth: '1px',
+      borderWidth: 1,
+      clickAreaPadding: 4,
     },
     medium: {
       label: 'T14',
@@ -503,7 +530,8 @@ export const theme: TagTheme = {
       gap: token.gap.md,
       radius: token.radius.md,
       minHeight: token.minSize.md,
-      borderWidth: '1px',
+      borderWidth: 1,
+      clickAreaPadding: 4,
     },
   },
 };

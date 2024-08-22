@@ -553,6 +553,10 @@ export const COLOR_TOKENS = {
         hover: RAW_COLORS.blue800, // border/primary/defaultHover 와 동일
       },
     },
+    target: {
+      default: RAW_COLORS.blackAlpha10,
+      ai: RAW_COLORS.indigo200,
+    },
   },
 
   /**

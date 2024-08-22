@@ -156,6 +156,7 @@ export const MDSIcon = {
   Lock: createIcon(Symbols.Lock),
   ClusterHubSellerIntel: createIcon(Symbols.ClusterHubSellerIntel),
   Email: createIcon(Symbols.Email),
+  NoEmail: createIcon(Symbols.NoEmail),
   Celebration: createIcon(Symbols.Celebration),
   Pin: createIcon(Symbols.Pin),
   AssignmentConfirm: createIcon(Symbols.AssignmentConfirm),

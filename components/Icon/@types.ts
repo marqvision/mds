@@ -47,6 +47,7 @@ export type IconVariant = {
   Lock: VariantSet['OutlineFill'];
   ClusterHubSellerIntel: VariantSet['OutlineFill'];
   Email: VariantSet['OutlineFill'];
+  NoEmail: VariantSet['OutlineFill'];
   Celebration: VariantSet['OutlineFill'];
   Pin: VariantSet['OutlineFill'];
   AssignmentConfirm: VariantSet['OutlineFill'];

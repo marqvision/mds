@@ -15,6 +15,7 @@ const Tag = styled.button<StyledTagProps>`
   border-style: solid;
   user-select: none;
   display: inline-flex;
+  transition: 0.3s;
 
   & p,
   & h2 {
@@ -25,7 +26,7 @@ const Tag = styled.button<StyledTagProps>`
     return `
       gap: ${TagTheme.size[size].gap};
       padding: ${TagTheme.size[size].padding};
-      border-width: ${TagTheme.size[size].borderWidth};
+      border-width: ${TagTheme.size[size].borderWidth}px;
       border-radius: ${TagTheme.size[size].radius};
       min-height: ${TagTheme.size[size].minHeight};
       
@@ -41,12 +42,15 @@ const Tag = styled.button<StyledTagProps>`
     `;
   }}
 
-  ${({ variant, color, isClickable }) => {
+  ${({ variant, color, isClickable, size }) => {
     const themeColor = variant === 'ai' || !color ? TagTheme.color.ai : TagTheme.color[color][variant];
 
     const normalBackgroundColor = themeColor.normal.backgroundColor;
     const disabledBackgroundColor = themeColor.disabled.backgroundColor;
     const hoverBackgroundColor = themeColor.hover.backgroundColor;
+    const clickAreaSize = `calc(100% + ${TagTheme.size[size].borderWidth * 2}px + ${
+      TagTheme.size[size].clickAreaPadding * 2
+    }px)`;
 
     return `
       color: ${getColor(themeColor.normal.color)};
@@ -57,10 +61,28 @@ const Tag = styled.button<StyledTagProps>`
         isClickable
           ? `
             cursor: pointer;
+              
+            &:after {
+              content: '';
+              position: absolute;
+              width: ${clickAreaSize};
+              height: ${clickAreaSize};
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              border-radius: 8px;
+              transition: 0.3s;
+              border: ${TagTheme.size[size].clickAreaPadding}px solid transparent;
+            }
+            
             &:hover {
               color: ${getColor(themeColor.hover.color)};
               background: ${getColor(hoverBackgroundColor)};
               border-color: ${getColor(themeColor.hover.borderColor)};
+              
+              &:after {
+                border-color: ${getColor(themeColor.hover.clickAreaColor)};
+              }
             }
           `
           : ''

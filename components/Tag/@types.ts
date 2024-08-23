@@ -13,11 +13,13 @@ type ColorTheme = {
   color: MDSThemeColorPath;
   backgroundColor?: MDSThemeColorPath;
   borderColor: MDSThemeColorPath;
+  clickAreaColor?: MDSThemeColorPath;
 };
 type AiTheme = {
   color: MDSThemeColorPath;
   backgroundColor: string;
   borderColor: string;
+  clickAreaColor?: MDSThemeColorPath;
 };
 export type TagTheme = {
   color: Record<
@@ -34,7 +36,8 @@ export type TagTheme = {
       gap: Token['gap'][keyof Token['gap']];
       radius: Token['radius'][keyof Token['radius']];
       minHeight: Token['minSize'][keyof Token['minSize']];
-      borderWidth: string;
+      borderWidth: number;
+      clickAreaPadding: number;
     }
   >;
 };

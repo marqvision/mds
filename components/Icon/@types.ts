@@ -62,6 +62,8 @@ export type IconVariant = {
   CommentAdd: 'left' | 'right';
   SiteMapTree: VariantSet['OutlineFill'];
   DragHandle: VariantSet['Orientation'];
+  ThumbUp: VariantSet['OutlineFill'];
+  ThumbDown: VariantSet['OutlineFill'];
   Note: VariantSet['OutlineFill'];
 
   // Editor

@@ -5,6 +5,8 @@ import { theme as TagTheme } from './@constants';
 import { IconProps, StyledTagProps, TagProps } from './@types';
 import { getColor, getNodeText } from './@utils';
 
+export type MDSTagProps = TagProps;
+
 const Tag = styled.button<StyledTagProps>`
   position: relative;
   justify-content: center;
@@ -139,7 +141,7 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
     >
       {startIcon && <Icon size={size} icon={startIcon} />}
 
-      <MDSTypography variant={TagTheme.size[size].label} weight="medium">
+      <MDSTypography variant={TagTheme.size[size].label} weight="medium" >
         {displayLabel}
       </MDSTypography>
 

@@ -6,6 +6,8 @@ import { resolveColor } from '../../@system';
 import { ChipProps, IconProps, LoadingSpinnerProps, StyledChipProps } from './@types';
 import { theme as ChipTheme } from './@constants';
 
+export type MDSChipProps = ChipProps;
+
 const Chip = styled.button<StyledChipProps>`
   position: relative;
   justify-content: center;
@@ -204,5 +206,3 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
     </Chip>
   );
 };
-
-export type { ChipProps } from './@types';

@@ -109,4 +109,12 @@ export type ChipProps = {
    * hover 및 cursor: pointer 효과가 적용됩니다.
    **/
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * Chip 내부에 추가할 태그 개별 요소 또는 요소의 배열.
+   * label 과 endIcon 사이에 위치되며,
+   * Chip 에서 설정한 gap 사이즈가 Tag 사이의 gap 으로 적용됩니다.
+   * Tag 의 size, color 등의 스타일은 전적으로 사용처에서 결정하며,
+   * Chip 에서는 어떠한 값도 전달하지 않습니다.
+   **/
+  tags?: React.ReactElement | React.ReactElement[];
 };

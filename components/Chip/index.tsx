@@ -156,6 +156,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
     isDisabled,
     isCompleted,
     onClick,
+    tags,
     ...restProps
   } = props;
 
@@ -196,6 +197,8 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
           {label}
         </MDSTypography>
       )}
+
+      {Array.isArray(tags) ? tags.map((tag) => tag) : tags}
 
       {endIcon && <Icon size={size} icon={endIcon} />}
     </Chip>

@@ -128,6 +128,7 @@ export const MDSIcon = {
   LinkUrl: createIcon(Symbols.LinkUrl),
   Task: createIcon(Symbols.Task),
   InProgress: createIcon(Symbols.InProgress),
+  InProgressWOStar: createIcon(Symbols.InProgressWOStar),
   Sell: createIcon(Symbols.Sell),
   Magic: createIcon(Symbols.Magic),
   SuperBolt: createIcon(Symbols.SuperBolt),
@@ -183,6 +184,9 @@ export const MDSIcon = {
   Note: createIcon(Symbols.Note),
   SiteMapTree: createIcon(Symbols.SiteMapTree),
   DragHandle: createIcon(Symbols.DragHandle),
+  ThumbUp: createIcon(Symbols.ThumbUp),
+  ThumbDown: createIcon(Symbols.ThumbDown),
+  Regenerate: createIcon(Symbols.Regenerate),
   Block: createIcon(Symbols.Block),
   History: createIcon(Symbols.History),
 

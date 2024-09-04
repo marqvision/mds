@@ -188,6 +188,7 @@ export const MDSIcon = {
   ThumbDown: createIcon(Symbols.ThumbDown),
   Regenerate: createIcon(Symbols.Regenerate),
   Block: createIcon(Symbols.Block),
+  History: createIcon(Symbols.History),
 
   // editor
   Bold: createIcon(Editor.Bold),

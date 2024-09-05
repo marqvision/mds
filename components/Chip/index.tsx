@@ -1,10 +1,10 @@
 import React, { cloneElement, isValidElement } from 'react';
-import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
-import { MDSTypography } from '../Typography';
+import styled from '@emotion/styled';
 import { resolveColor } from '../../@system';
-import { ChipProps, IconProps, LoadingSpinnerProps, StyledChipProps } from './@types';
+import { MDSTypography } from '../Typography';
 import { theme as ChipTheme } from './@constants';
+import { ChipProps, IconProps, LoadingSpinnerProps, StyledChipProps } from './@types';
 
 const Chip = styled.button<StyledChipProps>`
   position: relative;
@@ -164,6 +164,14 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
     console.warn('[WARN] MDSChip: isCompleted 는 bluegray + tint, bluegray + border 조합에서만 사용할 수 있습니다.');
     return <></>;
   }
+  
+  const handleClick = onClick
+    ? (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        if (isLoading) return;
+        onClick(event);
+      }
+    : undefined;
 
   return (
     <Chip
@@ -174,7 +182,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       as={!isLoading && onClick ? 'button' : 'div'}
       isLoading={isLoading}
       isClickable={!isLoading && !!onClick}
-      onClick={!isLoading ? onClick : undefined}
+      onClick={handleClick}
       disabled={isDisabled || isCompleted}
       isDisabled={isDisabled}
       isCompleted={isCompleted}

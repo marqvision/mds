@@ -165,7 +165,7 @@ export const COLOR_TOKENS = {
           disabled: RAW_COLORS.white,
         },
         tint: {
-          normal: RAW_COLORS.bluegray100,
+          normal: RAW_COLORS.bluegray150,
           hover: RAW_COLORS.bluegray300,
           completed: RAW_COLORS.bluegray200,
           disabled: RAW_COLORS.bluegray150,

@@ -1,4 +1,4 @@
-import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement } from 'react';
+import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement, MutableRefObject } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { createPortal } from 'react-dom';
@@ -62,7 +62,9 @@ const Dialog = styled.dialog`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 2px 0 rgba(0, 0, 0, 0.16),
+    0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
@@ -71,41 +73,46 @@ const DialogContent = styled.div<StyleProps>`
   overflow: hidden;
 `;
 
-/**
- * @description 특정 Element 의 위치를 기준으로 생성되는 Popover
- * @param {ReactElement} props.anchor 모달의 기준이 되는 element
- * @param {PopoverTrigger} [props.trigger] 모달 열리는 액션
- * @param {PopoverPosition} [props.posiiton] 모달의 anchor에 대한 상대적 위치
- * @param {boolean} [props.hasDim] 배경 dim 의 유/무
- * @param props.children ReactElement | (onClose) => ReactElement
- */
-export const MDSPopover = (props: Props & StyleProps) => {
+const Popover = (
+  props: Props &
+    StyleProps & {
+      isOpen: boolean;
+      anchorRef: MutableRefObject<(EventTarget & Element) | null>;
+      dialogRef: MutableRefObject<HTMLDialogElement | null>;
+      scrollOffsetRef: MutableRefObject<Element | undefined>;
+      coordinatesRef: MutableRefObject<Coordinates>;
+      focusRef: MutableRefObject<boolean>;
+      onMouseEnter: (e: MouseEvent) => void;
+      onMouseLeave: (() => void) | undefined;
+      onClosePopover: () => void;
+    }
+) => {
   const {
-    anchor: _anchor,
     hasDim = true,
-    trigger = 'click',
     position = 'bottom-right',
     isLoading,
     width: _width = '280px',
     maxHeight: _maxHeight = '480px',
     padding = '16px 20px',
     children: _children,
+    isOpen,
+    anchorRef,
+    dialogRef,
+    scrollOffsetRef,
+    coordinatesRef,
+    focusRef,
+    onMouseEnter,
+    onMouseLeave,
+    onClosePopover,
   } = props;
 
   const width = typeof _width === 'number' ? _width : Number(_width.replace(/\D/g, ''));
   const maxHeight = typeof _maxHeight === 'number' ? _maxHeight : Number(_maxHeight.replace(/\D/g, ''));
 
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const anchorRef = useRef<(EventTarget & Element) | null>(null);
-  const scrollOffsetRef = useRef<Element>();
-  const focusRef = useRef(false);
-  const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
-
   const [coordinates, setCoordinates] = useState<Coordinates>({
     x: 0,
     y: 0,
   });
-  const [isOpen, setIsOpen] = useState(false);
 
   const setPosition = useCallback(() => {
     const target = anchorRef.current;
@@ -134,15 +141,15 @@ export const MDSPopover = (props: Props & StyleProps) => {
       direction === 'left'
         ? rect.left + rect.width - width - MIN_PADDING
         : direction === 'center'
-        ? rect.left + (rect.width - width) / 2 - MIN_PADDING
-        : rect.left - MIN_PADDING;
+          ? rect.left + (rect.width - width) / 2 - MIN_PADDING
+          : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-        ? rect.top - dialogHeight / 2 + rect.height / 2
-        : rect.top - MIN_PADDING;
+          ? rect.top - dialogHeight / 2 + rect.height / 2
+          : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -175,7 +182,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
       }
     }
     setCoordinates(coordinatesRef.current);
-  }, [position, width]);
+  }, [position, width, anchorRef, coordinatesRef, dialogRef]);
 
   const handleScroll = useCallback(() => {
     setPosition();
@@ -184,19 +191,104 @@ export const MDSPopover = (props: Props & StyleProps) => {
     const offsetTop = (scrollOffsetRef.current as HTMLElement)?.offsetTop || 0;
 
     if (y < offsetTop) {
-      handleClosePopover();
+      onClosePopover();
     } else {
       const bottom = y + (dialogRef.current?.clientHeight || 0);
       const max = offsetTop + (scrollOffsetRef.current?.clientHeight || 0);
       if (bottom >= max) {
-        handleClosePopover();
+        onClosePopover();
       }
     }
-    // intentional missing handleClosePopover
+  }, [setPosition, coordinatesRef, dialogRef, scrollOffsetRef, onClosePopover]);
+
+  const children = isLoading ? (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <MDSIcon.IndicatorCircle size={24} />
+    </div>
+  ) : typeof _children === 'function' ? (
+    _children({
+      close: onClosePopover,
+    })
+  ) : (
+    _children
+  );
+
+  const dialog = (
+    <Dialog
+      as={!hasDim ? 'div' : undefined}
+      ref={dialogRef}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={onClosePopover}
+      style={{ transform: `translate(${coordinates.x}px, ${coordinates.y}px)` }}
+    >
+      <DialogContent
+        width={`${width}px`}
+        maxHeight={`${maxHeight}px`}
+        padding={padding}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </DialogContent>
+    </Dialog>
+  );
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      setPosition();
+    });
+
+    observer.observe(document.body);
+
+    return () => {
+      observer.disconnect();
+    };
   }, [setPosition]);
+
+  useEffect(() => {
+    if (isOpen) {
+      focusRef.current = true;
+      if (hasDim) {
+        dialogRef.current?.showModal();
+      } else if (anchorRef.current) {
+        scrollOffsetRef.current = findScrollOffset(anchorRef.current);
+        scrollOffsetRef.current?.addEventListener('scroll', handleScroll);
+        dialogRef.current?.toggleAttribute('open');
+      }
+      setPosition();
+    } else {
+      scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll, isOpen, setPosition, hasDim, anchorRef, dialogRef, focusRef, scrollOffsetRef]);
+
+  return isOpen ? (hasDim ? dialog : createPortal(dialog, document.body)) : undefined;
+};
+
+/**
+ * @description 특정 Element 의 위치를 기준으로 생성되는 Popover
+ * @param {ReactElement} props.anchor 모달의 기준이 되는 element
+ * @param {PopoverTrigger} [props.trigger] 모달 열리는 액션
+ * @param {PopoverPosition} [props.posiiton] 모달의 anchor에 대한 상대적 위치
+ * @param {boolean} [props.hasDim] 배경 dim 의 유/무
+ * @param props.children ReactElement | (onClose) => ReactElement
+ */
+export const MDSPopover = (props: Props & StyleProps) => {
+  const { anchor: _anchor, hasDim = true, trigger = 'click' } = props;
+
+  const anchorRef = useRef<(EventTarget & Element) | null>(null);
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const scrollOffsetRef = useRef<Element>();
+  const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
+  const focusRef = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenPopover = (e: MouseEvent) => {
     anchorRef.current = e.currentTarget;
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
     setIsOpen(true);
   };
 
@@ -204,15 +296,12 @@ export const MDSPopover = (props: Props & StyleProps) => {
     if (hasDim) {
       dialogRef.current?.close();
     } else {
-      if (scrollOffsetRef.current) {
-        scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
-      }
       dialogRef.current?.toggleAttribute('open');
     }
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 300);
-  }, [hasDim, handleScroll]);
+  }, [hasDim]);
 
   const handleMouseEnter = () => {
     focusRef.current = true;
@@ -253,64 +342,6 @@ export const MDSPopover = (props: Props & StyleProps) => {
     onMouseLeave: handleMouseLeave,
   });
 
-  const children = isLoading ? (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <MDSIcon.IndicatorCircle size={24} />
-    </div>
-  ) : typeof _children === 'function' ? (
-    _children({
-      close: handleClosePopover,
-    })
-  ) : (
-    _children
-  );
-
-  const dialog = (
-    <Dialog
-      as={!hasDim ? 'div' : undefined}
-      ref={dialogRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClosePopover}
-      style={{ transform: `translate(${coordinates.x}px, ${coordinates.y}px)` }}
-    >
-      <DialogContent
-        width={`${width}px`}
-        maxHeight={`${maxHeight}px`}
-        padding={padding}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {children}
-      </DialogContent>
-    </Dialog>
-  );
-
-  useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      setPosition();
-    });
-
-    observer.observe(document.body);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [setPosition]);
-
-  useEffect(() => {
-    if (isOpen) {
-      focusRef.current = true;
-      if (hasDim) {
-        dialogRef.current?.showModal();
-      } else if (anchorRef.current) {
-        scrollOffsetRef.current = findScrollOffset(anchorRef.current);
-        scrollOffsetRef.current?.addEventListener('scroll', handleScroll);
-        dialogRef.current?.toggleAttribute('open');
-      }
-      setPosition();
-    }
-  }, [handleScroll, isOpen, setPosition, hasDim]);
-
   useEffect(() => {
     if (!hasDim && trigger === 'click') {
       const handleBodyClick = (e: Event) => {
@@ -332,7 +363,20 @@ export const MDSPopover = (props: Props & StyleProps) => {
   return (
     <>
       {anchorEle}
-      {isOpen ? (hasDim ? dialog : createPortal(dialog, document.body)) : undefined}
+      <Popover
+        {...props}
+        isOpen={isOpen}
+        anchorRef={anchorRef}
+        dialogRef={dialogRef}
+        coordinatesRef={coordinatesRef}
+        scrollOffsetRef={scrollOffsetRef}
+        focusRef={focusRef}
+        onClosePopover={handleClosePopover}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {props.children}
+      </Popover>
     </>
   );
 };

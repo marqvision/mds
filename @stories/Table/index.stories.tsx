@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { MDSTable } from '../../components';
+import { MDSTable, MDSTypography } from '../../components';
 
 const meta: Meta<typeof MDSTable> = {
   title: '2. Components/Table',
@@ -489,6 +489,76 @@ export const CellBorderRight: StoryObj<typeof MDSTable> = {
           </MDSTable.Cell>
           <MDSTable.Cell>4-2</MDSTable.Cell>
           <MDSTable.Cell>4-3</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Body>
+    </MDSTable>
+  ),
+};
+
+export const NestedTable: StoryObj<typeof MDSTable> = {
+  parameters: {
+    controls: { expanded: true },
+    docs: {
+      description: {
+        story: '테이블 내 테이블이 포함될 때, hover 스타일 및 padding 이 초기화되고 상단에 그림자 효과가 추가됩니다.',
+      },
+    },
+  },
+  render: (_) => (
+    <MDSTable>
+      <MDSTable.Head>
+        <MDSTable.Row>
+          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell>head</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Head>
+      <MDSTable.Body>
+        <MDSTable.Row>
+          <MDSTable.Cell>1-1</MDSTable.Cell>
+          <MDSTable.Cell>1-2</MDSTable.Cell>
+          <MDSTable.Cell>1-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row isNested variant="secondary">
+          <MDSTable.Cell colSpan={3}>
+            <div style={{ padding: '12px' }}>
+              <MDSTypography weight="medium">
+                row 에 isNested 설정 시 cell 하위에 복잡한 요소를 넣을 수 있는 디자인이 적용됩니다.
+              </MDSTypography>
+              <MDSTypography>padding 이 초기화 되고 hover 효과가 사라지며, 내부에 그림자가 추가됩니다.</MDSTypography>
+            </div>
+
+            <MDSTable>
+              <MDSTable.Head>
+                <MDSTable.Row variant="secondary">
+                  <MDSTable.Cell>head</MDSTable.Cell>
+                  <MDSTable.Cell>head</MDSTable.Cell>
+                  <MDSTable.Cell>head</MDSTable.Cell>
+                </MDSTable.Row>
+              </MDSTable.Head>
+              <MDSTable.Body>
+                <MDSTable.Row variant="secondary">
+                  <MDSTable.Cell>1-1</MDSTable.Cell>
+                  <MDSTable.Cell>1-2</MDSTable.Cell>
+                  <MDSTable.Cell>1-3</MDSTable.Cell>
+                </MDSTable.Row>
+                <MDSTable.Row variant="secondary">
+                  <MDSTable.Cell>2-1</MDSTable.Cell>
+                  <MDSTable.Cell>2-2</MDSTable.Cell>
+                  <MDSTable.Cell>2-3</MDSTable.Cell>
+                </MDSTable.Row>
+              </MDSTable.Body>
+            </MDSTable>
+
+            <div style={{ textAlign: 'center', padding: '12px' }}>
+              <MDSTypography weight="medium">View more</MDSTypography>
+            </div>
+          </MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>3-1</MDSTable.Cell>
+          <MDSTable.Cell>3-2</MDSTable.Cell>
+          <MDSTable.Cell>3-3</MDSTable.Cell>
         </MDSTable.Row>
       </MDSTable.Body>
     </MDSTable>

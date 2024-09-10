@@ -29,6 +29,8 @@ export type StyledTableRowProps = {
   // 설정 시 viewing details background color 가 적용됩니다
   variant?: 'default' | 'secondary';
   isSelected?: boolean;
+  // 설정 시 cell 내 테이블 등 다른 복잡한 요소를 넣을 수 있도록 padding, hover style 이 초기화되고 내부 그림자가 추가됩니다.
+  isNested?: boolean;
 };
 
 // Table row

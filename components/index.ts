@@ -9,3 +9,4 @@ export * from './Chip';
 export * from './Checkbox';
 export * from './Tag';
 export * from './RadioButton';
+export * from './Popover';

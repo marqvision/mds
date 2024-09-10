@@ -22,7 +22,7 @@ const Wrapper = styled.td<StyledTableCellProps>`
   ${({ borderRight }) => resolveBorderStyles(borderRight)}
   vertical-align: ${({ valign }) => valign};
 
-  tr:has(+ :not([data-nested])) > td&,
+  tr:has(+ :not([data-container])) > td&,
   tr:last-of-type > td& {
     border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.horizontal.body};
   }

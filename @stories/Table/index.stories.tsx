@@ -519,11 +519,11 @@ export const NestedTable: StoryObj<typeof MDSTable> = {
           <MDSTable.Cell>1-2</MDSTable.Cell>
           <MDSTable.Cell>1-3</MDSTable.Cell>
         </MDSTable.Row>
-        <MDSTable.Row isNested variant="secondary">
+        <MDSTable.Row isContainer variant="secondary">
           <MDSTable.Cell colSpan={3}>
             <div style={{ padding: '12px' }}>
               <MDSTypography weight="medium">
-                row 에 isNested 설정 시 cell 하위에 복잡한 요소를 넣을 수 있는 디자인이 적용됩니다.
+                row 에 isContainer 설정 시 cell 하위에 복잡한 요소를 넣을 수 있는 디자인이 적용됩니다.
               </MDSTypography>
               <MDSTypography>padding 이 초기화 되고 hover 효과가 사라지며, 내부에 그림자가 추가됩니다.</MDSTypography>
             </div>

@@ -4,8 +4,8 @@ import { StyledTableRowProps, TableRowProps } from './@types';
 
 const Wrapper = styled.tr<StyledTableRowProps>`
   ${({ onClick }) => onClick && 'cursor: pointer;'}
-  ${({ isNested }) =>
-    isNested
+  ${({ isContainer }) =>
+    isContainer
       ? `
         tbody > & {
           position: relative;
@@ -40,16 +40,16 @@ const Wrapper = styled.tr<StyledTableRowProps>`
   tbody:has(td[rowspan]:hover) & > td,
   tbody:has(td:not([rowspan]):hover) &:hover > td,
   tbody:has(td:not([rowspan]):hover) & > td[rowspan] {
-    background-color: ${({ variant = 'default', isSelected, isNested, theme }) =>
-      isNested ? '' : theme.color.comp.table.color.bg[isSelected ? 'viewing' : variant].hover};
+    background-color: ${({ variant = 'default', isSelected, isContainer, theme }) =>
+      isContainer ? '' : theme.color.comp.table.color.bg[isSelected ? 'viewing' : variant].hover};
   }
 `;
 
 export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>((props, ref) => {
-  const { children, isNested, ...restProps } = props;
+  const { children, isContainer, ...restProps } = props;
 
   return (
-    <Wrapper ref={ref} data-nested={isNested} isNested={isNested} {...restProps}>
+    <Wrapper ref={ref} data-container={isContainer} isContainer={isContainer} {...restProps}>
       {children}
     </Wrapper>
   );

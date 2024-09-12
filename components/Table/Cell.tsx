@@ -26,6 +26,20 @@ const Wrapper = styled.td<StyledTableCellProps>`
   tr:last-of-type > td& {
     border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.horizontal.body};
   }
+  
+  tr:has(+ [data-container]) > td& {
+    position: relative;
+    &:after {
+      position: absolute;
+      content: '';
+      display: unset;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) -10%, rgba(0, 0, 0, 0.04) 25%, rgba(0, 0, 0, 0) 100%);
+    }
+  }
 
   th& {
     ${({ theme }) => `

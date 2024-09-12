@@ -8,17 +8,6 @@ const Wrapper = styled.tr<StyledTableRowProps>`
     isContainer
       ? `
         tbody > & {
-          position: relative;
-          &:after {
-            position: absolute;
-            content: '';
-            display: unset;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) -10%, rgba(0, 0, 0, 0.04) 25%, rgba(0, 0, 0, 0) 100%);
-          }
           & > td, & > th {
             &:not([rowspan]) {
               &:first-of-type, &:last-of-type {

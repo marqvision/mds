@@ -18,7 +18,7 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }}
   ${({ onClick }) => onClick && 'cursor: pointer;'}
   ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
-  ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
+  ${({ maxWidth }) => maxWidth && `width: ${maxWidth};`}
   ${({ borderRight }) => resolveBorderStyles(borderRight)}
   vertical-align: ${({ valign }) => valign};
 
@@ -26,7 +26,7 @@ const Wrapper = styled.td<StyledTableCellProps>`
   tr:last-of-type > td& {
     border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.horizontal.body};
   }
-  
+
   tr:has(+ [data-container]) > td& {
     position: relative;
     &:after {

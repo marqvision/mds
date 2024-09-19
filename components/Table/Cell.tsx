@@ -58,8 +58,8 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }
 `;
 
-  padding: 12px;
 const CellBox = styled(MDSTypography)<TableCellInnerProps>`
+  padding: ${({ size }) => theme.cell.size[size].padding};
   text-align: ${({ align }) => align};
 `;
 
@@ -74,6 +74,7 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
         as={typeof children !== 'string' && typeof children !== 'number' ? 'div' : undefined}
         variant="T14"
         align={align}
+        size={size}
         color={color}
       >
         {children}

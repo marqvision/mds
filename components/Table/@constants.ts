@@ -66,5 +66,13 @@ export const theme: TableTheme = {
         borderColor: token.color.border.horizontal.body,
       },
     },
+    size: {
+      small: {
+        padding: '6.5px 8px',
+      },
+      medium: {
+        padding: '12px',
+      },
+    },
   },
 };

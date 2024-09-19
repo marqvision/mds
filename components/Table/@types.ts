@@ -51,6 +51,8 @@ export type BorderProps =
       color?: MDSThemeColorPath;
     };
 
+type CellSize = 'small' | 'medium';
+
 export type StyledTableCellProps = {
   // 직접 사용하지 않습니다.
   // head 내에서 cell 을 th 으로 출력하기 위해 사용합니다.
@@ -68,9 +70,19 @@ export type StyledTableCellProps = {
 export type TableCellInnerProps = {
   // cell 에 text-align 스타일을 부여합니다.
   align?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent' | 'justify-all';
+  size: CellSize;
 };
 
-export type TableCellProps = React.PropsWithChildren<StyledTableCellProps & TableCellInnerProps> &
+export type TableCellProps = React.PropsWithChildren<
+  {
+    /**
+     * cell 의 padding 스타일을 지정합니다.
+     * @default 'medium'
+     */
+    size?: CellSize;
+  } & StyledTableCellProps &
+    Omit<TableCellInnerProps, 'size'>
+> &
   Omit<TdHTMLAttributes<HTMLTableCellElement>, 'align'>;
 
 export type TableTheme = {
@@ -90,5 +102,6 @@ export type TableTheme = {
       horizontal: Record<'head' | 'body', { borderColor: string; }>;
       vertical: { borderColor: string; };
     };
+    size: Record<CellSize, { padding: string }>;
   };
 };

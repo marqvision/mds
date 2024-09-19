@@ -1,7 +1,7 @@
 import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
 import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../Typography/@utils';
-import { resolveColor } from '../../@system';
+import { theme } from './@constants';
 import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
 
 const Wrapper = styled.td<StyledTableCellProps>`
@@ -22,13 +22,14 @@ const Wrapper = styled.td<StyledTableCellProps>`
   ${({ borderRight }) => resolveBorderStyles(borderRight)}
   vertical-align: ${({ valign }) => valign};
 
-  tr:has(+ :not([data-container])) > td&,
-  tr:last-of-type > td& {
-    border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.horizontal.body};
+  tr:has(+ :not([data-container])) > td &,
+  tr:last-of-type > td & {
+    border-bottom: 1px solid ${theme.cell.color.horizontal.body.borderColor};
   }
 
-  tr:has(+ [data-container]) > td& {
+  tr:has(+ [data-container]) > td & {
     position: relative;
+
     &:after {
       position: absolute;
       content: '';
@@ -42,10 +43,8 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }
 
   th& {
-    ${({ theme }) => `
-      border-bottom: 1px solid ${theme.color.comp.table.color.border.horizontal.header};
-      color: ${theme.color.content.neutral.secondary.normal};
-    `}
+    border-bottom: 1px solid ${theme.cell.color.horizontal.head.borderColor};
+    color: ${theme.cell.color.horizontal.head.color};
   }
 
   th&:first-child,
@@ -81,7 +80,7 @@ const resolveBorderStyles = (props?: BorderProps) => {
   const borderStyles = {
     width: (props !== true && props.width) || 1,
     style: (props !== true && props.style) || 'solid',
-    color: resolveColor('color/comp/table/color/border/vertical/default'),
+    color: theme.cell.color.vertical.borderColor,
   };
 
   return `

@@ -25,10 +25,11 @@ export type TableHeadProps = {
 // Table body
 export type TBodyProps = React.PropsWithChildren & HTMLAttributes<HTMLTableSectionElement>;
 
+type TableRowVariant = 'default' | 'secondary' | 'viewing';
+
 export type StyledTableRowProps = {
   // 설정 시 viewing details background color 가 적용됩니다
-  variant?: 'default' | 'secondary';
-  isSelected?: boolean;
+  variant: TableRowVariant;
   // 설정 시 cell 내 테이블 등 다른 복잡한 요소를 넣을 수 있도록 padding, hover style 이 초기화되고 내부 그림자가 추가됩니다.
   isContainer?: boolean;
 };
@@ -36,8 +37,9 @@ export type StyledTableRowProps = {
 // Table row
 export type TableRowProps = {
   children: React.ReactElement | React.ReactElement[];
-  variant?: 'default' | 'secondary';
-} & StyledTableRowProps &
+  variant?: Extract<TableRowVariant, 'default' | 'secondary'>;
+  isSelected?: boolean;
+} & Omit<StyledTableRowProps, 'variant'> &
   HTMLAttributes<HTMLTableRowElement>;
 
 // Table cell
@@ -70,3 +72,33 @@ export type TableCellInnerProps = {
 
 export type TableCellProps = React.PropsWithChildren<StyledTableCellProps & TableCellInnerProps> &
   Omit<TdHTMLAttributes<HTMLTableCellElement>, 'align'>;
+
+export type TableTheme = {
+  row: {
+    color: Record<
+      TableRowVariant,
+      {
+        backgroundColor: {
+          normal: string;
+          hover: string;
+        };
+      }
+    >;
+  };
+  cell: {
+    color: {
+      horizontal: {
+        head: {
+          borderColor: string;
+          color: string;
+        };
+        body: {
+          borderColor: string;
+        };
+      };
+      vertical: {
+        borderColor: string;
+      };
+    };
+  };
+};

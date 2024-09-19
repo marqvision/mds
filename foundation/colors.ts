@@ -588,33 +588,6 @@ export const COLOR_TOKENS = {
         },
       },
     },
-    table: {
-      color: {
-        bg: {
-          default: {
-            normal: RAW_COLORS.white,
-            hover: RAW_COLORS.bluegray50,
-          },
-          secondary: {
-            normal: RAW_COLORS.bluegray50,
-            hover: RAW_COLORS.bluegray100,
-          },
-          viewing: {
-            normal: RAW_COLORS.blue50,
-            hover: RAW_COLORS.blue100,
-          },
-        },
-        border: {
-          horizontal: {
-            header: RAW_COLORS.bluegray200,
-            body: RAW_COLORS.bluegray100,
-          },
-          vertical: {
-            default: RAW_COLORS.bluegray150,
-          },
-        },
-      },
-    },
     dimmed: {
       color: {
         default: RAW_COLORS.blackAlpha50,

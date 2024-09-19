@@ -367,15 +367,6 @@ export const ComponentColorTokens = () => {
           </ColorPalette>
         </div>
         <div>
-          <MDSTypography variant="T20">table</MDSTypography>
-          <ColorPalette>
-            <Palette title="bg.default" colors={color.comp.table.color.bg.default} />
-            <Palette title="bg.viewing" colors={color.comp.table.color.bg.viewing} />
-            <Palette title="border.horizontal" colors={color.comp.table.color.border.horizontal} />
-            <Palette title="border.vertical" colors={color.comp.table.color.border.vertical} />
-          </ColorPalette>
-        </div>
-        <div>
           <MDSTypography variant="T20">dimmed</MDSTypography>
           <ColorPalette>
             <Palette title="_" colors={color.comp.dimmed.color} />

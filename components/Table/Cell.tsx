@@ -1,5 +1,6 @@
 import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
+import { MDSTypography } from '../Typography';
 import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../Typography/@utils';
 import { theme } from './@constants';
 import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
@@ -44,7 +45,6 @@ const Wrapper = styled.td<StyledTableCellProps>`
 
   th& {
     border-bottom: 1px solid ${theme.cell.color.horizontal.head.borderColor};
-    color: ${theme.cell.color.horizontal.head.color};
   }
 
   th&:first-child,
@@ -58,17 +58,26 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }
 `;
 
-const CellBox = styled.div<TableCellInnerProps>`
   padding: 12px;
+const CellBox = styled(MDSTypography)<TableCellInnerProps>`
   text-align: ${({ align }) => align};
 `;
 
 export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCellElement>) => {
-  const { children, align = 'left', valign = 'middle', ...restProps } = props;
+  const { children, align = 'left', valign = 'middle', size = 'medium', ...restProps } = props;
+
+  const color = props.as === 'th' ? 'color/content/neutral/secondary/normal' : undefined;
 
   return (
     <Wrapper ref={ref} valign={valign} {...restProps}>
-      <CellBox align={align}>{children}</CellBox>
+      <CellBox
+        as={typeof children !== 'string' && typeof children !== 'number' ? 'div' : undefined}
+        variant="T14"
+        align={align}
+        color={color}
+      >
+        {children}
+      </CellBox>
     </Wrapper>
   );
 });

@@ -87,18 +87,8 @@ export type TableTheme = {
   };
   cell: {
     color: {
-      horizontal: {
-        head: {
-          borderColor: string;
-          color: string;
-        };
-        body: {
-          borderColor: string;
-        };
-      };
-      vertical: {
-        borderColor: string;
-      };
+      horizontal: Record<'head' | 'body', { borderColor: string; }>;
+      vertical: { borderColor: string; };
     };
   };
 };

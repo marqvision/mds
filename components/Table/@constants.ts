@@ -1,4 +1,3 @@
-import { resolveColor } from '../../@system';
 import { RAW_COLORS } from '../../foundation/colors';
 import { TableTheme } from './@types';
 
@@ -58,7 +57,6 @@ export const theme: TableTheme = {
       horizontal: {
         head: {
           borderColor: token.color.border.horizontal.header,
-          color: resolveColor('color/content/neutral/secondary/normal'),
         },
         body: {
           borderColor: token.color.border.horizontal.body,

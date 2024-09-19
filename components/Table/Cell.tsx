@@ -7,7 +7,6 @@ import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps 
 const Wrapper = styled.td<StyledTableCellProps>`
   padding: 0;
   box-sizing: content-box;
-  border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.horizontal.body};
   ${() => {
     const fontSize = resolveFontSize('T14');
     const fontWeightStyles = resolveFontWeightStyles('regular');
@@ -22,6 +21,25 @@ const Wrapper = styled.td<StyledTableCellProps>`
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
   ${({ borderRight }) => resolveBorderStyles(borderRight)}
   vertical-align: ${({ valign }) => valign};
+
+  tr:has(+ :not([data-container])) > td&,
+  tr:last-of-type > td& {
+    border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.horizontal.body};
+  }
+  
+  tr:has(+ [data-container]) > td& {
+    position: relative;
+    &:after {
+      position: absolute;
+      content: '';
+      display: unset;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) -10%, rgba(0, 0, 0, 0.04) 25%, rgba(0, 0, 0, 0) 100%);
+    }
+  }
 
   th& {
     ${({ theme }) => `

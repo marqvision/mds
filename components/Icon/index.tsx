@@ -189,6 +189,8 @@ export const MDSIcon = {
   Regenerate: createIcon(Symbols.Regenerate),
   Block: createIcon(Symbols.Block),
   History: createIcon(Symbols.History),
+  Web: createIcon(Symbols.Web),
+  Domain: createIcon(Symbols.Domain),
 
   // editor
   Bold: createIcon(Editor.Bold),

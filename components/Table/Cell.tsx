@@ -1,7 +1,8 @@
 import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
+import { MDSTypography } from '../Typography';
 import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../Typography/@utils';
-import { resolveColor } from '../../@system';
+import { theme } from './@constants';
 import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
 
 const Wrapper = styled.td<StyledTableCellProps>`
@@ -22,13 +23,14 @@ const Wrapper = styled.td<StyledTableCellProps>`
   ${({ borderRight }) => resolveBorderStyles(borderRight)}
   vertical-align: ${({ valign }) => valign};
 
-  tr:has(+ :not([data-container])) > td&,
-  tr:last-of-type > td& {
-    border-bottom: 1px solid ${({ theme }) => theme.color.comp.table.color.border.horizontal.body};
+  tr:has(+ :not([data-container])) > td &,
+  tr:last-of-type > td & {
+    border-bottom: 1px solid ${theme.cell.color.horizontal.body.borderColor};
   }
 
-  tr:has(+ [data-container]) > td& {
+  tr:has(+ [data-container]) > td & {
     position: relative;
+
     &:after {
       position: absolute;
       content: '';
@@ -42,10 +44,7 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }
 
   th& {
-    ${({ theme }) => `
-      border-bottom: 1px solid ${theme.color.comp.table.color.border.horizontal.header};
-      color: ${theme.color.content.neutral.secondary.normal};
-    `}
+    border-bottom: 1px solid ${theme.cell.color.horizontal.head.borderColor};
   }
 
   th&:first-child,
@@ -59,17 +58,27 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }
 `;
 
-const CellBox = styled.div<TableCellInnerProps>`
-  padding: 12px;
+const CellBox = styled(MDSTypography)<TableCellInnerProps>`
+  padding: ${({ size }) => theme.cell.size[size].padding};
   text-align: ${({ align }) => align};
 `;
 
 export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCellElement>) => {
-  const { children, align = 'left', valign = 'middle', ...restProps } = props;
+  const { children, align = 'left', valign = 'middle', size = 'medium', ...restProps } = props;
+
+  const color = props.as === 'th' ? 'color/content/neutral/secondary/normal' : undefined;
 
   return (
     <Wrapper ref={ref} valign={valign} {...restProps}>
-      <CellBox align={align}>{children}</CellBox>
+      <CellBox
+        as={typeof children !== 'string' && typeof children !== 'number' ? 'div' : undefined}
+        variant="T14"
+        align={align}
+        size={size}
+        color={color}
+      >
+        {children}
+      </CellBox>
     </Wrapper>
   );
 });
@@ -81,7 +90,7 @@ const resolveBorderStyles = (props?: BorderProps) => {
   const borderStyles = {
     width: (props !== true && props.width) || 1,
     style: (props !== true && props.style) || 'solid',
-    color: resolveColor('color/comp/table/color/border/vertical/default'),
+    color: theme.cell.color.vertical.borderColor,
   };
 
   return `

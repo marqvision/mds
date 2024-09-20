@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { MDSTable, MDSTypography } from '../../components';
+import { MDSCheckbox, MDSChip, MDSTable, MDSTypography } from '../../components';
 
 const meta: Meta<typeof MDSTable> = {
   title: '2. Components/Table',
@@ -23,6 +23,48 @@ export const Preview: StoryObj<typeof MDSTable> = {
           <MDSTable.Cell>head</MDSTable.Cell>
           <MDSTable.Cell>head</MDSTable.Cell>
           <MDSTable.Cell>head</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Head>
+      <MDSTable.Body>
+        <MDSTable.Row>
+          <MDSTable.Cell>1-1</MDSTable.Cell>
+          <MDSTable.Cell>1-2</MDSTable.Cell>
+          <MDSTable.Cell>1-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>2-1</MDSTable.Cell>
+          <MDSTable.Cell>2-2</MDSTable.Cell>
+          <MDSTable.Cell>2-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>3-1</MDSTable.Cell>
+          <MDSTable.Cell>3-2</MDSTable.Cell>
+          <MDSTable.Cell>3-3</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Body>
+    </MDSTable>
+  ),
+};
+
+export const CellSize: StoryObj<typeof MDSTable> = {
+  parameters: {
+    controls: { expanded: true },
+    docs: {
+      description: {
+        story: 'cell 의 사이즈를 결정할 수 있습니다. 이 값에 따라 padding 사이즈가 변경됩니다.',
+      },
+    },
+  },
+  render: (_) => (
+    <MDSTable>
+      <MDSTable.Head>
+        <MDSTable.Row variant="secondary">
+          <MDSTable.Cell size="small" colSpan={3}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <MDSCheckbox value={true} onChange={() => {}} />
+              <MDSChip variant="fill" size="medium" color="blue">Enforce</MDSChip>
+            </div>
+          </MDSTable.Cell>
         </MDSTable.Row>
       </MDSTable.Head>
       <MDSTable.Body>

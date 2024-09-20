@@ -23,12 +23,12 @@ const Wrapper = styled.td<StyledTableCellProps>`
   ${({ borderRight }) => resolveBorderStyles(borderRight)}
   vertical-align: ${({ valign }) => valign};
 
-  tr:has(+ :not([data-container])) > td &,
-  tr:last-of-type > td & {
+  tr:has(+ :not([data-container])) > td&,
+  tr:last-of-type > td& {
     border-bottom: 1px solid ${theme.cell.color.horizontal.body.borderColor};
   }
 
-  tr:has(+ [data-container]) > td & {
+  tr:has(+ [data-container]) > td& {
     position: relative;
 
     &:after {

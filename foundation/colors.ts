@@ -59,6 +59,7 @@ export const RAW_COLORS = {
   yellow600: '#f1a416',
   yellow700: '#ca8402',
   yellow800: '#9b6500',
+  yellow850: '#6a4300',
   yellow900: '#4c3000',
   green50: '#e5f7e5',
   green100: '#ccefcc',
@@ -400,8 +401,8 @@ export const COLOR_TOKENS = {
     },
     warning: {
       default: {
-        normal: RAW_COLORS.yellow700,
-        hover: RAW_COLORS.yellow800,
+        normal: RAW_COLORS.yellow800,
+        hover: RAW_COLORS.yellow850,
         completed: RAW_COLORS.bluegray600,
         disabled: RAW_COLORS.yellow300,
       },

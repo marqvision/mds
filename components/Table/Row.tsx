@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import styled from '@emotion/styled';
+import { theme } from './@constants';
 import { StyledTableRowProps, TableRowProps } from './@types';
 
 const Wrapper = styled.tr<StyledTableRowProps>`
@@ -22,23 +23,24 @@ const Wrapper = styled.tr<StyledTableRowProps>`
       `
       : ''}
   & > td, & > th {
-    background-color: ${({ variant = 'default', isSelected, theme }) =>
-      theme.color.comp.table.color.bg[isSelected ? 'viewing' : variant].normal};
+    background-color: ${({ variant }) => theme.row.color[variant].backgroundColor.normal};
   }
 
   tbody:has(td[rowspan]:hover) & > td,
   tbody:has(td:not([rowspan]):hover) &:hover > td,
   tbody:has(td:not([rowspan]):hover) & > td[rowspan] {
-    background-color: ${({ variant = 'default', isSelected, isContainer, theme }) =>
-      isContainer ? '' : theme.color.comp.table.color.bg[isSelected ? 'viewing' : variant].hover};
+    background-color: ${({ variant, isContainer }) =>
+      isContainer ? '' : theme.row.color[variant].backgroundColor.hover};
   }
 `;
 
 export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>((props, ref) => {
-  const { children, isContainer, ...restProps } = props;
+  const { children, isContainer, variant = 'default', isSelected, ...restProps } = props;
+
+  const RowVariant: StyledTableRowProps['variant'] = isSelected ? 'viewing' : variant;
 
   return (
-    <Wrapper ref={ref} data-container={isContainer} isContainer={isContainer} {...restProps}>
+    <Wrapper ref={ref} data-container={isContainer} variant={RowVariant} isContainer={isContainer} {...restProps}>
       {children}
     </Wrapper>
   );

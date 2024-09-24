@@ -192,6 +192,8 @@ export const MDSIcon = {
   Siren: createIcon(Symbols.Siren),
   TrendingUp: createIcon(Symbols.TrendingUp),
   TrendingDown: createIcon(Symbols.TrendingDown),
+  Web: createIcon(Symbols.Web),
+  Domain: createIcon(Symbols.Domain),
 
   // editor
   Bold: createIcon(Editor.Bold),

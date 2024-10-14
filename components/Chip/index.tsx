@@ -181,7 +181,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       variant={variant}
       color={color}
       width={width}
-      as={!isLoading && onClick ? 'button' : 'div'}
+      as={onClick ? 'button' : 'div'}
       isLoading={isLoading}
       isClickable={!isLoading && !!onClick}
       onClick={handleClick}

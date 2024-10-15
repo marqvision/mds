@@ -62,9 +62,7 @@ const Dialog = styled.dialog`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow:
-    0 0 2px 0 rgba(0, 0, 0, 0.16),
-    0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
@@ -141,15 +139,15 @@ const Popover = (
       direction === 'left'
         ? rect.left + rect.width - width - MIN_PADDING
         : direction === 'center'
-          ? rect.left + (rect.width - width) / 2 - MIN_PADDING
-          : rect.left - MIN_PADDING;
+        ? rect.left + (rect.width - width) / 2 - MIN_PADDING
+        : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-          ? rect.top - dialogHeight / 2 + rect.height / 2
-          : rect.top - MIN_PADDING;
+        ? rect.top - dialogHeight / 2 + rect.height / 2
+        : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -328,7 +326,11 @@ export const MDSPopover = (props: Props & StyleProps) => {
       : {
           onClick: (e: MouseEvent) => {
             if (trigger === 'click') {
-              handleOpenPopover(e);
+              if (isOpen) {
+                handleClosePopover();
+              } else {
+                handleOpenPopover(e);
+              }
             }
             anchor.props.onClick?.(e);
           },
@@ -352,10 +354,10 @@ export const MDSPopover = (props: Props & StyleProps) => {
         }
       };
       if (isOpen) {
-        document.body.addEventListener('click', handleBodyClick);
+        document.body.addEventListener('click', handleBodyClick, { capture: true });
       }
       return () => {
-        document.body.removeEventListener('click', handleBodyClick);
+        document.body.removeEventListener('click', handleBodyClick, { capture: true });
       };
     }
   }, [hasDim, trigger, isOpen, handleClosePopover]);

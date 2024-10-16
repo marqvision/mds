@@ -66,6 +66,8 @@ export type IconVariant = {
   ThumbUp: VariantSet['OutlineFill'];
   ThumbDown: VariantSet['OutlineFill'];
   Siren: VariantSet['OutlineFill'];
+  Chat: VariantSet['OutlineFill'];
+  Shopping: VariantSet['OutlineFill'];
 
   // Editor
   Circle: VariantSet['OutlineFill'] | 'outline_small' | 'fill_small';

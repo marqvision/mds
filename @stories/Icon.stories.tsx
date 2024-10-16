@@ -149,7 +149,8 @@ const IconVariant = {
   ThumbUp: VariantSet['OutlineFill'],
   ThumbDown: VariantSet['OutlineFill'],
   Siren: VariantSet['OutlineFill'],
-
+  Shopping: VariantSet['OutlineFill'],
+  Chat: VariantSet['OutlineFill'],
 
   // Editor
   Circle: [...VariantSet['OutlineFill'], 'outline_small', 'fill_small'],

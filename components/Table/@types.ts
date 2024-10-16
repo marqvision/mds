@@ -60,9 +60,9 @@ export type StyledTableCellProps = {
   // cell 내용의 세로 정렬 위치를 지정합니다.
   valign?: 'bottom' | 'top' | 'middle' | 'baseline';
   // cell 의 max-width 를 지정합니다.
-  maxWidth?: string | number;
+  maxWidth?: string;
   // cell 의 min-width 를 지정합니다.
-  minWidth?: string | number;
+  minWidth?: string;
   // cell 의 border-right 를 지정합니다.
   borderRight?: BorderProps;
 };
@@ -99,8 +99,8 @@ export type TableTheme = {
   };
   cell: {
     color: {
-      horizontal: Record<'head' | 'body', { borderColor: string; }>;
-      vertical: { borderColor: string; };
+      horizontal: Record<'head' | 'body', { borderColor: string }>;
+      vertical: { borderColor: string };
     };
     size: Record<CellSize, { padding: string }>;
   };

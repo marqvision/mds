@@ -18,8 +18,8 @@ const Wrapper = styled.td<StyledTableCellProps>`
     `;
   }}
   ${({ onClick }) => onClick && 'cursor: pointer;'}
-  ${({ minWidth }) => minWidth && `min-width: ${typeof minWidth === 'number' ? `${minWidth}px` : minWidth};`}
-  ${({ maxWidth }) => maxWidth && `width: ${typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth};`}
+  ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
+  ${({ maxWidth }) => maxWidth && `width: ${maxWidth};`}
   ${({ borderRight }) => resolveBorderStyles(borderRight)}
   vertical-align: ${({ valign }) => valign};
 

@@ -63,6 +63,8 @@ export type StyledTableCellProps = {
   maxWidth?: string;
   // cell 의 min-width 를 지정합니다.
   minWidth?: string;
+  // cell 의 width 를 지정합니다.
+  width?: string;
   // cell 의 border-right 를 지정합니다.
   borderRight?: BorderProps;
 };

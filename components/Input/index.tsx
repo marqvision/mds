@@ -23,10 +23,11 @@ export const MDSInput = <T,>(props: Props<T>) => {
     isDisabled,
     isReadOnly,
     isError,
-    modules,
-    onChange,
+    custom,
     list,
     format,
+    onChange,
+    onBlur,
     style,
   } = props;
 
@@ -35,28 +36,29 @@ export const MDSInput = <T,>(props: Props<T>) => {
       {type === 'textFiled' && (
         <TextField
           {...({
-            value: value,
-            size: size,
-            modules: modules,
-            inputProps: inputProps,
+            value,
+            size,
+            custom,
+            inputProps,
             isDisabled: isDisabled || isReadOnly,
-            isError: isError,
-            placeholder: placeholder,
-            format: format,
-            onChange: onChange,
+            isError,
+            placeholder,
+            format,
+            onChange,
+            onBlur,
           } as TextFiledProps)}
         />
       )}
       {type === 'select' && (
         <Select<T>
           {...({
-            value: value,
+            value,
             list: list || [],
-            size: size,
+            size,
             isDisabled: isDisabled || isReadOnly,
-            isError: isError,
-            format: format,
-            placeholder: placeholder,
+            isError,
+            format,
+            placeholder,
           } as Omit<SelectProps<T>, 'type'>)}
         />
       )}

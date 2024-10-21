@@ -1,68 +1,85 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { CommonProps, Size, TextFiledProps } from '../@types';
-import { theme } from '../@constants';
+import { MDSIcon } from '../../Icon';
 import { AddButton } from './AddButton';
-import { StyledOutline } from './@styled';
+import { StyledBaseLabel, StyledOutline } from './@styled';
 
-const StyledLabel = styled.label<{ size: Size; isError?: boolean }>`
-  border-radius: 4px;
+const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
   height: 26px;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  min-height: ${({ size }) => theme.size[size].height};
-  position: relative;
-  transition: outline ${theme.transitionTiming} ease;
   width: 100%;
-  &:focus-within {
-    outline: ${({ isError }) =>
-      `3px solid ${isError ? theme.color.border['error-focus-effect'] : theme.color.border['focus-effect']}`};
-  }
 `;
 
-/* 우측에 버튼이 추가되며 클릭시 value를 리턴함 */
-export type Add = {
-  type: 'add';
-  label?: string;
-  onSubmit: (value: string) => void;
-};
+const StyledInput = styled.input`
+  width: 100%;
+  height: 100%;
+`;
 
-export type Enter = {
-  type: 'enter';
-  label?: never;
-  onSubmit: (value: string) => void;
-};
+const StyledIcon = styled(MDSIcon.CloseDelete)``;
 
 type Props = CommonProps & TextFiledProps;
 
 export const TextField = (props: Props) => {
-  const { value: _value, modules, size = 'medium', inputProps, isDisabled, isError, placeholder, onChange } = props;
+  const { value, custom, size = 'medium', inputProps, isDisabled, isError, placeholder, onChange, onBlur } = props;
 
-  const [value, setValue] = useState<string>(_value);
+  const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
 
-  const add = modules?.find((module) => module.type === 'add') as Add | undefined;
+  const lastValueRef = useRef('');
+  const debounceRef = useRef<number>();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const add = custom?.add;
+  const debounce = custom?.debounce || 0;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.currentTarget.value;
-    setValue(newValue);
-    // onChange?.(newValue);
+    lastValueRef.current = value;
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    setIsDebouncing(true);
+    debounceRef.current = window.setTimeout(() => {
+      onChange?.(e.target.value);
+      setIsDebouncing(false);
+    }, debounce);
   };
+
+  const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
+    onBlur?.(e.target.value);
+  };
+
+  const handleDelete = () => {
+    onChange?.('');
+    onBlur?.('');
+  };
+
+  useEffect(() => {
+    const input = inputRef.current;
+
+    if (input && !isDebouncing) {
+      if (value !== lastValueRef.current) {
+        input.value = value;
+        lastValueRef.current = value;
+      }
+    }
+  }, [value, isDebouncing]);
 
   return (
     <StyledLabel size={size} isError={isError}>
-      <StyledOutline
-        as="input"
-        {...inputProps}
-        title={value}
-        customSize={size}
-        hasAdd={!!add}
-        value={value}
-        disabled={isDisabled}
-        isError={isError}
-        placeholder={placeholder}
-        onChange={handleChange}
-      />
+      <StyledOutline customSize={size} hasAdd={!!add} disabled={isDisabled} isError={isError}>
+        <StyledInput
+          ref={inputRef}
+          {...inputProps}
+          title={value}
+          disabled={isDisabled}
+          placeholder={placeholder}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        {!!value && <StyledIcon variant="border" size={16} onClick={handleDelete} />}
+      </StyledOutline>
       {add && (
         <AddButton
           label={add.label}

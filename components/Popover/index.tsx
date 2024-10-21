@@ -271,7 +271,7 @@ const Popover = (
  * @param props.children ReactElement | (onClose) => ReactElement
  */
 export const MDSPopover = (props: Props & StyleProps) => {
-  const { anchor: _anchor, hasDim = true, trigger = 'click', onClose } = props;
+  const { anchor: _anchor, hasDim = true, trigger = 'click', delay = 300, onClose } = props;
 
   const anchorRef = useRef<(EventTarget & Element) | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -291,16 +291,16 @@ export const MDSPopover = (props: Props & StyleProps) => {
   };
 
   const handleClosePopover = useCallback(() => {
-    onClose?.();
     if (hasDim) {
       dialogRef.current?.close();
     } else {
       dialogRef.current?.toggleAttribute('open');
     }
     timeoutRef.current = setTimeout(() => {
+      onClose?.(); // @note-jamie: If-else 문 전에 호출하면 창이 닫혔다가 열렸다가 delay 후에 닫힘
       setIsOpen(false);
-    }, 300);
-  }, [hasDim, onClose]);
+    }, delay);
+  }, [delay, hasDim, onClose]);
 
   const handleMouseEnter = () => {
     focusRef.current = true;

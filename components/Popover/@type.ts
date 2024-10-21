@@ -48,8 +48,13 @@ export type Props = {
   position?: PopoverPosition;
   /**
    * (onClose) => ReactElement or ReactElement
-   */
+   */ 
   isLoading?: boolean;
+  /**
+   * @default 300ms
+   * @description 모달이 열리고 닫히는 시간
+   */
+  delay?: number;
   children: ((handler: { close: () => void }) => ReactElement | ReactElement[]) | ReactElement | ReactElement[];
   onClose?: () => void;
 } & (ClickProps | HoverProps);

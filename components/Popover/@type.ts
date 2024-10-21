@@ -51,6 +51,7 @@ export type Props = {
    */
   isLoading?: boolean;
   children: ((handler: { close: () => void }) => ReactElement | ReactElement[]) | ReactElement | ReactElement[];
+  onClose?: () => void;
 } & (ClickProps | HoverProps);
 
 export type StyleProps = {

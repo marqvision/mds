@@ -271,7 +271,7 @@ const Popover = (
  * @param props.children ReactElement | (onClose) => ReactElement
  */
 export const MDSPopover = (props: Props & StyleProps) => {
-  const { anchor: _anchor, hasDim = true, trigger = 'click' } = props;
+  const { anchor: _anchor, hasDim = true, trigger = 'click', onClose } = props;
 
   const anchorRef = useRef<(EventTarget & Element) | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -291,6 +291,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
   };
 
   const handleClosePopover = useCallback(() => {
+    onClose?.();
     if (hasDim) {
       dialogRef.current?.close();
     } else {
@@ -299,7 +300,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 300);
-  }, [hasDim]);
+  }, [hasDim, onClose]);
 
   const handleMouseEnter = () => {
     focusRef.current = true;

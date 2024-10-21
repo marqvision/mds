@@ -279,7 +279,6 @@ export const MDSPopover = (props: Props & StyleProps) => {
   const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
   const focusRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
-  const onCloseRef = useRef(onClose);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -292,7 +291,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
   };
 
   const handleClosePopover = useCallback(() => {
-    onCloseRef.current?.();
+    onClose?.();
     if (hasDim) {
       dialogRef.current?.close();
     } else {
@@ -301,7 +300,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 300);
-  }, [hasDim]);
+  }, [hasDim, onClose]);
 
   const handleMouseEnter = () => {
     focusRef.current = true;

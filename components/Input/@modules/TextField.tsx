@@ -1,9 +1,10 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, isValidElement, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { CommonProps, Size, TextFiledProps } from '../@types';
+import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
+import { theme } from '../@constants';
 import { AddButton } from './AddButton';
-import { StyledBaseLabel, StyledOutline } from './@styled';
+import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
 const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
   height: 26px;
@@ -16,25 +17,67 @@ const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
 const StyledInput = styled.input`
   width: 100%;
   height: 100%;
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+  &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0,
+  },
 `;
 
-const StyledIcon = styled(MDSIcon.CloseDelete)``;
+const StyledPrefix = styled.div<{ size: Size }>`
+  cursor: default;
+  font-size: ${({ size }) => theme.size[size].fontSize};
+  color: ${({ theme }) => theme.color.content.neutral.secondary.normal};
+  flex: 0 0 auto;
+`;
 
-type Props = CommonProps & TextFiledProps;
+type Props = CommonProps & TextFieldProps;
 
 export const TextField = (props: Props) => {
-  const { value, custom, size = 'medium', inputProps, isDisabled, isError, placeholder, onChange, onBlur } = props;
+  const {
+    value,
+    custom,
+    size = 'medium',
+    inputProps,
+    isDisabled,
+    isError,
+    placeholder,
+    format,
+    onChange,
+    onBlur,
+  } = props;
 
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
+  const [isShowDelete, setIsShowDelete] = useState(false);
 
   const lastValueRef = useRef('');
   const debounceRef = useRef<number>();
   const inputRef = useRef<HTMLInputElement>(null);
+  const formatRef = useRef(format);
 
   const add = custom?.add;
   const debounce = custom?.debounce || 0;
+  const prefix = custom?.prefix;
+  const Prefix = prefix ? (
+    isValidElement(prefix) ? (
+      prefix
+    ) : (
+      <StyledPrefix size={size}>{prefix}</StyledPrefix>
+    )
+  ) : undefined;
+  const suffix = custom?.suffix;
+  const Suffix = suffix ? (
+    isValidElement(suffix) ? (
+      suffix
+    ) : (
+      <StyledPrefix size={size}>{suffix}</StyledPrefix>
+    )
+  ) : undefined;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsShowDelete(!!e.target.value);
     lastValueRef.current = value;
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
@@ -53,6 +96,12 @@ export const TextField = (props: Props) => {
   const handleDelete = () => {
     onChange?.('');
     onBlur?.('');
+    setIsShowDelete(false);
+
+    if (isDebouncing) {
+      setIsDebouncing(false);
+      clearTimeout(debounceRef.current);
+    }
   };
 
   useEffect(() => {
@@ -60,8 +109,10 @@ export const TextField = (props: Props) => {
 
     if (input && !isDebouncing) {
       if (value !== lastValueRef.current) {
-        input.value = value;
+        input.value = formatRef.current ? formatRef.current(value) : value;
         lastValueRef.current = value;
+
+        setIsShowDelete(!!value);
       }
     }
   }, [value, isDebouncing]);
@@ -69,6 +120,7 @@ export const TextField = (props: Props) => {
   return (
     <StyledLabel size={size} isError={isError}>
       <StyledOutline customSize={size} hasAdd={!!add} disabled={isDisabled} isError={isError}>
+        {Prefix}
         <StyledInput
           ref={inputRef}
           {...inputProps}
@@ -78,7 +130,14 @@ export const TextField = (props: Props) => {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {!!value && <StyledIcon variant="border" size={16} onClick={handleDelete} />}
+        {Suffix}
+        <StyledIcon
+          as={MDSIcon.CloseDelete}
+          variant="border"
+          size={16}
+          onClick={handleDelete}
+          className={isShowDelete ? 'show' : undefined}
+        />
       </StyledOutline>
       {add && (
         <AddButton

@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { Size } from '../@types';
 import { theme } from '../@constants';
+import { MDSIconProps } from '../../Icon';
 
 export const StyledOutline = styled.div<{
   customSize: Size;
@@ -20,14 +22,15 @@ export const StyledOutline = styled.div<{
       'line-height': '1.5',
       'font-size': theme.size[customSize].fontSize,
     },
-    padding: `0 ${theme.size[customSize].padding}`,
+    padding: `${theme.size[customSize].paddingY} ${theme.size[customSize].paddingX}`,
   })};
   transition: border-color ${theme.transitionTiming} ease, background-color ${theme.transitionTiming} ease;
   background-color: ${({ disabled }) => (disabled ? theme.color.bg.disabled : theme.color.bg.normal)};
   &:has(input:focus) {
     border-color: ${({ isError }) => theme.color.border[isError ? 'error' : 'active']};
   }
-  &:has(input[type='button']:not(:disabled)) {
+  &:has(input[type='button']:not(:disabled)),
+  &:has(button.chipList:not(:disabled)) {
     cursor: pointer;
   }
   & input[type='button'] {
@@ -36,7 +39,8 @@ export const StyledOutline = styled.div<{
     text-overflow: ellipsis;
     width: 100%;
   }
-  & input::placeholder {
+  & input::placeholder,
+  & button::placeholder {
     color: ${({ theme }) => theme.color.content.placeholder.normal};
   }
 `;
@@ -49,5 +53,38 @@ export const StyledBaseLabel = styled.label<{ size: Size; isError?: boolean }>`
   &:focus-within {
     outline: ${({ isError }) =>
       `3px solid ${isError ? theme.color.border['error-focus-effect'] : theme.color.border['focus-effect']}`};
+  }
+`;
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const fadeOut = keyframes`
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
+export const StyledIcon = styled.svg<
+  MDSIconProps & { variant: 'border' | 'outline' | 'fill' } & { disabled?: boolean }
+>`
+  animation: ${fadeOut} ${theme.transitionTiming} ease-out forwards;
+  opacity: 0;
+  transition: display ${theme.transitionTiming} allow-discrete;
+  flex: 0 0 auto;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  display: none;
+  &.show {
+    display: block;
+    animation: ${fadeIn} ${theme.transitionTiming} ease-out forwards;
   }
 `;

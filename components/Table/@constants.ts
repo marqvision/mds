@@ -16,10 +16,14 @@ const token = {
         normal: RAW_COLORS.blue50,
         hover: RAW_COLORS.blue100,
       },
+      header: RAW_COLORS.bluegray50,
     },
     border: {
       horizontal: {
-        header: RAW_COLORS.bluegray200,
+        header: {
+          default: RAW_COLORS.bluegray200,
+          newHeader: RAW_COLORS.bluegray150,
+        },
         body: RAW_COLORS.bluegray100,
       },
       vertical: {
@@ -30,6 +34,14 @@ const token = {
 } as const;
 
 export const theme: TableTheme = {
+  head: {
+    color: {
+      newHeader: {
+        backgroundColor: token.color.bg.header,
+        borderColor: token.color.border.horizontal.header.newHeader,
+      },
+    },
+  },
   row: {
     color: {
       default: {
@@ -56,14 +68,14 @@ export const theme: TableTheme = {
     color: {
       horizontal: {
         head: {
-          borderColor: token.color.border.horizontal.header,
+          borderColor: token.color.border.horizontal.header.default,
         },
         body: {
           borderColor: token.color.border.horizontal.body,
         },
       },
       vertical: {
-        borderColor: token.color.border.horizontal.body,
+        borderColor: token.color.border.vertical.default,
       },
     },
     size: {

@@ -46,6 +46,85 @@ export const Preview: StoryObj<typeof MDSTable> = {
   ),
 };
 
+export const NewHeader: StoryObj<typeof MDSTable> = {
+  parameters: {
+    controls: { expanded: true },
+    docs: {
+      description: {
+        story:
+          'Head 내 isNewHeader `true` 전달 시 신규 테이블 헤더 디자인(border bottom, font weight)이 적용됩니다.<br/> 이 속성은 MDSv2 Table 을 사용하는 전체 테이블에 신규 디자인 적용 후 제거 될 예정입니다.',
+      },
+    },
+  },
+  render: (_) => (
+    <MDSTable>
+      <MDSTable.Head isNewHeader>
+        <MDSTable.Row>
+          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell>head</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Head>
+      <MDSTable.Body>
+        <MDSTable.Row>
+          <MDSTable.Cell>1-1</MDSTable.Cell>
+          <MDSTable.Cell>1-2</MDSTable.Cell>
+          <MDSTable.Cell>1-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>2-1</MDSTable.Cell>
+          <MDSTable.Cell>2-2</MDSTable.Cell>
+          <MDSTable.Cell>2-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>3-1</MDSTable.Cell>
+          <MDSTable.Cell>3-2</MDSTable.Cell>
+          <MDSTable.Cell>3-3</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Body>
+    </MDSTable>
+  ),
+};
+
+export const BorderTop: StoryObj<typeof MDSTable> = {
+  parameters: {
+    controls: { expanded: true },
+    docs: {
+      description: {
+        story: 'borderTop `true` 전달 시 border bottom 과 동일한 색상이 border top 으로 추가됩니다.',
+      },
+    },
+  },
+  render: (_) => (
+    <MDSTable>
+      <MDSTable.Head isNewHeader borderTop>
+        <MDSTable.Row>
+          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell>head</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Head>
+      <MDSTable.Body>
+        <MDSTable.Row>
+          <MDSTable.Cell>1-1</MDSTable.Cell>
+          <MDSTable.Cell>1-2</MDSTable.Cell>
+          <MDSTable.Cell>1-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>2-1</MDSTable.Cell>
+          <MDSTable.Cell>2-2</MDSTable.Cell>
+          <MDSTable.Cell>2-3</MDSTable.Cell>
+        </MDSTable.Row>
+        <MDSTable.Row>
+          <MDSTable.Cell>3-1</MDSTable.Cell>
+          <MDSTable.Cell>3-2</MDSTable.Cell>
+          <MDSTable.Cell>3-3</MDSTable.Cell>
+        </MDSTable.Row>
+      </MDSTable.Body>
+    </MDSTable>
+  ),
+};
+
 export const CellSize: StoryObj<typeof MDSTable> = {
   parameters: {
     controls: { expanded: true },
@@ -62,7 +141,9 @@ export const CellSize: StoryObj<typeof MDSTable> = {
           <MDSTable.Cell size="small" colSpan={3}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <MDSCheckbox value={true} onChange={() => {}} />
-              <MDSChip variant="fill" size="medium" color="blue">Enforce</MDSChip>
+              <MDSChip variant="fill" size="medium" color="blue">
+                Enforce
+              </MDSChip>
             </div>
           </MDSTable.Cell>
         </MDSTable.Row>

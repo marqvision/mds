@@ -44,7 +44,9 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }
 
   th& {
-    border-bottom: 1px solid ${theme.cell.color.horizontal.head.borderColor};
+    border-top-color: ${theme.cell.color.horizontal.head.borderColor};
+    border-bottom-color: ${theme.cell.color.horizontal.head.borderColor};
+    border-bottom-width: 1px;
   }
 
   th&:first-child,
@@ -64,9 +66,10 @@ const CellBox = styled(MDSTypography)<TableCellInnerProps>`
 `;
 
 export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCellElement>) => {
-  const { children, align = 'left', valign = 'middle', size = 'medium', ...restProps } = props;
+  const { children, isNewHeader, align = 'left', valign = 'middle', size = 'medium', ...restProps } = props;
 
   const color = props.as === 'th' ? 'color/content/neutral/secondary/normal' : undefined;
+  const weight = isNewHeader ? 'medium' : undefined;
 
   return (
     <Wrapper ref={ref} valign={valign} {...restProps}>
@@ -76,6 +79,7 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
         align={align}
         size={size}
         color={color}
+        weight={weight}
       >
         {children}
       </CellBox>

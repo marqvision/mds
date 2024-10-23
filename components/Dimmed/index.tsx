@@ -39,13 +39,23 @@ export const MDSDimmed = (props: Props) => {
     onClose?.();
   };
 
+  const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+  };
+
   useEffect(() => {
     setMountNode(document.body);
   }, []);
 
   return mountNode
     ? createPortal(
-        <Wrapper isOpen={isOpen} onClick={handleClose}>
+        <Wrapper
+          isOpen={isOpen}
+          onMouseMove={stopPropagation}
+          onMouseDown={stopPropagation}
+          onMouseUp={stopPropagation}
+          onClick={handleClose}
+        >
           {isOpen && children}
         </Wrapper>,
         mountNode

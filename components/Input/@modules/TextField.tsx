@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { theme } from '../@constants';
+import { resolveFontWeight } from '../../Typography/@utils';
 import { AddButton } from './AddButton';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
@@ -17,6 +18,7 @@ const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
 const StyledInput = styled.input`
   width: 100%;
   height: 100%;
+  ${resolveFontWeight('regular')}
   &[type=number] {
     -moz-appearance: textfield;
   }

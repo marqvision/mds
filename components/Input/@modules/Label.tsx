@@ -17,17 +17,19 @@ export const Label = (props: Props) => {
   const subColor = isDisabled ? 'color/content/neutral/secondary/disabled' : 'color/content/neutral/secondary/normal';
 
   return typeof label === 'string' ? (
-    <MDSTypography variant={variant} color={color}>
+    <MDSTypography variant={variant} weight="medium" color={color}>
       {label}
     </MDSTypography>
   ) : (
     <div style={{ display: 'flex', gap: '4px' }}>
-      <MDSTypography variant={variant} color={color}>
+      <MDSTypography variant={variant} weight="medium" color={color}>
         {label.main}
       </MDSTypography>
-      <MDSTypography variant={variant} color={subColor}>
-        ({label.sub})
-      </MDSTypography>
+      {label.sub && (
+        <MDSTypography variant={variant} color={subColor}>
+          ({label.sub})
+        </MDSTypography>
+      )}
     </div>
   );
 };

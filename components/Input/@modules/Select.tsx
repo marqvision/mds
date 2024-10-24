@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { MDSChip } from '../../Chip';
+import { resolveFontWeight } from '../../Typography/@utils';
 import { theme } from '../@constants';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
@@ -19,6 +20,10 @@ const StyledChipList = styled.button`
   & > * {
     transition: display ${theme.transitionTiming} allow-discrete;
   }
+`;
+
+const StyledButton = styled.input`
+  ${resolveFontWeight('regular')}
 `;
 
 type Props<T> = CommonProps & Omit<SelectProps<T>, 'type'>;
@@ -97,7 +102,7 @@ export const Select = <T,>(props: Props<T>) => {
               {ChipList}
             </StyledChipList>
           ) : (
-            <input type="button" title={label} disabled={isDisabled} value={label} placeholder={placeholder} />
+            <StyledButton type="button" title={label} disabled={isDisabled} value={label} placeholder={placeholder} />
           )}
         </div>
         <StyledIcon

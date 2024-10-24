@@ -37,13 +37,13 @@ const Wrapper = styled.tr<StyledTableRowProps>`
 export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>((props, ref) => {
   const { children, isContainer, variant = 'default', isSelected, ...restProps } = props;
 
-  const RowVariant: StyledTableRowProps['variant'] = isSelected ? 'viewing' : variant;
+  const rowVariant: StyledTableRowProps['variant'] = isSelected ? 'viewing' : variant;
 
   return (
-    <Wrapper ref={ref} data-container={isContainer} variant={RowVariant} isContainer={isContainer} {...restProps}>
+    <Wrapper ref={ref} data-container={isContainer} variant={rowVariant} isContainer={isContainer} {...restProps}>
       {children}
     </Wrapper>
   );
 });
 
-TableRow.displayName = 'TableRow';
+TableRow.displayName = 'MDSTableRow';

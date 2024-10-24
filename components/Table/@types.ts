@@ -15,6 +15,10 @@ export type TableProps = React.PropsWithChildren<StyledTableProps> & HTMLAttribu
 export type StyledTableHeadProps = {
   // 설정 시 헤더가 sticky 적용됩니다
   isStickyHeader?: boolean;
+  // 테이블 헤더 신규 디자인을 적용합니다. (TODO-@morgan: 전체 서비스 적용 완료 후 해당 prop 제거)
+  isNewHeader?: boolean;
+  // 설정 시 border bottom 과 동일한 색상이 border top 으로 추가됩니다.
+  borderTop?: boolean;
 };
 
 export type TableHeadProps = {
@@ -37,7 +41,7 @@ export type StyledTableRowProps = {
 // Table row
 export type TableRowProps = {
   children: React.ReactElement | React.ReactElement[];
-  variant?: Extract<TableRowVariant, 'default' | 'secondary'>;
+  variant?: Exclude<TableRowVariant, 'viewing'>;
   isSelected?: boolean;
 } & Omit<StyledTableRowProps, 'variant'> &
   HTMLAttributes<HTMLTableRowElement>;
@@ -54,9 +58,13 @@ export type BorderProps =
 type CellSize = 'small' | 'medium';
 
 export type StyledTableCellProps = {
-  // 직접 사용하지 않습니다.
-  // head 내에서 cell 을 th 으로 출력하기 위해 사용합니다.
+  // 가급적 직접 사용하지 않습니다.
+  // head 내에서 cell 을 th 으로 출력하는 용도입니다.
   as?: React.ElementType;
+  // 가급적 직접 사용하지 않습니다.
+  // table header 의 isNewHeader 를 전달받아 MDSTypography 를 설정하는 용도입니다.
+  isNewHeader?: boolean;
+
   // cell 내용의 세로 정렬 위치를 지정합니다.
   valign?: 'bottom' | 'top' | 'middle' | 'baseline';
   // cell 의 max-width 를 지정합니다.
@@ -88,6 +96,14 @@ export type TableCellProps = React.PropsWithChildren<
   Omit<TdHTMLAttributes<HTMLTableCellElement>, 'align'>;
 
 export type TableTheme = {
+  head: {
+    color: {
+      newHeader: {
+        backgroundColor: string;
+        borderColor: string;
+      };
+    };
+  };
   row: {
     color: Record<
       TableRowVariant,

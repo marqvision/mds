@@ -20,13 +20,14 @@ export type Coordinates = {
   y: number;
 };
 
-type ClickProps = {
+type ClickPropsDimmed = {
   /**
-   * @default true
+   * @default false
    * @true Popover 이외 영역 스크롤 제한, dim 클릭시 onClose 실행
    * @false Popover 이외 영역 스크롤 가능, Popover 영약 밖 클릭시 onClose 실행
    */
-  hasDim?: true;
+  hasDim: true;
+  zIndex?: never;
   /**
    * @default click
    * @hover hasDim = false 인 경우만 trigger: hover 가능
@@ -34,8 +35,12 @@ type ClickProps = {
   trigger?: 'click';
 };
 
-type HoverProps = {
-  hasDim: false;
+type ClickPropsNoDimmed = {
+  hasDim?: false;
+  /**
+   * @default z-index: 1300
+   */
+  zIndex?: number;
   trigger?: PopoverTrigger;
 };
 
@@ -46,18 +51,18 @@ export type Props = {
    * @description [anchor로부터의 위치]-[펼쳐지는 방향]
    */
   position?: PopoverPosition;
-  /**
-   * (onClose) => ReactElement or ReactElement
-   */ 
   isLoading?: boolean;
   /**
    * @default 300ms
    * @description 모달이 열리고 닫히는 시간
    */
   delay?: number;
+  /**
+   * (onClose) => ReactElement or ReactElement
+   */
   children: ((handler: { close: () => void }) => ReactElement | ReactElement[]) | ReactElement | ReactElement[];
   onClose?: () => void;
-} & (ClickProps | HoverProps);
+} & (ClickPropsDimmed | ClickPropsNoDimmed);
 
 export type StyleProps = {
   /**

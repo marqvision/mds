@@ -26,7 +26,7 @@ const fadeOut = keyframes`
 
 const MIN_PADDING = 4;
 
-const Dialog = styled.dialog`
+const Dialog = styled.dialog<{ isInDimmed: boolean }>`
   animation: ${fadeOut} 0.3s ease-out forwards;
   border: none;
   padding: ${MIN_PADDING}px;
@@ -40,7 +40,7 @@ const Dialog = styled.dialog`
           position: 'fixed',
           top: 0,
           left: 0,
-          zIndex: 1301,
+          zIndex: 1300,
         }
       : undefined}
   transition: display 0.3s allow-discrete, overlay 0.3s allow-discrete, opacity 0.3s;
@@ -62,7 +62,9 @@ const Dialog = styled.dialog`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 2px 0 rgba(0, 0, 0, 0.16),
+    0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
@@ -75,18 +77,20 @@ const Popover = (
   props: Props &
     StyleProps & {
       isOpen: boolean;
+      isInDimmed: boolean;
       anchorRef: MutableRefObject<(EventTarget & Element) | null>;
       dialogRef: MutableRefObject<HTMLDialogElement | null>;
       scrollOffsetRef: MutableRefObject<Element | undefined>;
       coordinatesRef: MutableRefObject<Coordinates>;
       focusRef: MutableRefObject<boolean>;
       onMouseEnter: (e: MouseEvent) => void;
-      onMouseLeave: (() => void) | undefined;
+      onMouseLeave: ((e: MouseEvent) => void) | undefined;
       onClosePopover: () => void;
     }
 ) => {
   const {
-    hasDim = true,
+    hasDim = false,
+    zIndex,
     position = 'bottom-right',
     isLoading,
     width: _width = '280px',
@@ -94,6 +98,7 @@ const Popover = (
     padding = '16px 20px',
     children: _children,
     isOpen,
+    isInDimmed,
     anchorRef,
     dialogRef,
     scrollOffsetRef,
@@ -139,15 +144,15 @@ const Popover = (
       direction === 'left'
         ? rect.left + rect.width - width - MIN_PADDING
         : direction === 'center'
-        ? rect.left + (rect.width - width) / 2 - MIN_PADDING
-        : rect.left - MIN_PADDING;
+          ? rect.left + (rect.width - width) / 2 - MIN_PADDING
+          : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-        ? rect.top - dialogHeight / 2 + rect.height / 2
-        : rect.top - MIN_PADDING;
+          ? rect.top - dialogHeight / 2 + rect.height / 2
+          : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -213,12 +218,14 @@ const Popover = (
 
   const dialog = (
     <Dialog
+      className="mds-popover"
       as={!hasDim ? 'div' : undefined}
+      isInDimmed={isInDimmed}
       ref={dialogRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClosePopover}
-      style={{ transform: `translate(${coordinates.x}px, ${coordinates.y}px)` }}
+      style={{ transform: `translate(${coordinates.x}px, ${coordinates.y}px)`, zIndex }}
     >
       <DialogContent
         width={`${width}px`}
@@ -264,41 +271,50 @@ const Popover = (
 
 /**
  * @description 특정 Element 의 위치를 기준으로 생성되는 Popover
- * @param {ReactElement} props.anchor 모달의 기준이 되는 element
+ * @param {ReactElement} [props.anchor] 모달의 기준이 되는 element
  * @param {PopoverTrigger} [props.trigger] 모달 열리는 액션
  * @param {PopoverPosition} [props.posiiton] 모달의 anchor에 대한 상대적 위치
  * @param {boolean} [props.hasDim] 배경 dim 의 유/무
+ * @param {number} [props.zIndex] <code>hasDim: false</code> 인 경우 zIndex 추가 가능
  * @param props.children ReactElement | (onClose) => ReactElement
  */
 export const MDSPopover = (props: Props & StyleProps) => {
-  const { anchor: _anchor, hasDim = true, trigger = 'click', delay = 300, onClose } = props;
+  const { anchor: _anchor, hasDim = false, trigger = 'click', delay = 300, onClose } = props;
 
   const anchorRef = useRef<(EventTarget & Element) | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const scrollOffsetRef = useRef<Element>();
   const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
   const focusRef = useRef(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<number>();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isInDimmed, setIsInDimmed] = useState(false);
 
   const handleOpenPopover = (e: MouseEvent) => {
     anchorRef.current = e.currentTarget;
     if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = undefined;
+      setIsOpen(false);
+      window.setTimeout(() => {
+        setIsOpen(true);
+      }, 0);
+    } else {
+      setIsOpen(true);
     }
-    setIsOpen(true);
   };
 
   const handleClosePopover = useCallback(() => {
     if (hasDim) {
       dialogRef.current?.close();
     } else {
-      dialogRef.current?.toggleAttribute('open');
+      dialogRef.current?.removeAttribute('open');
     }
-    timeoutRef.current = setTimeout(() => {
+    timeoutRef.current = window.setTimeout(() => {
       onClose?.(); // @note-jamie: If-else 문 전에 호출하면 창이 닫혔다가 열렸다가 delay 후에 닫힘
       setIsOpen(false);
+      timeoutRef.current = undefined;
     }, delay);
   }, [delay, hasDim, onClose]);
 
@@ -347,10 +363,17 @@ export const MDSPopover = (props: Props & StyleProps) => {
 
   useEffect(() => {
     if (!hasDim && trigger === 'click') {
+      const dimmed = anchorRef.current?.closest('.mds-dimmed');
+
+      setIsInDimmed(!!dimmed);
+
       const handleBodyClick = (e: Event) => {
-        const target = e.target as Node;
+        const target = e.target as HTMLElement;
         const isIn = dialogRef.current?.contains(target) || anchorRef.current?.contains(target);
-        if (!isIn) {
+        const isDimmed = target.closest?.('.mds-dimmed') && target.closest?.('.mds-dimmed') !== dimmed;
+        const isPopover = target.closest?.('.mds-popover');
+
+        if (!isIn && !isDimmed && !isPopover) {
           handleClosePopover();
         }
       };
@@ -369,6 +392,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
       <Popover
         {...props}
         isOpen={isOpen}
+        isInDimmed={isInDimmed}
         anchorRef={anchorRef}
         dialogRef={dialogRef}
         coordinatesRef={coordinatesRef}

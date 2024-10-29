@@ -1,11 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
+import { keyframes } from '@emotion/react';
 
-const transition = '0.3s'; //TODO-@morgan: 디자인 팀 확인 필요
+const transition = 300; //TODO-@morgan: 디자인 팀 확인 필요
 
-const Wrapper = styled.div<Props>`
-  display: flex;
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const fadeOut = keyframes`
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
+const Wrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -17,9 +36,16 @@ const Wrapper = styled.div<Props>`
   padding: 20px;
   background-color: ${({ theme }) => theme.color.comp.dimmed.color.default};
   overflow: hidden;
-  transition: opacity ${transition}, visibility ${transition};
-  opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
+  display: none;
+  transition: display ${transition}ms allow-discrete, overlay ${transition}ms allow-discrete;
+  animation: ${fadeOut} ${transition}ms ease-out forwards;
+  &.isOpen {
+    display: flex;
+    animation: ${fadeIn} ${transition}ms ease-out forwards;
+    @starting-style {
+      opacity: 0;
+    }
+  }
 `;
 
 type Props = React.PropsWithChildren<{
@@ -28,15 +54,21 @@ type Props = React.PropsWithChildren<{
 }>;
 
 export const MDSDimmed = (props: Props) => {
-  const { isOpen, onClose, children } = props;
+  const { isOpen: _isOpen, onClose, children } = props;
 
   //@morgan: mui portal 의 createPortal 타이밍에 맞추기 위해 동일하게 mountNode state 추가함
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const ref = useRef<number>();
+  const close = useRef(onClose);
 
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     if (event.target !== event.currentTarget) return;
-    onClose?.();
+    if (onClose) {
+      setIsOpen(false);
+    }
   };
 
   const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -44,19 +76,43 @@ export const MDSDimmed = (props: Props) => {
   };
 
   useEffect(() => {
-    setMountNode(document.body);
-  }, []);
+    if (_isOpen) {
+      setMountNode(document.body);
+      if (ref.current) {
+        clearTimeout(ref.current);
+        ref.current = undefined;
+      }
+    } else if (isOpen) {
+      setIsOpen(false);
+    }
+  }, [_isOpen, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen && !ref.current) {
+      ref.current = window.setTimeout(() => {
+        ref.current = undefined;
+        setMountNode(null);
+        close.current?.();
+      }, transition);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (mountNode) {
+      setIsOpen(true);
+    }
+  }, [mountNode]);
 
   return mountNode
     ? createPortal(
         <Wrapper
-          isOpen={isOpen}
+          className={clsx({ isOpen: isOpen }, 'mds-dimmed')}
           onMouseMove={stopPropagation}
           onMouseDown={stopPropagation}
           onMouseUp={stopPropagation}
           onClick={handleClose}
         >
-          {isOpen && children}
+          {_isOpen && children}
         </Wrapper>,
         mountNode
       )

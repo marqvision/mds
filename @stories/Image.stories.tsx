@@ -48,6 +48,22 @@ const Grid = ({ children }: React.PropsWithChildren) => {
 };
 
 export const Preview: Story = {
+  args: {
+    width: '200px',
+    height: '200px',
+    variant: 'border',
+    src: 'https://picsum.photos/id/40/200',
+  },
+  render: function Render({ children, ...restProps }) {
+    return (
+      <Wrapper>
+        <MDSImage {...restProps}>{children}</MDSImage>
+      </Wrapper>
+    );
+  },
+};
+
+export const Default: Story = {
   render: (props) => (
     <Wrapper>
       <MDSTypography>이미지를 출력합니다. lazy load 를 지원합니다.</MDSTypography>

@@ -83,35 +83,34 @@ export type StyledWrapperProps = {
   borderRadius: { topLeft: string; topRight: string; bottomLeft: string; bottomRight: string };
 };
 
-export type ImageProps = React.PropsWithChildren<
-  {
-    /**
-     * 로딩 상태 시 MDSIcon.Image 가 표시됩니다.
-     */
-    isLoading?: boolean;
-    /**
-     * 이미지에 objectFit 스타일을 전달합니다.
-     * @default 'cover'
-     */
-    objectFit?: CSS.Properties['objectFit'];
-    /**
-     * 이미지에 objectPosition 스타일을 전달합니다.
-     * @default 'center'
-     */
-    objectPosition?: CSS.Properties['objectPosition'];
-    /**
-     * 이미지에는 기본적으로 4px 의 border-radius 가 적용되어 있습니다.
-     * 이 값을 지우고 싶을 때 사용합니다.
-     * @removeBorderRadius `true` - 전체 border-radius 제거
-     * @removeBorderRadius `object` - 부분 border-radius 제거
-     */
-    removeBorderRadius?: RemoveBorderRadius;
-  } & (UseIcon | NoIcon) &
-    StyledErrorWrapperProps &
-    StyledImageWrapperProps &
-    Omit<StyledWrapperProps, 'borderRadius'> &
-    React.ImgHTMLAttributes<HTMLImageElement>
->;
+export type ImageProps = {
+  /**
+   * 로딩 상태 시 MDSIcon.Image 가 표시됩니다.
+   */
+  isLoading?: boolean;
+  /**
+   * 이미지에 objectFit 스타일을 전달합니다.
+   * @default 'cover'
+   */
+  objectFit?: CSS.Properties['objectFit'];
+  /**
+   * 이미지에 objectPosition 스타일을 전달합니다.
+   * @default 'center'
+   */
+  objectPosition?: CSS.Properties['objectPosition'];
+  /**
+   * 이미지에는 기본적으로 4px 의 border-radius 가 적용되어 있습니다.
+   * 이 값을 지우고 싶을 때 사용합니다.
+   * @removeBorderRadius `true` - 전체 border-radius 제거
+   * @removeBorderRadius `object` - 부분 border-radius 제거
+   */
+  removeBorderRadius?: RemoveBorderRadius;
+  children?: React.ReactNode;
+} & (UseIcon | NoIcon) &
+  StyledErrorWrapperProps &
+  StyledImageWrapperProps &
+  Omit<StyledWrapperProps, 'borderRadius'> &
+  React.ImgHTMLAttributes<HTMLImageElement>;
 
 export type StyledImageProps = {
   isLoaded: boolean;

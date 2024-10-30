@@ -33,6 +33,7 @@ export const theme = {
       gap: '4px',
       buttonPadding: '8px',
       chipSize: 'small',
+      iconSize: 16,
     },
     medium: {
       height: '32px',
@@ -44,6 +45,7 @@ export const theme = {
       gap: '4px',
       buttonPadding: '12px',
       chipSize: 'small',
+      iconSize: 16,
     },
     large: {
       height: '38px',
@@ -55,6 +57,7 @@ export const theme = {
       gap: '8px',
       buttonPadding: '14px',
       chipSize: 'medium',
+      iconSize: 20,
     },
     'extra-large': {
       height: '48px',
@@ -66,6 +69,7 @@ export const theme = {
       gap: '8px',
       buttonPadding: '14px',
       chipSize: 'large',
+      iconSize: 20,
     },
   },
   transitionTiming: '225ms',

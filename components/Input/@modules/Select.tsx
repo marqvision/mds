@@ -1,10 +1,12 @@
 import { MouseEvent } from 'react';
 import styled from '@emotion/styled';
+import clsx from 'clsx';
 import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { MDSChip } from '../../Chip';
 import { resolveFontWeight } from '../../Typography/@utils';
 import { theme } from '../@constants';
+import { Features, MDSTypography } from '../../Typography';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
 const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>``;
@@ -22,20 +24,52 @@ const StyledChipList = styled.button`
   }
 `;
 
-const StyledButton = styled.input`
+const StyledButton = styled.button<{ customSize: Size }>`
   ${resolveFontWeight('regular')}
+  display: block;
+  font-size: ${({ customSize }) => theme.size[customSize].fontSize};
+  line-height: 1.5;
+  background: none;
+  border: none;
+  padding: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+`;
+
+const Placeholder = styled(MDSTypography)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
 `;
 
 type Props<T> = CommonProps & Omit<SelectProps<T>, 'type'>;
 
 export const Select = <T,>(props: Props<T>) => {
-  const { value, list, size = 'medium', custom, isDisabled, isError, placeholder, format, onChange } = props;
+  const {
+    value,
+    list,
+    size = 'medium',
+    custom,
+    isDisabled,
+    isReadOnly,
+    status,
+    placeholder,
+    format,
+    onChange,
+    onClick,
+  } = props;
 
   const isArray = Array.isArray(value);
 
   const valueList = isArray ? value : [value];
 
   const isWithChip = !!custom?.withChip || false;
+  const isError = status === 'error';
+  const variant = `T${theme.size[size].fontSize.replace('px', '')}` as Features['variant'];
 
   const getLabelFromList = (_value: ElementType<T>) => {
     const label = list.find((v) => v.value === _value)?.label || '';
@@ -61,8 +95,9 @@ export const Select = <T,>(props: Props<T>) => {
   };
 
   const label = valueList.map((item) => getLabelFromList(item)).join(', ');
+
   const ChipList =
-    (custom?.withChip && valueList.length > 0 ? (
+    custom?.withChip && valueList.length > 0 ? (
       valueList.map((v) => {
         if (typeof custom.withChip === 'function') {
           return custom.withChip(v);
@@ -73,6 +108,7 @@ export const Select = <T,>(props: Props<T>) => {
             size={theme.size[size].chipSize}
             color="bluegray"
             variant="tint"
+            isDisabled={isDisabled}
             endIcon={
               <StyledIcon
                 as={MDSIcon.CloseDelete}
@@ -90,33 +126,51 @@ export const Select = <T,>(props: Props<T>) => {
         );
       })
     ) : (
-      <div>{placeholder}</div>
-    )) || undefined;
+      <Placeholder variant={variant} color="color/content/placeholder/normal">
+        {placeholder || '\u00A0'}
+      </Placeholder>
+    );
 
   return (
-    <StyledLabel size={size} isError={isError}>
-      <StyledOutline customSize={size} disabled={isDisabled} isError={isError}>
+    <StyledLabel size={size} isError={isError} onClick={onClick}>
+      <StyledOutline customSize={size} disabled={isDisabled} readOnly={isReadOnly} isError={isError}>
         <div style={{ overflow: 'hidden', width: '100%' }}>
           {isWithChip ? (
-            <StyledChipList disabled={isDisabled} className="chipList">
+            <StyledChipList
+              disabled={isDisabled}
+              className={clsx('chipList', {
+                readOnly: isReadOnly,
+              })}
+            >
               {ChipList}
             </StyledChipList>
           ) : (
-            <StyledButton type="button" title={label} disabled={isDisabled} value={label} placeholder={placeholder} />
+            <StyledButton
+              className={isReadOnly ? 'readOnly' : undefined}
+              customSize={size}
+              title={label}
+              disabled={isDisabled}
+            >
+              {label || (
+                <Placeholder variant={variant} color="color/content/placeholder/normal">
+                  {placeholder || '\u00A0'}
+                </Placeholder>
+              )}
+            </StyledButton>
           )}
         </div>
         <StyledIcon
           as={MDSIcon.CloseDelete}
-          className={(isArray ? value.length > 0 : !!value) && onChange && !isDisabled ? 'show' : undefined}
+          className={(isArray ? value.length > 0 : !!value) && onChange ? 'show' : undefined}
           variant="border"
-          size={16}
+          size={theme.size[size].iconSize}
           onClick={handleDeleteAll}
         />
         <StyledIcon
           as={MDSIcon.ArrowDown}
           className="show"
           variant="outline"
-          size={16}
+          size={theme.size[size].iconSize}
           color={isDisabled ? 'color/content/placeholder/normal' : undefined}
         />
       </StyledOutline>

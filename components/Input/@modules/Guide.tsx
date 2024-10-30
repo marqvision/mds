@@ -1,11 +1,11 @@
-import { Size } from '../@types';
+import { InputStatus, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { MDSTypography } from '../../Typography';
 
 type Props = {
   label?: string;
   size: Size;
-  isError?: boolean;
+  status?: InputStatus;
 };
 
 const GUIDE_SIZE = {
@@ -32,24 +32,36 @@ const GUIDE_SIZE = {
 } as const;
 
 export const Guide = (props: Props) => {
-  const { label, size, isError } = props;
+  const { label, size, status } = props;
 
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: GUIDE_SIZE[size].gap, padding: '0 4px' }}>
-      {isError ? (
+  const Icon = (() => {
+    if (status === 'error') {
+      return (
         <MDSIcon.ErrorWarning
           variant="fill"
           size={GUIDE_SIZE[size].iconSize}
           color="color/content/critical/default/normal"
         />
-      ) : (
-        <MDSIcon.Info variant="border" size={GUIDE_SIZE[size].iconSize} />
-      )}
-      <MDSTypography
-        variant={GUIDE_SIZE[size].fontSize}
-        weight="medium"
-        color={isError ? 'color/content/critical/default/normal' : undefined}
-      >
+      );
+    } else if (status === 'success') {
+      return (
+        <MDSIcon.Check variant="fill" size={GUIDE_SIZE[size].iconSize} color="color/content/success/default/normal" />
+      );
+    }
+    return <MDSIcon.Info variant="border" size={GUIDE_SIZE[size].iconSize} />;
+  })();
+
+  const fontColor =
+    status === 'error'
+      ? 'color/content/critical/default/normal'
+      : status === 'success'
+      ? 'color/content/success/default/normal'
+      : undefined;
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: GUIDE_SIZE[size].gap, padding: '0 4px' }}>
+      {Icon}
+      <MDSTypography variant={GUIDE_SIZE[size].fontSize} weight="medium" color={fontColor}>
         {label}
       </MDSTypography>
     </div>

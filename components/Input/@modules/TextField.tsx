@@ -4,6 +4,7 @@ import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { theme } from '../@constants';
 import { resolveFontWeight } from '../../Typography/@utils';
+import { Features, MDSTypography } from '../../Typography';
 import { AddButton } from './AddButton';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
@@ -24,14 +25,12 @@ const StyledInput = styled.input`
   }
   &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
     -webkit-appearance: none;
-    margin: 0,
+    margin: 0;
   },
 `;
 
-const StyledPrefix = styled.div<{ size: Size }>`
+const StyledPrefix = styled(MDSTypography)`
   cursor: default;
-  font-size: ${({ size }) => theme.size[size].fontSize};
-  color: ${({ theme }) => theme.color.content.neutral.secondary.normal};
   flex: 0 0 auto;
 `;
 
@@ -44,7 +43,8 @@ export const TextField = (props: Props) => {
     size = 'medium',
     inputProps,
     isDisabled,
-    isError,
+    isReadOnly,
+    status,
     placeholder,
     format,
     onChange,
@@ -62,11 +62,17 @@ export const TextField = (props: Props) => {
   const add = custom?.add;
   const debounce = custom?.debounce || 0;
   const prefix = custom?.prefix;
+  const isError = status === 'error';
+
+  const variant = `T${theme.size[size].fontSize.replace('px', '')}` as Features['variant'];
+
   const Prefix = prefix ? (
     isValidElement(prefix) ? (
       prefix
     ) : (
-      <StyledPrefix size={size}>{prefix}</StyledPrefix>
+      <StyledPrefix variant={variant} color="color/content/neutral/secondary/normal">
+        {prefix}
+      </StyledPrefix>
     )
   ) : undefined;
   const suffix = custom?.suffix;
@@ -74,7 +80,9 @@ export const TextField = (props: Props) => {
     isValidElement(suffix) ? (
       suffix
     ) : (
-      <StyledPrefix size={size}>{suffix}</StyledPrefix>
+      <StyledPrefix variant={variant} color="color/content/neutral/secondary/normal">
+        {suffix}
+      </StyledPrefix>
     )
   ) : undefined;
 
@@ -121,13 +129,14 @@ export const TextField = (props: Props) => {
 
   return (
     <StyledLabel size={size} isError={isError}>
-      <StyledOutline customSize={size} hasAdd={!!add} disabled={isDisabled} isError={isError}>
+      <StyledOutline customSize={size} hasAdd={!!add} disabled={isDisabled} readOnly={isReadOnly} isError={isError}>
         {Prefix}
         <StyledInput
           ref={inputRef}
           {...inputProps}
           title={value}
           disabled={isDisabled}
+          readOnly={isReadOnly}
           placeholder={placeholder}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -135,9 +144,10 @@ export const TextField = (props: Props) => {
         {Suffix}
         <StyledIcon
           as={MDSIcon.CloseDelete}
+          color={isDisabled || isReadOnly ? 'color/content/neutral/default/disabled' : undefined}
           variant="border"
-          size={16}
-          onClick={handleDelete}
+          size={theme.size[size].iconSize}
+          onClick={!(isDisabled || isReadOnly) ? handleDelete : undefined}
           className={isShowDelete ? 'show' : undefined}
         />
       </StyledOutline>
@@ -145,7 +155,7 @@ export const TextField = (props: Props) => {
         <AddButton
           label={add.label}
           size={size}
-          isDisabled={isDisabled || !value}
+          isDisabled={isDisabled || isReadOnly || !value}
           isError={isError}
           onClick={() => add.onSubmit(value)}
         />

@@ -4,6 +4,8 @@ export type Size = 'small' | 'medium' | 'large' | 'extra-large';
 
 export type Props<T> = (TextFieldProps | SelectProps<T>) & CommonProps;
 
+export type InputStatus = 'error' | 'success';
+
 export type CommonProps = {
   /* default: medium */
   size?: Size;
@@ -12,7 +14,7 @@ export type CommonProps = {
   fullWidth?: boolean;
   isDisabled?: boolean;
   isReadOnly?: boolean;
-  isError?: boolean;
+  status?: InputStatus;
   style?: CSSProperties;
   /**
    * @description 상단 텍스트, isDisabled 에 따라 스타일 바뀜
@@ -64,6 +66,7 @@ export type TextFieldProps = {
   value: string;
   list?: never;
   format?: (value: string) => string;
+  onClick?: never;
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
 };
@@ -81,5 +84,6 @@ export type SelectProps<T = unknown> = {
    * @param {(value: T) => void} [onChange] 우측에 X버튼 추가 및 클릭시 value에 undefined or [] 리턴
    * */
   onChange?: (value: T) => void;
+  onClick?: () => void;
   onBlur?: never;
 };

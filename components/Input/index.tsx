@@ -16,6 +16,7 @@ const StyledWrapper = styled.div<{ size: Size; fullWidth: boolean }>`
 
 /**
  * @param {'select'} [props.type] select 를 추가하면 Select 버튼으로 사용 가능
+ * @param [props.status] 'success' | 'error' > guide 색상 변경, 버튼 색상 변경 (error)
  * */
 export const MDSInput = <T,>(props: Props<T>) => {
   const {
@@ -27,16 +28,20 @@ export const MDSInput = <T,>(props: Props<T>) => {
     fullWidth = false,
     isDisabled,
     isReadOnly,
-    isError,
+    status,
     custom,
     list,
     format,
     onChange,
+    onClick,
     onBlur,
     style,
     label,
     guide,
   } = props;
+
+  const handleChange = isReadOnly || isDisabled ? undefined : onChange;
+  const handleClick = isReadOnly || isDisabled ? undefined : onClick;
 
   return (
     <StyledWrapper size={size} fullWidth={fullWidth} style={style}>
@@ -48,11 +53,12 @@ export const MDSInput = <T,>(props: Props<T>) => {
             size,
             custom,
             inputProps,
-            isDisabled: isDisabled || isReadOnly,
-            isError,
+            isDisabled: isDisabled,
+            isReadOnly: isReadOnly,
+            status,
             placeholder,
             format,
-            onChange,
+            onChange: handleChange,
             onBlur,
           } as TextFieldProps)}
         />
@@ -64,15 +70,17 @@ export const MDSInput = <T,>(props: Props<T>) => {
             list: list || [],
             size,
             custom,
-            isDisabled: isDisabled || isReadOnly,
-            isError,
+            isDisabled: isDisabled,
+            isReadOnly: isReadOnly,
+            status,
             format,
             placeholder,
-            onChange,
+            onChange: handleChange,
+            onClick: handleClick,
           } as Omit<SelectProps<T>, 'type'>)}
         />
       )}
-      {guide && <Guide label={guide} size={size} isError={isError} />}
+      {guide && <Guide label={guide} size={size} status={status} />}
     </StyledWrapper>
   );
 };

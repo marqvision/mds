@@ -8,6 +8,7 @@ export const StyledOutline = styled.div<{
   customSize: Size;
   hasAdd?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
   isError?: boolean;
 }>`
   display: flex;
@@ -25,23 +26,26 @@ export const StyledOutline = styled.div<{
     padding: `${theme.size[customSize].paddingY} ${theme.size[customSize].paddingX}`,
   })};
   transition: border-color ${theme.transitionTiming} ease, background-color ${theme.transitionTiming} ease;
-  background-color: ${({ disabled }) => (disabled ? theme.color.bg.disabled : theme.color.bg.normal)};
-  &:has(input:focus) {
+  background-color: ${({ disabled, readOnly }) =>
+    disabled || readOnly ? theme.color.bg.disabled : theme.color.bg.normal};
+  &:has(input:focus),
+  &:has(button:focus) {
     border-color: ${({ isError }) => theme.color.border[isError ? 'error' : 'active']};
   }
-  &:has(input[type='button']:not(:disabled)),
-  &:has(button.chipList:not(:disabled)) {
+  &:has(button:not(:disabled):not(.readOnly)) {
     cursor: pointer;
   }
-  & input[type='button'] {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
+  &:has(button:disabled) *,
+  &:has(input:disabled) *,
+  &:has(button.readOnly) *,
+  &:has(input:read-only) * {
+    cursor: default;
   }
-  & input::placeholder,
-  & button::placeholder {
+  & input::placeholder {
     color: ${({ theme }) => theme.color.content.placeholder.normal};
+  }
+  & input:disabled {
+    color: ${({ theme }) => theme.color.content.neutral.default.disabled};
   }
 `;
 

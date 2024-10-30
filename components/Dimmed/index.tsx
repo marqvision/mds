@@ -61,14 +61,11 @@ export const MDSDimmed = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const ref = useRef<number>();
-  const close = useRef(onClose);
 
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     if (event.target !== event.currentTarget) return;
-    if (onClose) {
-      setIsOpen(false);
-    }
+    onClose?.();
   };
 
   const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -77,25 +74,20 @@ export const MDSDimmed = (props: Props) => {
 
   useEffect(() => {
     if (_isOpen) {
-      setMountNode(document.body);
+      if (!isOpen) {
+        setMountNode(document.body);
+      }
       if (ref.current) {
         clearTimeout(ref.current);
         ref.current = undefined;
       }
     } else if (isOpen) {
       setIsOpen(false);
-    }
-  }, [_isOpen, isOpen]);
-
-  useEffect(() => {
-    if (!isOpen && !ref.current) {
       ref.current = window.setTimeout(() => {
-        ref.current = undefined;
         setMountNode(null);
-        close.current?.();
       }, transition);
     }
-  }, [isOpen]);
+  }, [_isOpen, isOpen]);
 
   useEffect(() => {
     if (mountNode) {

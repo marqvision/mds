@@ -5,6 +5,7 @@ import { theme } from './@constants';
 
 const Divider = styled.hr<StyledProps>`
   display: block;
+  border-style: none;
 
   ${({ intensity, variant, color }) => `
     background-color: ${color ? resolveColor(color) : theme.color[variant][intensity]};

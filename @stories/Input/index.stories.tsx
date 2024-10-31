@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MDSInput } from '../../components';
+import { MDSInput, MDSTypography } from '../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 import { SelectProps, TextFieldProps } from '../../components/Input/@types';
 
@@ -37,7 +37,15 @@ export const TextField: Story = {
   args: {
     placeholder: 'Enter value',
     value: '',
-    label: { main: 'Main label', sub: 'Optional sub label' },
+    label: {
+      main: 'Main label',
+      sub: 'Optional sub label',
+      right: (
+        <MDSTypography variant="T12" color="color/content/neutral/secondary/normal">
+          1/1000
+        </MDSTypography>
+      ),
+    },
     custom: {
       add: {
         label: '추가',

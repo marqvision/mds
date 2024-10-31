@@ -25,7 +25,7 @@ export type CommonProps = {
   guide?: string;
 };
 
-export type LabelType = string | { main: string; sub: string };
+export type LabelType = string | { main?: string; sub?: string; right?: ReactElement };
 
 /**
  * @description textFiled 커스텀 props

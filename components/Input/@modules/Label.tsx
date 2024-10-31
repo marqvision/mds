@@ -21,15 +21,20 @@ export const Label = (props: Props) => {
       {label}
     </MDSTypography>
   ) : (
-    <div style={{ display: 'flex', gap: '4px' }}>
-      <MDSTypography variant={variant} weight="medium" color={color}>
-        {label.main}
-      </MDSTypography>
-      {label.sub && (
-        <MDSTypography variant={variant} color={subColor}>
-          ({label.sub})
-        </MDSTypography>
+    <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      {(label.main || label.sub) && (
+        <div>
+          <MDSTypography variant={variant} weight="medium" color={color}>
+            {label.main}{' '}
+            {label.sub && (
+              <MDSTypography as="span" variant={variant} color={subColor}>
+                ({label.sub})
+              </MDSTypography>
+            )}
+          </MDSTypography>
+        </div>
       )}
+      {label.right}
     </div>
   );
 };

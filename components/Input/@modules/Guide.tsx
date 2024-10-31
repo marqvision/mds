@@ -1,6 +1,7 @@
 import { InputStatus, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { MDSTypography } from '../../Typography';
+import styled from '@emotion/styled';
 
 type Props = {
   label?: string;
@@ -31,6 +32,16 @@ const GUIDE_SIZE = {
   },
 } as const;
 
+const StyledWrap = styled.div<{ customSize: Size }>`
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  gap: ${({ customSize }) => GUIDE_SIZE[customSize].gap};
+  & svg {
+    transform: translateY(4px);
+  }
+`;
+
 export const Guide = (props: Props) => {
   const { label, size, status } = props;
 
@@ -55,15 +66,14 @@ export const Guide = (props: Props) => {
     status === 'error'
       ? 'color/content/critical/default/normal'
       : status === 'success'
-      ? 'color/content/success/default/normal'
-      : undefined;
+        ? 'color/content/success/default/normal'
+        : undefined;
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: GUIDE_SIZE[size].gap, padding: '0 4px' }}>
-      {Icon}
+    <StyledWrap customSize={size}>
       <MDSTypography variant={GUIDE_SIZE[size].fontSize} weight="medium" color={fontColor}>
-        {label}
+        {Icon} {label}
       </MDSTypography>
-    </div>
+    </StyledWrap>
   );
 };

@@ -132,6 +132,7 @@ export const MDSImage = (props: ImageProps) => {
             onError={onError}
             objectFit={objectFit}
             objectPosition={objectPosition}
+            loading="lazy"
           />
           {children}
         </ImageWrapper>

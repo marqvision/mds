@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+const isLazyLoadingEnabled = 'loading' in HTMLImageElement.prototype;
 export const useLazyLoad = (ref: React.RefObject<HTMLImageElement>) => {
-  const [isOnScreen, setIsOnScreen] = useState<boolean>(false);
+  const [isOnScreen, setIsOnScreen] = useState<boolean>(isLazyLoadingEnabled);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -14,6 +15,8 @@ export const useLazyLoad = (ref: React.RefObject<HTMLImageElement>) => {
   };
 
   useEffect(() => {
+    if (isLazyLoadingEnabled) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
@@ -27,7 +30,7 @@ export const useLazyLoad = (ref: React.RefObject<HTMLImageElement>) => {
     );
 
     if (!ref.current) return;
-      observer.observe(ref.current);
+    observer.observe(ref.current);
 
     return () => {
       observer.disconnect();

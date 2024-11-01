@@ -133,7 +133,14 @@ export const Select = <T,>(props: Props<T>) => {
 
   return (
     <StyledLabel size={size} isError={isError} onClick={onClick}>
-      <StyledOutline customSize={size} disabled={isDisabled} readOnly={isReadOnly} isError={isError}>
+      <StyledOutline
+        customSize={size}
+        disabled={isDisabled}
+        flatRight={custom?.flatRight}
+        flatLeft={custom?.flatLeft}
+        readOnly={isReadOnly}
+        isError={isError}
+      >
         <div style={{ overflow: 'hidden', width: '100%' }}>
           {isWithChip ? (
             <StyledChipList

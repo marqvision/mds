@@ -6,7 +6,8 @@ import { MDSIconProps } from '../../Icon';
 
 export const StyledOutline = styled.div<{
   customSize: Size;
-  hasAdd?: boolean;
+  flatLeft?: boolean;
+  flatRight?: boolean | 'add';
   disabled?: boolean;
   readOnly?: boolean;
   isError?: boolean;
@@ -15,7 +16,8 @@ export const StyledOutline = styled.div<{
   align-items: center;
   gap: 4px;
   width: 100%;
-  border-radius: ${({ hasAdd }) => (hasAdd ? '4px 0 0 4px' : '4px')};
+  border-radius: ${({ flatLeft, flatRight }) =>
+    `${flatLeft ? 0 : '4px'} ${flatRight ? 0 : '4px'} ${flatRight ? 0 : '4px'} ${flatLeft ? 0 : '4px'}`};
   height: 100%;
   border: ${({ isError }) => `1px solid ${theme.color.border[isError ? 'error' : 'normal']}`};
   ${({ customSize }) => ({
@@ -25,12 +27,16 @@ export const StyledOutline = styled.div<{
     },
     padding: `${theme.size[customSize].paddingY} ${theme.size[customSize].paddingX}`,
   })};
-  transition: border-color ${theme.transitionTiming} ease, background-color ${theme.transitionTiming} ease;
+  transition: border-color ${theme.transitionTiming} ease, background-color ${theme.transitionTiming} ease,
+    border-radius ${theme.transitionTiming} ease;
   background-color: ${({ disabled, readOnly }) =>
     disabled || readOnly ? theme.color.bg.disabled : theme.color.bg.normal};
   &:has(input:focus),
   &:has(button:focus) {
     border-color: ${({ isError }) => theme.color.border[isError ? 'error' : 'active']};
+    border-radius: ${({ flatRight }) => (flatRight === 'add' ? '4px 0 0 4px' : `4px`)};
+    position: relative;
+    z-index: 1;
   }
   &:has(button:not(:disabled):not(.readOnly)) {
     cursor: pointer;

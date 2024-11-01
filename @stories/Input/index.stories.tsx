@@ -66,7 +66,7 @@ export const TextField: Story = {
 
     return (
       <Wrapper>
-        <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} />
+        <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} style={{ borderTopLeftRadius: 0 }} />
       </Wrapper>
     );
   },
@@ -88,6 +88,49 @@ export const flexibleTextField: Story = {
     return (
       <Wrapper>
         <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} />
+      </Wrapper>
+    );
+  },
+};
+
+export const Search: Story = {
+  args: {
+    placeholder: 'Enter value',
+    custom: {
+      flatLeft: true,
+      add: {
+        onSubmit: () => {},
+      },
+    },
+  },
+  render: function Render(props) {
+    const [value, setValue] = useState<string>('');
+    const [type, setType] = useState('listing id');
+
+    const list = ['listing id', 'exclude', 'include'].map((v) => ({
+      label: v,
+      value: v,
+    }));
+
+    return (
+      <Wrapper>
+        <div style={{ display: 'flex' }}>
+          <MDSInput
+            type="select"
+            value={type}
+            list={list}
+            custom={{
+              flatRight: true,
+            }}
+            style={{ width: '120px' }}
+          />
+          <MDSInput
+            {...(props as TextFieldProps)}
+            value={value}
+            onChange={setValue}
+            style={{ width: '160px', transform: 'translateX(-1px)' }}
+          />
+        </div>
       </Wrapper>
     );
   },

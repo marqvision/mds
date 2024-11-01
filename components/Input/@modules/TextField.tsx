@@ -133,7 +133,14 @@ export const TextField = (props: Props) => {
 
   return (
     <StyledLabel size={size} isError={isError}>
-      <StyledOutline customSize={size} hasAdd={!!add} disabled={isDisabled} readOnly={isReadOnly} isError={isError}>
+      <StyledOutline
+        customSize={size}
+        flatRight={add ? 'add' : custom?.flatRight}
+        flatLeft={custom?.flatLeft}
+        disabled={isDisabled}
+        readOnly={isReadOnly}
+        isError={isError}
+      >
         {Prefix}
         <StyledInput
           ref={inputRef}

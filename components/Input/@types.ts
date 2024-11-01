@@ -35,6 +35,8 @@ export type LabelType = string | { main?: string; sub?: string; right?: ReactEle
  * @property {string | ReactElement} [prefix] input Field 좌측에 아이콘 혹은 텍스트 추가
  * @property {string | ReactElement} [suffix] input Field 우측에 아이콘 혹은 텍스트 추가
  * @property {expandOnFocus} [expandOnFocus] focus 됐을 때 focusWidth(px, number) 값으로 width를 변경함.
+ * @property {boolean} [flatLeft] 왼쪽 radius 제거
+ * @property {boolean} [flatRight] 오론쪽 radius 제거
  */
 export type TextFieldCustom = {
   add?: {
@@ -49,14 +51,20 @@ export type TextFieldCustom = {
     defaultWidth?: string | number;
     focusWidth: string | number;
   };
+  flatLeft?: boolean;
+  flatRight?: boolean;
 };
 
 /**
  * @description select 커스텀 props
  * @property { boolean | ((value: ElementType<T>) => ReactElement) } [withChip] Chip 형태로 label을 표시함
+ * @property {boolean} [flatLeft] 왼쪽 radius 제거
+ * @property {boolean} [flatRight] 오론쪽 radius 제거
  */
 type SelectCustom<T> = {
   withChip?: boolean | ((value: ElementType<T>) => ReactElement);
+  flatLeft?: boolean;
+  flatRight?: boolean;
 };
 
 /**

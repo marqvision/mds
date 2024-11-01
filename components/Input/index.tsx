@@ -14,6 +14,11 @@ const StyledWrapper = styled.div<{ size: Size; fullWidth: boolean }>`
   width: 100%;
   max-width: ${({ size, fullWidth }) => (fullWidth ? undefined : theme.size[size].maxWidth)};
   transition: max-width ${theme.transitionTiming} ease;
+  &:has(input:focus),
+  &:has(button:focus) {
+    position: relative;
+    z-index: 1;
+  }
 `;
 
 /**

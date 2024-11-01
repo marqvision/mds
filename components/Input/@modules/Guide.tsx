@@ -1,7 +1,7 @@
+import styled from '@emotion/styled';
 import { InputStatus, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { MDSTypography } from '../../Typography';
-import styled from '@emotion/styled';
 
 type Props = {
   label?: string;
@@ -13,32 +13,37 @@ const GUIDE_SIZE = {
   small: {
     fontSize: 'T12',
     iconSize: 16,
+    iconPadding: '1px',
     gap: '4px',
   },
   medium: {
     fontSize: 'T12',
     iconSize: 16,
+    iconPadding: '1px',
     gap: '4px',
   },
   large: {
     fontSize: 'T14',
-    iconSize: 16,
+    iconSize: 18,
+    iconPadding: '1.5px',
     gap: '6px',
   },
   'extra-large': {
     fontSize: 'T16',
     iconSize: 20,
+    iconPadding: '2px',
     gap: '8px',
   },
 } as const;
 
 const StyledWrap = styled.div<{ customSize: Size }>`
   display: flex;
-  align-items: center;
-  padding: 0 4px;
+  align-items: flex-start;
+  padding-left: 4px;
   gap: ${({ customSize }) => GUIDE_SIZE[customSize].gap};
   & svg {
-    transform: translateY(4px);
+    transform: ${({ customSize }) => `translateY(${GUIDE_SIZE[customSize].iconPadding})`};
+    flex: ${({ customSize }) => `0 0 ${GUIDE_SIZE[customSize].iconSize}px`};
   }
 `;
 
@@ -66,13 +71,14 @@ export const Guide = (props: Props) => {
     status === 'error'
       ? 'color/content/critical/default/normal'
       : status === 'success'
-        ? 'color/content/success/default/normal'
-        : undefined;
+      ? 'color/content/success/default/normal'
+      : undefined;
 
   return (
     <StyledWrap customSize={size}>
+      {Icon}
       <MDSTypography variant={GUIDE_SIZE[size].fontSize} weight="medium" color={fontColor}>
-        {Icon} {label}
+        {label}
       </MDSTypography>
     </StyledWrap>
   );

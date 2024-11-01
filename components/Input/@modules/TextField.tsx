@@ -59,6 +59,7 @@ export const TextField = (props: Props) => {
   const debounceRef = useRef<number>();
   const inputRef = useRef<HTMLInputElement>(null);
   const formatRef = useRef(format);
+  const preventResizeRef = useRef(false);
 
   const add = custom?.add;
   const debounce = custom?.debounce || 0;
@@ -101,7 +102,9 @@ export const TextField = (props: Props) => {
   };
 
   const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
-    onBlur?.(e.target.value);
+    if (!preventResizeRef.current) {
+      onBlur?.(e.target.value);
+    }
   };
 
   const handleDelete = () => {
@@ -151,6 +154,8 @@ export const TextField = (props: Props) => {
           size={theme.size[size].iconSize}
           onClick={!(isDisabled || isReadOnly) ? handleDelete : undefined}
           className={isShowDelete ? 'show' : undefined}
+          onMouseEnter={() => (preventResizeRef.current = true)}
+          onMouseLeave={() => (preventResizeRef.current = false)}
         />
       </StyledOutline>
       {add && (

@@ -48,14 +48,17 @@ export const TextField: Story = {
     },
     custom: {
       add: {
-        label: '추가',
+        label: 'Add',
         onSubmit: () => undefined,
       },
     },
     guide: [
-      { label: 'Guide text 1', status: 'error' },
-      { label: 'Guide text 2', status: 'idle' },
-      { label: 'Guide text 3', status: 'success' },
+      {
+        label: 'Guide text error Guide text error Guide text error Guide text error Guide text error Guide text error',
+        status: 'error',
+      },
+      { label: 'Guide text idle Guide text idle Guide text idle Guide text idle', status: 'idle' },
+      { label: 'Guide text success Guide text success', status: 'success' },
     ],
   },
   render: function Render(props) {

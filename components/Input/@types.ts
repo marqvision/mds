@@ -88,7 +88,7 @@ export type ElementType<T> = T extends (infer U)[] ? U : T;
  * @property {'select'} props.type
  * @property [props.value] Selected value
  * @property [props.onChange] delete event on Select / Chips
- * @property {SelectCustom} props.custom
+ * @property {SelectCustom} props.custom - Select 추가 모듈
  */
 export type SelectProps<T = unknown> = {
   type: 'select';

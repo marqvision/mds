@@ -3,7 +3,7 @@ import * as CSS from 'csstype';
 import { MDSThemeColorPath } from '../../foundation';
 
 type IconSize = 'x-small' | 'small' | 'medium' | 'large';
-type Variant = 'border' | 'tint';
+type FallbackStyle = 'border' | 'tint';
 type ErrorFallback = 'icon' | 'text' | 'both';
 export type RemoveBorderRadius =
   | boolean
@@ -16,7 +16,7 @@ export type RemoveBorderRadius =
 
 export type Theme = {
   color: Record<
-    Variant,
+    FallbackStyle,
     {
       borderColor: MDSThemeColorPath;
       backgroundColor: MDSThemeColorPath;
@@ -51,7 +51,7 @@ export type StyledErrorWrapperProps = {
   /**
    * loading 또는 error 시의 스타일.
    */
-  variant: Variant;
+  fallbackStyle: FallbackStyle;
 };
 
 export type StyledImageWrapperProps = {

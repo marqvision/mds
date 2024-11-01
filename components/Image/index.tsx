@@ -43,11 +43,11 @@ const ErrorWrapper = styled.div<StyledErrorWrapperProps>`
   overflow: hidden;
   border-radius: inherit;
   user-select: inherit;
-  background-color: ${({ variant }) => resolveColor(theme.color[variant].backgroundColor)};
-  ${({ variant, iconSize }) => `
+  background-color: ${({ fallbackStyle }) => resolveColor(theme.color[fallbackStyle].backgroundColor)};
+  ${({ fallbackStyle, iconSize }) => `
     border-style: solid;
-    border-width: ${iconSize === 'x-small' || variant === 'border' ? '1px' : '0'};
-    border-color: ${resolveColor(theme.color[variant].borderColor)};
+    border-width: ${iconSize === 'x-small' || fallbackStyle === 'border' ? '1px' : '0'};
+    border-color: ${resolveColor(theme.color[fallbackStyle].borderColor)};
   `}
 `;
 
@@ -79,7 +79,7 @@ export const MDSImage = (props: ImageProps) => {
   const {
     children,
     isLoading,
-    variant,
+    fallbackStyle,
     removeBorderRadius,
     iconSize: _iconSize,
     errorFallback = 'icon',
@@ -97,7 +97,7 @@ export const MDSImage = (props: ImageProps) => {
   const isIconVisible = errorFallback === 'icon' || errorFallback === 'both';
   const isTextVisible = errorFallback === 'text' || errorFallback === 'both';
   const iconSize = _iconSize && theme.size.iconSize[_iconSize];
-  const color = theme.color[variant].color;
+  const color = theme.color[fallbackStyle].color;
   const borderRadius = getRadius(removeBorderRadius);
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -105,14 +105,8 @@ export const MDSImage = (props: ImageProps) => {
   const { isOnScreen, isLoaded, isError, onError, onLoad } = useLazyLoad(imageRef);
 
   return (
-    <Wrapper
-      width={width}
-      height={height}
-      aspectRatio={aspectRatio}
-      borderRadius={borderRadius}
-      {...restProps}
-    >
-      <ErrorWrapper variant={variant} iconSize={_iconSize}>
+    <Wrapper width={width} height={height} aspectRatio={aspectRatio} borderRadius={borderRadius} {...restProps}>
+      <ErrorWrapper fallbackStyle={fallbackStyle} iconSize={_iconSize}>
         {!isError ? (
           <MDSIcon.Image variant="outline" size={iconSize} color={color} />
         ) : (
@@ -148,9 +142,12 @@ export const MDSImage = (props: ImageProps) => {
 
 const getRadius = (removeData?: RemoveBorderRadius) => {
   const topLeft = (typeof removeData !== 'boolean' && removeData?.topLeft) || removeData === true ? '0' : borderRadius;
-  const topRight = (typeof removeData !== 'boolean' && removeData?.topRight) || removeData === true ? '0' : borderRadius;
-  const bottomLeft = (typeof removeData !== 'boolean' && removeData?.bottomLeft) || removeData === true ? '0' : borderRadius;
-  const bottomRight = (typeof removeData !== 'boolean' && removeData?.bottomRight) || removeData === true ? '0' : borderRadius;
+  const topRight =
+    (typeof removeData !== 'boolean' && removeData?.topRight) || removeData === true ? '0' : borderRadius;
+  const bottomLeft =
+    (typeof removeData !== 'boolean' && removeData?.bottomLeft) || removeData === true ? '0' : borderRadius;
+  const bottomRight =
+    (typeof removeData !== 'boolean' && removeData?.bottomRight) || removeData === true ? '0' : borderRadius;
 
   return { topLeft, topRight, bottomLeft, bottomRight };
 };

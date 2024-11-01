@@ -51,7 +51,7 @@ export const Preview: Story = {
   args: {
     width: '200px',
     height: '200px',
-    variant: 'border',
+    fallbackStyle: 'border',
     src: 'https://picsum.photos/id/40/200',
   },
   render: function Render({ children, ...restProps }) {
@@ -71,7 +71,7 @@ export const Default: Story = {
         {[...Array(80)].map((_, i) => (
           <MDSImage
             key={`preview-${i}`}
-            variant="border"
+            fallbackStyle="border"
             iconSize="medium"
             aspectRatio="1"
             src={`https://picsum.photos/id/${10 + i}/200`}
@@ -88,7 +88,7 @@ export const IsLoading: Story = {
       <MDSTypography>로딩 상태 시 placeholder 아이콘이 출력됩니다.</MDSTypography>
       <Grid>
         {[...Array(4)].map((_, i) => (
-          <MDSImage isLoading key={`isLoading-${i}`} variant="border" iconSize="medium" aspectRatio="1" src="" />
+          <MDSImage isLoading key={`isLoading-${i}`} fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
         ))}
       </Grid>
     </Wrapper>
@@ -103,7 +103,7 @@ export const Error: Story = {
         {[...Array(4)].map((_, i) => (
           <MDSImage
             key={`error-${i}`}
-            variant="border"
+            fallbackStyle="border"
             iconSize="medium"
             aspectRatio="1"
             src={`https://picsum.photos/id/${-2 + i}/200`}
@@ -121,9 +121,9 @@ export const ErrorFallback: Story = {
         errorFallback 설정에 따라 아이콘, 'no image' 텍스트 또는 둘 다를 출력할 수 있습니다.
       </MDSTypography>
       <Grid>
-        <MDSImage errorFallback="icon" variant="border" iconSize="medium" aspectRatio="1" src="" />
-        <MDSImage errorFallback="text" variant="border" aspectRatio="1" src="" />
-        <MDSImage errorFallback="both" variant="border" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage errorFallback="icon" fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage errorFallback="text" fallbackStyle="border" aspectRatio="1" src="" />
+        <MDSImage errorFallback="both" fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
       </Grid>
     </Wrapper>
   ),
@@ -138,19 +138,19 @@ export const Variant: Story = {
         border
       </MDSTypography>
       <Grid>
-        <MDSImage isLoading variant="border" iconSize="medium" aspectRatio="1" src="" />
-        <MDSImage errorFallback="icon" variant="border" iconSize="medium" aspectRatio="1" src="" />
-        <MDSImage errorFallback="text" variant="border" aspectRatio="1" src="" />
-        <MDSImage errorFallback="both" variant="border" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage isLoading fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage errorFallback="icon" fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage errorFallback="text" fallbackStyle="border" aspectRatio="1" src="" />
+        <MDSImage errorFallback="both" fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
       </Grid>
       <MDSTypography variant="T24" weight="medium">
         tint
       </MDSTypography>
       <Grid>
-        <MDSImage isLoading variant="tint" iconSize="medium" aspectRatio="1" src="" />
-        <MDSImage errorFallback="icon" variant="tint" iconSize="medium" aspectRatio="1" src="" />
-        <MDSImage errorFallback="text" variant="tint" aspectRatio="1" src="" />
-        <MDSImage errorFallback="both" variant="tint" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage isLoading fallbackStyle="tint" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage errorFallback="icon" fallbackStyle="tint" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage errorFallback="text" fallbackStyle="tint" aspectRatio="1" src="" />
+        <MDSImage errorFallback="both" fallbackStyle="tint" iconSize="medium" aspectRatio="1" src="" />
       </Grid>
     </Wrapper>
   ),
@@ -164,33 +164,33 @@ export const IconSize: Story = {
         x-small
       </MDSTypography>
       <Grid>
-        <MDSImage isLoading variant="border" iconSize="x-small" aspectRatio="1" src="" />
-        <MDSImage errorFallback="icon" variant="border" iconSize="x-small" aspectRatio="1" src="" />
-        <MDSImage errorFallback="both" variant="border" iconSize="x-small" aspectRatio="1" src="" />
+        <MDSImage isLoading fallbackStyle="border" iconSize="x-small" aspectRatio="1" src="" />
+        <MDSImage errorFallback="icon" fallbackStyle="border" iconSize="x-small" aspectRatio="1" src="" />
+        <MDSImage errorFallback="both" fallbackStyle="border" iconSize="x-small" aspectRatio="1" src="" />
       </Grid>
       <MDSTypography variant="T24" weight="medium">
         small
       </MDSTypography>
       <Grid>
-        <MDSImage isLoading variant="border" iconSize="small" aspectRatio="1" src="" />
-        <MDSImage errorFallback="icon" variant="border" iconSize="small" aspectRatio="1" src="" />
-        <MDSImage errorFallback="both" variant="border" iconSize="small" aspectRatio="1" src="" />
+        <MDSImage isLoading fallbackStyle="border" iconSize="small" aspectRatio="1" src="" />
+        <MDSImage errorFallback="icon" fallbackStyle="border" iconSize="small" aspectRatio="1" src="" />
+        <MDSImage errorFallback="both" fallbackStyle="border" iconSize="small" aspectRatio="1" src="" />
       </Grid>
       <MDSTypography variant="T24" weight="medium">
         medium
       </MDSTypography>
       <Grid>
-        <MDSImage isLoading variant="border" iconSize="medium" aspectRatio="1" src="" />
-        <MDSImage errorFallback="icon" variant="border" iconSize="medium" aspectRatio="1" src="" />
-        <MDSImage errorFallback="both" variant="border" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage isLoading fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage errorFallback="icon" fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
+        <MDSImage errorFallback="both" fallbackStyle="border" iconSize="medium" aspectRatio="1" src="" />
       </Grid>
       <MDSTypography variant="T24" weight="medium">
         large
       </MDSTypography>
       <Grid>
-        <MDSImage isLoading variant="border" iconSize="large" aspectRatio="1" src="" />
-        <MDSImage errorFallback="icon" variant="border" iconSize="large" aspectRatio="1" src="" />
-        <MDSImage errorFallback="both" variant="border" iconSize="large" aspectRatio="1" src="" />
+        <MDSImage isLoading fallbackStyle="border" iconSize="large" aspectRatio="1" src="" />
+        <MDSImage errorFallback="icon" fallbackStyle="border" iconSize="large" aspectRatio="1" src="" />
+        <MDSImage errorFallback="both" fallbackStyle="border" iconSize="large" aspectRatio="1" src="" />
       </Grid>
     </Wrapper>
   ),
@@ -201,28 +201,28 @@ export const ImageSize: Story = {
     <Wrapper>
       <MDSTypography>이미지에 width height 또는 aspect ratio 를 설정할 수 있습니다.</MDSTypography>
       <MDSImage
-        variant="border"
+        fallbackStyle="border"
         iconSize="medium"
         width="150px"
         height="100px"
         src={`https://picsum.photos/id/30/200`}
       />
       <MDSImage
-        variant="border"
+        fallbackStyle="border"
         iconSize="medium"
         width="100px"
         height="150px"
         src={`https://picsum.photos/id/30/200`}
       />
       <MDSImage
-        variant="border"
+        fallbackStyle="border"
         iconSize="medium"
         width="100px"
         aspectRatio="16/9"
         src={`https://picsum.photos/id/30/200`}
       />
       <MDSImage
-        variant="border"
+        fallbackStyle="border"
         iconSize="medium"
         width="150px"
         aspectRatio="4/3"
@@ -240,7 +240,7 @@ export const ObjectFit: Story = {
         {[...Array(4)].map((_, i) => (
           <MDSImage
             key={`preview-${i}`}
-            variant="border"
+            fallbackStyle="border"
             iconSize="medium"
             aspectRatio="16/9"
             objectPosition="top left"
@@ -250,7 +250,7 @@ export const ObjectFit: Story = {
         {[...Array(4)].map((_, i) => (
           <MDSImage
             key={`preview-${i}`}
-            variant="border"
+            fallbackStyle="border"
             iconSize="medium"
             aspectRatio="16/9"
             objectFit="contain"
@@ -285,7 +285,7 @@ export const BorderWithChildren: Story = {
       <MDSTypography>이미지 내부에 다른 요소를 추가할 수도 있습니다.</MDSTypography>
       <Grid>
         <MDSImage
-          variant="border"
+          fallbackStyle="border"
           iconSize="medium"
           aspectRatio="1"
           borderColor="color/content/critical/default/normal"
@@ -306,7 +306,7 @@ export const RemoveBorderRadius: Story = {
       <Grid>
         <MDSImage
           removeBorderRadius
-          variant="border"
+          fallbackStyle="border"
           iconSize="medium"
           aspectRatio="1"
           src={`https://picsum.photos/id/384/200`}
@@ -321,7 +321,7 @@ export const RemoveBorderRadius: Story = {
         </MDSImage>
         <MDSImage
           removeBorderRadius={{ topLeft: true }}
-          variant="border"
+          fallbackStyle="border"
           iconSize="medium"
           aspectRatio="1"
           src={`https://picsum.photos/id/384/200`}
@@ -336,7 +336,7 @@ export const RemoveBorderRadius: Story = {
         </MDSImage>
         <MDSImage
           removeBorderRadius={{ topLeft: true, bottomRight: true }}
-          variant="border"
+          fallbackStyle="border"
           iconSize="medium"
           aspectRatio="1"
           src={`https://picsum.photos/id/384/200`}
@@ -351,7 +351,7 @@ export const RemoveBorderRadius: Story = {
         </MDSImage>
         <MDSImage
           removeBorderRadius={{ bottomLeft: true, bottomRight: true }}
-          variant="border"
+          fallbackStyle="border"
           iconSize="medium"
           aspectRatio="1"
           src={`https://picsum.photos/id/384/200`}

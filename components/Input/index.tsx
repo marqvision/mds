@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import { theme } from './@constants';
-import { Props, SelectProps, Size, TextFieldProps } from './@types';
+import { Props, SelectProps, Size, TextFieldCustom, TextFieldProps } from './@types';
 import { TextField } from './@modules/TextField';
 import { Select } from './@modules/Select';
 import { Label } from './@modules/Label';
@@ -12,15 +13,15 @@ const StyledWrapper = styled.div<{ size: Size; fullWidth: boolean }>`
   gap: 6px;
   width: 100%;
   max-width: ${({ size, fullWidth }) => (fullWidth ? undefined : theme.size[size].maxWidth)};
+  transition: max-width ${theme.transitionTiming} ease;
 `;
 
 /**
- * @param {'select'} [props.type] select 를 추가하면 Select 버튼으로 사용 가능
- * @param [props.status] 'success' | 'error' > guide 색상 변경, 버튼 색상 변경 (error)
+ * @param {TextFieldProps | SelectProps} props.type Input에 대한 props
  * */
 export const MDSInput = <T,>(props: Props<T>) => {
   const {
-    type = 'textFiled',
+    type = 'textField',
     value,
     size = 'medium',
     inputProps,
@@ -43,10 +44,42 @@ export const MDSInput = <T,>(props: Props<T>) => {
   const handleChange = isReadOnly || isDisabled ? undefined : onChange;
   const handleClick = isReadOnly || isDisabled ? undefined : onClick;
 
+  const [isFocused, setIsFocused] = useState(false);
+
+  const guideList =
+    (guide &&
+      (Array.isArray(guide)
+        ? guide.map((v) => {
+            if (typeof v === 'string') {
+              return { label: v, status };
+            }
+            return v;
+          })
+        : [{ label: guide, status }])) ||
+    undefined;
+
+  const focus = (custom as TextFieldCustom)?.expandOnFocus;
+
+  const handleBlur = (_value: string) => {
+    setIsFocused(false);
+    onBlur?.(_value);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
   return (
-    <StyledWrapper size={size} fullWidth={fullWidth} style={style}>
+    <StyledWrapper
+      size={size}
+      fullWidth={fullWidth}
+      style={{
+        ...style,
+        maxWidth: focus ? (isFocused ? focus.focusWidth : focus.defaultWidth) : undefined,
+      }}
+    >
       {label && <Label size={size} label={label} isDisabled={isDisabled} />}
-      {type === 'textFiled' && (
+      {type === 'textField' && (
         <TextField
           {...({
             value,
@@ -59,8 +92,9 @@ export const MDSInput = <T,>(props: Props<T>) => {
             placeholder,
             format,
             onChange: handleChange,
-            onBlur,
+            onBlur: handleBlur,
           } as TextFieldProps)}
+          onFocus={handleFocus}
         />
       )}
       {type === 'select' && (
@@ -80,7 +114,13 @@ export const MDSInput = <T,>(props: Props<T>) => {
           } as Omit<SelectProps<T>, 'type'>)}
         />
       )}
-      {guide && <Guide label={guide} size={size} status={status} />}
+      {guideList && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {guideList.map((guideItem) => (
+            <Guide key={guideItem.label} label={guideItem.label} size={size} status={guideItem.status} />
+          ))}
+        </div>
+      )}
     </StyledWrapper>
   );
 };

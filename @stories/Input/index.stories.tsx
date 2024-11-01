@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MDSInput, MDSTypography } from '../../components';
-import type { Meta, StoryObj } from '@storybook/react';
 import { SelectProps, TextFieldProps } from '../../components/Input/@types';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSInput> = {
   component: MDSInput,
@@ -52,7 +52,32 @@ export const TextField: Story = {
         onSubmit: () => undefined,
       },
     },
-    guide: 'Guide text',
+    guide: [
+      { label: 'Guide text 1', status: 'error' },
+      { label: 'Guide text 2', status: 'idle' },
+      { label: 'Guide text 3', status: 'success' },
+    ],
+  },
+  render: function Render(props) {
+    const [value, setValue] = useState<string>('');
+
+    return (
+      <Wrapper>
+        <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} />
+      </Wrapper>
+    );
+  },
+};
+
+export const flexibleTextField: Story = {
+  args: {
+    placeholder: 'Enter value',
+    custom: {
+      expandOnFocus: {
+        defaultWidth: 200,
+        focusWidth: 280,
+      },
+    },
   },
   render: function Render(props) {
     const [value, setValue] = useState<string>('');
@@ -68,6 +93,7 @@ export const TextField: Story = {
 export const Select: Story = {
   args: {
     type: 'select',
+    guide: ['Guide text1', 'Guide text2'],
   },
   render: function Render(props) {
     const [list, setList] = useState<string[]>([]);
@@ -93,6 +119,7 @@ export const SelectWithChip: Story = {
     },
     fullWidth: true,
     format: (label, value) => `${label} + format`,
+    guide: 'Guide text',
   },
   render: function Render(props) {
     const [list, setList] = useState<string[]>([]);

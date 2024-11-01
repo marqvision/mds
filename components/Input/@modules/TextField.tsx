@@ -34,7 +34,7 @@ const StyledPrefix = styled(MDSTypography)`
   flex: 0 0 auto;
 `;
 
-type Props = CommonProps & TextFieldProps;
+type Props = CommonProps & TextFieldProps & { onFocus: () => void };
 
 export const TextField = (props: Props) => {
   const {
@@ -49,6 +49,7 @@ export const TextField = (props: Props) => {
     format,
     onChange,
     onBlur,
+    onFocus,
   } = props;
 
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
@@ -140,6 +141,7 @@ export const TextField = (props: Props) => {
           placeholder={placeholder}
           onChange={handleChange}
           onBlur={handleBlur}
+          onFocus={onFocus}
         />
         {Suffix}
         <StyledIcon

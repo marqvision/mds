@@ -9,7 +9,6 @@ import { AddButton } from './AddButton';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
 const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
-  height: 26px;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -44,8 +43,10 @@ export const TextField = (props: Props) => {
     inputProps,
     isDisabled,
     isReadOnly,
+    isMultiline,
     status,
     placeholder,
+    style,
     format,
     onChange,
     onBlur,
@@ -140,11 +141,13 @@ export const TextField = (props: Props) => {
         disabled={isDisabled}
         readOnly={isReadOnly}
         isError={isError}
+        style={style}
       >
         {Prefix}
         <StyledInput
           ref={inputRef}
           {...inputProps}
+          as={isMultiline ? 'textarea' : 'input'}
           title={value}
           disabled={isDisabled}
           readOnly={isReadOnly}

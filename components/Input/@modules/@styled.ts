@@ -27,12 +27,13 @@ export const StyledOutline = styled.div<{
     },
     padding: `${theme.size[customSize].paddingY} ${theme.size[customSize].paddingX}`,
   })};
-  transition: border-color ${theme.transitionTiming} ease, background-color ${theme.transitionTiming} ease,
+  transition:
+    border-color ${theme.transitionTiming} ease,
+    background-color ${theme.transitionTiming} ease,
     border-radius ${theme.transitionTiming} ease;
   background-color: ${({ disabled, readOnly }) =>
     disabled || readOnly ? theme.color.bg.disabled : theme.color.bg.normal};
-  &:has(input:focus),
-  &:has(button:focus) {
+  &:has(input:focus, textarea:focus, button:focus) {
     border-color: ${({ isError }) => theme.color.border[isError ? 'error' : 'active']};
     border-radius: ${({ flatRight }) => (flatRight === 'add' ? '4px 0 0 4px' : `4px`)};
     position: relative;
@@ -41,13 +42,11 @@ export const StyledOutline = styled.div<{
   &:has(button:not(:disabled):not(.readOnly)) {
     cursor: pointer;
   }
-  &:has(button:disabled) *,
-  &:has(input:disabled) *,
-  &:has(button.readOnly) *,
-  &:has(input:read-only) * {
+  &:has(button:disabled, input:disabled, button.readOnly, input:read-only, textarea:disabled, textarea:read-only) * {
     cursor: default;
   }
-  & input::placeholder {
+  & input::placeholder,
+  & textarea::placeholder {
     color: ${({ theme }) => theme.color.content.placeholder.normal};
   }
   & input:disabled {

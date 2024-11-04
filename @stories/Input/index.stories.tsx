@@ -72,7 +72,7 @@ export const TextField: Story = {
   },
 };
 
-export const flexibleTextField: Story = {
+export const FlexibleTextField: Story = {
   args: {
     placeholder: 'Enter value',
     custom: {
@@ -88,6 +88,22 @@ export const flexibleTextField: Story = {
     return (
       <Wrapper>
         <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} />
+      </Wrapper>
+    );
+  },
+};
+
+export const MultiLineTextField: Story = {
+  args: {
+    placeholder: 'Enter value',
+    isMultiline: true,
+  },
+  render: function Render(props) {
+    const [value, setValue] = useState<string>('');
+
+    return (
+      <Wrapper>
+        <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} outlineStyle={{ height: '80px' }} />
       </Wrapper>
     );
   },

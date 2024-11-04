@@ -59,6 +59,7 @@ export const Select = <T,>(props: Props<T>) => {
     status,
     placeholder,
     format,
+    style,
     onChange,
     onClick,
   } = props;
@@ -140,6 +141,7 @@ export const Select = <T,>(props: Props<T>) => {
         flatLeft={custom?.flatLeft}
         readOnly={isReadOnly}
         isError={isError}
+        style={style}
       >
         <div style={{ overflow: 'hidden', width: '100%' }}>
           {isWithChip ? (

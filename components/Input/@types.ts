@@ -85,6 +85,8 @@ export type TextFieldProps = {
   value: string;
   list?: never;
   format?: (value: string) => string;
+  isMultiline?: boolean;
+  outlineStyle?: CSSProperties;
   onClick?: never;
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
@@ -105,6 +107,8 @@ export type SelectProps<T = unknown> = {
   value: T;
   list: { label: string; value: ElementType<T> }[];
   format?: (label: string, value: ElementType<T>) => string;
+  isMultiline?: never;
+  outlineStyle?: CSSProperties;
   /**
    * @param {(value: T) => void} [onChange] 우측 및 chip에 X버튼 추가 및 해당 값 제거된 value 리턴
    * */

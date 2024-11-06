@@ -15,9 +15,10 @@ const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
   width: 100%;
 `;
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ customSize: Size }>`
   width: 100%;
   height: 100%;
+  font-size: ${({ customSize }) => theme.size[customSize].fontSize};
   ${resolveFontWeight('regular')}
   &[type=number] {
     -moz-appearance: textfield;
@@ -55,6 +56,7 @@ export const TextField = (props: Props) => {
 
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
   const [isShowDelete, setIsShowDelete] = useState(false);
+  const [isInit, setIsInit] = useState(false);
 
   const lastValueRef = useRef('');
   const debounceRef = useRef<number>();
@@ -132,6 +134,10 @@ export const TextField = (props: Props) => {
     }
   }, [value, isDebouncing]);
 
+  useEffect(() => {
+    setIsInit(true);
+  }, []);
+
   return (
     <StyledLabel size={size} isError={isError}>
       <StyledOutline
@@ -144,18 +150,21 @@ export const TextField = (props: Props) => {
         style={style}
       >
         {Prefix}
-        <StyledInput
-          ref={inputRef}
-          {...inputProps}
-          as={isMultiline ? 'textarea' : 'input'}
-          title={value}
-          disabled={isDisabled}
-          readOnly={isReadOnly}
-          placeholder={placeholder}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          onFocus={onFocus}
-        />
+        {isInit && (
+          <StyledInput
+            ref={inputRef}
+            {...inputProps}
+            as={isMultiline ? 'textarea' : 'input'}
+            customSize={size}
+            title={value}
+            disabled={isDisabled}
+            readOnly={isReadOnly}
+            placeholder={placeholder}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onFocus={onFocus}
+          />
+        )}
         {Suffix}
         <StyledIcon
           as={MDSIcon.CloseDelete}

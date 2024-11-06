@@ -103,7 +103,7 @@ export const MultiLineTextField: Story = {
 
     return (
       <Wrapper>
-        <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} outlineStyle={{ height: '80px' }} />
+        <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} />
       </Wrapper>
     );
   },

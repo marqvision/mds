@@ -21,15 +21,9 @@ export const StyledOutline = styled.div<{
   height: 100%;
   border: ${({ isError }) => `1px solid ${theme.color.border[isError ? 'error' : 'normal']}`};
   ${({ customSize }) => ({
-    '& input': {
-      'line-height': '1.5',
-      'font-size': theme.size[customSize].fontSize,
-    },
     padding: `${theme.size[customSize].paddingY} ${theme.size[customSize].paddingX}`,
   })};
-  transition:
-    border-color ${theme.transitionTiming} ease,
-    background-color ${theme.transitionTiming} ease,
+  transition: border-color ${theme.transitionTiming} ease, background-color ${theme.transitionTiming} ease,
     border-radius ${theme.transitionTiming} ease;
   background-color: ${({ disabled, readOnly }) =>
     disabled || readOnly ? theme.color.bg.disabled : theme.color.bg.normal};
@@ -51,6 +45,13 @@ export const StyledOutline = styled.div<{
   }
   & input:disabled {
     color: ${({ theme }) => theme.color.content.neutral.default.disabled};
+  }
+  & svg {
+    flex-shrink: 0;
+  }
+  &:has(textarea) {
+    height: ${({ customSize }) =>
+      parseInt(theme.size[customSize].paddingX) + parseInt(theme.size[customSize].fontSize) * 1.5 * 2}px;
   }
 `;
 

@@ -62,15 +62,17 @@ const Dialog = styled.dialog<{ isInDimmed: boolean }>`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow:
-    0 0 2px 0 rgba(0, 0, 0, 0.16),
-    0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
   max-height: ${({ maxHeight }) => maxHeight};
   padding: ${({ padding }) => padding};
-  overflow: hidden;
+  overflow: auto;
+  height: 100%;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
 `;
 
 const Popover = (
@@ -109,13 +111,9 @@ const Popover = (
     onClosePopover,
   } = props;
 
-  const width = typeof _width === 'number' ? _width : Number(_width.replace(/\D/g, ''));
   const maxHeight = typeof _maxHeight === 'number' ? _maxHeight : Number(_maxHeight.replace(/\D/g, ''));
 
-  const [coordinates, setCoordinates] = useState<Coordinates>({
-    x: 0,
-    y: 0,
-  });
+  const [coordinates, setCoordinates] = useState<Coordinates>();
 
   const setPosition = useCallback(() => {
     const target = anchorRef.current;
@@ -128,6 +126,8 @@ const Popover = (
 
     const dialogWidth = dialogRef.current?.clientWidth || 0;
     const dialogHeight = dialogRef.current?.clientHeight || 0;
+
+    const width = dialogRef.current?.children[0]?.clientWidth || 0;
 
     const reposition = (value: Coordinates) => {
       const { clientWidth, clientHeight } = window.document.body;
@@ -144,15 +144,15 @@ const Popover = (
       direction === 'left'
         ? rect.left + rect.width - width - MIN_PADDING
         : direction === 'center'
-          ? rect.left + (rect.width - width) / 2 - MIN_PADDING
-          : rect.left - MIN_PADDING;
+        ? rect.left + (rect.width - width) / 2 - MIN_PADDING
+        : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-          ? rect.top - dialogHeight / 2 + rect.height / 2
-          : rect.top - MIN_PADDING;
+        ? rect.top - dialogHeight / 2 + rect.height / 2
+        : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -185,7 +185,7 @@ const Popover = (
       }
     }
     setCoordinates(coordinatesRef.current);
-  }, [position, width, anchorRef, coordinatesRef, dialogRef]);
+  }, [position, anchorRef, coordinatesRef, dialogRef]);
 
   const handleScroll = useCallback(() => {
     setPosition();
@@ -225,12 +225,13 @@ const Popover = (
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClosePopover}
-      style={{ transform: `translate(${coordinates.x}px, ${coordinates.y}px)`, zIndex }}
+      style={{ transform: `translate(${coordinates?.x || 0}px, ${coordinates?.y || 0}px)`, zIndex }}
     >
       <DialogContent
-        width={`${width}px`}
+        width={typeof _width === 'string' ? _width : `${_width}px`}
         maxHeight={`${maxHeight}px`}
         padding={padding}
+        style={{ display: coordinates ? 'block' : 'none' }}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -287,6 +288,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
   const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
   const focusRef = useRef(false);
   const timeoutRef = useRef<number>();
+  const closeRef = useRef(onClose);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isInDimmed, setIsInDimmed] = useState(false);
@@ -312,11 +314,11 @@ export const MDSPopover = (props: Props & StyleProps) => {
       dialogRef.current?.removeAttribute('open');
     }
     timeoutRef.current = window.setTimeout(() => {
-      onClose?.(); // @note-jamie: If-else 문 전에 호출하면 창이 닫혔다가 열렸다가 delay 후에 닫힘
+      closeRef.current?.();
       setIsOpen(false);
       timeoutRef.current = undefined;
     }, delay);
-  }, [delay, hasDim, onClose]);
+  }, [delay, hasDim]);
 
   const handleMouseEnter = () => {
     focusRef.current = true;

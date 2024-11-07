@@ -1,15 +1,19 @@
-import React, { cloneElement, isValidElement } from 'react';
-import { keyframes } from '@emotion/react';
+import React, { isValidElement } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system';
 import { MDSTypography } from '../Typography';
+import { Divider } from './@components/Divider';
+import { Icon } from './@components/Icon';
+import { LoadingSpinner } from './@components/LoadingSpinner';
 import { theme as ChipTheme } from './@constants';
-import { ChipProps, IconProps, LoadingSpinnerProps, StyledChipProps } from './@types';
+import { ChipProps, StyledChipProps } from './@types';
+import { getBorderRadius } from './@utils';
 
 export type MDSChipProps = ChipProps;
 
 const Chip = styled.button<StyledChipProps>`
   position: relative;
+  vertical-align: middle;
   justify-content: center;
   align-items: center;
   gap: 2px;
@@ -27,7 +31,7 @@ const Chip = styled.button<StyledChipProps>`
     color: inherit;
   }
 
-  ${({ isLoading }) => (isLoading === 'hideLabel' ? `& *:not(i) { opacity: 0; }` : '')}
+  ${({ isLoading }) => (isLoading === 'hideLabel' ? `& *:not(i, hr) { opacity: 0; }` : '')}
 
   ${({ width }) => {
     return `
@@ -36,12 +40,36 @@ const Chip = styled.button<StyledChipProps>`
     `;
   }}
 
-  ${({ size }) => {
+  ${({ size, flat }) => {
     return `
       gap: ${ChipTheme.size[size].gap};
       padding: ${ChipTheme.size[size].padding};
-      border-radius: ${ChipTheme.size[size].radius};
       min-height: ${ChipTheme.size[size].minHeight};
+      border-radius: ${getBorderRadius(size, flat)};
+    `;
+  }}
+
+  ${({ size, flat }) => {
+    const chipSpacing = `calc(${ChipTheme.size[size].gap} * 2)`;
+
+    return `
+      ${
+        flat === 'left' || flat === 'both'
+          ? `
+        padding-left: ${chipSpacing};
+        border-left: none;
+      `
+          : ''
+      }
+      ${
+        flat === 'right' || flat === 'both'
+          ? `
+        padding-right: ${chipSpacing};
+        border-right: none;
+        margin-right: 1px;
+      `
+          : ''
+      }
     `;
   }}
 
@@ -92,59 +120,6 @@ const Chip = styled.button<StyledChipProps>`
   }}
 `;
 
-const spin = keyframes`
-  100%
-  {
-    transform: rotate(360deg);
-  }
-`;
-
-const LoadingSpinner = styled.i<LoadingSpinnerProps>`
-  display: block;
-  padding: 2px;
-
-  ${({ isCenter }) => `
-    position: ${isCenter ? 'absolute' : 'relative'};
-    ${
-      isCenter
-        ? `
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    `
-        : ''
-    }
-  `}
-
-  ${({ size }) => `
-    width: ${ChipTheme.size[size].icon}px;
-    height: ${ChipTheme.size[size].icon}px;
-  `}
-
-  &:after {
-    position: absolute;
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 80%;
-    content: '';
-    display: block;
-    border-radius: 50%;
-    animation: ${spin} 1s ease-out infinite;
-
-    ${({ size }) => `
-      border: ${ChipTheme.size[size].spinnerWidth} solid transparent;
-      border-top-color: inherit;
-      border-right-color: inherit;
-    `}
-  }
-`;
-
-const Icon = (props: IconProps) => {
-  const { size, icon } = props;
-  return cloneElement(icon, { size: ChipTheme.size[size].icon, color: icon.props.color || 'currentColor' });
-};
-
 export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
   const {
     children: label,
@@ -159,6 +134,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
     isCompleted,
     onClick,
     tags,
+    flat,
     ...restProps
   } = props;
 
@@ -166,7 +142,9 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
     console.warn('[WARN] MDSChip: isCompleted 는 bluegray + tint, bluegray + border 조합에서만 사용할 수 있습니다.');
     return <></>;
   }
-  
+
+  const isDividerVisible = flat === 'right' || flat === 'both';
+
   const handleClick = onClick
     ? (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
@@ -188,6 +166,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       disabled={isDisabled || isCompleted}
       isDisabled={isDisabled}
       isCompleted={isCompleted}
+      flat={flat}
       {...restProps}
     >
       {isLoading === 'hideLabel' && (
@@ -200,17 +179,19 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
         startIcon && <Icon size={size} icon={startIcon} />
       )}
 
-      {isValidElement(label) ? (
-        label
-      ) : (
-        <MDSTypography variant={ChipTheme.size[size].label} weight="medium" lineClamp={1} wordBreak="break-all">
-          {label}
-        </MDSTypography>
-      )}
+      {isValidElement(label)
+        ? label
+        : label && (
+            <MDSTypography variant={ChipTheme.size[size].label} weight="medium" lineClamp={1} wordBreak="break-all">
+              {label}
+            </MDSTypography>
+          )}
 
       {Array.isArray(tags) ? tags.map((tag) => tag) : tags}
 
       {endIcon && <Icon size={size} icon={endIcon} />}
+
+      {isDividerVisible && <Divider variant={variant} color={color} size={size} flat={flat} />}
     </Chip>
   );
 };

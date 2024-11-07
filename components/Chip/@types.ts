@@ -7,6 +7,7 @@ export type ChipVariant = 'fill' | 'tint' | 'border';
 export type ChipColor = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'teal' | 'purple' | 'white';
 export type ChipSize = 'small' | 'medium' | 'large' | 'extra-large';
 export type ChipStatus = 'normal' | 'hover' | 'disabled';
+export type Flat = 'left' | 'right' | 'both';
 type ChipWidth = 'fill' | 'hug' | string;
 type LoadingStatus = 'hideLabel' | boolean;
 
@@ -41,6 +42,7 @@ export type StyledChipProps = {
   isDisabled?: boolean;
   isCompleted?: boolean;
   isClickable: boolean;
+  flat?: Flat;
 };
 
 export type LoadingSpinnerProps = {
@@ -53,6 +55,13 @@ export type LoadingSpinnerProps = {
 export type IconProps = {
   size: ChipSize;
   icon: React.ReactElement;
+};
+
+export type DividerProps = {
+  variant: ChipVariant;
+  size: ChipSize;
+  color: ChipColor;
+  flat?: Flat;
 };
 
 export type ChipProps = {
@@ -117,4 +126,10 @@ export type ChipProps = {
    * Chip 에서는 어떠한 값도 전달하지 않습니다.
    **/
   tags?: React.ReactElement | React.ReactElement[];
+  /**
+   * Chip 의 좌측, 우측 또는 양측의 borderRadius 제거.
+   * Chip 을 여러 개 연결되어 보이도록 나열할 때 사용하며,
+   * Chip 끼리의 구분을 위해 플랫하게 변경된 우측에는 항상 divider 를 출력합니다.
+   **/
+  flat?: Flat;
 };

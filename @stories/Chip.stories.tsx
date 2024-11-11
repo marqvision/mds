@@ -274,3 +274,41 @@ export const ChipWithTags: Story = {
     </Wrapper>
   ),
 };
+
+export const Chips: Story = {
+  args: {
+    color: 'bluegray',
+    variant: 'fill',
+    size: 'medium',
+    children: 'Chip',
+  },
+  render: ({ children, ...args }) => (
+    <Wrapper>
+      <MDSTypography>flat 속성으로 Chip 을 연결해서 배치할 수 있습니다.</MDSTypography>
+      <MDSTypography>flat `right` 또는 `both` 설정 시 오른쪽에 divider 가 나타납니다.</MDSTypography>
+      <MDSTypography>기본적으로 inline-flex 이기 때문에 사용 시 div 로 한 번 감싸주기만 하면 됩니다.</MDSTypography>
+      <div>
+        <MDSChip {...args} startIcon={<MDSIcon.Calendar />} flat="right" onClick={() => {}}>
+          Filter
+        </MDSChip>
+        <MDSChip {...args} flat="both" onClick={() => {}}>
+          세개도 되지롱
+        </MDSChip>
+        <MDSChip
+          {...args}
+          flat="left"
+          onClick={() => {}}
+          tags={[
+            <MDSTag key="tagCount" size="small" variant="tint" color="bluegray">
+              Selected
+            </MDSTag>,
+            <MDSTag key="tagNew" size="small" variant="tint" color="bluegray">
+              +1
+            </MDSTag>,
+          ]}
+          endIcon={<MDSIcon.ArrowDown variant="outline" />}
+        />
+      </div>
+    </Wrapper>
+  ),
+};

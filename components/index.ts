@@ -11,3 +11,4 @@ export * from './Tag';
 export * from './RadioButton';
 export * from './Popover';
 export * from './Input';
+export * from './Dropdown';

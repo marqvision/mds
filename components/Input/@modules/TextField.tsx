@@ -66,6 +66,7 @@ export const TextField = (props: Props) => {
 
   const add = custom?.add;
   const debounce = custom?.debounce || 0;
+  const enter = custom?.onEnter;
   const prefix = custom?.prefix;
   const isError = status === 'error';
 
@@ -121,6 +122,10 @@ export const TextField = (props: Props) => {
     }
   };
 
+  const handleEnter = () => {
+    enter?.(inputRef.current?.value || '');
+  };
+
   useEffect(() => {
     const input = inputRef.current;
 
@@ -163,6 +168,11 @@ export const TextField = (props: Props) => {
             onChange={handleChange}
             onBlur={handleBlur}
             onFocus={onFocus}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+                handleEnter();
+              }
+            }}
           />
         )}
         {Suffix}

@@ -34,7 +34,14 @@ const StyledPrefix = styled(MDSTypography)`
   flex: 0 0 auto;
 `;
 
-type Props = CommonProps & TextFieldProps & { onFocus: () => void };
+const StyledMirror = styled.div`
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  ${resolveFontWeight('regular')}
+`;
+
+type Props = CommonProps & TextFieldProps & { onFocus: () => void; onResize: (gap: number) => void };
 
 export const TextField = (props: Props) => {
   const {
@@ -52,22 +59,26 @@ export const TextField = (props: Props) => {
     onChange,
     onBlur,
     onFocus,
+    onResize,
   } = props;
 
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [isInit, setIsInit] = useState(false);
+  const [mirrorText, setMirrorText] = useState<string>('');
 
   const lastValueRef = useRef('');
   const debounceRef = useRef<number>();
   const inputRef = useRef<HTMLInputElement>(null);
   const formatRef = useRef(format);
   const preventResizeRef = useRef(false);
+  const mirrorRef = useRef<HTMLDivElement>(null);
 
   const add = custom?.add;
   const debounce = custom?.debounce || 0;
   const prefix = custom?.prefix;
   const isError = status === 'error';
+  const hasCustomToFit = !!custom?.expandToFit;
 
   const variant = `T${theme.size[size].fontSize.replace('px', '')}` as Features['variant'];
 
@@ -128,7 +139,7 @@ export const TextField = (props: Props) => {
       if (value !== lastValueRef.current) {
         input.value = formatRef.current ? formatRef.current(value) : value;
         lastValueRef.current = value;
-
+        setMirrorText(value);
         setIsShowDelete(!!value);
       }
     }
@@ -137,6 +148,13 @@ export const TextField = (props: Props) => {
   useEffect(() => {
     setIsInit(true);
   }, []);
+
+  useEffect(() => {
+    if (hasCustomToFit) {
+      const gap = (mirrorRef.current?.clientWidth || 0) - (mirrorRef.current?.nextElementSibling?.clientWidth || 0);
+      onResize(gap);
+    }
+  }, [mirrorText, hasCustomToFit, onResize]);
 
   return (
     <StyledLabel size={size} isError={isError}>
@@ -150,6 +168,9 @@ export const TextField = (props: Props) => {
         style={style}
       >
         {Prefix}
+        <StyledMirror ref={mirrorRef} style={{ fontSize: theme.size[size].fontSize }}>
+          {mirrorText}
+        </StyledMirror>
         {isInit && (
           <StyledInput
             ref={inputRef}

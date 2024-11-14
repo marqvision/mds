@@ -51,6 +51,10 @@ export type TextFieldCustom = {
     defaultWidth?: string | number;
     focusWidth: string | number;
   };
+  expandToFit?: {
+    defaultWidth?: string | number;
+    maxWidth?: string | number;
+  };
   flatLeft?: boolean;
   flatRight?: boolean;
 };

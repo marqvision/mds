@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { theme } from './@constants';
 import { Props, SelectProps, Size, TextFieldCustom, TextFieldProps } from './@types';
@@ -51,7 +51,10 @@ export const MDSInput = <T,>(props: Props<T>) => {
   const handleChange = isReadOnly || isDisabled ? undefined : onChange;
   const handleClick = isReadOnly || isDisabled ? undefined : onClick;
 
-  const [isFocused, setIsFocused] = useState(false);
+  const [init, setInit] = useState(false);
+  const [maxWidth, setMaxWidth] = useState<number>();
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const guideList =
     (guide &&
@@ -66,23 +69,63 @@ export const MDSInput = <T,>(props: Props<T>) => {
     undefined;
 
   const focus = (custom as TextFieldCustom)?.expandOnFocus;
+  const toFit = (custom as TextFieldCustom)?.expandToFit;
 
   const handleBlur = (_value: string) => {
-    setIsFocused(false);
+    if (focus) {
+      const w = parseInt(`${focus.defaultWidth}`);
+      setMaxWidth(isNaN(w) ? parseInt(theme.size[size].maxWidth) : w);
+    }
     onBlur?.(_value);
   };
 
   const handleFocus = () => {
-    setIsFocused(true);
+    if (focus) {
+      const w = parseInt(`${focus.focusWidth}`);
+      setMaxWidth(isNaN(w) ? parseInt(theme.size[size].maxWidth) : w);
+    }
   };
+
+  const handleResize = useCallback(
+    (gap: number) => {
+      if (toFit) {
+        const tempDefaultWidth = parseInt(`${toFit.defaultWidth}`);
+        const tempMaxWidth = parseInt(`${toFit.maxWidth}`);
+        const defaultWidth = isNaN(tempDefaultWidth) ? parseInt(theme.size[size].maxWidth) : tempDefaultWidth;
+        const maxWidth = isNaN(tempMaxWidth) ? 10000 : tempMaxWidth;
+        const clientWidth = wrapperRef.current?.clientWidth || 0;
+        const newWidth = clientWidth + gap;
+        if (gap < 0) {
+          setMaxWidth(Math.max(newWidth, defaultWidth));
+        } else if (gap > 0) {
+          setMaxWidth(Math.min(newWidth, maxWidth));
+        }
+      }
+    },
+    [toFit, size]
+  );
+
+  useEffect(() => {
+    if (focus?.defaultWidth) {
+      setMaxWidth(parseInt(`${focus.defaultWidth}`));
+    } else if (toFit?.defaultWidth) {
+      setMaxWidth(parseInt(`${toFit.defaultWidth}`));
+    }
+    setInit(true);
+  }, [focus, toFit]);
+
+  if (!init) {
+    return <></>;
+  }
 
   return (
     <StyledWrapper
+      ref={wrapperRef}
       size={size}
       fullWidth={fullWidth}
       style={{
         ...style,
-        maxWidth: focus ? (isFocused ? focus.focusWidth : focus.defaultWidth) : undefined,
+        maxWidth,
       }}
     >
       {label && <Label size={size} label={label} isDisabled={isDisabled} />}
@@ -104,6 +147,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
             onBlur: handleBlur,
           } as TextFieldProps)}
           onFocus={handleFocus}
+          onResize={handleResize}
         />
       )}
       {type === 'select' && (

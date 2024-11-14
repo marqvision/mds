@@ -93,6 +93,30 @@ export const FlexibleTextField: Story = {
   },
 };
 
+export const ExpandToFit: Story = {
+  args: {
+    placeholder: 'Enter value',
+    custom: {
+      expandToFit: {
+        defaultWidth: 200,
+        maxWidth: 280,
+      },
+      add: {
+        onSubmit: () => {},
+      },
+    },
+  },
+  render: function Render(props) {
+    const [value, setValue] = useState<string>('');
+
+    return (
+      <Wrapper>
+        <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} />
+      </Wrapper>
+    );
+  },
+};
+
 export const MultiLineTextField: Story = {
   args: {
     placeholder: 'Enter value',

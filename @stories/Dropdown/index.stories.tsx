@@ -34,6 +34,12 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
   );
 };
 
+const tag = (
+  <MDSTag variant="tint" color="yellow" size="medium">
+    Tag
+  </MDSTag>
+);
+
 export const DropdownSingle: Story = {
   args: {
     modules: ['sort', 'search'],
@@ -46,6 +52,7 @@ export const DropdownSingle: Story = {
         value: 1,
         imgUrl:
           'https://s.pstatic.net/dthumb.phinf/?src=%22https%3A%2F%2Fshared-comic.pstatic.net%2Fthumb%2Fwebtoon%2F769209%2Fthumbnail%2Fthumbnail_IMAG21_3511dcdd-6e33-4171-8839-598d6d266215.jpg%22&type=nf216_280&service=navermain',
+        rightSection: tag,
       },
       { label: 'Value2', value: 2 },
       { label: 'Divider' },

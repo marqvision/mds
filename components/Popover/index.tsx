@@ -83,8 +83,6 @@ const Popover = (
       isOpen: boolean;
       anchorRef: MutableRefObject<(EventTarget & Element) | null>;
       dialogRef: MutableRefObject<HTMLDialogElement | null>;
-      scrollOffsetRef: MutableRefObject<Element | undefined>;
-      coordinatesRef: MutableRefObject<Coordinates>;
       focusRef: MutableRefObject<boolean>;
       onMouseEnter: (e: MouseEvent) => void;
       onMouseLeave: ((e: MouseEvent) => void) | undefined;
@@ -103,8 +101,6 @@ const Popover = (
     isOpen,
     anchorRef,
     dialogRef,
-    scrollOffsetRef,
-    coordinatesRef,
     focusRef,
     onMouseEnter,
     onMouseLeave,
@@ -116,6 +112,8 @@ const Popover = (
   const [init, setInit] = useState(false);
   const [coordinates, setCoordinates] = useState<Coordinates>();
 
+  const scrollOffsetRef = useRef<HTMLElement | Window>();
+  const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
   const closeRef = useRef(onClosePopover);
 
   const setPosition = useCallback(() => {
@@ -195,7 +193,7 @@ const Popover = (
       }
     }
     setCoordinates(coordinatesRef.current);
-  }, [init, position, anchorRef, coordinatesRef, dialogRef]);
+  }, [init, position, anchorRef, dialogRef]);
 
   const handleScroll = useCallback(() => {
     setPosition();
@@ -207,12 +205,13 @@ const Popover = (
       closeRef.current();
     } else {
       const bottom = y + (dialogRef.current?.clientHeight || 0);
-      const max = offsetTop + (scrollOffsetRef.current?.clientHeight || 0);
+      const max =
+        offsetTop + ((scrollOffsetRef.current as HTMLElement)?.clientHeight || window.document.body.offsetHeight);
       if (bottom >= max) {
         closeRef.current();
       }
     }
-  }, [setPosition, coordinatesRef, dialogRef, scrollOffsetRef]);
+  }, [setPosition, dialogRef]);
 
   const children = isLoading ? (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -303,8 +302,6 @@ export const MDSPopover = (props: Props & StyleProps) => {
 
   const anchorRef = useRef<(EventTarget & Element) | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const scrollOffsetRef = useRef<Element>();
-  const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
   const focusRef = useRef(false);
   const timeoutRef = useRef<number>();
 
@@ -411,8 +408,6 @@ export const MDSPopover = (props: Props & StyleProps) => {
         isOpen={isOpen}
         anchorRef={anchorRef}
         dialogRef={dialogRef}
-        coordinatesRef={coordinatesRef}
-        scrollOffsetRef={scrollOffsetRef}
         focusRef={focusRef}
         onClosePopover={handleClosePopover}
         onMouseEnter={handleMouseEnter}

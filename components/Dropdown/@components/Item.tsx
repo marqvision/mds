@@ -106,8 +106,7 @@ export const Item = <T,>(props: Props<T>) => {
   const hasChildren = !!item.children;
 
   const selectedChildLength = allChildValue.filter((v) => selectedValue.some((v2) => v2.value === v)).length;
-  const isSelected =
-    props.isInfiniteAll || (item.value !== undefined && selectedChildLength === allChildSelected.length);
+  const isSelected = props.isInfiniteAll || selectedChildLength === allChildSelected.length;
   const is1DepthSingle = props.is1DepthSingle && depth === 0 && !hasChildren;
   const isMultiple = is1DepthSingle ? false : _isMultiple;
 
@@ -210,7 +209,7 @@ export const Item = <T,>(props: Props<T>) => {
           )}
         </StyledRightDiv>
       </StyledWrap>
-      {item.children?.map((child, index) => (
+      {item.children?.map((child) => (
         <Item
           key={`dropItem_${depth}_${child.value === undefined ? child.value : child.label}`}
           {...props}

@@ -82,10 +82,8 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
             value: -1 as ValueType<T>,
           },
         ]);
-        props.onChange?.([-1] as unknown as InferType<T>);
       } else {
         setSelectedValues([]);
-        props.onChange?.([] as InferType<T>);
       }
     } else if (!isMultiple || forceSingle) {
       // single select

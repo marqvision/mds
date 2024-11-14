@@ -228,6 +228,12 @@ export const DropdownMultiInfinite: Story = {
   },
 };
 
+const ele = (
+  <MDSTypography variant="T14" color="color/content/critical/default/normal">
+    Log out
+  </MDSTypography>
+);
+
 export const DropdownMenu: Story = {
   args: {},
   render: function Render(props) {
@@ -237,11 +243,7 @@ export const DropdownMenu: Story = {
         onClick: () => {},
       },
       {
-        label: (
-          <MDSTypography variant="T14" color="color/content/critical/default/normal">
-            Log out
-          </MDSTypography>
-        ),
+        label: ele,
         onClick: () => {},
       },
     ];

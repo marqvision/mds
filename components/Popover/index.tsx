@@ -62,7 +62,9 @@ const Dialog = styled.dialog`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 2px 0 rgba(0, 0, 0, 0.16),
+    0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
@@ -111,11 +113,16 @@ const Popover = (
 
   const maxHeight = typeof _maxHeight === 'number' ? _maxHeight : Number(_maxHeight.replace(/\D/g, ''));
 
+  const [init, setInit] = useState(false);
   const [coordinates, setCoordinates] = useState<Coordinates>();
 
   const closeRef = useRef(onClosePopover);
 
   const setPosition = useCallback(() => {
+    if (!init) {
+      setInit(true);
+      return;
+    }
     const target = anchorRef.current;
 
     if (!target) {
@@ -147,15 +154,15 @@ const Popover = (
       direction === 'left'
         ? rect.left + rect.width - contentWidth - MIN_PADDING
         : direction === 'center'
-        ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
-        : rect.left - MIN_PADDING;
+          ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
+          : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-        ? rect.top - dialogHeight / 2 + rect.height / 2
-        : rect.top - MIN_PADDING;
+          ? rect.top - dialogHeight / 2 + rect.height / 2
+          : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -188,7 +195,7 @@ const Popover = (
       }
     }
     setCoordinates(coordinatesRef.current);
-  }, [position, anchorRef, coordinatesRef, dialogRef]);
+  }, [init, position, anchorRef, coordinatesRef, dialogRef]);
 
   const handleScroll = useCallback(() => {
     setPosition();
@@ -233,7 +240,7 @@ const Popover = (
         width={typeof width === 'string' ? width : `${width}px`}
         maxHeight={`${maxHeight}px`}
         padding={padding}
-        style={{ display: coordinates ? 'block' : 'none' }}
+        style={{ display: init ? 'block' : 'none' }}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -268,9 +275,6 @@ const Popover = (
         dialogRef.current?.toggleAttribute('open');
       }
       setPosition();
-      setTimeout(() => {
-        setPosition();
-      }, 0);
     } else {
       scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
     }

@@ -270,7 +270,6 @@ const Popover = (
       if (hasDim) {
         dialogRef.current?.showModal();
       } else if (anchorRef.current) {
-        scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
         scrollOffsetRef.current?.addEventListener('scroll', handleScroll);
         dialogRef.current?.toggleAttribute('open');
       }

@@ -254,9 +254,9 @@ const Dropdown = <T, SortT>({
           No list
         </MDSTypography>
       )}
-      {list.map((v, index) => (
+      {list.map((v) => (
         <Item<ValueType<T>>
-          key={`dropItem_0_${v.value || index}`}
+          key={`dropItem_0_${v.value !== undefined ? v.value : v.label}`}
           item={v}
           search={search}
           isMultiple={isMultiple}

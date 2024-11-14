@@ -212,7 +212,7 @@ export const Item = <T,>(props: Props<T>) => {
       </StyledWrap>
       {item.children?.map((child, index) => (
         <Item
-          key={`dropItem_${depth}_${child.value || index}`}
+          key={`dropItem_${depth}_${child.value === undefined ? child.value : child.label}`}
           {...props}
           onChange={handleChange}
           item={child}

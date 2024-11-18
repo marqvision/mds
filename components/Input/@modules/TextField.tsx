@@ -126,6 +126,10 @@ export const TextField = (props: Props) => {
     onBlur?.('');
     setIsShowDelete(false);
 
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+
     if (isDebouncing) {
       setIsDebouncing(false);
       clearTimeout(debounceRef.current);
@@ -135,7 +139,7 @@ export const TextField = (props: Props) => {
   useEffect(() => {
     const input = inputRef.current;
 
-    if (input && !isDebouncing) {
+    if (isInit && input && !isDebouncing) {
       if (value !== lastValueRef.current) {
         input.value = formatRef.current ? formatRef.current(value) : value;
         lastValueRef.current = value;
@@ -143,7 +147,7 @@ export const TextField = (props: Props) => {
         setIsShowDelete(!!value);
       }
     }
-  }, [value, isDebouncing]);
+  }, [value, isDebouncing, isInit]);
 
   useEffect(() => {
     setIsInit(true);

@@ -14,7 +14,7 @@ export const MDSResetCSS = () => (
         - The "html" element is excluded, otherwise a bug in Chrome breaks the CSS hyphens property (https://github.com/elad2412/the-new-css-reset/issues/36)
       */
 
-      *:where(:not(html, iframe, canvas, img, svg, video, audio, button, dialog):not(svg *, symbol *, table *)) {
+      *:where(:not(html, iframe, canvas, img, svg, video, audio, button, dialog, table, tr, td):not(svg *, symbol *)) {
         all: unset;
         display: revert;
       }

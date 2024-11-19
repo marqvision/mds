@@ -56,7 +56,12 @@ export const TableHead = (props: TableHeadProps) => {
 const parseTdToTH = <Props,>(children: React.ReactElement | React.ReactElement[], props?: Props) =>
   // 자식 요소가 Cell 일 경우 th 요소로 출력
   Children.map(children, (child: React.ReactElement): React.ReactNode => {
-    if (typeof child.type !== 'string' && 'displayName' in child.type && child.type.displayName === 'MDSTableCell') {
+    if (
+      typeof child.type !== 'string' &&
+      typeof child.type !== 'symbol' &&
+      'displayName' in child.type &&
+      child.type.displayName === 'MDSTableCell'
+    ) {
       return cloneElement(child, { ...child.props, as: 'th', ...props });
     }
     if (child.props.children) {

@@ -121,7 +121,7 @@ export const Item = <T,>(props: Props<T>) => {
   const is1DepthSingle = props.is1DepthSingle && depth === 0 && !hasChildren;
   const isMultiple = is1DepthSingle ? false : _isMultiple;
 
-  const isIndeterminate = !isSelected && isMultiple && selectedChildLength > 0;
+  const isIndeterminate = (!isSelected && isMultiple && selectedChildLength > 0) || indeterminate.includes(item.value);
 
   const iconEle =
     item.icon &&

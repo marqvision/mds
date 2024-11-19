@@ -95,10 +95,11 @@ const Dropdown = <T, SortT>({
   modules,
   selectedValues,
   selectableValues,
-  indeterminate: _indeterminate,
+  indeterminate,
   onChange,
   onClose,
-}: Omit<Props<T, SortT>, 'renderAnchor' | 'onChange'> & {
+}: Omit<Props<T, SortT>, 'renderAnchor' | 'onChange' | 'indeterminate'> & {
+  indeterminate: ValueType<T>[];
   selectedValues: SelectedType<ValueType<T>>[];
   selectableValues: SelectedType<ValueType<T>>[];
   onChange: (value: SelectedType<ValueType<T>>[], isSelected: boolean) => void;
@@ -171,8 +172,6 @@ const Dropdown = <T, SortT>({
         color: 'color/content/primary/default/normal',
       })
     : undefined;
-
-  const indeterminate = (Array.isArray(_indeterminate) ? _indeterminate : [_indeterminate]) as ValueType<T>[];
 
   const handleChangeSearch = (s: string) => {
     handler.search(s);
@@ -296,7 +295,9 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
 
   const { value, list, isLoading } = restProps;
 
-  const { selectedValues, selectableValue, labels, returnObj, handler } = useInitDropdown<T, SortT>(restProps);
+  const { selectedValues, selectableValue, indeterminate, labels, returnObj, handler } = useInitDropdown<T, SortT>(
+    restProps
+  );
 
   return (
     <MDSPopover
@@ -317,6 +318,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
         <Dropdown<T, SortT>
           {...restProps}
           selectedValues={selectedValues}
+          indeterminate={indeterminate}
           selectableValues={selectableValue}
           onChange={(v: SelectedType<ValueType<T>>[], isSelected, forceClose?: boolean) =>
             handler.change(v, isSelected, close, forceClose)

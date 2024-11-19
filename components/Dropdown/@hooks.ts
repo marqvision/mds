@@ -33,9 +33,7 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
   const { value, list, indeterminate: _indeterminate } = props;
 
   const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>([]);
-  const [indeterminate, setIndeterminate] = useState(
-    (Array.isArray(_indeterminate) ? _indeterminate : _indeterminate ? [_indeterminate] : []) as ValueType<T>[]
-  );
+  const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>();
 
   const isMultiple = Array.isArray(value);
   const flatItems = flattenDropdown(list);
@@ -143,6 +141,22 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
     }
     // intentional missing deps [flatItems, selectedValue]
   }, [value, hasList, isMultiple]);
+
+  useEffect(() => {
+    if (_indeterminate) {
+      setIndeterminate((ps) => {
+        const indet = (Array.isArray(_indeterminate) ? _indeterminate : [_indeterminate]) as ValueType<T>[];
+        const isSomeDiff = indet?.some((v) => !(ps || []).includes(v)) || (ps || []).some((v) => !indet.includes(v));
+
+        if (isSomeDiff) {
+          return indet;
+        }
+        return ps;
+      });
+    } else {
+      setIndeterminate([]);
+    }
+  }, [_indeterminate]);
 
   return {
     selectedValues,

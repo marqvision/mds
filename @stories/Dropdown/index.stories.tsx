@@ -98,7 +98,12 @@ export const DropdownMulti: Story = {
       { label: 'Value4', value: 4 },
       { label: 'Value5', value: 5 },
     ];
-    const indeterminate = [4, 5];
+    const [indeterminate, setIndeterminate] = useState<number[]>([4, 5]);
+
+    const reset = () => {
+      setList([]);
+      setIndeterminate([4, 5]);
+    };
 
     return (
       <Wrapper>
@@ -111,14 +116,19 @@ export const DropdownMulti: Story = {
           &lt;MDSDropdown label="Label" value=&#123;list&#125; onChange=&#123;setList&#125; list=&#123;allList&#125;
           modules=['sort', 'search'] /&gt;
         </MDSTypography>
+        <MDSTypography>indeterminate: {indeterminate.join(', ')}</MDSTypography>
         <MDSDropdown
           {...props}
           label="Value"
           value={list}
-          onChange={setList}
+          onChange={(value, indeterminate) => {
+            setList(value);
+            setIndeterminate(indeterminate);
+          }}
           list={allList}
           indeterminate={indeterminate}
         />
+        <button onClick={reset}>reset</button>
       </Wrapper>
     );
   },

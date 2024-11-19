@@ -64,7 +64,7 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
 
   const handleClose = () => {
     if (isMultiple) {
-      props.onChange?.(selectedValues.flatMap((v) => v.value) as InferType<T>, indeterminate);
+      props.onChange?.(selectedValues.flatMap((v) => v.value) as InferType<T>, indeterminate as InferType<T>);
     }
   };
 
@@ -119,7 +119,7 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
         }
         setSelectedValues((ps) => ps.filter((v) => !newValues.some((v2) => v2.value === v.value)));
       }
-      setIndeterminate((ps) => ps?.filter((v) => !newValues.some((v2) => v2.value === v)));
+      setIndeterminate((ps) => ps.filter((v) => !newValues.some((v2) => v2.value === v)));
     }
   };
 

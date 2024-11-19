@@ -26,7 +26,7 @@ const fadeOut = keyframes`
 
 const MIN_PADDING = 4;
 
-const Dialog = styled.dialog<{ isInDimmed: boolean }>`
+const Dialog = styled.dialog`
   animation: ${fadeOut} 0.3s ease-out forwards;
   border: none;
   padding: ${MIN_PADDING}px;
@@ -62,7 +62,9 @@ const Dialog = styled.dialog<{ isInDimmed: boolean }>`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 2px 0 rgba(0, 0, 0, 0.16),
+    0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
@@ -79,11 +81,8 @@ const Popover = (
   props: Props &
     StyleProps & {
       isOpen: boolean;
-      isInDimmed: boolean;
       anchorRef: MutableRefObject<(EventTarget & Element) | null>;
       dialogRef: MutableRefObject<HTMLDialogElement | null>;
-      scrollOffsetRef: MutableRefObject<Element | undefined>;
-      coordinatesRef: MutableRefObject<Coordinates>;
       focusRef: MutableRefObject<boolean>;
       onMouseEnter: (e: MouseEvent) => void;
       onMouseLeave: ((e: MouseEvent) => void) | undefined;
@@ -95,16 +94,13 @@ const Popover = (
     zIndex,
     position = 'bottom-right',
     isLoading,
-    width: _width = '280px',
+    width = '280px',
     maxHeight: _maxHeight = '480px',
     padding = '16px 20px',
     children: _children,
     isOpen,
-    isInDimmed,
     anchorRef,
     dialogRef,
-    scrollOffsetRef,
-    coordinatesRef,
     focusRef,
     onMouseEnter,
     onMouseLeave,
@@ -113,9 +109,18 @@ const Popover = (
 
   const maxHeight = typeof _maxHeight === 'number' ? _maxHeight : Number(_maxHeight.replace(/\D/g, ''));
 
+  const [init, setInit] = useState(false);
   const [coordinates, setCoordinates] = useState<Coordinates>();
 
+  const scrollOffsetRef = useRef<HTMLElement | Window>();
+  const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
+  const closeRef = useRef(onClosePopover);
+
   const setPosition = useCallback(() => {
+    if (!init) {
+      setInit(true);
+      return;
+    }
     const target = anchorRef.current;
 
     if (!target) {
@@ -127,14 +132,17 @@ const Popover = (
     const dialogWidth = dialogRef.current?.clientWidth || 0;
     const dialogHeight = dialogRef.current?.clientHeight || 0;
 
-    const width = dialogRef.current?.children[0]?.clientWidth || 0;
+    const contentWidth = dialogRef.current?.children[0]?.clientWidth || 0;
 
     const reposition = (value: Coordinates) => {
       const { clientWidth, clientHeight } = window.document.body;
 
+      const x = Math.min(Math.max(value.x, 0), clientWidth - dialogWidth);
+      const y = Math.min(Math.max(value.y, 0), clientHeight - dialogHeight);
+
       return {
-        x: Math.min(Math.max(value.x, 0), clientWidth - dialogWidth),
-        y: Math.min(Math.max(value.y, 0), clientHeight - dialogHeight),
+        x: x > 0 ? x : value.x,
+        y: y > 0 ? y : value.y,
       };
     };
 
@@ -142,17 +150,17 @@ const Popover = (
 
     const verticalX =
       direction === 'left'
-        ? rect.left + rect.width - width - MIN_PADDING
+        ? rect.left + rect.width - contentWidth - MIN_PADDING
         : direction === 'center'
-        ? rect.left + (rect.width - width) / 2 - MIN_PADDING
-        : rect.left - MIN_PADDING;
+          ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
+          : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-        ? rect.top - dialogHeight / 2 + rect.height / 2
-        : rect.top - MIN_PADDING;
+          ? rect.top - dialogHeight / 2 + rect.height / 2
+          : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -185,7 +193,7 @@ const Popover = (
       }
     }
     setCoordinates(coordinatesRef.current);
-  }, [position, anchorRef, coordinatesRef, dialogRef]);
+  }, [init, position, anchorRef, dialogRef]);
 
   const handleScroll = useCallback(() => {
     setPosition();
@@ -194,15 +202,16 @@ const Popover = (
     const offsetTop = (scrollOffsetRef.current as HTMLElement)?.offsetTop || 0;
 
     if (y < offsetTop) {
-      onClosePopover();
+      closeRef.current();
     } else {
       const bottom = y + (dialogRef.current?.clientHeight || 0);
-      const max = offsetTop + (scrollOffsetRef.current?.clientHeight || 0);
+      const max =
+        offsetTop + ((scrollOffsetRef.current as HTMLElement)?.clientHeight || window.document.body.offsetHeight);
       if (bottom >= max) {
-        onClosePopover();
+        closeRef.current();
       }
     }
-  }, [setPosition, coordinatesRef, dialogRef, scrollOffsetRef, onClosePopover]);
+  }, [setPosition, dialogRef]);
 
   const children = isLoading ? (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -220,7 +229,6 @@ const Popover = (
     <Dialog
       className="mds-popover"
       as={!hasDim ? 'div' : undefined}
-      isInDimmed={isInDimmed}
       ref={dialogRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -228,10 +236,10 @@ const Popover = (
       style={{ transform: `translate(${coordinates?.x || 0}px, ${coordinates?.y || 0}px)`, zIndex }}
     >
       <DialogContent
-        width={typeof _width === 'string' ? _width : `${_width}px`}
+        width={typeof width === 'string' ? width : `${width}px`}
         maxHeight={`${maxHeight}px`}
         padding={padding}
-        style={{ display: coordinates ? 'block' : 'none' }}
+        style={{ display: init ? 'block' : 'none' }}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -251,13 +259,16 @@ const Popover = (
     };
   }, [setPosition]);
 
+  if (anchorRef.current) {
+    scrollOffsetRef.current = findScrollOffset(anchorRef.current);
+  }
+
   useEffect(() => {
     if (isOpen) {
       focusRef.current = true;
       if (hasDim) {
         dialogRef.current?.showModal();
       } else if (anchorRef.current) {
-        scrollOffsetRef.current = findScrollOffset(anchorRef.current);
         scrollOffsetRef.current?.addEventListener('scroll', handleScroll);
         dialogRef.current?.toggleAttribute('open');
       }
@@ -265,7 +276,14 @@ const Popover = (
     } else {
       scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
     }
+    return () => {
+      scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
+    };
   }, [handleScroll, isOpen, setPosition, hasDim, anchorRef, dialogRef, focusRef, scrollOffsetRef]);
+
+  useEffect(() => {
+    closeRef.current = onClosePopover;
+  }, [onClosePopover]);
 
   return isOpen ? (hasDim ? dialog : createPortal(dialog, document.body)) : undefined;
 };
@@ -284,14 +302,10 @@ export const MDSPopover = (props: Props & StyleProps) => {
 
   const anchorRef = useRef<(EventTarget & Element) | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const scrollOffsetRef = useRef<Element>();
-  const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
   const focusRef = useRef(false);
   const timeoutRef = useRef<number>();
-  const closeRef = useRef(onClose);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isInDimmed, setIsInDimmed] = useState(false);
 
   const handleOpenPopover = (e: MouseEvent) => {
     anchorRef.current = e.currentTarget;
@@ -313,12 +327,12 @@ export const MDSPopover = (props: Props & StyleProps) => {
     } else {
       dialogRef.current?.removeAttribute('open');
     }
+    onClose?.();
     timeoutRef.current = window.setTimeout(() => {
-      closeRef.current?.();
       setIsOpen(false);
       timeoutRef.current = undefined;
     }, delay);
-  }, [delay, hasDim]);
+  }, [delay, hasDim, onClose]);
 
   const handleMouseEnter = () => {
     focusRef.current = true;
@@ -367,8 +381,6 @@ export const MDSPopover = (props: Props & StyleProps) => {
     if (!hasDim && trigger === 'click') {
       const dimmed = anchorRef.current?.closest('.mds-dimmed');
 
-      setIsInDimmed(!!dimmed);
-
       const handleBodyClick = (e: Event) => {
         const target = e.target as HTMLElement;
         const isIn = dialogRef.current?.contains(target) || anchorRef.current?.contains(target);
@@ -394,11 +406,8 @@ export const MDSPopover = (props: Props & StyleProps) => {
       <Popover
         {...props}
         isOpen={isOpen}
-        isInDimmed={isInDimmed}
         anchorRef={anchorRef}
         dialogRef={dialogRef}
-        coordinatesRef={coordinatesRef}
-        scrollOffsetRef={scrollOffsetRef}
         focusRef={focusRef}
         onClosePopover={handleClosePopover}
         onMouseEnter={handleMouseEnter}

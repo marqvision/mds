@@ -12,3 +12,4 @@ export * from './RadioButton';
 export * from './Popover';
 export * from './Input';
 export * from './Image';
+export * from './Dropdown';

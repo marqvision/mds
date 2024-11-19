@@ -8,6 +8,11 @@ export const findScrollOffset = (element: Element) => {
     if (isScrollable) {
       return parent;
     }
+
+    if (parent.tagName === 'BODY') {
+      return window;
+    }
+
     parent = parent.parentElement;
   }
 };

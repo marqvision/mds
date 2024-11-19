@@ -36,9 +36,12 @@ export const getFilteredList = <T>(items: DropdownItem<T>[], search: string, sor
   const loop = (currentItem: DropdownItem<T>): DropdownItem<T>[] => {
     const regex = getRegExpByKeyword(search);
     if (
-      typeof currentItem.label === 'string' &&
-      (currentItem.value || currentItem.children) &&
-      currentItem.label.match(regex)
+      (typeof currentItem.label === 'string' &&
+        (currentItem.value || currentItem.children) &&
+        currentItem.label.match(regex)) ||
+      (typeof currentItem.subLabel === 'object' &&
+        currentItem.subLabel?.includeSearch &&
+        currentItem.subLabel.label.match(regex))
     ) {
       return [currentItem];
     } else if (getAllChildLabel(currentItem).some((value) => value.match(regex))) {

@@ -27,9 +27,7 @@ const StyledSticky = styled.div`
   position: sticky;
   top: 0;
   padding: 8px;
-  box-shadow:
-    0 1px 8px 0 #0000001f,
-    0 1px 2px 0 #0000000a;
+  box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
   z-index: 1;
@@ -97,6 +95,7 @@ const Dropdown = <T, SortT>({
   modules,
   selectedValues,
   selectableValues,
+  indeterminate: _indeterminate,
   onChange,
   onClose,
 }: Omit<Props<T, SortT>, 'renderAnchor' | 'onChange'> & {
@@ -119,8 +118,8 @@ const Dropdown = <T, SortT>({
     isMultiple && (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-        ? 'indeterminate'
-        : false;
+      ? 'indeterminate'
+      : false;
   const isEmpty = list.length === 0;
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
@@ -172,6 +171,8 @@ const Dropdown = <T, SortT>({
         color: 'color/content/primary/default/normal',
       })
     : undefined;
+
+  const indeterminate = (Array.isArray(_indeterminate) ? _indeterminate : [_indeterminate]) as ValueType<T>[];
 
   const handleChangeSearch = (s: string) => {
     handler.search(s);
@@ -258,6 +259,7 @@ const Dropdown = <T, SortT>({
         <Item<ValueType<T>>
           key={`dropItem_0_${v.value !== undefined ? v.value : v.label}`}
           item={v}
+          indeterminate={indeterminate}
           search={search}
           isMultiple={isMultiple}
           selectedValue={selectedValues}

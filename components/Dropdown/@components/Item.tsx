@@ -11,6 +11,7 @@ import { HighLightLabel } from './HighlightLabel';
 
 type Props<T> = {
   selectedValue: SelectedType<T>[];
+  indeterminate: T[];
   isMultiple: boolean;
   item: DropdownItem<T>;
   search: string;
@@ -46,7 +47,7 @@ const StyledLabel = styled.div`
   }
 `;
 
-const StyledTypography = styled(MDSTypography)`
+const StyledLabelWrap = styled.div`
   & .highlight {
     color: ${({ theme }) => theme._raw_color.yellow600};
   }
@@ -90,7 +91,17 @@ const BACKGROUND_COLOR = [
 ];
 
 export const Item = <T,>(props: Props<T>) => {
-  const { item, search, isMultiple: _isMultiple, selectedValue, depth = 0, style, onChange, onClose } = props;
+  const {
+    item,
+    search,
+    indeterminate,
+    isMultiple: _isMultiple,
+    selectedValue,
+    depth = 0,
+    style,
+    onChange,
+    onClose,
+  } = props;
 
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -156,6 +167,30 @@ export const Item = <T,>(props: Props<T>) => {
     }
   };
 
+  const subLabel = (() => {
+    if (!item.subLabel) {
+      return undefined;
+    }
+    if (typeof item.subLabel === 'string') {
+      return {
+        label: item.subLabel,
+        position: 'bottom',
+        includeSearch: false,
+      };
+    }
+    return {
+      label: item.subLabel.label,
+      position: item.subLabel.position || 'bottom',
+      includeSearch: item.subLabel.includeSearch || false,
+    };
+  })();
+
+  const subLabelEl = subLabel && (
+    <MDSTypography variant="T13" color="color/content/neutral/secondary/normal">
+      {subLabel.includeSearch ? <HighLightLabel searchText={search} label={subLabel.label} /> : subLabel.label}
+    </MDSTypography>
+  );
+
   useEffect(() => {
     setIsExpanded(true);
   }, [search]);
@@ -188,12 +223,16 @@ export const Item = <T,>(props: Props<T>) => {
           )}
           {item.imgUrl && <StyledImg src={item.imgUrl} />}
           {iconEle}
-          <StyledTypography
-            variant="T14"
-            color={!isMultiple && isSelected ? 'color/content/primary/default/normal' : undefined}
-          >
-            {typeof item.label === 'string' ? <HighLightLabel searchText={search} label={item.label} /> : item.label}
-          </StyledTypography>
+          <StyledLabelWrap>
+            {subLabel?.position === 'top' && subLabelEl}
+            <MDSTypography
+              variant="T14"
+              color={!isMultiple && isSelected ? 'color/content/primary/default/normal' : undefined}
+            >
+              {typeof item.label === 'string' ? <HighLightLabel searchText={search} label={item.label} /> : item.label}
+            </MDSTypography>
+            {subLabel?.position === 'bottom' && subLabelEl}
+          </StyledLabelWrap>
         </StyledLabel>
         <StyledRightDiv>
           {item.rightSection}

@@ -92,12 +92,13 @@ export const DropdownMulti: Story = {
   render: function Render(props) {
     const [list, setList] = useState<number[]>([]);
     const allList = [
-      { label: 'Value1', value: 1 },
-      { label: 'Value2', value: 2 },
-      { label: 'Value3', value: 3 },
+      { label: 'Value1', value: 1, subLabel: 'Hi' },
+      { label: 'Value2', value: 2, subLabel: { label: 'Hi2 top', position: 'top' } },
+      { label: 'Value3', value: 3, subLabel: { label: 'Hi2 bottom include Search', includeSearch: true } },
       { label: 'Value4', value: 4 },
       { label: 'Value5', value: 5 },
     ];
+    const indeterminate = [4, 5];
 
     return (
       <Wrapper>
@@ -110,7 +111,14 @@ export const DropdownMulti: Story = {
           &lt;MDSDropdown label="Label" value=&#123;list&#125; onChange=&#123;setList&#125; list=&#123;allList&#125;
           modules=['sort', 'search'] /&gt;
         </MDSTypography>
-        <MDSDropdown {...props} label="Value" value={list} onChange={setList} list={allList} />
+        <MDSDropdown
+          {...props}
+          label="Value"
+          value={list}
+          onChange={setList}
+          list={allList}
+          indeterminate={indeterminate}
+        />
       </Wrapper>
     );
   },

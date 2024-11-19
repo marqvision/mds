@@ -1,7 +1,22 @@
 import { CSSProperties, ReactElement, SetStateAction } from 'react';
 
+type SubLabel = {
+  label: string;
+  /**
+   todo-@matthew add tooltip case after development to v2
+   @default bottom
+   */
+  position?: 'bottom' | 'top' | 'tooltip';
+  /**
+   * search 에 포함 여부
+   @default false
+   */
+  includeSearch?: boolean;
+};
+
 export type DropdownItem<T> = {
   label: string | ReactElement;
+  subLabel?: string | SubLabel;
   icon?: ReactElement;
   imgUrl?: string;
   rightSection?: ReactElement;
@@ -13,7 +28,7 @@ export type InferType<T> = T extends (infer U)[] ? U[] : T | undefined;
 export type ValueType<T> = T extends (infer U)[] ? U : T | undefined;
 export type ObjType<T> = T extends (infer U)[] ? DropdownItem<ValueType<U>>[] : DropdownItem<ValueType<T>> | undefined;
 
-export type ModuleType = 'search' | 'sort' | 'infinite' | 'bottom-button';
+export type ModuleType = 'search' | 'sort' | 'infinite' | 'bottom-button' | 'custom-sub-label';
 
 export type SearchModule = {
   type: 'search';

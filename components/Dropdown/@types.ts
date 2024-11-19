@@ -65,7 +65,7 @@ export type Module<T> = 'search' | 'sort' | '1-depth-single' | CustomModule<T>;
 
 export type Props<T, SortT = unknown> = {
   value?: T;
-  indeterminate?: T;
+  indeterminate?: ValueType<T>[];
   list: DropdownItem<ValueType<T>>[];
   label?: string;
   onChange?: (value: InferType<T> | SetStateAction<InferType<T>>, indeterminate?: ValueType<T>[]) => void;

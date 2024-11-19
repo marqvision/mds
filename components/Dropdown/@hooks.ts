@@ -33,7 +33,7 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
   const { value, list, indeterminate: _indeterminate } = props;
 
   const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>([]);
-  const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>();
+  const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>([]);
 
   const isMultiple = Array.isArray(value);
   const flatItems = flattenDropdown(list);
@@ -119,7 +119,7 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
         }
         setSelectedValues((ps) => ps.filter((v) => !newValues.some((v2) => v2.value === v.value)));
       }
-      setIndeterminate((ps) => ps.filter((v) => !newValues.some((v2) => v2.value === v)));
+      setIndeterminate((ps) => ps?.filter((v) => !newValues.some((v2) => v2.value === v)));
     }
   };
 

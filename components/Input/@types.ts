@@ -23,6 +23,7 @@ export type CommonProps = {
   label?: LabelType;
   /** @description 하단 가이드 텍스트, <code>isError</code> 값에 따라 스타일 바뀜 or <code>{ label: string, status?: guideStatus }[]</code> */
   guide?: string | string[] | { label: string; status?: InputStatus }[];
+  width?: number | string;
 };
 
 export type LabelType = string | { main?: string; sub?: string; right?: ReactElement };

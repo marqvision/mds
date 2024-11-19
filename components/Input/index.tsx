@@ -43,6 +43,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
     guide,
     style,
     outlineStyle,
+    width,
     onChange,
     onClick,
     onBlur,
@@ -125,7 +126,8 @@ export const MDSInput = <T,>(props: Props<T>) => {
       fullWidth={fullWidth}
       style={{
         ...style,
-        maxWidth,
+        width: width || style?.width,
+        maxWidth: width || style?.maxWidth || maxWidth,
       }}
     >
       {label && <Label size={size} label={label} isDisabled={isDisabled} />}

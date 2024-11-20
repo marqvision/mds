@@ -1,4 +1,4 @@
-import { cloneElement, SetStateAction, useEffect, useRef } from 'react';
+import { cloneElement, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSPopover } from '../Popover';
 import { MDSTypography } from '../Typography';
@@ -98,12 +98,14 @@ const Dropdown = <T, SortT>({
   indeterminate,
   onChange,
   onClose,
+  onMount,
 }: Omit<Props<T, SortT>, 'renderAnchor' | 'onChange' | 'indeterminate'> & {
   indeterminate: ValueType<T>[];
   selectedValues: SelectedType<ValueType<T>>[];
   selectableValues: SelectedType<ValueType<T>>[];
   onChange: (value: SelectedType<ValueType<T>>[], isSelected: boolean) => void;
   onClose: () => void;
+  onMount: () => void;
 }) => {
   const {
     search,
@@ -227,6 +229,10 @@ const Dropdown = <T, SortT>({
     };
   }, [infinite]);
 
+  useEffect(() => {
+    onMount();
+  }, [onMount]);
+
   return (
     <StyledWrap>
       {isShowStickyHeader && (
@@ -299,19 +305,32 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
     restProps
   );
 
+  const [fitWidth, setFitWidth] = useState<number>();
+
+  const ref = useRef<EventTarget & Element>(null);
+
+  const anchor = renderAnchor ? (
+    renderAnchor(value, returnObj, list)
+  ) : (
+    <FilterChip label={props.label || ''} selectedLabel={labels} />
+  );
+
+  const handleResize = useCallback(() => {
+    if (width === 'fit-anchor' && ref.current) {
+      setFitWidth(ref.current.clientWidth);
+    } else {
+      setFitWidth(undefined);
+    }
+  }, [width]);
+
   return (
     <MDSPopover
       isLoading={isLoading}
       hasDim={false}
       padding={0}
-      anchor={
-        renderAnchor ? (
-          renderAnchor(value, returnObj, list)
-        ) : (
-          <FilterChip label={props.label || ''} selectedLabel={labels} />
-        )
-      }
-      width={width || 'auto'}
+      forwardRef={ref}
+      anchor={anchor}
+      width={fitWidth || width || 'auto'}
       onClose={handler.close}
     >
       {({ close }) => (
@@ -324,6 +343,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
             handler.change(v, isSelected, close, forceClose)
           }
           onClose={close}
+          onMount={handleResize}
         />
       )}
     </MDSPopover>

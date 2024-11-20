@@ -1,4 +1,4 @@
-import { MouseEvent, ReactElement } from 'react';
+import { MouseEvent, MutableRefObject, ReactElement } from 'react';
 
 type PopoverTrigger = 'click' | 'hover';
 type PopoverPosition =
@@ -45,6 +45,7 @@ type ClickPropsNoDimmed = {
 };
 
 export type Props = {
+  forwardRef?: MutableRefObject<(EventTarget & Element) | null>;
   anchor: ((handler: { open: (e: MouseEvent) => void; close: () => void }) => ReactElement) | ReactElement;
   /**
    * @default bottom-right

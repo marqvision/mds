@@ -71,7 +71,7 @@ export type Props<T, SortT = unknown> = {
   onChange?: (value: InferType<T> | SetStateAction<InferType<T>>, indeterminate?: InferType<T>) => void;
   renderAnchor?: (value: T | undefined, returnObj: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
   isLoading?: boolean;
-  width?: string | number;
+  width?: string | number | 'fit-anchor';
   modules?: Module<SortT>[];
 };
 

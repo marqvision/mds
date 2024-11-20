@@ -11,9 +11,9 @@ const StyledWrapper = styled.div<{ size: Size; fullWidth: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  width: 100%;
-  max-width: ${({ size, fullWidth }) => (fullWidth ? undefined : theme.size[size].maxWidth)};
-  transition: max-width ${theme.transitionTiming} ease;
+  max-width: 100%;
+  width: ${({ size, fullWidth }) => (fullWidth ? undefined : theme.size[size].maxWidth)};
+  transition: width ${theme.transitionTiming} ease;
   &:has(input:focus),
   &:has(button:focus) {
     position: relative;
@@ -126,8 +126,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
       fullWidth={fullWidth}
       style={{
         ...style,
-        width: width || style?.width,
-        maxWidth: width || style?.maxWidth || maxWidth,
+        width: width || style?.width || maxWidth,
       }}
     >
       {label && <Label size={size} label={label} isDisabled={isDisabled} />}

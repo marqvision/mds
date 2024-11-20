@@ -62,9 +62,7 @@ const Dialog = styled.dialog`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow:
-    0 0 2px 0 rgba(0, 0, 0, 0.16),
-    0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
@@ -152,15 +150,15 @@ const Popover = (
       direction === 'left'
         ? rect.left + rect.width - contentWidth - MIN_PADDING
         : direction === 'center'
-          ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
-          : rect.left - MIN_PADDING;
+        ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
+        : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-          ? rect.top - dialogHeight / 2 + rect.height / 2
-          : rect.top - MIN_PADDING;
+        ? rect.top - dialogHeight / 2 + rect.height / 2
+        : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -298,7 +296,7 @@ const Popover = (
  * @param props.children ReactElement | (onClose) => ReactElement
  */
 export const MDSPopover = (props: Props & StyleProps) => {
-  const { anchor: _anchor, hasDim = false, trigger = 'click', delay = 300, onClose } = props;
+  const { anchor: _anchor, forwardRef, hasDim = false, trigger = 'click', delay = 300, onClose } = props;
 
   const anchorRef = useRef<(EventTarget & Element) | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -309,6 +307,9 @@ export const MDSPopover = (props: Props & StyleProps) => {
 
   const handleOpenPopover = (e: MouseEvent) => {
     anchorRef.current = e.currentTarget;
+    if (forwardRef) {
+      forwardRef.current = e.currentTarget;
+    }
     if (timeoutRef.current) {
       window.clearTimeout(timeoutRef.current);
       timeoutRef.current = undefined;
@@ -386,8 +387,9 @@ export const MDSPopover = (props: Props & StyleProps) => {
         const isIn = dialogRef.current?.contains(target) || anchorRef.current?.contains(target);
         const isDimmed = target.closest?.('.mds-dimmed') && target.closest?.('.mds-dimmed') !== dimmed;
         const isPopover = target.closest?.('.mds-popover');
+        const isNotDelete = target.closest?.('.mds-delete-icon');
 
-        if (!isIn && !isDimmed && !isPopover) {
+        if ((!isIn && !isDimmed && !isPopover) || (isIn && !!isNotDelete)) {
           handleClosePopover();
         }
       };

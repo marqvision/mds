@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState } from 'react';
-import { MDSChip, MDSDropdown, MDSTag, MDSTypography } from '../../components';
+import { MDSChip, MDSDropdown, MDSInput, MDSTag, MDSTypography } from '../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDropdown> = {
@@ -299,6 +299,48 @@ export const DropdownMenu: Story = {
             )}
           />
         </div>
+      </Wrapper>
+    );
+  },
+};
+
+export const WithChip: Story = {
+  render: function Render() {
+    const [list, setList] = useState<number[]>([]);
+    const allList = [
+      { label: 'Value1', value: 1 },
+      { label: 'Value2', value: 2 },
+      { label: 'Value3', value: 3 },
+      { label: 'Value4', value: 4 },
+      { label: 'Value5', value: 5 },
+      { label: 'Divider :)' },
+      {
+        label: 'Group',
+        children: [
+          { label: 'Value6', value: 6 },
+          { label: 'Value7', value: 7 },
+        ],
+      },
+    ];
+
+    return (
+      <Wrapper>
+        <MDSDropdown
+          value={list}
+          list={allList}
+          onChange={setList}
+          width="fit-anchor"
+          renderAnchor={(value, returnObj, list) => (
+            <MDSInput
+              onChange={setList}
+              value={value}
+              list={list}
+              type="select"
+              custom={{ withChip: true }}
+              placeholder="Select"
+            />
+          )}
+        />
       </Wrapper>
     );
   },

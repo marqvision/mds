@@ -1,4 +1,4 @@
-import { CSSProperties, InputHTMLAttributes, ReactElement } from 'react';
+import { CSSProperties, InputHTMLAttributes, ReactElement, MouseEvent } from 'react';
 
 export type Size = 'small' | 'medium' | 'large' | 'extra-large';
 
@@ -118,6 +118,6 @@ export type SelectProps<T = unknown> = {
    * @param {(value: T) => void} [onChange] 우측 및 chip에 X버튼 추가 및 해당 값 제거된 value 리턴
    * */
   onChange?: (value: T) => void;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLLabelElement>) => void;
   onBlur?: never;
 };

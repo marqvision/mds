@@ -7,11 +7,13 @@ import { MDSChip } from '../../Chip';
 import { resolveFontWeight } from '../../Typography/@utils';
 import { theme } from '../@constants';
 import { Features, MDSTypography } from '../../Typography';
+import { flattenDropdown } from '../@utils';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
 const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>``;
 
 const StyledChipList = styled.button`
+  width: 100%;
   border: none;
   background-color: transparent;
   display: flex;
@@ -72,9 +74,11 @@ export const Select = <T,>(props: Props<T>) => {
   const isError = status === 'error';
   const variant = `T${theme.size[size].fontSize.replace('px', '')}` as Features['variant'];
 
+  const flatList = flattenDropdown(list);
+
   const getLabelFromList = (_value: ElementType<T>) => {
-    const label = list.find((v) => v.value === _value)?.label || '';
-    return format ? format(label, _value) : label;
+    const label = flatList.find((v) => v.value === _value)?.label || '';
+    return format && typeof label === 'string' ? format(label, _value) : label;
   };
 
   const handleDelete = (e: MouseEvent, _value: ElementType<T>) => {
@@ -113,7 +117,7 @@ export const Select = <T,>(props: Props<T>) => {
             endIcon={
               <StyledIcon
                 as={MDSIcon.CloseDelete}
-                className={onChange ? 'show' : undefined}
+                className={clsx(onChange ? 'show' : undefined, 'mds-delete-icon')}
                 variant="fill"
                 disabled={isDisabled}
                 size={size === 'extra-large' ? 20 : 16}
@@ -133,7 +137,15 @@ export const Select = <T,>(props: Props<T>) => {
     );
 
   return (
-    <StyledLabel size={size} isError={isError} onClick={onClick}>
+    <StyledLabel
+      size={size}
+      isError={isError}
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onClick?.(e);
+      }}
+    >
       <StyledOutline
         customSize={size}
         disabled={isDisabled}
@@ -170,7 +182,7 @@ export const Select = <T,>(props: Props<T>) => {
         </div>
         <StyledIcon
           as={MDSIcon.CloseDelete}
-          className={(isArray ? value.length > 0 : !!value) && onChange ? 'show' : undefined}
+          className={clsx((isArray ? value.length > 0 : !!value) && onChange ? 'show' : undefined, 'mds-delete-icon')}
           variant="border"
           size={theme.size[size].iconSize}
           onClick={handleDeleteAll}

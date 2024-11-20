@@ -1,4 +1,4 @@
-import { CSSProperties, ReactElement, SetStateAction } from 'react';
+import { CSSProperties, ReactElement } from 'react';
 
 type SubLabel = {
   label: string;
@@ -68,7 +68,7 @@ export type Props<T, SortT = unknown> = {
   indeterminate?: T;
   list: DropdownItem<ValueType<T>>[];
   label?: string;
-  onChange?: (value: InferType<T> | SetStateAction<InferType<T>>, indeterminate?: InferType<T>) => void;
+  onChange?: (value: InferType<T>, indeterminate?: InferType<T>) => void;
   renderAnchor?: (value: T | undefined, returnObj: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
   isLoading?: boolean;
   width?: string | number | 'fit-anchor';

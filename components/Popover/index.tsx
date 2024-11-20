@@ -233,15 +233,17 @@ const Popover = (
       onClick={onClosePopover}
       style={{ transform: `translate(${coordinates?.x || 0}px, ${coordinates?.y || 0}px)`, zIndex }}
     >
-      <DialogContent
-        width={typeof width === 'string' ? width : `${width}px`}
-        maxHeight={`${maxHeight}px`}
-        padding={padding}
-        style={{ display: init ? 'block' : 'none' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {children}
-      </DialogContent>
+      {coordinates && (
+        <DialogContent
+          width={typeof width === 'string' ? width : `${width}px`}
+          maxHeight={`${maxHeight}px`}
+          padding={padding}
+          style={{ display: init ? 'block' : 'none' }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+        </DialogContent>
+      )}
     </Dialog>
   );
 

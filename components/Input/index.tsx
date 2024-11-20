@@ -113,7 +113,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
       setMaxWidth(parseInt(`${toFit.defaultWidth}`));
     }
     setInit(true);
-  }, [focus, toFit]);
+  }, [focus?.defaultWidth, toFit?.defaultWidth]);
 
   if (!init) {
     return <></>;

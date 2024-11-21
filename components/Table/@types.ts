@@ -3,13 +3,25 @@ import { MDSThemeColorPath } from '../../foundation';
 
 // Table
 export type StyledTableProps = {
+  isStickyLeft?:
+    | {
+        isShadowVisible: boolean;
+      }
+    | false;
+  isStickyRight?:
+    | {
+        isShadowVisible: boolean;
+      }
+    | false;
+};
+
+export type TableProps = React.PropsWithChildren<{
   // 설정 시 첫번째 컬럼에 sticky 적용됩니다
   isStickyLeft?: boolean;
   // 설정 시 마지막 컬럼에 sticky 적용됩니다
   isStickyRight?: boolean;
-};
-
-export type TableProps = React.PropsWithChildren<StyledTableProps> & HTMLAttributes<HTMLTableElement>;
+}> &
+  HTMLAttributes<HTMLTableElement>;
 
 // Table head
 export type StyledTableHeadProps = {

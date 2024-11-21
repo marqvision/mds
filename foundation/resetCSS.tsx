@@ -15,7 +15,10 @@ export const MDSResetCSS = () => (
       */
 
       *:where(
-          :not(html, iframe, canvas, img, svg, video, audio, button, dialog, table, td, th, col):not(svg *, symbol *)
+          :not(html, iframe, canvas, img, svg, video, audio, button, dialog, table, thead, tbody, tr, td, th, col):not(
+              svg *,
+              symbol *
+            )
         ) {
         all: unset;
         display: revert;

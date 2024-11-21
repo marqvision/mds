@@ -36,7 +36,7 @@ const StyledSticky = styled.div`
   gap: 12px;
 `;
 
-const StyledStickyBottom = styled.button`
+const StyledStickyBottom = styled.button<{ isDisabled?: boolean }>`
   position: sticky;
   bottom: 0;
   width: 100%;
@@ -48,7 +48,7 @@ const StyledStickyBottom = styled.button`
   display: flex;
   align-items: center;
   gap: 4px;
-  cursor: pointer;
+  cursor: ${({ isDisabled }) => (isDisabled ? 'default' : 'pointer')};
   background-color: white;
 `;
 
@@ -171,7 +171,9 @@ const Dropdown = <T, SortT>({
   const stickyBottomIcon = stickyBottom?.icon
     ? cloneElement(stickyBottom.icon, {
         size: 16,
-        color: 'color/content/primary/default/normal',
+        color: stickyBottom.isDisabled
+          ? 'color/content/primary/default/disabled'
+          : 'color/content/primary/default/normal',
       })
     : undefined;
 
@@ -183,6 +185,9 @@ const Dropdown = <T, SortT>({
   };
 
   const handleClickStickyBottom = () => {
+    if (stickyBottom?.isDisabled) {
+      return;
+    }
     stickyBottom?.onClick();
     if (!stickyBottom?.preventClose) {
       onClose();
@@ -285,9 +290,17 @@ const Dropdown = <T, SortT>({
         </>
       )}
       {stickyBottom && (
-        <StyledStickyBottom onClick={handleClickStickyBottom}>
+        <StyledStickyBottom isDisabled={stickyBottom.isDisabled} onClick={handleClickStickyBottom}>
           {stickyBottomIcon}
-          <MDSTypography variant="T14" weight="medium" color="color/content/primary/default/normal">
+          <MDSTypography
+            variant="T14"
+            weight="medium"
+            color={
+              stickyBottom.isDisabled
+                ? 'color/content/primary/default/disabled'
+                : 'color/content/primary/default/normal'
+            }
+          >
             {stickyBottom.label}
           </MDSTypography>
         </StyledStickyBottom>
@@ -299,7 +312,7 @@ const Dropdown = <T, SortT>({
 export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>) => {
   const { renderAnchor, width, ...restProps } = props;
 
-  const { value, list, isLoading } = restProps;
+  const { value, list, isLoading, isDisabled } = restProps;
 
   const { selectedValues, selectableValue, indeterminate, labels, returnObj, handler } = useInitDropdown<T, SortT>(
     restProps
@@ -312,7 +325,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
   const anchor = renderAnchor ? (
     renderAnchor(value, returnObj, list)
   ) : (
-    <FilterChip label={props.label || ''} selectedLabel={labels} />
+    <FilterChip label={props.label || ''} selectedLabel={labels} isLoading={isLoading} isDisabled={isDisabled} />
   );
 
   const handleResize = useCallback(() => {

@@ -17,6 +17,7 @@ type SubLabel = {
 export type DropdownItem<T> = {
   label: string | ReactElement;
   subLabel?: string | SubLabel;
+  isDisabled?: boolean;
   icon?: ReactElement;
   imgUrl?: string;
   rightSection?: ReactElement;
@@ -53,6 +54,8 @@ export type BottomButtonModule = {
   type: 'bottom-button';
   icon?: ReactElement;
   label: string;
+  isDisabled?: boolean;
+  // onClick 이후 해당 드롭다운이 닫힐지 닫히지 않을지 (default: false)
   preventClose?: boolean;
   onClick: () => void;
 };
@@ -73,6 +76,7 @@ export type Props<T, SortT = unknown> = {
   isLoading?: boolean;
   width?: string | number | 'fit-anchor';
   modules?: Module<SortT>[];
+  isDisabled?: boolean;
 };
 
 export type SelectedType<T> = {

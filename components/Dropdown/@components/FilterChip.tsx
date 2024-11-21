@@ -1,5 +1,6 @@
 import { MouseEvent, ReactElement } from 'react';
 import styled from '@emotion/styled';
+import { CircularProgress } from '@material-ui/core';
 import { MDSChip } from '../../Chip';
 import { MDSTag } from '../../Tag';
 import { MDSIcon } from '../../Icon';
@@ -7,6 +8,8 @@ import { MDSIcon } from '../../Icon';
 type Props = {
   label: string;
   selectedLabel: (string | ReactElement)[];
+  isLoading?: boolean;
+  isDisabled?: boolean;
   onClick?: (e: MouseEvent) => void;
 };
 
@@ -15,7 +18,7 @@ const StyledWrap = styled(MDSChip)`
 `;
 
 export const FilterChip = (props: Props) => {
-  const { label, selectedLabel, onClick } = props;
+  const { label, selectedLabel, isLoading, isDisabled, onClick } = props;
 
   const isSelected = selectedLabel.length > 0;
 
@@ -24,6 +27,7 @@ export const FilterChip = (props: Props) => {
       variant={isSelected ? 'fill' : 'tint'}
       size="medium"
       color="bluegray"
+      isDisabled={isDisabled}
       tags={
         isSelected ? (
           <>
@@ -38,6 +42,7 @@ export const FilterChip = (props: Props) => {
           </>
         ) : undefined
       }
+      startIcon={isLoading ? <CircularProgress thickness={4} size={16} /> : undefined}
       endIcon={<MDSIcon.ArrowDown variant="outline" />}
       onClick={onClick}
     >

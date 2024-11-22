@@ -182,8 +182,27 @@ export const StickyLeft: StoryObj<typeof MDSTable> = {
     <MDSTable isStickyLeft>
       <MDSTable.Head>
         <MDSTable.Row>
-          <MDSTable.Cell>head</MDSTable.Cell>
-          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
           <MDSTable.Cell>head</MDSTable.Cell>
         </MDSTable.Row>
       </MDSTable.Head>
@@ -192,16 +211,31 @@ export const StickyLeft: StoryObj<typeof MDSTable> = {
           <MDSTable.Cell>1-1</MDSTable.Cell>
           <MDSTable.Cell>1-2</MDSTable.Cell>
           <MDSTable.Cell>1-3</MDSTable.Cell>
+          <MDSTable.Cell>1-4</MDSTable.Cell>
+          <MDSTable.Cell>1-5</MDSTable.Cell>
+          <MDSTable.Cell>1-6</MDSTable.Cell>
+          <MDSTable.Cell>1-7</MDSTable.Cell>
+          <MDSTable.Cell>1-8</MDSTable.Cell>
         </MDSTable.Row>
         <MDSTable.Row>
           <MDSTable.Cell>2-1</MDSTable.Cell>
           <MDSTable.Cell>2-2</MDSTable.Cell>
           <MDSTable.Cell>2-3</MDSTable.Cell>
+          <MDSTable.Cell>2-4</MDSTable.Cell>
+          <MDSTable.Cell>2-5</MDSTable.Cell>
+          <MDSTable.Cell>2-6</MDSTable.Cell>
+          <MDSTable.Cell>2-7</MDSTable.Cell>
+          <MDSTable.Cell>2-8</MDSTable.Cell>
         </MDSTable.Row>
         <MDSTable.Row>
           <MDSTable.Cell>3-1</MDSTable.Cell>
           <MDSTable.Cell>3-2</MDSTable.Cell>
           <MDSTable.Cell>3-3</MDSTable.Cell>
+          <MDSTable.Cell>3-4</MDSTable.Cell>
+          <MDSTable.Cell>3-5</MDSTable.Cell>
+          <MDSTable.Cell>3-6</MDSTable.Cell>
+          <MDSTable.Cell>3-7</MDSTable.Cell>
+          <MDSTable.Cell>3-8</MDSTable.Cell>
         </MDSTable.Row>
       </MDSTable.Body>
     </MDSTable>
@@ -221,8 +255,27 @@ export const StickyRight: StoryObj<typeof MDSTable> = {
     <MDSTable isStickyRight>
       <MDSTable.Head>
         <MDSTable.Row>
-          <MDSTable.Cell>head</MDSTable.Cell>
-          <MDSTable.Cell>head</MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
+          <MDSTable.Cell minWidth="200px" maxWidth="200px">
+            head
+          </MDSTable.Cell>
           <MDSTable.Cell>head</MDSTable.Cell>
         </MDSTable.Row>
       </MDSTable.Head>
@@ -231,16 +284,31 @@ export const StickyRight: StoryObj<typeof MDSTable> = {
           <MDSTable.Cell>1-1</MDSTable.Cell>
           <MDSTable.Cell>1-2</MDSTable.Cell>
           <MDSTable.Cell>1-3</MDSTable.Cell>
+          <MDSTable.Cell>1-4</MDSTable.Cell>
+          <MDSTable.Cell>1-5</MDSTable.Cell>
+          <MDSTable.Cell>1-6</MDSTable.Cell>
+          <MDSTable.Cell>1-7</MDSTable.Cell>
+          <MDSTable.Cell>1-8</MDSTable.Cell>
         </MDSTable.Row>
         <MDSTable.Row>
           <MDSTable.Cell>2-1</MDSTable.Cell>
           <MDSTable.Cell>2-2</MDSTable.Cell>
           <MDSTable.Cell>2-3</MDSTable.Cell>
+          <MDSTable.Cell>2-4</MDSTable.Cell>
+          <MDSTable.Cell>2-5</MDSTable.Cell>
+          <MDSTable.Cell>2-6</MDSTable.Cell>
+          <MDSTable.Cell>2-7</MDSTable.Cell>
+          <MDSTable.Cell>2-8</MDSTable.Cell>
         </MDSTable.Row>
         <MDSTable.Row>
           <MDSTable.Cell>3-1</MDSTable.Cell>
           <MDSTable.Cell>3-2</MDSTable.Cell>
           <MDSTable.Cell>3-3</MDSTable.Cell>
+          <MDSTable.Cell>3-4</MDSTable.Cell>
+          <MDSTable.Cell>3-5</MDSTable.Cell>
+          <MDSTable.Cell>3-6</MDSTable.Cell>
+          <MDSTable.Cell>3-7</MDSTable.Cell>
+          <MDSTable.Cell>3-8</MDSTable.Cell>
         </MDSTable.Row>
       </MDSTable.Body>
     </MDSTable>

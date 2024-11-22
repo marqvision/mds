@@ -100,6 +100,7 @@ const Popover = (
     anchorRef,
     dialogRef,
     focusRef,
+    style,
     onMouseEnter,
     onMouseLeave,
     onClosePopover,
@@ -212,7 +213,9 @@ const Popover = (
   }, [setPosition, dialogRef]);
 
   const children = isLoading ? (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div
+      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px 0', minWidth: '280px' }}
+    >
       <MDSIcon.IndicatorCircle size={24} />
     </div>
   ) : typeof _children === 'function' ? (
@@ -238,7 +241,7 @@ const Popover = (
           width={typeof width === 'string' ? width : `${width}px`}
           maxHeight={`${maxHeight}px`}
           padding={padding}
-          style={{ display: init ? 'block' : 'none' }}
+          style={{ display: init ? 'block' : 'none', ...style }}
           onClick={(e) => e.stopPropagation()}
         >
           {children}
@@ -298,7 +301,7 @@ const Popover = (
  * @param props.children ReactElement | (onClose) => ReactElement
  */
 export const MDSPopover = (props: Props & StyleProps) => {
-  const { anchor: _anchor, forwardRef, hasDim = false, trigger = 'click', delay = 300, onClose } = props;
+  const { anchor: _anchor, forwardRef, hasDim = false, trigger = 'click', delay = 300, style, onClose } = props;
 
   const anchorRef = useRef<(EventTarget & Element) | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);

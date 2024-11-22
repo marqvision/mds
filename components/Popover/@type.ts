@@ -1,4 +1,4 @@
-import { MouseEvent, MutableRefObject, ReactElement } from 'react';
+import { MouseEvent, MutableRefObject, ReactElement, CSSProperties } from 'react';
 
 type PopoverTrigger = 'click' | 'hover';
 type PopoverPosition =
@@ -78,4 +78,5 @@ export type StyleProps = {
    * default: 16px 20px
    */
   padding?: string | number;
+  style?: CSSProperties;
 };

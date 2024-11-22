@@ -44,7 +44,8 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
   const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
 
   const labels = (() => {
-    const isAllSelected = isMultiple && (value.length === list.length || (value.length === 1 && value[0] === -1));
+    const isAllSelected =
+      isMultiple && value.length !== 0 && (value.length === list.length || (value.length === 1 && value[0] === -1));
 
     if (isAllSelected) {
       return ['All'];

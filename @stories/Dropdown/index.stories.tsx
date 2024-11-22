@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState } from 'react';
-import { MDSChip, MDSDropdown, MDSInput, MDSTag, MDSTypography } from '../../components';
+import { MDSChip, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDropdown> = {
@@ -26,7 +26,7 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
         display: 'flex',
         gap: '12px',
         flexDirection: 'column',
-        height: '100vh',
+        height: '150vh',
       }}
     >
       {children}
@@ -40,9 +40,23 @@ const tag = (
   </MDSTag>
 );
 
+const icon = <MDSIcon.AddPlus variant="outline" />;
+
 export const DropdownSingle: Story = {
   args: {
-    modules: ['sort', 'search'],
+    modules: [
+      'sort',
+      'search',
+      {
+        type: 'bottom-button',
+        label: 'Sticky bottom button',
+        icon: icon,
+        preventClose: true,
+        onClick: () => {
+          alert('clicked');
+        },
+      },
+    ],
   },
   render: function Render(props) {
     const [value, setValue] = useState<number>();
@@ -54,30 +68,75 @@ export const DropdownSingle: Story = {
           'https://s.pstatic.net/dthumb.phinf/?src=%22https%3A%2F%2Fshared-comic.pstatic.net%2Fthumb%2Fwebtoon%2F769209%2Fthumbnail%2Fthumbnail_IMAG21_3511dcdd-6e33-4171-8839-598d6d266215.jpg%22&type=nf216_280&service=navermain',
         rightSection: tag,
       },
-      { label: 'Value2', value: 2 },
+      { label: 'Value2', value: 2, isDisabled: true },
       { label: 'Divider' },
-      { label: 'Click button', onClick: () => {} },
+      {
+        label: 'Click button',
+        onClick: () => {
+          alert('clicked');
+        },
+      },
+      {
+        label: 'Click button disabled',
+        onClick: () => {
+          alert('clicked');
+        },
+        isDisabled: true,
+      },
       { label: 'Value3', value: 3 },
       { label: 'Value4', value: 4 },
       { label: 'Value5', value: 5 },
     ];
 
+    const text =
+      '{\n' +
+      "  type: 'bottom-button',\n" +
+      "  label: 'Sticky bottom button',\n" +
+      '  icon: icon,\n' +
+      '  isDisabled?: boolean,\n' +
+      '  // onClick 이후 해당 드롭다운이 닫힐지 닫히지 않을지 (default: false) \n' +
+      '  preventClose: false,\n' +
+      '  onClick: () => {\n' +
+      "    alert('clicked');\n" +
+      '  }\n' +
+      '}';
+
+    const dropItemType =
+      '{\n' +
+      '  value: T;\n' +
+      '  label: string | ReactElement;\n' +
+      '  subLabel?: string | SubLabel;\n' +
+      '  isDisabled?: boolean;\n' +
+      '  icon?: ReactElement;\n' +
+      '  imgUrl?: string;\n' +
+      '  rightSection?: ReactElement;\n' +
+      '  style?: CSSProperties;\n' +
+      '  onClick?: () => void;\n' +
+      '  children?: DropdownItem<T>[]\n' +
+      '}\n';
+
     return (
       <Wrapper>
         <MDSTypography>Single select (sort, search)</MDSTypography>
+        <MDSTypography as="code" variant="T14" style={{ backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}>
+          &lt;MDSDropdown label="Label" value=&#123;value&#125; onChange=&#123;setValue&#125; list=&#123;allList&#125;
+          modules=['sort', 'search'] /&gt;
+        </MDSTypography>
+        <MDSTypography variant="T14">DropdownItem Type</MDSTypography>
         <MDSTypography
           variant="T14"
           as="code"
-          style={{ backgroundColor: '#ddd', padding: '8px', borderRadius: '4px', fontWeight: 400 }}
+          style={{ whiteSpace: 'pre', backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}
         >
-          DropdownItem Type <br />
-          &#123; label: string | ReactElement, value: T, onClick?: () =&gt; void, imgUrl?: string, icon?: ReactElement,
-          rightSection?: ReactElement, children?: DropdownItem[] &#125; <br />
-          <br />
-          &lt;MDSDropdown label="Label" value=&#123;value&#125; onChange=&#123;setValue&#125; list=&#123;allList&#125;
-          modules=['sort', 'search'] /&gt;
-          <br />
-          <br />- value가 없고(undefined) onClick이 없고 children이 없으면 label로 표현됨
+          {dropItemType}- value가 없고(undefined) onClick이 없고 children이 없으면 label로 표현됨
+        </MDSTypography>
+        <MDSTypography variant="T14">Sticky bottom button</MDSTypography>
+        <MDSTypography
+          as="code"
+          variant="T14"
+          style={{ whiteSpace: 'pre', backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}
+        >
+          {text}
         </MDSTypography>
         <MDSDropdown {...props} label="Label" value={value} onChange={setValue} list={allList} />
       </Wrapper>
@@ -93,7 +152,7 @@ export const DropdownMulti: Story = {
     const [list, setList] = useState<number[]>([]);
     const allList = [
       { label: 'Value1', value: 1, subLabel: 'Hi' },
-      { label: 'Value2', value: 2, subLabel: { label: 'Hi2 top', position: 'top' } },
+      { label: 'Value2', value: 2, subLabel: { label: 'Hi2 top', position: 'top' }, isDisabled: true },
       { label: 'Value3', value: 3, subLabel: { label: 'Hi2 bottom include Search', includeSearch: true } },
       { label: 'Value4', value: 4 },
       { label: 'Value5', value: 5 },
@@ -152,6 +211,14 @@ export const Dropdown1DepthSingle: Story = {
         children: [
           { label: 'Value6', value: 6 },
           { label: 'Value7', value: 7 },
+        ],
+      },
+      {
+        label: 'Group2 - disabled',
+        isDisabled: true,
+        children: [
+          { label: 'Value8', value: 8 },
+          { label: 'Value9', value: 9 },
         ],
       },
     ];

@@ -23,18 +23,18 @@ type Props<T> = {
   onClose: () => void;
 };
 
-const StyledWrap = styled.label<{ bgColor: string }>`
+const StyledWrap = styled.label<{ bgColor: string; isDisabled?: boolean }>`
   min-height: 48px;
   padding: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  cursor: pointer;
+  cursor: ${({ isDisabled }) => (isDisabled ? undefined : 'pointer')};
   background-color: ${({ bgColor }) => bgColor};
   transition: background-color 225ms ease;
   &:hover {
-    background-color: ${({ theme }) => theme._raw_color.blue50};
+    background-color: ${({ theme, isDisabled }) => (!isDisabled ? theme._raw_color.blue50 : undefined)};
   }
 `;
 
@@ -59,15 +59,16 @@ const StyledRightDiv = styled.div`
   gap: 12px;
 `;
 
-const StyledExpandIcon = styled.button`
+const StyledExpandIcon = styled.button<{ isDisabled?: boolean }>`
   border: 0;
   margin: 0;
   padding: 0;
   background: transparent;
-  cursor: pointer;
+  cursor: ${({ isDisabled }) => (isDisabled ? undefined : 'pointer')};
   transition: background-color 225ms ease;
   &:hover {
-    background-color: ${({ theme }) => theme.color.content.inverse.default.hover};
+    background-color: ${({ theme, isDisabled }) =>
+      !isDisabled ? theme.color.content.inverse.default.hover : undefined};
   }
 `;
 
@@ -131,6 +132,9 @@ export const Item = <T,>(props: Props<T>) => {
     });
 
   const handleClick = () => {
+    if (item.isDisabled) {
+      return;
+    }
     if (!isMultiple && item.value) {
       onChange(
         [
@@ -154,6 +158,10 @@ export const Item = <T,>(props: Props<T>) => {
 
   const handleClickExpand = (e: MouseEvent) => {
     e.preventDefault();
+
+    if (item.isDisabled) {
+      return;
+    }
 
     setIsExpanded((ps) => !ps);
   };
@@ -195,6 +203,12 @@ export const Item = <T,>(props: Props<T>) => {
     setIsExpanded(true);
   }, [search]);
 
+  useEffect(() => {
+    if (item.isDisabled) {
+      setIsExpanded(false);
+    }
+  }, [item]);
+
   if (item.value === undefined && !item.onClick && !item.children) {
     return (
       <StyledDivider variant="T13" color="color/content/neutral/secondary/normal" style={item.style}>
@@ -207,12 +221,19 @@ export const Item = <T,>(props: Props<T>) => {
     <div style={style}>
       <StyledWrap
         id={`mds-drop-item-${item.value}`}
+        isDisabled={item.isDisabled}
         bgColor={BACKGROUND_COLOR[Math.min(depth, 2)]}
         onClick={handleClick}
         style={{ paddingLeft: depth * 32 + 12, ...item.style }}
       >
         <StyledLabel>
-          {isMultiple && <MDSCheckbox value={isIndeterminate ? 'indeterminate' : isSelected} onChange={handleCheck} />}
+          {isMultiple && (
+            <MDSCheckbox
+              value={isIndeterminate ? 'indeterminate' : isSelected}
+              isDisabled={item.isDisabled}
+              onChange={handleCheck}
+            />
+          )}
           {!isMultiple && isSelected && (
             <MDSIcon.Check
               variant="outline"
@@ -227,7 +248,13 @@ export const Item = <T,>(props: Props<T>) => {
             {subLabel?.position === 'top' && subLabelEl}
             <MDSTypography
               variant="T14"
-              color={!isMultiple && isSelected ? 'color/content/primary/default/normal' : undefined}
+              color={
+                !isMultiple && isSelected
+                  ? 'color/content/primary/default/normal'
+                  : item.isDisabled
+                  ? 'color/content/neutral/default/disabled'
+                  : undefined
+              }
             >
               {typeof item.label === 'string' ? <HighLightLabel searchText={search} label={item.label} /> : item.label}
             </MDSTypography>
@@ -242,8 +269,18 @@ export const Item = <T,>(props: Props<T>) => {
             </MDSTag>
           ) : undefined}
           {hasChildren && (
-            <StyledExpandIcon onClick={handleClickExpand}>
-              {isExpanded ? <MDSIcon.Fold size={24} /> : <MDSIcon.Unfold size={24} />}
+            <StyledExpandIcon isDisabled={item.isDisabled} onClick={handleClickExpand}>
+              {isExpanded ? (
+                <MDSIcon.Fold
+                  size={24}
+                  color={item.isDisabled ? 'color/content/neutral/default/disabled' : undefined}
+                />
+              ) : (
+                <MDSIcon.Unfold
+                  size={24}
+                  color={item.isDisabled ? 'color/content/neutral/default/disabled' : undefined}
+                />
+              )}
             </StyledExpandIcon>
           )}
         </StyledRightDiv>

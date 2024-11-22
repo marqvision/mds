@@ -59,12 +59,13 @@ const parseTdToTH = <Props,>(children: React.ReactElement | React.ReactElement[]
     if (
       typeof child.type !== 'string' &&
       typeof child.type !== 'symbol' &&
+      child.type &&
       'displayName' in child.type &&
       child.type.displayName === 'MDSTableCell'
     ) {
       return cloneElement(child, { ...child.props, as: 'th', ...props });
     }
-    if (child.props.children) {
+    if (child.props?.children) {
       return cloneElement(child, { ...child.props, children: parseTdToTH(child.props.children, props) });
     }
     return child;

@@ -50,6 +50,7 @@ type NoIcon = {
 export type StyledErrorWrapperProps = {
   iconSize?: IconSize;
   fallbackStyle: FallbackStyle;
+  isLoaded: boolean;
 };
 
 export type StyledImageWrapperProps = {

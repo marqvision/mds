@@ -49,6 +49,8 @@ const ErrorWrapper = styled.div<StyledErrorWrapperProps>`
     border-width: ${iconSize === 'x-small' || fallbackStyle === 'border' ? '1px' : '0'};
     border-color: ${resolveColor(theme.color[fallbackStyle].borderColor)};
   `}
+  opacity: ${({ isLoaded }) => (isLoaded ? '0' : '1')};
+  transition: opacity 0.3s;
 `;
 
 const ImageWrapper = styled.div<StyledImageWrapperProps>`
@@ -60,7 +62,6 @@ const ImageWrapper = styled.div<StyledImageWrapperProps>`
   overflow: hidden;
   user-select: inherit;
   border-radius: inherit;
-  background-color: ${resolveColor('color/bg/surface/neutral/default/normal')};
   ${({ borderColor }) => (borderColor ? `border: 1px solid ${resolveColor(borderColor)};` : '')}
 `;
 
@@ -106,7 +107,7 @@ export const MDSImage = (props: ImageProps) => {
 
   return (
     <Wrapper width={width} height={height} aspectRatio={aspectRatio} borderRadius={borderRadius} {...restProps}>
-      <ErrorWrapper fallbackStyle={fallbackStyle} iconSize={_iconSize}>
+      <ErrorWrapper fallbackStyle={fallbackStyle} iconSize={_iconSize} isLoaded={isLoaded}>
         {!isError ? (
           <MDSIcon.Image variant="outline" size={iconSize} color={color} />
         ) : (

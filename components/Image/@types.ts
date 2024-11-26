@@ -37,8 +37,9 @@ type UseIcon = {
   errorFallback?: Extract<ErrorFallback, 'icon' | 'both'>;
   /**
    * loading 또는 error 시 노출 될 아이콘의 사이즈.
+   * @default 'medium'
    */
-  iconSize: IconSize;
+  iconSize?: IconSize;
 };
 
 type NoIcon = {
@@ -48,9 +49,6 @@ type NoIcon = {
 
 export type StyledErrorWrapperProps = {
   iconSize?: IconSize;
-  /**
-   * loading 또는 error 시의 스타일.
-   */
   fallbackStyle: FallbackStyle;
 };
 
@@ -89,6 +87,11 @@ export type ImageProps = {
    */
   isLoading?: boolean;
   /**
+   * loading 또는 error 시의 스타일.
+   * @default 'tint'
+   */
+  fallbackStyle?: FallbackStyle;
+  /**
    * 이미지에 objectFit 스타일을 전달합니다.
    * @default 'cover'
    */
@@ -107,7 +110,6 @@ export type ImageProps = {
   removeBorderRadius?: RemoveBorderRadius;
   children?: React.ReactNode;
 } & (UseIcon | NoIcon) &
-  StyledErrorWrapperProps &
   StyledImageWrapperProps &
   Omit<StyledWrapperProps, 'borderRadius'> &
   React.ImgHTMLAttributes<HTMLImageElement>;

@@ -79,9 +79,9 @@ export const MDSImage = (props: ImageProps) => {
   const {
     children,
     isLoading,
-    fallbackStyle,
+    fallbackStyle = 'tint',
     removeBorderRadius,
-    iconSize: _iconSize,
+    iconSize: _iconSize = 'medium',
     errorFallback = 'icon',
     src,
     alt,

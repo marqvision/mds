@@ -69,13 +69,7 @@ export const Default: Story = {
       <MDSTypography>이미지를 출력합니다. lazy load 를 지원합니다.</MDSTypography>
       <Grid>
         {[...Array(80)].map((_, i) => (
-          <MDSImage
-            key={`preview-${i}`}
-            fallbackStyle="border"
-            iconSize="medium"
-            aspectRatio="1"
-            src={`https://picsum.photos/id/${10 + i}/200`}
-          />
+          <MDSImage key={`preview-${i}`} aspectRatio="1" src={`https://picsum.photos/id/${10 + i}/200`} />
         ))}
       </Grid>
     </Wrapper>

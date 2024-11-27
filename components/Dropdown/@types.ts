@@ -25,11 +25,11 @@ export type DropdownItem<T> = {
   onClick?: () => void;
 } & ({ children: DropdownItem<T>[]; value?: any } | { children?: undefined; value?: T });
 
-export type InferType<T> = T extends (infer U)[] ? U[] : T | undefined;
-export type ValueType<T> = T extends (infer U)[] ? U : T | undefined;
-export type ObjType<T> = T extends (infer U)[] ? DropdownItem<ValueType<U>>[] : DropdownItem<ValueType<T>> | undefined;
+export type InferType<T> = T extends (infer U)[] ? U[] : T;
+export type ValueType<T> = T extends (infer U)[] ? U : T;
+export type ObjType<T> = T extends (infer U)[] ? DropdownItem<ValueType<U>>[] : DropdownItem<ValueType<T>>;
 
-export type ModuleType = 'search' | 'sort' | 'infinite' | 'bottom-button' | 'custom-sub-label';
+export type ModuleType = 'search' | 'sort' | 'infinite' | 'bottom-button' | 'custom-sub-label' | 'on-select';
 
 export type SearchModule = {
   type: 'search';
@@ -46,6 +46,7 @@ export type SortModule<T> = {
 export type InfiniteModule = {
   type: 'infinite';
   total: number;
+  hideSelectAll?: boolean;
   onScrollBottom: () => void;
   isLoading?: boolean;
 };
@@ -72,6 +73,7 @@ export type Props<T, SortT = unknown> = {
   list: DropdownItem<ValueType<T>>[];
   label?: string;
   onChange?: (value: InferType<T>, indeterminate?: InferType<T>) => void;
+  onSelect?: (value: ValueType<T>[], selectedValues: ValueType<T>[], isSelected: boolean) => ValueType<T>[];
   renderAnchor?: (value: T | undefined, returnObj: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
   isLoading?: boolean;
   width?: string | number | 'fit-anchor';

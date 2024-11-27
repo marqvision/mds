@@ -412,3 +412,52 @@ export const WithChip: Story = {
     );
   },
 };
+
+export const OnSelect: Story = {
+  render: function Render() {
+    const [list, setList] = useState<number[]>([]);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const allList = [
+      { label: 'Value1', value: 1 },
+      { label: 'Value2', value: 2 },
+      { label: 'Value3', value: 3 },
+      { label: 'Value4', value: 4 },
+      { label: 'Value5', value: 5 },
+      { label: 'Divider :)' },
+      {
+        label: 'Group',
+        isDisabled,
+        children: [
+          { label: 'Value6', value: 6 },
+          { label: 'Value7', value: 7 },
+        ],
+      },
+    ];
+
+    const handleSelect = (newValue: number[], selectedValue: number[], isSelected: boolean) => {
+      const LIMIT = 3;
+
+      let all = isSelected ? [...newValue, ...selectedValue] : selectedValue.filter((v) => !newValue.includes(v));
+
+      if (all.includes(1)) {
+        setIsDisabled(true);
+        all = all.filter((v) => ![6, 7].includes(v));
+      } else {
+        setIsDisabled(false);
+      }
+
+      if (isSelected && all.length > LIMIT) {
+        return [...selectedValue, ...newValue.slice(0, selectedValue.length - LIMIT)];
+      }
+
+      return all;
+    };
+
+    return (
+      <Wrapper>
+        <MDSTypography>Limit: 3적용 / Value1 선택한 경우 Group disabled</MDSTypography>
+        <MDSDropdown label="OnSelectTest" value={list} list={allList} onChange={setList} onSelect={handleSelect} />
+      </Wrapper>
+    );
+  },
+};

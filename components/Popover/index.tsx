@@ -62,7 +62,9 @@ const Dialog = styled.dialog`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 2px 0 rgba(0, 0, 0, 0.16),
+    0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
@@ -112,7 +114,7 @@ const Popover = (
   const [coordinates, setCoordinates] = useState<Coordinates>();
 
   const scrollOffsetRef = useRef<HTMLElement | Window>();
-  const coordinatesRef = useRef<Coordinates>({ x: 0, y: 0 });
+  const coordinatesRef = useRef<Coordinates>();
   const closeRef = useRef(onClosePopover);
 
   const setPosition = useCallback(() => {
@@ -147,19 +149,25 @@ const Popover = (
 
     const [anchor, direction] = position.split('-');
 
+    if (!coordinatesRef.current) {
+      setTimeout(() => {
+        setPosition();
+      }, 0);
+    }
+
     const verticalX =
       direction === 'left'
         ? rect.left + rect.width - contentWidth - MIN_PADDING
         : direction === 'center'
-        ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
-        : rect.left - MIN_PADDING;
+          ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
+          : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-        ? rect.top - dialogHeight / 2 + rect.height / 2
-        : rect.top - MIN_PADDING;
+          ? rect.top - dialogHeight / 2 + rect.height / 2
+          : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -196,7 +204,7 @@ const Popover = (
 
   const handleScroll = useCallback(() => {
     setPosition();
-    const { y } = coordinatesRef.current;
+    const y = coordinatesRef.current?.y || 0;
 
     const offsetTop = (scrollOffsetRef.current as HTMLElement)?.offsetTop || 0;
 

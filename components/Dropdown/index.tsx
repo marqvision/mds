@@ -27,7 +27,9 @@ const StyledSticky = styled.div`
   position: sticky;
   top: 0;
   padding: 8px;
-  box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
+  box-shadow:
+    0 1px 8px 0 #0000001f,
+    0 1px 2px 0 #0000000a;
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
   z-index: 1;
@@ -121,13 +123,12 @@ const Dropdown = <T, SortT>({
     isMultiple && (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-      ? 'indeterminate'
-      : false;
+        ? 'indeterminate'
+        : false;
   const isEmpty = list.length === 0;
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
   const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
-  const hideSelectAll = is1DepthSingle;
   const isShowStickyHeader = hasSearch || hasSort || isMultiple;
 
   const stickyBottom = modules?.find((v) => typeof v === 'object' && v.type === 'bottom-button') as
@@ -136,6 +137,8 @@ const Dropdown = <T, SortT>({
   const customSearch = modules?.find((v) => typeof v === 'object' && v.type === 'search') as SearchModule | undefined;
   const customSort = modules?.find((v) => typeof v === 'object' && v.type === 'sort') as SortModule<SortT>;
   const infinite = modules?.find((v) => typeof v === 'object' && v.type === 'infinite') as InfiniteModule | undefined;
+
+  const hideSelectAll = is1DepthSingle || !!infinite?.hideSelectAll;
 
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;

@@ -30,7 +30,7 @@ export const useDropdown = <T>({ value, list, hasSort }: Pick<Props<T>, 'value' 
 };
 
 export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAnchor' | 'width'>) => {
-  const { value, list, indeterminate: _indeterminate } = props;
+  const { value, list, indeterminate: _indeterminate, onSelect } = props;
 
   const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>([]);
   const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>([]);
@@ -75,6 +75,18 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
     close: () => void,
     forceSingle?: boolean
   ) => {
+    if (onSelect) {
+      const temp = newValues.flatMap((v) => v.value);
+      const adaptedValue = onSelect(
+        temp,
+        selectedValues.flatMap((v) => v.value),
+        isSelected
+      ).map((v) => selectableValue.find((v2) => v2.value === v) as SelectedType<ValueType<T>>);
+
+      setSelectedValues(adaptedValue);
+      return;
+    }
+
     if (isMultiple && newValues.length === 1 && newValues[0].value === -1) {
       // infinite all
       if (isSelected) {

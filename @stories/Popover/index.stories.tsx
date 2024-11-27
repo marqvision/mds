@@ -26,6 +26,7 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
         display: 'flex',
         flexDirection: 'column',
         gap: '24px',
+        minHeight: '100vh',
       }}
     >
       {children}
@@ -52,9 +53,36 @@ export const Hover: Story = {
   render: function Render() {
     return (
       <Wrapper>
-        <MDSPopover anchor={<button style={{ width: '200px' }}>마우스 호버</button>} hasDim={false} trigger="hover">
-          <MDSTypography>팝업</MDSTypography>
-        </MDSPopover>
+        <div>
+          <div style={{ display: 'flex', gap: 0 }}>
+            <MDSPopover anchor={<button style={{ width: '200px' }}>마우스 호버</button>} hasDim={false} trigger="hover">
+              <MDSTypography>팝업</MDSTypography>
+            </MDSPopover>
+            <MDSPopover
+              anchor={<button style={{ width: '200px' }}>마우스 호버2</button>}
+              hasDim={false}
+              trigger="hover"
+            >
+              <MDSTypography>팝업2</MDSTypography>
+            </MDSPopover>
+          </div>
+          <div style={{ display: 'flex', gap: 0 }}>
+            <MDSPopover
+              anchor={<button style={{ width: '200px' }}>마우스 호버3</button>}
+              hasDim={false}
+              trigger="hover"
+            >
+              <MDSTypography>팝업3</MDSTypography>
+            </MDSPopover>
+            <MDSPopover
+              anchor={<button style={{ width: '200px' }}>마우스 호버4</button>}
+              hasDim={false}
+              trigger="hover"
+            >
+              <MDSTypography>팝업4</MDSTypography>
+            </MDSPopover>
+          </div>
+        </div>
       </Wrapper>
     );
   },

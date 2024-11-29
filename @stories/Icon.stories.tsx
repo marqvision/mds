@@ -1,8 +1,7 @@
 import { Meta } from '@storybook/react';
 import styled from '@emotion/styled';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
-import { MDSIcon, MDSIconProps } from '../components/Icon';
-import { MDSTypography } from '../components';
+import { MDSIcon, MDSIconProps, MDSTypography } from '../components';
 import { MDSTHEME_COLORS } from './@helper';
 
 const meta: Meta<typeof MDSIcon.ArrowLeft> = {
@@ -73,16 +72,6 @@ export const Variants = (props: MDSIconProps) => {
       <MDSIcon.CommentAdd {...props} variant="left" />
       <MDSIcon.CommentAdd {...props} variant="right" />
       <MDSIcon.Home {...props} />
-    </>
-  );
-};
-
-export const Animation = (props: MDSIconProps) => {
-  return (
-    <>
-      <MDSIcon.IndicatorCircle {...props} />
-      <MDSIcon.IndicatorCircle {...props} strokeWidth={5} />
-      <MDSIcon.IndicatorCircle {...props} strokeWidth={7} />
     </>
   );
 };

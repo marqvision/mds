@@ -1,0 +1,130 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import { MDSLoadingIndicator } from '../components';
+
+const meta: Meta<typeof MDSLoadingIndicator> = {
+  component: MDSLoadingIndicator,
+  title: '2. Components/LoadingIndicator',
+  tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px', display: 'grid', placeItems: 'center' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export default meta;
+type Story = StoryObj<typeof MDSLoadingIndicator>;
+
+export const Preview: Story = {
+  args: {},
+};
+
+export const IndicatorColor: Story = {
+  args: {
+    color: 'indicator',
+    size: 22,
+    backgroundColor: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'save 중인 상태에서 마우스 대신 출력 시 보여줄 전용 스타일 입니다.'
+      },
+    },
+  },
+};
+
+export const Size: Story = {
+  args: {
+    size: 30,
+    strokeWidth: 5,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '사이즈, stroke 두께를 임의로 지정할 수 있습니다.'
+      },
+    },
+  },
+};
+
+export const WithLabel: Story = {
+  args: {
+    label: 0,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '중앙에 진행도를 출력합니다. 최소 사이즈는 46 입니다.'
+      },
+    },
+  },
+};
+
+export const Progress: Story = {
+  args: {
+    progress: 30,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'circle stroke 으로 진행도를 보여줍니다.'
+      },
+    },
+  },
+};
+
+export const ProgressWithLabel: Story = {
+  args: {
+    progress: 30,
+    label: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'circle stroke 으로 진행도를 보여줄 때 label = true 라면, progress 로 전달한 값을 중앙에 출력합니다.'
+      },
+    },
+  },
+};
+
+export const CustomColor: Story = {
+  args: {
+    color: 'color/content/success/default/normal',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'loading indicator 전용 색 외의 색상을 지정합니다.'
+      },
+    },
+  },
+};
+
+export const Background: Story = {
+  args: {
+    backgroundColor: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '회색 배경을 출력합니다. loading indicator 전용 색상입니다.',
+      },
+    },
+  },
+};
+
+export const CustomBackground: Story = {
+  args: {
+    backgroundColor: 'color/bg/fill/critical/tint/normal',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '배경에 지정된 전용 색 외의 색상을 사용합니다.',
+      },
+    },
+  },
+};

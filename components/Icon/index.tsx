@@ -1,10 +1,9 @@
 import { ReactNode, SVGAttributes } from 'react';
-import { resolveColor } from '../../@system/resolvers';
+import { resolveColor } from '../../@system';
 import { Features, IconVariant } from './@types';
 import * as Arrows from './set/Arrows';
 import * as Symbols from './set/Symbols';
 import * as Editor from './set/Editor';
-import * as Animation from './set/Animation';
 
 export type MDSIconProps<IC = ''> = Features<IC> & SVGAttributes<SVGElement>;
 
@@ -24,19 +23,6 @@ function createIcon<IC = ''>(Icon: (features: Features<IC>) => ReactNode) {
         <Icon variant={props.variant} />
       </svg>
     );
-  };
-  IconComponent.displayName = `MDSIcon.${Icon.name}`;
-
-  return IconComponent;
-}
-
-function createAnimationIcon(Icon: (props: Record<string, unknown>) => ReactNode) {
-  const IconComponent = ({ color = 'color/content/neutral/default/normal', ...rest }: MDSIconProps) => {
-    const props = {
-      color: resolveColor(color),
-    };
-
-    return <Icon {...props} {...rest} />;
   };
   IconComponent.displayName = `MDSIcon.${Icon.name}`;
 
@@ -222,7 +208,4 @@ export const MDSIcon = {
   ShapeArrow: createIcon(Editor.ShapeArrow),
   FormulaComponent: createIcon(Editor.FormulaComponent),
   Eth: createIcon(Editor.Eth),
-
-  // Animation
-  IndicatorCircle: createAnimationIcon(Animation.IndicatorCircle),
 };

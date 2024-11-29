@@ -3,7 +3,6 @@ import { Size } from '../@types';
 import { theme } from '../@constants';
 
 const StyledAddButton = styled.button<{ size: Size; isError?: boolean }>`
-  height: 100%;
   border: none;
   color: white;
   font-weight: 500;

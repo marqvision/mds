@@ -11,7 +11,7 @@ import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
 `;
 

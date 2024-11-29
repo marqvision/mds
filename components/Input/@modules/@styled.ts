@@ -18,7 +18,6 @@ export const StyledOutline = styled.div<{
   width: 100%;
   border-radius: ${({ flatLeft, flatRight }) =>
     `${flatLeft ? 0 : '4px'} ${flatRight ? 0 : '4px'} ${flatRight ? 0 : '4px'} ${flatLeft ? 0 : '4px'}`};
-  height: 100%;
   border: ${({ isError }) => `1px solid ${theme.color.border[isError ? 'error' : 'normal']}`};
   ${({ customSize }) => ({
     padding: `${theme.size[customSize].paddingY} ${theme.size[customSize].paddingX}`,

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { MDSLoadingIndicator } from '../components';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSLoadingIndicator> = {
   component: MDSLoadingIndicator,
@@ -30,7 +30,7 @@ export const IndicatorColor: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'save 중인 상태에서 마우스 대신 출력 시 보여줄 전용 스타일 입니다.'
+        story: 'save 중인 상태에서 마우스 대신 출력 시 보여줄 전용 스타일 입니다.',
       },
     },
   },
@@ -44,7 +44,7 @@ export const Size: Story = {
   parameters: {
     docs: {
       description: {
-        story: '사이즈, stroke 두께를 임의로 지정할 수 있습니다.'
+        story: '사이즈, stroke 두께를 임의로 지정할 수 있습니다.',
       },
     },
   },
@@ -52,12 +52,12 @@ export const Size: Story = {
 
 export const WithLabel: Story = {
   args: {
-    label: 0,
+    progress: 30,
   },
   parameters: {
     docs: {
       description: {
-        story: '중앙에 진행도를 출력합니다. 최소 사이즈는 46 입니다.'
+        story: '중앙에 진행도를 출력합니다. 최소 사이즈는 46 입니다.',
       },
     },
   },
@@ -65,26 +65,13 @@ export const WithLabel: Story = {
 
 export const Progress: Story = {
   args: {
+    isDeterminate: true,
     progress: 30,
   },
   parameters: {
     docs: {
       description: {
-        story: 'circle stroke 으로 진행도를 보여줍니다.'
-      },
-    },
-  },
-};
-
-export const ProgressWithLabel: Story = {
-  args: {
-    progress: 30,
-    label: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'circle stroke 으로 진행도를 보여줄 때 label = true 라면, progress 로 전달한 값을 중앙에 출력합니다.'
+        story: 'circle stroke 으로 진행도를 보여줍니다.',
       },
     },
   },
@@ -97,7 +84,7 @@ export const CustomColor: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'loading indicator 전용 색 외의 색상을 지정합니다.'
+        story: 'loading indicator 전용 색 외의 색상을 지정합니다.',
       },
     },
   },

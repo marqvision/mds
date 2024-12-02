@@ -21,20 +21,23 @@ const SvgKeyframes = keyframes`
   }
 `;
 
-const Wrapper = styled.div<{ size?: number }>`
+const Wrapper = styled.i<{ size: number; padding: number }>`
   position: relative;
   overflow: hidden;
-  ${({ size }) => `
+  display: grid;
+  place-items: center;
+  ${({ size, padding }) => `
     width: ${size}px;
     height: ${size}px;
+    padding: ${padding}px;
   `}
 `;
 
-const SVG = styled.svg<{ size?: number; color: string; progress?: LoadingIndicatorProps['progress'] }>`
-  ${({ size, color }) => `
+const SVG = styled.svg<{ color: string; progress?: LoadingIndicatorProps['progress'] }>`
+  ${({ color }) => `
     color: ${color};
-    width: ${size}px;
-    height: ${size}px;
+    width: 100%;
+    height: 100%;;
   `}
   ${({ progress }) =>
     progress === undefined
@@ -75,7 +78,9 @@ const Circle = styled.circle<{ progress: LoadingIndicatorProps['progress'] }>`
         `}
 `;
 
-const BackgroundCircle = styled.circle<{ backgroundColor: Exclude<LoadingIndicatorProps['backgroundColor'], undefined> }>`
+const BackgroundCircle = styled.circle<{
+  backgroundColor: Exclude<LoadingIndicatorProps['backgroundColor'], undefined>;
+}>`
   stroke: ${({ backgroundColor }) =>
     typeof backgroundColor === 'boolean' ? theme.color.backgroundColor : resolveColor(backgroundColor)};
 `;
@@ -90,31 +95,41 @@ const Label = styled(MDSTypography)<{ customColor: string }>`
 
 export const MDSLoadingIndicator = (props: LoadingIndicatorProps) => {
   const {
-    label: _label,
-    size: _size = DEFAULT_SIZE.INDETERMINATE.SIZE,
+    isDeterminate,
+    size: _size = DEFAULT_SIZE.indeterminate.size,
     progress,
     color: _color = 'default',
-    strokeWidth = _label === false || _label === undefined ? DEFAULT_SIZE.INDETERMINATE.STROKEWIDTH : DEFAULT_SIZE.DETERMINATE.STROKEWIDTH,
+    strokeWidth: _strokeWidth,
     backgroundColor,
+    className,
+    style,
     ...restProps
   } = props;
 
-  const size = _label === false || _label === undefined ? _size : Math.max(DEFAULT_SIZE.DETERMINATE.SIZE, _size); // label 이 있으면 최소 사이즈 설정
-  const label = _label === true ? progress : _label;
+  const widthLabel = !isDeterminate && typeof progress === 'number';
+  const size = widthLabel ? Math.max(DEFAULT_SIZE.determinate.size, _size) : _size; // label 이 있으면 최소 사이즈 설정
+  const strokeWidth =
+    _strokeWidth ||
+    (widthLabel // size 입력하지 않으면 기본 사이즈 적용
+      ? DEFAULT_SIZE.determinate.strokeWidth
+      : DEFAULT_SIZE.indeterminate.strokeWidth * (size / DEFAULT_SIZE.indeterminate.size));
+  const label = widthLabel && progress;
 
-  const viewBow = `0 0 ${size} ${size}`;
-  const cxy = size / 2;
+  const padding = widthLabel
+    ? DEFAULT_SIZE.determinate.padding
+    : DEFAULT_SIZE.indeterminate.padding * (size / DEFAULT_SIZE.indeterminate.size);
+  const viewBow = `0 0 ${size - padding} ${size - padding}`;
+  const cxy = (size - padding) / 2;
   const r = cxy - strokeWidth / 2;
 
   const color = isMDSThemeColorPath(_color) ? resolveColor(_color) : theme.color[_color];
 
   return (
-    <Wrapper size={size}>
+    <Wrapper size={size} padding={padding} className={className} style={style} role="loading-indicator">
       <SVG
         viewBox={viewBow}
         strokeLinecap="round"
         strokeWidth={strokeWidth}
-        size={size}
         color={color}
         progress={progress}
         {...restProps}

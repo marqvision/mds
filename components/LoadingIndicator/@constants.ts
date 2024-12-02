@@ -9,22 +9,24 @@ const token = {
   },
 } as const;
 
-
 export const theme: Theme = {
   color: {
     default: token.circle.default,
     indicator: token.circle.indicator,
+    inherit: 'inherit',
     backgroundColor: token.circle.unfilled,
   },
 };
 
 export const DEFAULT_SIZE = {
-  DETERMINATE: {
-    SIZE: 46,
-    STROKEWIDTH: 4,
+  determinate: {
+    size: 46,
+    strokeWidth: 4,
+    padding: 1,
   },
-  INDETERMINATE: {
-    SIZE: 16,
-    STROKEWIDTH: 3,
+  indeterminate: {
+    size: 16,
+    strokeWidth: 2,
+    padding: 1.5,
   },
 };

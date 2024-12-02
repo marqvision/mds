@@ -49,13 +49,13 @@ const Wrapper = styled.td<StyledTableCellProps>`
     border-bottom-width: 1px;
   }
 
-  th&:first-child,
-  tbody:not(:has(td[rowspan])) &:first-child,
+  th&:first-of-type,
+  tbody:not(:has(td[rowspan])) &:first-of-type,
   tbody:has(td[rowspan]) &[rowspan] {
     padding-left: 4px;
   }
 
-  &:last-child {
+  &:last-of-type {
     padding-right: 4px;
   }
 `;

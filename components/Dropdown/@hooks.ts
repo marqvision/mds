@@ -22,6 +22,7 @@ export const useDropdown = <T>({ value, list, hasSort }: Pick<Props<T>, 'value' 
     search,
     sort,
     filteredList,
+    searchedValues: getValueFromList(filteredList),
     handler: {
       search: setSearch,
       sort: setSort,

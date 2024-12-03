@@ -1,4 +1,4 @@
-import { MDSLoadingIndicator } from '../components';
+import { MDSChip, MDSLoadingIndicator } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSLoadingIndicator> = {
@@ -33,6 +33,34 @@ export const IndicatorColor: Story = {
         story: 'save 중인 상태에서 마우스 대신 출력 시 보여줄 전용 스타일 입니다.',
       },
     },
+  },
+};
+
+export const ChipLoading: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'MDSChip 내 Loading indicator 가 적용됩니다.',
+      },
+    },
+  },
+  render: () => {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <MDSChip variant="tint" size="small" color="green" isLoading>
+          Loading
+        </MDSChip>
+        <MDSChip variant="fill" size="medium" color="blue" isLoading>
+          Loading
+        </MDSChip>
+        <MDSChip variant="border" size="large" color="red" isLoading="hideLabel">
+          Loading
+        </MDSChip>
+        <MDSChip variant="tint" size="large" color="purple" isLoading="hideLabel">
+          Loading
+        </MDSChip>
+      </div>
+    );
   },
 };
 

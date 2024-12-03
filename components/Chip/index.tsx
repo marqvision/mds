@@ -4,10 +4,10 @@ import { resolveColor } from '../../@system';
 import { MDSTypography } from '../Typography';
 import { Divider } from './@components/Divider';
 import { Icon } from './@components/Icon';
-import { LoadingSpinner } from './@components/LoadingSpinner';
 import { theme as ChipTheme } from './@constants';
 import { ChipProps, StyledChipProps } from './@types';
 import { getBorderRadius } from './@utils';
+import { LoadingSpinner } from './@components/LoadingSpinner';
 
 export type MDSChipProps = ChipProps;
 
@@ -31,7 +31,10 @@ const Chip = styled.button<StyledChipProps>`
     color: inherit;
   }
 
-  ${({ isLoading }) => (isLoading === 'hideLabel' ? `& *:not(i, hr) { opacity: 0; }` : '')}
+  ${({ isLoading }) =>
+    isLoading === 'hideLabel'
+      ? `& *:not([role=loading-indicator], [role=loading-indicator] *, hr) { opacity: 0; }`
+      : ''}
 
   ${({ width }) => {
     return `
@@ -169,12 +172,10 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       flat={flat}
       {...restProps}
     >
-      {isLoading === 'hideLabel' && (
-        <LoadingSpinner size={size} variant={variant} color={color} isCenter={isLoading === 'hideLabel'} />
-      )}
+      {isLoading === 'hideLabel' && <LoadingSpinner size={ChipTheme.size[size].spinnerSize} color="inherit" isCenter />}
 
       {isLoading === true ? (
-        <LoadingSpinner size={size} variant={variant} color={color} />
+        <LoadingSpinner size={ChipTheme.size[size].spinnerSize} color="inherit" />
       ) : (
         startIcon && <Icon size={size} icon={startIcon} />
       )}

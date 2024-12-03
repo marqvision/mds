@@ -28,7 +28,7 @@ export type ChipTheme = {
       gap: Token['gap'][keyof Token['gap']];
       radius: Token['radius'][keyof Token['radius']];
       minHeight: Token['minSize'][keyof Token['minSize']];
-      spinnerWidth: string;
+      spinnerSize: number;
     }
   >;
 };
@@ -46,9 +46,6 @@ export type StyledChipProps = {
 };
 
 export type LoadingSpinnerProps = {
-  variant: ChipVariant;
-  size: ChipSize;
-  color: ChipColor;
   isCenter?: boolean;
 };
 

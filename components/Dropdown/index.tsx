@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { MDSPopover } from '../Popover';
 import { MDSTypography } from '../Typography';
 import { MDSCheckbox } from '../Checkbox';
+import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { MDSIcon } from '../Icon';
 import { Item } from './@components/Item';
 import { useDropdown, useInitDropdown } from './@hooks';
@@ -27,9 +28,7 @@ const StyledSticky = styled.div`
   position: sticky;
   top: 0;
   padding: 8px;
-  box-shadow:
-    0 1px 8px 0 #0000001f,
-    0 1px 2px 0 #0000000a;
+  box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
   z-index: 1;
@@ -123,8 +122,8 @@ const Dropdown = <T, SortT>({
     isMultiple && (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-        ? 'indeterminate'
-        : false;
+      ? 'indeterminate'
+      : false;
   const isEmpty = list.length === 0;
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
@@ -286,7 +285,7 @@ const Dropdown = <T, SortT>({
         <>
           {infinite.isLoading && (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '8px 0' }}>
-              <MDSIcon.IndicatorCircle size={24} />
+              <MDSLoadingIndicator size={24} />
             </div>
           )}
           <div ref={infiniteRef} style={{ height: '1px' }} />

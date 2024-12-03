@@ -1,6 +1,5 @@
 import { MouseEvent, ReactElement } from 'react';
 import styled from '@emotion/styled';
-import { CircularProgress } from '@material-ui/core';
 import { MDSChip } from '../../Chip';
 import { MDSTag } from '../../Tag';
 import { MDSIcon } from '../../Icon';
@@ -42,7 +41,7 @@ export const FilterChip = (props: Props) => {
           </>
         ) : undefined
       }
-      startIcon={isLoading ? <CircularProgress thickness={4} size={16} /> : undefined}
+      isLoading={isLoading}
       endIcon={<MDSIcon.ArrowDown variant="outline" />}
       onClick={onClick}
     >

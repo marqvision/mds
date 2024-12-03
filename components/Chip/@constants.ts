@@ -484,7 +484,7 @@ export const theme: ChipTheme = {
       gap: token.gap.sm,
       radius: token.radius.sm,
       minHeight: token.minSize.sm,
-      spinnerWidth: '2px',
+      spinnerSize: 16,
     },
     medium: {
       label: 'T14',
@@ -493,7 +493,7 @@ export const theme: ChipTheme = {
       gap: token.gap.md,
       radius: token.radius.md,
       minHeight: token.minSize.md,
-      spinnerWidth: '2px',
+      spinnerSize: 16,
     },
     large: {
       label: 'T16',
@@ -502,7 +502,7 @@ export const theme: ChipTheme = {
       gap: token.gap.lg,
       radius: token.radius.lg,
       minHeight: token.minSize.lg,
-      spinnerWidth: '2.5px',
+      spinnerSize: 20,
     },
     'extra-large': {
       label: 'T20',
@@ -511,7 +511,7 @@ export const theme: ChipTheme = {
       gap: token.gap.xl,
       radius: token.radius.xl,
       minHeight: token.minSize.xl,
-      spinnerWidth: '3px',
+      spinnerSize: 24,
     },
   },
 };

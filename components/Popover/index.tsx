@@ -2,7 +2,7 @@ import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement, Mut
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { createPortal } from 'react-dom';
-import { MDSIcon } from '../Icon';
+import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { findScrollOffset } from './@utils';
 import { Props, StyleProps, Coordinates } from './@type';
 
@@ -62,9 +62,7 @@ const Dialog = styled.dialog`
 `;
 
 const DialogContent = styled.div<StyleProps>`
-  box-shadow:
-    0 0 2px 0 rgba(0, 0, 0, 0.16),
-    0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
   width: ${({ width }) => width};
@@ -159,15 +157,15 @@ const Popover = (
       direction === 'left'
         ? rect.left + rect.width - contentWidth - MIN_PADDING
         : direction === 'center'
-          ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
-          : rect.left - MIN_PADDING;
+        ? rect.left + (rect.width - contentWidth) / 2 - MIN_PADDING
+        : rect.left - MIN_PADDING;
 
     const horizontalY =
       direction === 'top'
         ? rect.top + rect.height - dialogHeight + MIN_PADDING
         : direction === 'center'
-          ? rect.top - dialogHeight / 2 + rect.height / 2
-          : rect.top - MIN_PADDING;
+        ? rect.top - dialogHeight / 2 + rect.height / 2
+        : rect.top - MIN_PADDING;
 
     switch (anchor) {
       case 'bottom': {
@@ -224,7 +222,7 @@ const Popover = (
     <div
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px 0', minWidth: '280px' }}
     >
-      <MDSIcon.IndicatorCircle size={24} />
+      <MDSLoadingIndicator size={24} />
     </div>
   ) : typeof _children === 'function' ? (
     _children({

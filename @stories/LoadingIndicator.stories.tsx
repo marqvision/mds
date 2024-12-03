@@ -105,19 +105,6 @@ export const Progress: Story = {
   },
 };
 
-export const CustomColor: Story = {
-  args: {
-    color: 'color/content/success/default/normal',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'loading indicator 전용 색 외의 색상을 지정합니다.',
-      },
-    },
-  },
-};
-
 export const Background: Story = {
   args: {
     backgroundColor: true,
@@ -126,19 +113,6 @@ export const Background: Story = {
     docs: {
       description: {
         story: '회색 배경을 출력합니다. loading indicator 전용 색상입니다.',
-      },
-    },
-  },
-};
-
-export const CustomBackground: Story = {
-  args: {
-    backgroundColor: 'color/bg/fill/critical/tint/normal',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '배경에 지정된 전용 색 외의 색상을 사용합니다.',
       },
     },
   },

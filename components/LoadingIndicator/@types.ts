@@ -1,5 +1,4 @@
 import React from 'react';
-import { MDSThemeColorPath } from '../../foundation';
 
 export type Color = 'default' | 'indicator' | 'inherit';
 
@@ -27,21 +26,21 @@ export type LoadingIndicatorProps = Omit<React.SVGAttributes<SVGElement>, 'strok
   /**
    * 인디케이터의 색상.
    * @remarks
-   * - `Color`: Loading indicator 전용 색상(`default` 또는 `indicator`).
-   * - `MDSThemeColorPath`: 사용자 정의 색상.
+   * - `default`: blackAlpha80.
+   * - `indicator`: blue700.
    * - `inherit`: 상위 요소에 의해 결정.
    * @default "default"
    */
-  color?: Color | MDSThemeColorPath;
+  color?: Color;
 
   /**
    * 배경색.
    * @remarks
-   * - `boolean`: 전용 배경색 사용 여부 (`true`).
-   * - `MDSThemeColorPath`: 사용자 정의 배경색.
+   * - `true`: 전용 배경색 blackAlpha10 사용.
+   * - `false`: 배경색 없음 (투명).
    * @default false
    */
-  backgroundColor?: boolean | MDSThemeColorPath;
+  backgroundColor?: boolean;
 
   /**
    * 선의 두께 (strokeWidth).

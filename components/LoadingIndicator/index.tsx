@@ -1,7 +1,5 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../@system';
-import { MDSThemeColorPath } from '../../foundation';
 import { MDSTypography } from '../Typography';
 import { DEFAULT_SIZE, theme } from './@constants';
 import { LoadingIndicatorProps } from './@types';
@@ -81,8 +79,7 @@ const Circle = styled.circle<{ progress: LoadingIndicatorProps['progress'] }>`
 const BackgroundCircle = styled.circle<{
   backgroundColor: Exclude<LoadingIndicatorProps['backgroundColor'], undefined>;
 }>`
-  stroke: ${({ backgroundColor }) =>
-    typeof backgroundColor === 'boolean' ? theme.color.backgroundColor : resolveColor(backgroundColor)};
+  stroke: ${({ backgroundColor }) => (backgroundColor ? theme.color.backgroundColor : '')};
 `;
 
 const Label = styled(MDSTypography)<{ customColor: string }>`
@@ -122,7 +119,7 @@ export const MDSLoadingIndicator = (props: LoadingIndicatorProps) => {
   const cxy = (size - padding) / 2;
   const r = cxy - strokeWidth / 2;
 
-  const color = isMDSThemeColorPath(_color) ? resolveColor(_color) : theme.color[_color];
+  const color = theme.color[_color];
 
   return (
     <Wrapper size={size} padding={padding} className={className} style={style} role="loading-indicator">
@@ -153,10 +150,6 @@ export const MDSLoadingIndicator = (props: LoadingIndicatorProps) => {
       )}
     </Wrapper>
   );
-};
-
-const isMDSThemeColorPath = (color: LoadingIndicatorProps['color']): color is MDSThemeColorPath => {
-  return !!color?.startsWith('color/');
 };
 
 const getProgressStroke = (r: number, progress: number) => {

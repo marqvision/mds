@@ -51,7 +51,7 @@ export const TextField = (props: Props) => {
     inputProps,
     isDisabled,
     isReadOnly,
-    isMultiline,
+    isMultiline: _isMultiline,
     status,
     placeholder,
     style,
@@ -66,6 +66,7 @@ export const TextField = (props: Props) => {
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [isInit, setIsInit] = useState(false);
   const [mirrorText, setMirrorText] = useState<string>('');
+  const [height, setHeight] = useState<number | string>();
 
   const lastValueRef = useRef('');
   const debounceRef = useRef<number>();
@@ -80,6 +81,9 @@ export const TextField = (props: Props) => {
   const prefix = custom?.prefix;
   const isError = status === 'error';
   const hasCustomToFit = !!custom?.expandToFit;
+  const isMultiline = _isMultiline || !!custom?.multiline;
+  const toFitMultiline = custom?.multiline?.expandToFit;
+  const py = parseFloat(theme.size[size].paddingY) * 2 + 2;
 
   const variant = `T${theme.size[size].fontSize.replace('px', '')}` as Features['variant'];
 
@@ -163,7 +167,21 @@ export const TextField = (props: Props) => {
       const gap = (mirrorRef.current?.clientWidth || 0) - (mirrorRef.current?.nextElementSibling?.clientWidth || 0);
       onResize(gap);
     }
-  }, [mirrorText, hasCustomToFit, onResize]);
+    if (toFitMultiline) {
+      const defaultHeight = toFitMultiline.defaultHeight || py + parseInt(theme.size[size].fontSize) * 1.5 * 2;
+
+      let newHeight = Math.max((mirrorRef.current?.clientHeight || 0) + py, parseInt(`${defaultHeight}`));
+
+      if (toFitMultiline.maxHeight) {
+        newHeight = Math.min(parseFloat(`${toFitMultiline.maxHeight}`), newHeight);
+      }
+
+      setHeight(newHeight);
+    }
+  }, [mirrorText, hasCustomToFit, onResize, toFitMultiline, size, py]);
+
+  const isOverflowed =
+    toFitMultiline && parseFloat(`${toFitMultiline.maxHeight}`) < (mirrorRef.current?.clientHeight || 0) + py;
 
   return (
     <StyledLabel size={size} isError={isError}>
@@ -174,11 +192,14 @@ export const TextField = (props: Props) => {
         disabled={isDisabled}
         readOnly={isReadOnly}
         isError={isError}
-        style={style}
+        style={{
+          ...style,
+          height: height || toFitMultiline?.defaultHeight || style?.height,
+        }}
       >
         {Prefix}
         <StyledMirror ref={mirrorRef} style={{ fontSize: theme.size[size].fontSize }}>
-          {mirrorText}
+          {mirrorText.split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
         </StyledMirror>
         {isInit && (
           <StyledInput
@@ -197,6 +218,9 @@ export const TextField = (props: Props) => {
               if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
                 handleEnter();
               }
+            }}
+            style={{
+              overflow: isMultiline ? (isOverflowed ? 'scroll' : 'hidden') : undefined,
             }}
           />
         )}

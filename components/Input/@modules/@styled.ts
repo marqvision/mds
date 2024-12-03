@@ -50,7 +50,7 @@ export const StyledOutline = styled.div<{
   }
   &:has(textarea) {
     height: ${({ customSize }) =>
-      parseInt(theme.size[customSize].paddingX) + parseInt(theme.size[customSize].fontSize) * 1.5 * 2}px;
+      parseFloat(theme.size[customSize].paddingY) * 2 + 2 + parseInt(theme.size[customSize].fontSize) * 1.5 * 2}px;
   }
 `;
 

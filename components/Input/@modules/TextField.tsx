@@ -1,4 +1,4 @@
-import { ChangeEvent, isValidElement, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, isValidElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
@@ -167,6 +167,9 @@ export const TextField = (props: Props) => {
       const gap = (mirrorRef.current?.clientWidth || 0) - (mirrorRef.current?.nextElementSibling?.clientWidth || 0);
       onResize(gap);
     }
+  }, [mirrorText, hasCustomToFit, onResize]);
+
+  useLayoutEffect(() => {
     if (toFitMultiline) {
       const defaultHeight = toFitMultiline.defaultHeight || py + parseInt(theme.size[size].fontSize) * 1.5 * 2;
 
@@ -178,7 +181,7 @@ export const TextField = (props: Props) => {
 
       setHeight(newHeight);
     }
-  }, [mirrorText, hasCustomToFit, onResize, toFitMultiline, size, py]);
+  }, [mirrorText, toFitMultiline, size, py]);
 
   const isOverflowed =
     toFitMultiline && parseFloat(`${toFitMultiline.maxHeight}`) < (mirrorRef.current?.clientHeight || 0) + py;

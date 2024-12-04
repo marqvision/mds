@@ -141,6 +141,7 @@ export const Select = <T,>(props: Props<T>) => {
       size={size}
       isError={isError}
       onClick={(e) => {
+        e.currentTarget.querySelector('button')?.focus();
         e.stopPropagation();
         e.preventDefault();
         onClick?.(e);

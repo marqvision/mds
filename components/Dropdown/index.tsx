@@ -21,6 +21,7 @@ import {
 } from './@types';
 import { FilterChip } from './@components/FilterChip';
 import { Search } from './@components/Search';
+import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constants';
 
 const StyledWrap = styled.div``;
 
@@ -113,9 +114,15 @@ const Dropdown = <T, SortT>({
     sort,
     filteredList: list,
     handler,
-  } = useDropdown<T>({ value, list: _list, hasSort: modules?.includes('sort') });
+  } = useDropdown<T>({
+    value,
+    list: _list,
+    hasSort: modules?.includes('sort'),
+    hasCustomSearch: modules?.some((v) => typeof v === 'object' && v.type === 'search'),
+  });
 
   const infiniteRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<number>();
 
   const isMultiple = Array.isArray(value);
   const isSelectedAll =
@@ -124,7 +131,6 @@ const Dropdown = <T, SortT>({
       : selectedValues.length
       ? 'indeterminate'
       : false;
-  const isEmpty = list.length === 0;
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
   const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
@@ -136,12 +142,18 @@ const Dropdown = <T, SortT>({
   const customSearch = modules?.find((v) => typeof v === 'object' && v.type === 'search') as SearchModule | undefined;
   const customSort = modules?.find((v) => typeof v === 'object' && v.type === 'sort') as SortModule<SortT>;
   const infinite = modules?.find((v) => typeof v === 'object' && v.type === 'infinite') as InfiniteModule | undefined;
+  const isEmpty = list.length === 0 && !infinite?.isLoading;
 
   const hideSelectAll = is1DepthSingle || !!infinite?.hideSelectAll;
 
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;
   const selectedCount = (isInfiniteAll ? allCount : selectedValues.length).toLocaleString();
+
+  const isSearchTooShort =
+    !!customSearch &&
+    search.trim().length !== 0 &&
+    search.trim().length < (customSearch.minLength || DEFAULT_MIN_SEARCH_LETTERS);
 
   const sortEle = customSort ? (
     <MDSDropdown<SortT>
@@ -180,10 +192,20 @@ const Dropdown = <T, SortT>({
     : undefined;
 
   const handleChangeSearch = (s: string) => {
-    handler.search(s);
     if (customSearch) {
-      customSearch.onChange(s);
+      const minLength = customSearch.minLength || DEFAULT_MIN_SEARCH_LETTERS;
+      const trimmedLength = s.trim().length;
+      if (trimmedLength >= minLength || trimmedLength === 0) {
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current);
+        }
+        debounceRef.current = window.setTimeout(() => {
+          customSearch.onChange(s);
+          debounceRef.current = undefined;
+        }, customSearch.debounce || DEFAULT_DEBOUNCE_TIMING);
+      }
     }
+    handler.search(s);
   };
 
   const handleClickStickyBottom = () => {
@@ -222,7 +244,7 @@ const Dropdown = <T, SortT>({
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((v) => v.isIntersecting)) {
-        if (infinite && !infinite.isLoading) {
+        if (infinite && !infinite.isLoading && infinite.hasNextPage) {
           infinite.onScrollBottom();
         }
       }
@@ -267,25 +289,35 @@ const Dropdown = <T, SortT>({
           No list
         </MDSTypography>
       )}
-      {list.map((v) => (
-        <Item<ValueType<T>>
-          key={`dropItem_0_${v.value !== undefined ? v.value : v.label}`}
-          item={v}
-          indeterminate={indeterminate}
-          search={search}
-          isMultiple={isMultiple}
-          selectedValue={selectedValues}
-          is1DepthSingle={is1DepthSingle}
-          isInfiniteAll={isInfiniteAll}
-          onChange={onChange}
-          onClose={onClose}
-        />
-      ))}
+      {isSearchTooShort && (
+        <MDSTypography
+          variant="T14"
+          color="color/content/neutral/default/disabled"
+          style={{ height: '48px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
+        >
+          Search more than {customSearch?.minLength || DEFAULT_MIN_SEARCH_LETTERS} letters
+        </MDSTypography>
+      )}
+      {!isSearchTooShort &&
+        list.map((v) => (
+          <Item<ValueType<T>>
+            key={`dropItem_0_${v.value !== undefined ? v.value : v.label}`}
+            item={v}
+            indeterminate={indeterminate}
+            search={search}
+            isMultiple={isMultiple}
+            selectedValue={selectedValues}
+            is1DepthSingle={is1DepthSingle}
+            isInfiniteAll={isInfiniteAll}
+            onChange={onChange}
+            onClose={onClose}
+          />
+        ))}
       {infinite && (
         <>
-          {infinite.isLoading && (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '8px 0' }}>
-              <MDSLoadingIndicator size={24} />
+          {infinite.isLoading && !isSearchTooShort && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '48px' }}>
+              <MDSLoadingIndicator size={24} strokeWidth={2} />
             </div>
           )}
           <div ref={infiniteRef} style={{ height: '1px' }} />

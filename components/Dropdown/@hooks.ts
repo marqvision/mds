@@ -2,11 +2,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { InferType, ObjType, Props, SelectedType, SortType, ValueType } from './@types';
 import { flattenDropdown, getFilteredList, getValueFromList } from './@utils';
 
-export const useDropdown = <T>({ value, list, hasSort }: Pick<Props<T>, 'value' | 'list'> & { hasSort?: boolean }) => {
+export const useDropdown = <T>({
+  value,
+  list,
+  hasSort,
+  hasCustomSearch,
+}: Pick<Props<T>, 'value' | 'list'> & { hasSort?: boolean; hasCustomSearch?: boolean }) => {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortType | undefined>(hasSort ? 'asc' : undefined);
 
-  const filteredList = useMemo(() => getFilteredList(list, search, sort), [search, list, sort]);
+  const filteredList = useMemo(() => getFilteredList(list, hasCustomSearch ? '' : search, sort), [search, list, sort]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,7 +43,6 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
   const isMultiple = Array.isArray(value);
   const flatItems = flattenDropdown(list);
   const selectableValue = getValueFromList(list);
-  const hasList = list.length > 0;
   const is1DepthSingle = props.modules?.includes('1-depth-single');
 
   const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
@@ -81,7 +85,12 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
         temp,
         selectedValues.flatMap((v) => v.value),
         isSelected
-      ).map((v) => selectableValue.find((v2) => v2.value === v) as SelectedType<ValueType<T>>);
+      ).map(
+        (v) =>
+          (selectableValue.find((v2) => v2.value === v) || selectedValues.find((v2) => v2.value === v)) as SelectedType<
+            ValueType<T>
+          >
+      );
 
       setSelectedValues(adaptedValue);
       return;
@@ -135,25 +144,6 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
       setIndeterminate((ps) => ps.filter((v) => !newValues.some((v2) => v2.value === v)));
     }
   };
-
-  useEffect(() => {
-    if (hasList) {
-      const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
-      const flat = selectedValues.flatMap((v) => v.value);
-
-      const isSomeDiff = values.some((v) => !flat.includes(v)) || flat.some((v) => !values.includes(v));
-
-      if (isSomeDiff) {
-        setSelectedValues(
-          values.map((v) => ({
-            label: flatItems.find((item) => item.value === v)?.label || v,
-            value: v,
-          })) as SelectedType<ValueType<T>>[]
-        );
-      }
-    }
-    // intentional missing deps [flatItems, selectedValue]
-  }, [value, hasList, isMultiple]);
 
   useEffect(() => {
     if (_indeterminate) {

@@ -1,0 +1,2 @@
+export const DEFAULT_MIN_SEARCH_LETTERS = 2;
+export const DEFAULT_DEBOUNCE_TIMING = 300;

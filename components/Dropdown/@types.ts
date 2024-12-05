@@ -54,7 +54,7 @@ export type InfiniteModule = {
   hideSelectAll?: boolean;
   onScrollBottom: () => void;
   isLoading?: boolean;
-  hasNextPage: boolean;
+  hasNextPage?: boolean;
 };
 
 export type BottomButtonModule = {

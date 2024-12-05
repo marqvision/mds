@@ -260,9 +260,19 @@ const Popover = (
     const observer = new ResizeObserver(() => {
       setPosition();
     });
+    if (dialogRef.current) {
+      observer.observe(dialogRef.current);
+    }
+    return () => {
+      observer.disconnect();
+    };
+  }, [isOpen, dialogRef, setPosition]);
 
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      setPosition();
+    });
     observer.observe(document.body);
-
     return () => {
       observer.disconnect();
     };

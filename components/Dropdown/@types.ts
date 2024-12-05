@@ -31,8 +31,13 @@ export type ObjType<T> = T extends (infer U)[] ? DropdownItem<ValueType<U>>[] : 
 
 export type ModuleType = 'search' | 'sort' | 'infinite' | 'bottom-button' | 'custom-sub-label' | 'on-select';
 
+/**
+ * @property [minLength] default `2`
+ * */
 export type SearchModule = {
   type: 'search';
+  minLength?: number;
+  debounce?: number;
   onChange: (value: string) => void;
 };
 
@@ -49,6 +54,7 @@ export type InfiniteModule = {
   hideSelectAll?: boolean;
   onScrollBottom: () => void;
   isLoading?: boolean;
+  hasNextPage: boolean;
 };
 
 export type BottomButtonModule = {

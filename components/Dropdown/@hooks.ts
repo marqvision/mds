@@ -27,6 +27,7 @@ export const useDropdown = <T>({
     search,
     sort,
     filteredList,
+    searchedValues: getValueFromList(filteredList),
     handler: {
       search: setSearch,
       sort: setSort,

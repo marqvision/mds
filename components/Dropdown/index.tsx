@@ -29,7 +29,9 @@ const StyledSticky = styled.div`
   position: sticky;
   top: 0;
   padding: 8px;
-  box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
+  box-shadow:
+    0 1px 8px 0 #0000001f,
+    0 1px 2px 0 #0000000a;
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
   z-index: 1;
@@ -113,6 +115,7 @@ const Dropdown = <T, SortT>({
     search,
     sort,
     filteredList: list,
+    searchedValues,
     handler,
   } = useDropdown<T>({
     value,
@@ -129,8 +132,8 @@ const Dropdown = <T, SortT>({
     isMultiple && (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-      ? 'indeterminate'
-      : false;
+        ? 'indeterminate'
+        : false;
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
   const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
@@ -147,6 +150,7 @@ const Dropdown = <T, SortT>({
   const hideSelectAll = is1DepthSingle || !!infinite?.hideSelectAll;
 
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
+  const searchedCount = searchedValues.length;
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;
   const selectedCount = (isInfiniteAll ? allCount : selectedValues.length).toLocaleString();
 
@@ -229,8 +233,10 @@ const Dropdown = <T, SortT>({
         ],
         !isSelectedAll
       );
-    } else {
+    } else if (isSelectedAll) {
       onChange(selectableValues, !isSelectedAll);
+    } else {
+      onChange(searchedValues, !isSelectedAll);
     }
   };
 
@@ -272,7 +278,11 @@ const Dropdown = <T, SortT>({
               <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
                 {!hideSelectAll && isMultiple && <MDSCheckbox value={isSelectedAll} onChange={handleSelectAll} />}
                 <MDSTypography variant="T14" weight="medium">
-                  {isMultiple && selectedValues.length > 0 ? `Selected (${selectedCount})` : `All (${allCount})`}
+                  {isMultiple && selectedValues.length > 0
+                    ? `Selected (${selectedCount})`
+                    : search
+                      ? `Searched (${searchedCount})`
+                      : `All (${allCount})`}
                 </MDSTypography>
               </StyledSelectAll>
               {hasSort && sortEle}

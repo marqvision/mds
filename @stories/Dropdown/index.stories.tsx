@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { MDSChip, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../components';
+import { StatusList } from './@constants';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDropdown> = {
@@ -138,7 +139,7 @@ export const DropdownSingle: Story = {
         >
           {text}
         </MDSTypography>
-        <MDSDropdown {...props} label="Label" value={value} onChange={setValue} list={allList} />
+        <MDSDropdown {...props} label="Label" value={value} onChange={setValue} list={allList} onSelect={undefined} />
       </Wrapper>
     );
   },
@@ -186,6 +187,7 @@ export const DropdownMulti: Story = {
           }}
           list={allList}
           indeterminate={indeterminate}
+          onSelect={undefined}
         />
         <button onClick={reset}>reset</button>
       </Wrapper>
@@ -234,7 +236,31 @@ export const Dropdown1DepthSingle: Story = {
           &lt;MDSDropdown label="Label" value=&#123;list&#125; onChange=&#123;setList&#125; list=&#123;allList&#125;
           modules=['search', '1-depth-single'] /&gt;
         </MDSTypography>
-        <MDSDropdown {...props} label="Value" value={list} onChange={setList} list={allList} />
+        <MDSDropdown {...props} label="Value" value={list} onChange={setList} list={allList} onSelect={undefined} />
+      </Wrapper>
+    );
+  },
+};
+
+export const DropdownMulti2Depth: Story = {
+  args: {
+    modules: ['search'],
+  },
+  render: function Render(props) {
+    const [list, setList] = useState<number[]>([]);
+
+    return (
+      <Wrapper>
+        <MDSTypography>2depth multi dropdown</MDSTypography>
+        <MDSDropdown
+          {...props}
+          label="Value"
+          value={list}
+          onChange={setList}
+          list={Object.values(StatusList)}
+          modules={props.modules}
+          onSelect={undefined}
+        />
       </Wrapper>
     );
   },
@@ -314,6 +340,7 @@ export const DropdownMultiInfinite: Story = {
               onScrollBottom: handleMutate,
             },
           ]}
+          onSelect={undefined}
         />
       </Wrapper>
     );
@@ -364,6 +391,7 @@ export const DropdownMenu: Story = {
                 커스텀 버튼
               </MDSChip>
             )}
+            onSelect={undefined}
           />
         </div>
       </Wrapper>
@@ -407,6 +435,7 @@ export const WithChip: Story = {
               placeholder="Select"
             />
           )}
+          onSelect={undefined}
         />
       </Wrapper>
     );
@@ -456,7 +485,14 @@ export const OnSelect: Story = {
     return (
       <Wrapper>
         <MDSTypography>Limit: 3적용 / Value1 선택한 경우 Group disabled</MDSTypography>
-        <MDSDropdown label="OnSelectTest" value={list} list={allList} onChange={setList} onSelect={handleSelect} />
+        <MDSDropdown
+          label="OnSelectTest"
+          value={list}
+          list={allList}
+          modules={['search']}
+          onChange={setList}
+          onSelect={handleSelect}
+        />
       </Wrapper>
     );
   },

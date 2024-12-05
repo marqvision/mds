@@ -252,9 +252,10 @@ export const Item = <T,>(props: Props<T>) => {
                 !isMultiple && isSelected
                   ? 'color/content/primary/default/normal'
                   : item.isDisabled
-                  ? 'color/content/neutral/default/disabled'
-                  : undefined
+                    ? 'color/content/neutral/default/disabled'
+                    : undefined
               }
+              style={{ whiteSpace: 'pre-wrap' }}
             >
               {typeof item.label === 'string' ? <HighLightLabel searchText={search} label={item.label} /> : item.label}
             </MDSTypography>

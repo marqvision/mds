@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, MutableRefObject } from 'react';
 import { InferType, ObjType, Props, SelectedType, SortType, ValueType } from './@types';
 import { flattenDropdown, getFilteredList, getValueFromList } from './@utils';
 
@@ -35,15 +35,20 @@ export const useDropdown = <T>({
   };
 };
 
-export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAnchor' | 'width'>) => {
-  const { value, list, indeterminate: _indeterminate, onSelect } = props;
+export const useInitDropdown = <T, SortT>(
+  props: Omit<Props<T, SortT>, 'renderAnchor' | 'width'> & { closeRef: MutableRefObject<(() => void) | undefined> }
+) => {
+  const { value, list, indeterminate: _indeterminate, onSelect, closeRef } = props;
 
   const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>([]);
   const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>([]);
 
+  const lastValueRef = useRef(value);
+
   const isMultiple = Array.isArray(value);
   const flatItems = flattenDropdown(list);
   const selectableValue = getValueFromList(list);
+  const hasList = list.length > 0;
   const is1DepthSingle = props.modules?.includes('1-depth-single');
 
   const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
@@ -70,7 +75,9 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
 
   const handleClose = () => {
     if (isMultiple) {
-      props.onChange?.(selectedValues.flatMap((v) => v.value) as InferType<T>, indeterminate as InferType<T>);
+      const newValue = selectedValues.flatMap((v) => v.value) as InferType<T>;
+      props.onChange?.(newValue, indeterminate as InferType<T>);
+      lastValueRef.current = newValue as T;
     }
   };
 
@@ -116,8 +123,10 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
       close();
       if (forceSingle) {
         props.onChange?.(newValues.map((v) => v.value) as InferType<T>);
+        lastValueRef.current = newValues.map((v) => v.value) as T;
       } else {
         props.onChange?.(newValues[0].value as InferType<T>);
+        lastValueRef.current = newValues[0].value as T;
       }
     } else {
       // multi select
@@ -145,6 +154,31 @@ export const useInitDropdown = <T, SortT>(props: Omit<Props<T, SortT>, 'renderAn
       setIndeterminate((ps) => ps.filter((v) => !newValues.some((v2) => v2.value === v)));
     }
   };
+
+  useEffect(() => {
+    if (hasList) {
+      const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
+      const lastValue = (
+        Array.isArray(lastValueRef.current) ? lastValueRef.current : lastValueRef.current ? [lastValueRef.current] : []
+      ) as ValueType<T>[];
+
+      const isSomeDiff = values.some((v) => !lastValue.includes(v)) || lastValue.some((v) => !values.includes(v));
+
+      if (isSomeDiff) {
+        setSelectedValues(
+          values.map((v) => ({
+            label: flatItems.find((item) => item.value === v)?.label || v,
+            value: v,
+          })) as SelectedType<ValueType<T>>[]
+        );
+        lastValueRef.current = value;
+        setTimeout(() => {
+          closeRef.current?.();
+        }, 0);
+      }
+    }
+    // intentional missing deps [flatItems, selectedValue]
+  }, [JSON.stringify(value), hasList, isMultiple]);
 
   useEffect(() => {
     if (_indeterminate) {

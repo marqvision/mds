@@ -358,9 +358,12 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
 
   const { value, list, isLoading, isDisabled } = restProps;
 
-  const { selectedValues, selectableValue, indeterminate, labels, returnObj, handler } = useInitDropdown<T, SortT>(
-    restProps
-  );
+  const closeRef = useRef<() => void>();
+
+  const { selectedValues, selectableValue, indeterminate, labels, returnObj, handler } = useInitDropdown<T, SortT>({
+    ...restProps,
+    closeRef,
+  });
 
   const [fitWidth, setFitWidth] = useState<number>();
 
@@ -390,19 +393,22 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
       width={fitWidth || width || 'auto'}
       onClose={handler.close}
     >
-      {({ close }) => (
-        <Dropdown<T, SortT>
-          {...restProps}
-          selectedValues={selectedValues}
-          indeterminate={indeterminate}
-          selectableValues={selectableValue}
-          onChange={(v: SelectedType<ValueType<T>>[], isSelected, forceClose?: boolean) =>
-            handler.change(v, isSelected, close, forceClose)
-          }
-          onClose={close}
-          onMount={handleResize}
-        />
-      )}
+      {({ close }) => {
+        closeRef.current = close;
+        return (
+          <Dropdown<T, SortT>
+            {...restProps}
+            selectedValues={selectedValues}
+            indeterminate={indeterminate}
+            selectableValues={selectableValue}
+            onChange={(v: SelectedType<ValueType<T>>[], isSelected, forceClose?: boolean) =>
+              handler.change(v, isSelected, close, forceClose)
+            }
+            onClose={close}
+            onMount={handleResize}
+          />
+        );
+      }}
     </MDSPopover>
   );
 };

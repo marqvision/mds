@@ -163,18 +163,29 @@ export const useInitDropdown = <T, SortT>(
       ) as ValueType<T>[];
 
       const isSomeDiff = values.some((v) => !lastValue.includes(v)) || lastValue.some((v) => !values.includes(v));
+      const isSomeAdded = lastValue.every((v) => values.includes(v)) && values.length > lastValue.length;
 
       if (isSomeDiff) {
-        setSelectedValues(
-          values.map((v) => ({
-            label: flatItems.find((item) => item.value === v)?.label || v,
-            value: v,
-          })) as SelectedType<ValueType<T>>[]
-        );
+        if (isSomeAdded) {
+          const addedItems = values
+            .filter((v) => !lastValue.includes(v))
+            .map((v) => ({
+              label: flatItems.find((item) => item.value === v)?.label || v,
+              value: v,
+            })) as SelectedType<ValueType<T>>[];
+          setSelectedValues((ps) => [...ps, ...addedItems]);
+        } else {
+          setSelectedValues(
+            values.map((v) => ({
+              label: flatItems.find((item) => item.value === v)?.label || v,
+              value: v,
+            })) as SelectedType<ValueType<T>>[]
+          );
+          setTimeout(() => {
+            closeRef.current?.();
+          }, 0);
+        }
         lastValueRef.current = value;
-        setTimeout(() => {
-          closeRef.current?.();
-        }, 0);
       }
     }
     // intentional missing deps [flatItems, selectedValue]

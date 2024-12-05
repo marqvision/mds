@@ -8,6 +8,8 @@ export const Divider = styled.hr<DividerProps>`
   top: -1px;
   right: -1px;
   width: 1px;
+  border-style: solid;
+  border-width: 1px 0;
 
   ${({ size, variant, color }) => {
     const paddingTop = ChipTheme.size[size].padding.split(' ')[0];

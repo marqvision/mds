@@ -133,6 +133,28 @@ export const MultiLineTextField: Story = {
   },
 };
 
+export const MultiLineExpandToFit: Story = {
+  args: {
+    placeholder: 'Enter value',
+    custom: {
+      multiline: {
+        expandToFit: {
+          maxHeight: '200px',
+        },
+      },
+    },
+  },
+  render: function Render(props) {
+    const [value, setValue] = useState<string>('');
+
+    return (
+      <Wrapper>
+        <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} />
+      </Wrapper>
+    );
+  },
+};
+
 export const Search: Story = {
   args: {
     placeholder: 'Enter value',

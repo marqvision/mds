@@ -58,6 +58,12 @@ export type TextFieldCustom = {
   };
   flatLeft?: boolean;
   flatRight?: boolean;
+  multiline?: {
+    expandToFit?: {
+      defaultHeight?: string | number;
+      maxHeight?: string | number;
+    };
+  };
 };
 
 /**

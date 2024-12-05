@@ -43,7 +43,7 @@ export const useInitDropdown = <T, SortT>(
   const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>([]);
   const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>([]);
 
-  const lastValueRef = useRef(value);
+  const lastValueRef = useRef<T>();
 
   const isMultiple = Array.isArray(value);
   const flatItems = flattenDropdown(list);

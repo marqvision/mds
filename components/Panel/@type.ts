@@ -1,0 +1,37 @@
+import { CSSProperties, ReactNode } from 'react';
+
+export type MDSPanelProps = {
+  width?: number | string;
+  children: ReactNode | ReactNode[];
+} & (DimmedPanelProps | UnDimmedPanelProps);
+
+export type MDSPanelHeaderProps = {
+  children: ReactNode;
+  onClose?: () => void;
+  style?: CSSProperties;
+};
+
+export type MDSPanelBodyProps = {
+  children: ReactNode | ReactNode[];
+  style?: CSSProperties;
+};
+
+export type MDSPanelActionProps = {
+  justifyContent?: 'space-between' | 'flex-end';
+  /* body 스크롤에 따라 감춰지는 shadow를 항상 보이도록 */
+  persistentShadow?: boolean;
+  children: ReactNode | ReactNode[];
+  style?: CSSProperties;
+};
+
+type DimmedPanelProps = {
+  isDimmed?: true;
+  isOpen: boolean;
+  onClose?: () => void;
+};
+
+type UnDimmedPanelProps = {
+  isDimmed: false;
+  isOpen?: never;
+  onClose?: never;
+};

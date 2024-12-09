@@ -50,11 +50,12 @@ const Wrapper = styled.div`
 
 type Props = React.PropsWithChildren<{
   isOpen: boolean;
+  style?: React.CSSProperties;
   onClose?: () => void;
 }>;
 
 export const MDSDimmed = (props: Props) => {
-  const { isOpen: _isOpen, onClose, children } = props;
+  const { isOpen: _isOpen, style, onClose, children } = props;
 
   //@morgan: mui portal 의 createPortal 타이밍에 맞추기 위해 동일하게 mountNode state 추가함
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
@@ -103,8 +104,9 @@ export const MDSDimmed = (props: Props) => {
           onMouseDown={stopPropagation}
           onMouseUp={stopPropagation}
           onClick={handleClose}
+          style={style}
         >
-          {_isOpen && children}
+          {(_isOpen || mountNode) && children}
         </Wrapper>,
         mountNode
       )

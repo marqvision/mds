@@ -9,6 +9,9 @@ import { MDSTypography } from '../Typography';
 import { MDSPanelActionProps, MDSPanelBodyProps, MDSPanelHeaderProps, MDSPanelProps } from './@type';
 import { panelAtom } from './@atom';
 
+// todo-@matthew 추후 공통 transition 으로 변경
+const transition = '300ms ease';
+
 const slideIn = keyframes`
   from {
     transform: translateX(50px);
@@ -33,10 +36,10 @@ const StyledWrapper = styled.div`
   height: 100%;
   background: ${({ theme }) => theme.color.bg.fill.neutral.default.normal};
   &.isIn {
-    animation: ${slideIn} 300ms ease forwards;
+    animation: ${slideIn} ${transition} forwards;
   }
   &.isOut {
-    animation: ${slideOut} 300ms ease forwards;
+    animation: ${slideOut} ${transition} forwards;
   }
 `;
 
@@ -76,19 +79,33 @@ const StyledActions = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
-  transition: box-shadow 300ms ease;
+  transition: box-shadow ${transition};
   box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
+`;
+
+const StyledSplitPanel = styled.div`
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: flex-basis ${transition};
+  border-radius: 16px 16px 0 0;
+  & > div {
+    height: 100%;
+    overflow: auto;
+  }
 `;
 
 /**
  * @param props.isDimmed (default: `true`)
  * - `true`: dimmed 위에 패널이 그려짐
  * - `false`: dimmed 없이 패널이 그려짐
+ * @param props.width
+ * - `isDimmed: true`: default: 540px
+ * - `isDimmed: false`: default: 50%
  */
 const Wrapper = (props: MDSPanelProps) => {
-  const { isDimmed = true, isOpen = false, children, width: _width, onClose } = props;
+  const { isDimmed = true, isOpen = false, children, width, onClose } = props;
 
-  const width = isDimmed ? _width || '540px' : 'auto';
+  const contentWidth = isDimmed ? width || '540px' : 'auto';
 
   const wrapperElement = (
     <Provider>
@@ -97,38 +114,12 @@ const Wrapper = (props: MDSPanelProps) => {
           isIn: isDimmed && isOpen,
           isOut: isDimmed && !isOpen,
         })}
-        style={{ width }}
+        style={{ width: contentWidth }}
       >
         {children}
       </StyledWrapper>
     </Provider>
   );
-
-  const clearBodyStyle = () => {
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
-  };
-
-  useEffect(() => {
-    if (!isDimmed) {
-      return;
-    }
-    const scrollbarWidth = window.innerWidth - window.document.body.offsetWidth;
-
-    const panelLength = document.querySelectorAll('.mds-panel').length;
-    if (isOpen && panelLength === 0) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    } else if (!isOpen && panelLength === 1) {
-      clearBodyStyle();
-    }
-  }, [isOpen, isDimmed]);
-
-  useEffect(() => {
-    return () => {
-      clearBodyStyle();
-    };
-  }, []);
 
   if (isDimmed)
     return (
@@ -137,7 +128,19 @@ const Wrapper = (props: MDSPanelProps) => {
       </MDSDimmed>
     );
 
-  return wrapperElement;
+  const outerBoxWidth = typeof width === 'string' && /^\d+$/.test(width) ? parseInt(width) : width || '50%';
+  const innerBoxWidth = typeof width === 'number' || (width && /\d+px/.test(width)) ? width : '100%';
+
+  return (
+    <StyledSplitPanel
+      style={{
+        flexBasis: isOpen ? outerBoxWidth : 0,
+        marginLeft: isOpen ? '4px' : 0,
+      }}
+    >
+      <div style={{ width: innerBoxWidth }}>{wrapperElement}</div>
+    </StyledSplitPanel>
+  );
 };
 
 const Header = (props: MDSPanelHeaderProps) => {

@@ -1,4 +1,4 @@
-import React, { createContext, useLayoutEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSDimmed } from '../Dimmed';
 import { Header } from './Header';
@@ -32,10 +32,6 @@ const Wrapper = (props: ModalWrapperProps) => {
   const handleScrollContent = (event: React.UIEvent<HTMLElement>) => {
     setIsScrollTop(!event.currentTarget.scrollTop);
   };
-
-  useLayoutEffect(() => {
-    document.body.style.overflowY = isOpen ? 'hidden' : '';
-  }, [isOpen]);
 
   return (
     <MDSDimmed isOpen={isOpen} onClose={onClose}>

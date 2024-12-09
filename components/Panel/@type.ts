@@ -1,7 +1,13 @@
 import { CSSProperties, ReactNode } from 'react';
 
+/**
+ * @prop width
+ * - `isDimmed true` default: 540px
+ * - `isDimmed false` default: 50%
+ * */
 export type MDSPanelProps = {
   width?: number | string;
+  isOpen: boolean;
   children: ReactNode | ReactNode[];
 } & (DimmedPanelProps | UnDimmedPanelProps);
 
@@ -26,12 +32,10 @@ export type MDSPanelActionProps = {
 
 type DimmedPanelProps = {
   isDimmed?: true;
-  isOpen: boolean;
   onClose?: () => void;
 };
 
 type UnDimmedPanelProps = {
   isDimmed: false;
-  isOpen?: never;
   onClose?: never;
 };

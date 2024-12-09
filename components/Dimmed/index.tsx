@@ -54,6 +54,11 @@ type Props = React.PropsWithChildren<{
   onClose?: () => void;
 }>;
 
+const clearBodyStyle = () => {
+  document.body.style.overflow = '';
+  document.body.style.paddingRight = '';
+};
+
 export const MDSDimmed = (props: Props) => {
   const { isOpen: _isOpen, style, onClose, children } = props;
 
@@ -95,6 +100,25 @@ export const MDSDimmed = (props: Props) => {
       setIsOpen(true);
     }
   }, [mountNode]);
+
+  useEffect(() => {
+    const scrollbarWidth = window.innerWidth - window.document.body.offsetWidth;
+
+    const panelLength = document.querySelectorAll('.mds-dimmed').length;
+
+    if (_isOpen && panelLength === 0) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    } else if (!_isOpen && panelLength === 1) {
+      clearBodyStyle();
+    }
+  }, [_isOpen]);
+
+  useEffect(() => {
+    return () => {
+      clearBodyStyle();
+    };
+  }, []);
 
   return mountNode
     ? createPortal(

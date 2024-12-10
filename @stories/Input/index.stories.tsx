@@ -178,7 +178,7 @@ export const Search: Story = {
       <Wrapper>
         <div style={{ display: 'flex' }}>
           <MDSInput
-            type="select"
+            variant="select"
             value={type}
             list={list}
             custom={{
@@ -200,7 +200,7 @@ export const Search: Story = {
 
 export const Select: Story = {
   args: {
-    type: 'select',
+    variant: 'select',
     guide: ['Guide text1', 'Guide text2'],
   },
   render: function Render(props) {
@@ -221,7 +221,7 @@ export const Select: Story = {
 
 export const SelectWithChip: Story = {
   args: {
-    type: 'select',
+    variant: 'select',
     custom: {
       withChip: true,
     },

@@ -134,10 +134,10 @@ const Popover = (
     const contentWidth = dialogRef.current?.children[0]?.clientWidth || 0;
 
     const reposition = (value: Coordinates) => {
-      const { clientWidth, clientHeight } = window.document.body;
+      const { innerWidth, innerHeight } = window;
 
-      const x = Math.min(Math.max(value.x, 0), clientWidth - dialogWidth);
-      const y = Math.min(Math.max(value.y, 0), clientHeight - dialogHeight);
+      const x = Math.min(Math.max(value.x, 0), innerWidth - dialogWidth);
+      const y = Math.min(Math.max(value.y, 0), innerHeight - dialogHeight);
 
       return {
         x: x > 0 ? x : value.x,

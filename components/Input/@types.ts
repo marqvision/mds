@@ -86,7 +86,7 @@ type SelectCustom<T> = {
  */
 export type TextFieldProps = {
   /** @default textField */
-  type?: 'textField';
+  variant?: 'textField';
   inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'size'>;
   /**
    * @description The custom object, which can be a TextField or a Select
@@ -112,7 +112,7 @@ export type ElementType<T> = T extends (infer U)[] ? U : T;
  * @property {SelectCustom} props.custom - Select 추가 모듈
  */
 export type SelectProps<T = unknown> = {
-  type: 'select';
+  variant: 'select';
   inputProps?: never;
   custom?: SelectCustom<T>;
   value: T;

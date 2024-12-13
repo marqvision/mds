@@ -26,7 +26,7 @@ const StyledWrapper = styled.div<{ size: Size; fullWidth: boolean }>`
  * */
 export const MDSInput = <T,>(props: Props<T>) => {
   const {
-    type = 'textField',
+    variant = 'textField',
     value,
     size = 'medium',
     inputProps,
@@ -130,7 +130,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
       }}
     >
       {label && <Label size={size} label={label} isDisabled={isDisabled} />}
-      {type === 'textField' && (
+      {variant === 'textField' && (
         <TextField
           {...({
             value,
@@ -151,7 +151,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
           onResize={handleResize}
         />
       )}
-      {type === 'select' && (
+      {variant === 'select' && (
         <Select<T>
           {...({
             value,
@@ -166,7 +166,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
             style: outlineStyle,
             onChange: handleChange,
             onClick: handleClick,
-          } as Omit<SelectProps<T>, 'type'>)}
+          } as Omit<SelectProps<T>, 'variant'>)}
         />
       )}
       {guideList && (

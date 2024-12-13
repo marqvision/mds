@@ -48,7 +48,7 @@ const Placeholder = styled(MDSTypography)`
   white-space: pre-wrap;
 `;
 
-type Props<T> = CommonProps & Omit<SelectProps<T>, 'type'>;
+type Props<T> = CommonProps & Omit<SelectProps<T>, 'variant'>;
 
 export const Select = <T,>(props: Props<T>) => {
   const {

@@ -42,12 +42,13 @@ const StyledLabel = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  & > *:not(p) {
+  & > * {
     flex-shrink: 0;
   }
 `;
 
 const StyledLabelWrap = styled.div`
+  flex-shrink: 1;
   & .highlight {
     color: ${({ theme }) => theme._raw_color.yellow600};
   }
@@ -66,6 +67,9 @@ const StyledExpandIcon = styled.button<{ isDisabled?: boolean }>`
   background: transparent;
   cursor: ${({ isDisabled }) => (isDisabled ? undefined : 'pointer')};
   transition: background-color 225ms ease;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
   &:hover {
     background-color: ${({ theme, isDisabled }) =>
       !isDisabled ? theme.color.content.inverse.default.hover : undefined};
@@ -252,8 +256,8 @@ export const Item = <T,>(props: Props<T>) => {
                 !isMultiple && isSelected
                   ? 'color/content/primary/default/normal'
                   : item.isDisabled
-                    ? 'color/content/neutral/default/disabled'
-                    : undefined
+                  ? 'color/content/neutral/default/disabled'
+                  : undefined
               }
               style={{ whiteSpace: 'pre-wrap' }}
             >

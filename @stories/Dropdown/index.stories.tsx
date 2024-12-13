@@ -27,7 +27,7 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
         display: 'flex',
         gap: '12px',
         flexDirection: 'column',
-        height: '150vh',
+        height: '100vh',
       }}
     >
       {children}
@@ -430,7 +430,7 @@ export const WithChip: Story = {
               onChange={setList}
               value={value}
               list={list}
-              type="select"
+              variant="select"
               custom={{ withChip: true }}
               placeholder="Select"
             />
@@ -468,15 +468,15 @@ export const OnSelect: Story = {
 
       let all = isSelected ? [...newValue, ...selectedValue] : selectedValue.filter((v) => !newValue.includes(v));
 
+      if (isSelected && all.length > LIMIT) {
+        return [...selectedValue, ...newValue.slice(0, selectedValue.length - LIMIT)];
+      }
+
       if (all.includes(1)) {
         setIsDisabled(true);
         all = all.filter((v) => ![6, 7].includes(v));
       } else {
         setIsDisabled(false);
-      }
-
-      if (isSelected && all.length > LIMIT) {
-        return [...selectedValue, ...newValue.slice(0, selectedValue.length - LIMIT)];
       }
 
       return all;

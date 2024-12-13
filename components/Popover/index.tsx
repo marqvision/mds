@@ -206,21 +206,18 @@ const Popover = (
 
   const handleScroll = useCallback(() => {
     setPosition();
-    const y = coordinatesRef.current?.y || 0;
 
-    const offsetTop = (scrollOffsetRef.current as HTMLElement)?.offsetTop || 0;
+    if (anchorRef.current) {
+      const top = anchorRef.current.getBoundingClientRect().top;
+      const anchorHeight = anchorRef.current.clientHeight;
 
-    if (y < offsetTop) {
-      closeRef.current();
-    } else {
-      const bottom = y + (dialogRef.current?.clientHeight || 0);
-      const max =
-        offsetTop + ((scrollOffsetRef.current as HTMLElement)?.clientHeight || window.document.body.offsetHeight);
-      if (bottom >= max) {
+      if (top < anchorHeight * -1) {
+        closeRef.current();
+      } else if (top > window.innerHeight) {
         closeRef.current();
       }
     }
-  }, [setPosition, dialogRef]);
+  }, [setPosition, anchorRef]);
 
   const children = isLoading ? (
     <div
@@ -303,10 +300,13 @@ const Popover = (
     } else {
       scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
     }
+  }, [handleScroll, isOpen, setPosition, hasDim, anchorRef, dialogRef, focusRef, scrollOffsetRef]);
+
+  useEffect(() => {
     return () => {
       scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
     };
-  }, [handleScroll, isOpen, setPosition, hasDim, anchorRef, dialogRef, focusRef, scrollOffsetRef]);
+  }, [handleScroll]);
 
   useEffect(() => {
     closeRef.current = onClosePopover;

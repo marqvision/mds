@@ -180,6 +180,7 @@ export const MDSIcon = {
   TrendingDown: createIcon(Symbols.TrendingDown),
   Web: createIcon(Symbols.Web),
   Domain: createIcon(Symbols.Domain),
+  Rocket: createIcon(Symbols.Rocket),
 
   // editor
   Bold: createIcon(Editor.Bold),

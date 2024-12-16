@@ -15,3 +15,4 @@ export * from './Image';
 export * from './Dropdown';
 export * from './LoadingIndicator';
 export * from './Panel';
+export * from './Tooltip';

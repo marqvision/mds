@@ -1,7 +1,7 @@
 import { MouseEvent, MutableRefObject, ReactElement, CSSProperties } from 'react';
 
 type PopoverTrigger = 'click' | 'hover';
-type PopoverPosition =
+export type PopoverPosition =
   | 'bottom-left'
   | 'bottom-right'
   | 'bottom-center'
@@ -63,6 +63,7 @@ export type Props = {
    */
   children: ((handler: { close: () => void }) => ReactElement | ReactElement[]) | ReactElement | ReactElement[];
   onClose?: () => void;
+  onVisibleChange?: (isOpen: boolean) => void;
 } & (ClickPropsDimmed | ClickPropsNoDimmed);
 
 export type StyleProps = {
@@ -79,4 +80,5 @@ export type StyleProps = {
    */
   padding?: string | number;
   style?: CSSProperties;
+  margin?: number;
 };

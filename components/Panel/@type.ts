@@ -9,6 +9,7 @@ export type MDSPanelProps = {
   width?: number | string;
   isOpen: boolean;
   children: ReactNode | ReactNode[];
+  style?: CSSProperties;
 } & (DimmedPanelProps | UnDimmedPanelProps);
 
 export type MDSPanelHeaderProps = {

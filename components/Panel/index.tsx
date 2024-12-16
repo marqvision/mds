@@ -103,7 +103,7 @@ const StyledSplitPanel = styled.div`
  * - `isDimmed: false`: default: 50%
  */
 const Wrapper = (props: MDSPanelProps) => {
-  const { isDimmed = true, isOpen = false, children, width, onClose } = props;
+  const { isDimmed = true, isOpen = false, style, children, width, onClose } = props;
 
   const contentWidth = isDimmed ? width || '540px' : 'auto';
 
@@ -136,6 +136,7 @@ const Wrapper = (props: MDSPanelProps) => {
       style={{
         flexBasis: isOpen ? outerBoxWidth : 0,
         marginLeft: isOpen ? '4px' : 0,
+        ...style,
       }}
     >
       <div style={{ width: innerBoxWidth }}>{wrapperElement}</div>

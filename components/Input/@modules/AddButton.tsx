@@ -15,7 +15,7 @@ const StyledAddButton = styled.button<{ size: Size; isError?: boolean }>`
     disabled
       ? theme.color.button[isError ? 'error-disabled' : 'disabled']
       : theme.color.button[isError ? 'error' : 'normal']};
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 8px 8px 0;
   &:not(:disabled) {
     cursor: pointer;
   }

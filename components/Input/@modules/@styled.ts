@@ -17,7 +17,7 @@ export const StyledOutline = styled.div<{
   gap: 4px;
   width: 100%;
   border-radius: ${({ flatLeft, flatRight }) =>
-    `${flatLeft ? 0 : '4px'} ${flatRight ? 0 : '4px'} ${flatRight ? 0 : '4px'} ${flatLeft ? 0 : '4px'}`};
+    `${flatLeft ? 0 : '8px'} ${flatRight ? 0 : '8px'} ${flatRight ? 0 : '8px'} ${flatLeft ? 0 : '8px'}`};
   border: ${({ isError }) => `1px solid ${theme.color.border[isError ? 'error' : 'normal']}`};
   ${({ customSize }) => ({
     padding: `${theme.size[customSize].paddingY} ${theme.size[customSize].paddingX}`,
@@ -28,7 +28,7 @@ export const StyledOutline = styled.div<{
     disabled || readOnly ? theme.color.bg.disabled : theme.color.bg.normal};
   &:has(input:focus, textarea:focus, button:focus) {
     border-color: ${({ isError }) => theme.color.border[isError ? 'error' : 'active']};
-    border-radius: ${({ flatRight }) => (flatRight === 'add' ? '4px 0 0 4px' : `4px`)};
+    border-radius: ${({ flatRight }) => (flatRight === 'add' ? '8px 0 0 8px' : `8px`)};
     position: relative;
     z-index: 1;
   }
@@ -58,7 +58,7 @@ export const StyledBaseLabel = styled.label<{ size: Size; isError?: boolean }>`
   min-height: ${({ size }) => theme.size[size].height};
   position: relative;
   transition: outline ${theme.transitionTiming} ease;
-  border-radius: 4px;
+  border-radius: 8px;
   &:focus-within {
     outline: ${({ isError }) =>
       `3px solid ${isError ? theme.color.border['error-focus-effect'] : theme.color.border['focus-effect']}`};

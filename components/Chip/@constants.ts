@@ -22,10 +22,10 @@ export const token = {
     xl: '8px',
   },
   radius: {
-    sm: '13px',
-    md: '16px',
-    lg: '19px',
-    xl: '22px',
+    sm: '8px',
+    md: '8px',
+    lg: '8px',
+    xl: '8px',
   },
   minSize: {
     sm: '26px',

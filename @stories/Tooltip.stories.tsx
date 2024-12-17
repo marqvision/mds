@@ -61,29 +61,33 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
 export const Preview: Story = {
   render: (args) => (
     <Wrapper>
-      <div style={{ display: 'flex', gap: '16px' }}>
+      <div style={{ height: '300px' }}></div>
+      <div>
         <MDSTooltip {...args}>
           <MDSChip variant="fill" color="yellow" size="medium">
             Default
           </MDSChip>
         </MDSTooltip>
+      </div>
+      <MDSTypography style={{ marginTop: '20px' }}>Layout test</MDSTypography>
+      <div style={{ display: 'flex', gap: '16px', width: '80%' }}>
         <MDSTooltip {...args} title={`${LONG_TEXT} ${LONG_TEXT} ${LONG_TEXT}`}>
           <MDSChip variant="fill" color="yellow" size="medium">
             Long text
           </MDSChip>
         </MDSTooltip>
-        <MDSTooltip position="right-center" title={LONG_TEXT}>
-          <MDSChip variant="fill" color="green" size="medium">
+        <MDSTooltip position="right-center" title={LONG_TEXT} anchorStyle={{ flex: 1 }}>
+          <MDSChip variant="fill" color="green" size="medium" width="fill">
             Anchor right center
           </MDSChip>
         </MDSTooltip>
         <MDSTooltip position="left-bottom" title={LONG_TEXT}>
-          <MDSChip variant="fill" color="green" size="medium">
+          <MDSChip variant="fill" color="green" size="large">
             Anchor left bottom
           </MDSChip>
         </MDSTooltip>
         <MDSTooltip title={LONG_TEXT} size="small">
-          <MDSChip variant="fill" color="red" size="medium">
+          <MDSChip variant="fill" color="red" size="small">
             Small size
           </MDSChip>
         </MDSTooltip>
@@ -96,7 +100,7 @@ export const WithoutChildren: Story = {
   render: (args) => (
     <Wrapper>
       <div style={{ display: 'flex', gap: '4px' }}>
-        <MDSTypography>children 없으면 Info 아이콘(16px) 노출 기본</MDSTypography>
+        <MDSTypography>children 없으면 Help border 아이콘(16px, color: second) 노출 기본</MDSTypography>
         <MDSTooltip {...args} />
       </div>
     </Wrapper>

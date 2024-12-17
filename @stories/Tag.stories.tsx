@@ -126,13 +126,14 @@ export const ColoredIcon: Story = {
 };
 
 export const XSmallSize: Story = {
-  render: (_) => (
+  args: {
+    size: 'x-small',
+  },
+  render: (props) => (
     <Wrapper>
       <MDSTypography>x-small 사이즈는 startIcon, endIcon 대신 icon 을 전달해 중앙에 출력합니다.</MDSTypography>
-      <MDSTypography>children 으로 text 를 전달하면 첫번째 글자만 출력됩니다.</MDSTypography>
-      <MDSTag size="x-small" variant="border" color="blue">
-        Tag
-      </MDSTag>
+      <MDSTag {...props}>A</MDSTag>
+      <MDSTag {...props}>Tag</MDSTag>
       <MDSTag size="x-small" variant="border" color="blue" icon={<MDSIcon.Flag variant="outline" />} />
       <MDSTag
         size="x-small"

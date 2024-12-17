@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { MDSTypography } from '../Typography';
 import { theme as TagTheme } from './@constants';
 import { IconProps, StyledTagProps, TagProps } from './@types';
-import { getColor, getNodeText } from './@utils';
+import { getColor } from './@utils';
 
 export type MDSTagProps = TagProps;
 
@@ -34,7 +34,7 @@ const Tag = styled.button<StyledTagProps>`
         size === 'x-small'
           ? `
         height: ${TagTheme.size[size].minHeight}; 
-        aspect-ratio: 1; 
+        min-width: ${TagTheme.size[size].minHeight};
         overflow: hidden;
       `
           : ''
@@ -123,11 +123,6 @@ const Icon = (props: IconProps) => {
 export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
   const { children: label, size, icon, color, variant, startIcon, endIcon, isDisabled, onClick, ...restProps } = props;
 
-  const displayLabel =
-    size === 'x-small'
-      ? getNodeText(label)[0] // x-small 사이즈 일때는 첫번째 한글자만 출력
-      : label;
-
   return (
     <Tag
       size={size}
@@ -141,8 +136,8 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
     >
       {startIcon && <Icon size={size} icon={startIcon} />}
 
-      <MDSTypography variant={TagTheme.size[size].label} weight="medium" >
-        {displayLabel}
+      <MDSTypography variant={TagTheme.size[size].label} weight="medium">
+        {label}
       </MDSTypography>
 
       {icon && <Icon size={size} icon={icon} />}

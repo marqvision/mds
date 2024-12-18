@@ -14,6 +14,7 @@ const StyledChildren = styled.div<{ positionStyle: string }>`
   display: flex;
   align-items: center;
   align-self: center;
+  width: fit-content;
   &:after {
     opacity: 0;
     transition: opacity 100ms ease-out;

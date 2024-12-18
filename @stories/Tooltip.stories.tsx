@@ -140,3 +140,36 @@ export const CustomTooltipContents: Story = {
     );
   },
 };
+
+export const CustomWidth: Story = {
+  args: {
+    width: '320px',
+    position: 'bottom-center',
+    size: 'medium',
+  },
+  render: (args) => {
+    const ele = (
+      <div style={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}>
+        <MDSTypography color="color/content/on_default_color">
+          {[...Array(5)].map(() => args.title).join(', ')}
+        </MDSTypography>
+        <MDSIcon.ArrowRight
+          variant="outline"
+          size={24}
+          color="color/content/on_default_color"
+          style={{ flexShrink: 0 }}
+        />
+      </div>
+    );
+
+    return (
+      <Wrapper>
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <MDSTooltip {...args} title={ele}>
+            <MDSTypography style={{ textDecoration: 'underline' }}>width를 고정하는 케이스</MDSTypography>
+          </MDSTooltip>
+        </div>
+      </Wrapper>
+    );
+  },
+};

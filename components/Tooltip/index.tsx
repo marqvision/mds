@@ -32,7 +32,7 @@ const StyledIcon = styled(MDSIcon.Info)`
 `;
 
 export const MDSTooltip = (props: MDSTooltipProps) => {
-  const { children: _children, title, size = 'medium', position = 'top-center', style } = props;
+  const { children: _children, title, size = 'medium', position = 'top-center', width, style } = props;
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -65,7 +65,8 @@ export const MDSTooltip = (props: MDSTooltipProps) => {
       style={{
         backgroundColor: MDSThemeValue.color.bg.surface.inverse.light,
         borderRadius: '4px',
-        maxWidth: Theme.size[size].maxWidth,
+        maxWidth: width || Theme.size[size].maxWidth,
+        width,
         padding: Theme.size[size].padding,
         maxHeight: 'unset',
         ...style,

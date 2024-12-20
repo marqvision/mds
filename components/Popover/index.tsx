@@ -25,9 +25,10 @@ const fadeOut = keyframes`
 `;
 
 const MIN_PADDING = 4;
+const TRANSITION = '300ms ease-out';
 
 const Dialog = styled.dialog<{ margin?: number }>`
-  animation: ${fadeOut} 0.3s ease-out forwards;
+  animation: ${fadeOut} ${TRANSITION} forwards;
   border: none;
   padding: ${({ margin }) => (margin === undefined ? MIN_PADDING : margin)}px;
   margin: 0;
@@ -43,7 +44,7 @@ const Dialog = styled.dialog<{ margin?: number }>`
           zIndex: 1300,
         }
       : undefined}
-  transition: display 0.3s allow-discrete, overlay 0.3s allow-discrete, opacity 0.3s;
+  transition: display 0.3s allow-discrete, opacity ${TRANSITION};
   &[open] {
     ${({ as }) =>
       as === 'div'
@@ -51,7 +52,7 @@ const Dialog = styled.dialog<{ margin?: number }>`
             display: 'block',
           }
         : undefined}
-    animation: ${fadeIn} 0.3s ease-out forwards;
+    animation: ${fadeIn} ${TRANSITION} forwards;
     @starting-style {
       opacity: 0;
     }

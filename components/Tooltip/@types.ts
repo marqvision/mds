@@ -7,6 +7,7 @@ export type MDSTooltipProps = {
   title: ReactNode;
   size?: 'small' | 'medium';
   style?: CSSProperties;
+  anchorStyle?: CSSProperties;
 };
 
 export type MDSTooltipPosition = PopoverPosition;

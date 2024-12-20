@@ -6,6 +6,7 @@ export type MDSTooltipProps = {
   children?: ReactElement;
   title: ReactNode;
   size?: 'small' | 'medium';
+  width?: number | string;
   style?: CSSProperties;
   anchorStyle?: CSSProperties;
 };

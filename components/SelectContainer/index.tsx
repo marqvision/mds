@@ -14,6 +14,7 @@ import { getCorrectContainerStyle, getLayoutStyle } from './@utils';
 const SelectContainerStyles = styled.div<StyledWrapperProps>`
   display: flex;
   flex-direction: ${({ orientation }) => (orientation === 'horizontal' ? 'row' : 'column')};
+  flex-wrap: wrap;
   gap: 8px;
 `;
 

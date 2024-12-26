@@ -74,8 +74,10 @@ export const MDSInput = <T,>(props: Props<T>) => {
 
   const handleBlur = (_value: string) => {
     if (focus) {
-      const w = parseInt(`${focus.defaultWidth}`);
-      setMaxWidth(isNaN(w) ? parseInt(theme.size[size].maxWidth) : w);
+      setTimeout(() => {
+        const w = parseInt(`${focus.defaultWidth}`);
+        setMaxWidth(isNaN(w) ? parseInt(theme.size[size].maxWidth) : w);
+      }, 100);
     }
     onBlur?.(_value);
   };

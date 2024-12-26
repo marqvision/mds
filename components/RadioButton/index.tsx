@@ -8,8 +8,8 @@ const Wrapper = styled.label<StyledWrapperProps>`
   display: inline-block;
   position: relative;
   font-size: 0;
-  width: 24px;
-  height: 24px;
+  width: ${RadioButtonTheme.size.boxSize}px;
+  height: ${RadioButtonTheme.size.boxSize}px;
 
   & input {
     display: none;
@@ -30,12 +30,12 @@ const Wrapper = styled.label<StyledWrapperProps>`
     position: absolute;
     display: inline-block;
     content: '';
-    width: calc(100% + 8px);
-    height: calc(100% + 8px);
+    width: calc(100% + ${RadioButtonTheme.size.padding * 2}px);
+    height: calc(100% + ${RadioButtonTheme.size.padding * 2}px);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 50%;
+    border-radius: ${RadioButtonTheme.size.borderRadius}px;
     transition: 0.3s;
   }
 
@@ -65,10 +65,22 @@ export const MDSRadioButton = <Value extends string | number>(props: Props<Value
   return (
     <Wrapper color={color} type={type} checked={isChecked}>
       <input type="radio" checked={isChecked} disabled={isDisabled} onChange={handleChange} />
-      <Svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox={`0 0 24 24`} isShow={isChecked}>
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={RadioButtonTheme.size.boxSize}
+        height={RadioButtonTheme.size.boxSize}
+        viewBox={`0 0 ${RadioButtonTheme.size.boxSize} ${RadioButtonTheme.size.boxSize}`}
+        isShow={isChecked}
+      >
         {Selected}
       </Svg>
-      <Svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox={`0 0 24 24`} isShow={!isChecked}>
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={RadioButtonTheme.size.boxSize}
+        height={RadioButtonTheme.size.boxSize}
+        viewBox={`0 0 ${RadioButtonTheme.size.boxSize} ${RadioButtonTheme.size.boxSize}`}
+        isShow={!isChecked}
+      >
         {Unselected}
       </Svg>
     </Wrapper>

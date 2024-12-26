@@ -31,6 +31,7 @@ export type Theme = {
     {
       boxSize: number;
       padding: number;
+      borderRadius: number;
     }
   >;
 };

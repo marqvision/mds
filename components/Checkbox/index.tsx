@@ -40,7 +40,7 @@ const Wrapper = styled.label<StyledWrapperProps>`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 50%;
+    border-radius: ${({ size }) => `${CheckboxTheme.size[size].borderRadius}px`};
     transition: 0.3s;
   }
 

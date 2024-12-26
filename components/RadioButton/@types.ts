@@ -21,6 +21,11 @@ export type Theme = {
       unSelected: ColorList;
     }
   >;
+  size: {
+    boxSize: number;
+    padding: number;
+    borderRadius: number;
+  };
 };
 
 export type StyledWrapperProps = {

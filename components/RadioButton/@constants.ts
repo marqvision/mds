@@ -45,4 +45,9 @@ export const theme: Theme = {
       },
     },
   },
+  size: {
+    boxSize: 24,
+    padding: 4,
+    borderRadius: 8,
+  },
 };

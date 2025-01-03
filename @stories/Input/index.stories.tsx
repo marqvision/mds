@@ -145,7 +145,9 @@ export const MultiLineExpandToFit: Story = {
     },
   },
   render: function Render(props) {
-    const [value, setValue] = useState<string>('');
+    const [value, setValue] = useState<string>(
+      '아무말이나쓰는거에요아무말이나쓰는거에요아무말이나쓰는거에요아무말이나쓰는거에요아무말이나쓰는거에요아무말이나쓰는거에요아무말이나쓰는거에요아무말이나쓰는거에요아무말이나쓰는거에요'
+    );
 
     return (
       <Wrapper>

@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, isValidElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, isValidElement, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
@@ -172,30 +172,39 @@ export const TextField = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (hasCustomToFit) {
-      const gap = (mirrorRef.current?.clientWidth || 0) - (mirrorRef.current?.nextElementSibling?.clientWidth || 0);
-      onResize(gap);
-    }
-  }, [mirrorText, hasCustomToFit, onResize]);
-
-  useLayoutEffect(() => {
-    if (toFitMultiline) {
-      const defaultHeight = toFitMultiline.defaultHeight || py + parseInt(theme.size[size].fontSize) * 1.5 * 2;
-
-      let newHeight = Math.max((mirrorRef.current?.clientHeight || 0) + py, parseInt(`${defaultHeight}`));
-
-      if (toFitMultiline.maxHeight) {
-        newHeight = Math.min(parseFloat(`${toFitMultiline.maxHeight}`), newHeight);
+    const observer = new ResizeObserver((entries) => {
+      if (hasCustomToFit) {
+        const gap = (entries[0].target.clientWidth || 0) - (entries[0].target.nextElementSibling?.clientWidth || 0);
+        onResize(gap);
       }
+      if (toFitMultiline) {
+        const defaultHeight = toFitMultiline.defaultHeight || py + parseInt(theme.size[size].fontSize) * 1.5 * 2;
 
-      setHeight(newHeight);
+        let newHeight = Math.max((entries[0].target.clientHeight || 0) + py, parseInt(`${defaultHeight}`));
+
+        if (toFitMultiline.maxHeight) {
+          newHeight = Math.min(parseFloat(`${toFitMultiline.maxHeight}`), newHeight);
+        }
+
+        setHeight(newHeight);
+      }
+    });
+
+    if (mirrorRef.current && (hasCustomToFit || toFitMultiline)) {
+      observer.observe(mirrorRef.current);
     }
-  }, [mirrorText, toFitMultiline, size, py]);
+
+    return () => {
+      observer.disconnect();
+    };
+
+    // intentionally separating dependencies of toFitMultiline
+  }, [hasCustomToFit, toFitMultiline?.defaultHeight, toFitMultiline?.maxHeight, py, size, onResize]);
 
   const isOverflowed =
     toFitMultiline && parseFloat(`${toFitMultiline.maxHeight}`) < (mirrorRef.current?.clientHeight || 0) + py;
 
-  const mirrorMaxWidth = inputRef.current?.clientWidth || 0;
+  const mirrorMaxWidth = inputRef.current?.clientWidth;
 
   return (
     <StyledLabel size={size} isError={isError}>

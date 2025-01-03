@@ -1,4 +1,4 @@
-import { ChangeEvent, isValidElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, isValidElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
@@ -126,9 +126,16 @@ export const TextField = (props: Props) => {
     }
   };
 
-  const handleDelete = () => {
-    onChange?.('');
-    onBlur?.('');
+  const handleDelete = (e: MouseEvent) => {
+    if (enter) {
+      e.preventDefault();
+      enter('');
+      onBlur?.('');
+    } else if (onChange) {
+      onChange('');
+    } else if (onBlur) {
+      onBlur('');
+    }
     setIsShowDelete(false);
 
     if (inputRef.current) {

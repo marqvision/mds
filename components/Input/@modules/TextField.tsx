@@ -19,6 +19,7 @@ const StyledInput = styled.input<{ customSize: Size }>`
   width: 100%;
   height: 100%;
   font-size: ${({ customSize }) => theme.size[customSize].fontSize};
+  word-break: break-word;
   ${resolveFontWeight('regular')}
   &[type=number] {
     -moz-appearance: textfield;
@@ -34,10 +35,11 @@ const StyledPrefix = styled(MDSTypography)`
   flex: 0 0 auto;
 `;
 
-const StyledMirror = styled.div`
+const StyledMirror = styled.div<{ isMultiline: boolean }>`
   position: absolute;
   visibility: hidden;
-  white-space: pre;
+  word-break: break-word;
+  white-space: ${({ isMultiline }) => (isMultiline ? 'pre-wrap' : 'pre')};
   ${resolveFontWeight('regular')}
 `;
 
@@ -193,6 +195,8 @@ export const TextField = (props: Props) => {
   const isOverflowed =
     toFitMultiline && parseFloat(`${toFitMultiline.maxHeight}`) < (mirrorRef.current?.clientHeight || 0) + py;
 
+  const mirrorMaxWidth = inputRef.current?.clientWidth || 0;
+
   return (
     <StyledLabel size={size} isError={isError}>
       <StyledOutline
@@ -208,7 +212,11 @@ export const TextField = (props: Props) => {
         }}
       >
         {Prefix}
-        <StyledMirror ref={mirrorRef} style={{ fontSize: theme.size[size].fontSize }}>
+        <StyledMirror
+          ref={mirrorRef}
+          isMultiline={isMultiline}
+          style={{ fontSize: theme.size[size].fontSize, maxWidth: isMultiline ? mirrorMaxWidth : undefined }}
+        >
           {mirrorText.split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
         </StyledMirror>
         {isInit && (

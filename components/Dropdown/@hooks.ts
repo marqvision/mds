@@ -11,7 +11,10 @@ export const useDropdown = <T>({
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortType | undefined>(hasSort ? 'asc' : undefined);
 
-  const filteredList = useMemo(() => getFilteredList(list, hasCustomSearch ? '' : search, sort), [search, list, sort]);
+  const filteredList = useMemo(
+    () => getFilteredList(list, hasCustomSearch ? '' : search, sort),
+    [hasCustomSearch, search, list, sort]
+  );
 
   useEffect(() => {
     setTimeout(() => {

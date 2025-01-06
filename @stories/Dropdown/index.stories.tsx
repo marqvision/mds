@@ -1,5 +1,6 @@
 // @ts-nocheck
-import React, { useState } from 'react';
+import { PropsWithChildren } from 'react';
+import { useState } from '@storybook/preview-api';
 import { MDSChip, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../components';
 import { StatusList } from './@constants';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -19,7 +20,7 @@ const meta: Meta<typeof MDSDropdown> = {
 export default meta;
 type Story = StoryObj<typeof MDSDropdown>;
 
-const Wrapper = ({ children }: React.PropsWithChildren) => {
+const Wrapper = ({ children }: PropsWithChildren) => {
   return (
     <div
       style={{
@@ -245,6 +246,7 @@ export const Dropdown1DepthSingle: Story = {
 export const DropdownMulti2Depth: Story = {
   args: {
     modules: ['search'],
+    isFoldAll: true,
   },
   render: function Render(props) {
     const [list, setList] = useState<number[]>([]);
@@ -492,6 +494,59 @@ export const OnSelect: Story = {
           modules={['search']}
           onChange={setList}
           onSelect={handleSelect}
+        />
+      </Wrapper>
+    );
+  },
+};
+
+const BUTTON = <button onClick={() => alert('Inside clicked!')}>BUTTON</button>;
+
+export const SubLabel: Story = {
+  args: {
+    subLabelPosition: 'bottom',
+    includeSearch: false,
+  },
+  argTypes: {
+    subLabelPosition: {
+      control: { type: 'select' },
+      options: ['bottom', 'top', 'tooltip', 'bracket'],
+    },
+    includeSearch: [true, false],
+  },
+  render: function Render(args) {
+    const [list, setList] = useState<number[]>([]);
+    const allList = [...Array(50)].map((_, index) => ({
+      label: `Label ${index} ${[...Array(index)].map(() => 'AAA').join('')}`,
+      value: index,
+      subLabel: {
+        label: `${Math.ceil(Math.random() * 100)}`,
+        includeSearch: args.includeSearch,
+        position: args.subLabelPosition,
+      },
+    }));
+
+    return (
+      <Wrapper>
+        {args.includeSearch ? 'true' : 'false'}
+        <MDSDropdown
+          label="SubLabelCase"
+          value={list}
+          list={allList}
+          width="420px"
+          modules={[
+            'search',
+            {
+              type: 'bottom-button',
+              label: [...Array(1)].map(() => 'LONG_TEXT').join(','),
+              icon,
+              onClick: () => {
+                alert('Outside clicked!');
+              },
+              rightSection: BUTTON,
+            },
+          ]}
+          onChange={setList}
         />
       </Wrapper>
     );

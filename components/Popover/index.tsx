@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { createPortal } from 'react-dom';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
-import { findScrollOffset } from './@utils';
+import { findChildStickyHeight, findScrollOffset } from './@utils';
 import { Props, StyleProps, Coordinates } from './@type';
 
 const fadeIn = keyframes`
@@ -119,6 +119,8 @@ const Popover = (
   const scrollOffsetRef = useRef<HTMLElement | Window>();
   const coordinatesRef = useRef<Coordinates>();
   const closeRef = useRef(onClosePopover);
+  const stickyTopHeight = useRef<number>(0);
+  const stickyBottomHeight = useRef<number>(0);
 
   const setPosition = useCallback(() => {
     if (!init) {
@@ -209,12 +211,31 @@ const Popover = (
     setPosition();
 
     if (anchorRef.current) {
-      const top = anchorRef.current.getBoundingClientRect().top;
       const anchorHeight = anchorRef.current.clientHeight;
 
-      if (top < anchorHeight * -1) {
+      const isWindow = scrollOffsetRef.current === window;
+
+      const { scrollTop, minTop, maxTop } = (() => {
+        if (isWindow) {
+          return {
+            scrollTop: anchorRef.current.getBoundingClientRect().top,
+            minTop: 0,
+            maxTop: (scrollOffsetRef.current as Window).innerHeight - anchorHeight,
+          };
+        }
+        return {
+          scrollTop: (scrollOffsetRef.current as HTMLElement).scrollTop,
+          minTop:
+            (anchorRef.current as HTMLElement).offsetTop -
+            (scrollOffsetRef.current as HTMLElement).offsetHeight +
+            stickyBottomHeight.current,
+          maxTop: (anchorRef.current as HTMLElement).offsetTop - stickyTopHeight.current,
+        };
+      })();
+
+      if (scrollTop < minTop) {
         closeRef.current();
-      } else if (top > window.innerHeight) {
+      } else if (scrollTop > maxTop) {
         closeRef.current();
       }
     }
@@ -284,9 +305,14 @@ const Popover = (
     };
   }, [setPosition]);
 
-  if (anchorRef.current) {
-    scrollOffsetRef.current = findScrollOffset(anchorRef.current);
-  }
+  useEffect(() => {
+    if (isOpen && anchorRef.current) {
+      scrollOffsetRef.current = findScrollOffset(anchorRef.current);
+      const { top, bottom } = findChildStickyHeight(scrollOffsetRef.current);
+      stickyTopHeight.current = top;
+      stickyBottomHeight.current = bottom;
+    }
+  }, [anchorRef, isOpen]);
 
   useEffect(() => {
     if (isOpen) {

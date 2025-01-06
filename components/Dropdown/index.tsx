@@ -412,3 +412,5 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
     </MDSPopover>
   );
 };
+
+export * from './@types';

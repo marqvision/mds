@@ -10,13 +10,14 @@ import {
 import { Features, MDSTypographyProps } from './@types';
 
 const TypographyStyles = styled.span<Features<any>>`
-  ${({ variant, weight, color, lineClamp, wordBreak, whiteSpace }) => {
+  ${({ variant, weight, color, lineClamp, wordBreak, whiteSpace, textDecoration }) => {
     const fontSize = resolveFontSize(variant);
     const fontWeightStyles = resolveFontWeightStyles(weight);
     const fontColor = resolveColor(color!);
     const lineClampStyles = lineClamp !== undefined ? resolveLineClamp(lineClamp) : '';
     const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';
     const whiteSpaceStyles = whiteSpace ? `white-space: ${whiteSpace};` : '';
+    const textDecorationStyles = textDecoration ? `text-decoration: ${textDecoration};` : '';
 
     return `
       margin: 0;
@@ -26,6 +27,7 @@ const TypographyStyles = styled.span<Features<any>>`
       ${lineClampStyles};
       ${wordBreakStyles};
       ${whiteSpaceStyles};
+      ${textDecorationStyles};
       line-height: 1.5;
     `;
   }}

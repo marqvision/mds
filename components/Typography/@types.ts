@@ -43,6 +43,12 @@ export type Features<T extends ElementType = 'span'> = {
    * 기본값은 브라우저 기본값을 따릅니다.
    */
   whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap';
+
+  /**
+   * 타이포그래피의 text-decoration 속성.
+   * 기본값은 없음(=none)입니다.
+   */
+  textDecoration?: 'none' | 'underline' | 'line-through';
 };
 
 export type MDSTypographyProps<T extends ElementType = 'span'> = Features<T> & React.ComponentPropsWithoutRef<T>;

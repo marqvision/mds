@@ -92,6 +92,27 @@ export const WorkBreak: Story = {
   },
 };
 
+export const TextDecoration: Story = {
+  args: {
+    textDecoration: 'underline',
+  },
+  parameters: {
+    layout: 'centered',
+    controls: { include: ['textDecoration'] },
+  },
+  render: ({ textDecoration }) => {
+    return (
+      <div style={{ width: 250, height: 400, border: '1px solid black' }}>
+        <MDSTypography variant="T16" textDecoration={textDecoration}>
+          califragilisticexpialidocious
+          Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+          グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+        </MDSTypography>
+      </div>
+    );
+  },
+};
+
 export const CustomizeTagName: Story = {
   render: () => {
     return (

@@ -372,7 +372,12 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
   const anchor = renderAnchor ? (
     renderAnchor(value, returnObj, list)
   ) : (
-    <FilterChip label={props.label || ''} selectedLabel={labels} isLoading={isLoading} isDisabled={isDisabled} />
+    <FilterChip
+      label={props.label || ''}
+      selectedLabel={labels}
+      isLoading={isLoading}
+      isDisabled={isDisabled || selectableValue.length === 0}
+    />
   );
 
   const handleResize = useCallback(() => {

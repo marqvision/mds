@@ -7,6 +7,7 @@ import { MDSIcon } from '../../Icon';
 import { MDSTag } from '../../Tag';
 import { MDSThemeValue } from '../../../foundation';
 import { getValueFromList } from '../@utils';
+import { MDSTooltip } from '../../Tooltip';
 import { HighLightLabel } from './HighlightLabel';
 
 type Props<T> = {
@@ -18,6 +19,7 @@ type Props<T> = {
   depth?: number;
   is1DepthSingle?: boolean;
   isInfiniteAll: boolean;
+  isDefaultFold: boolean;
   style?: CSSProperties;
   onChange: (value: SelectedType<T>[], checked: boolean, forceClose?: boolean) => void;
   onClose: () => void;
@@ -102,13 +104,14 @@ export const Item = <T,>(props: Props<T>) => {
     indeterminate,
     isMultiple: _isMultiple,
     selectedValue,
+    isDefaultFold,
     depth = 0,
     style,
     onChange,
     onClose,
   } = props;
 
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(!isDefaultFold);
 
   const allChildSelected = item.children
     ? getValueFromList(item.children)
@@ -183,7 +186,7 @@ export const Item = <T,>(props: Props<T>) => {
     if (!item.subLabel) {
       return undefined;
     }
-    if (typeof item.subLabel === 'string') {
+    if (typeof item.subLabel === 'string' || typeof item.subLabel === 'number') {
       return {
         label: item.subLabel,
         position: 'bottom',
@@ -198,14 +201,26 @@ export const Item = <T,>(props: Props<T>) => {
   })();
 
   const subLabelEl = subLabel && (
-    <MDSTypography variant="T13" color="color/content/neutral/secondary/normal">
-      {subLabel.includeSearch ? <HighLightLabel searchText={search} label={subLabel.label} /> : subLabel.label}
+    <MDSTypography
+      variant="T13"
+      color={
+        subLabel.position === 'bracket'
+          ? 'color/content/neutral/default/normal'
+          : 'color/content/neutral/secondary/normal'
+      }
+      style={{ display: 'inline', marginLeft: subLabel.position === 'bracket' ? '4px' : undefined }}
+    >
+      {subLabel.position === 'bracket' && '('}
+      {subLabel.includeSearch ? <HighLightLabel searchText={search} label={`${subLabel.label}`} /> : subLabel.label}
+      {subLabel.position === 'bracket' && ')'}
     </MDSTypography>
   );
 
   useEffect(() => {
-    setIsExpanded(true);
-  }, [search]);
+    if (!isDefaultFold) {
+      setIsExpanded(true);
+    }
+  }, [search, isDefaultFold]);
 
   useEffect(() => {
     if (item.isDisabled) {
@@ -259,9 +274,15 @@ export const Item = <T,>(props: Props<T>) => {
                   ? 'color/content/neutral/default/disabled'
                   : undefined
               }
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
             >
               {typeof item.label === 'string' ? <HighLightLabel searchText={search} label={item.label} /> : item.label}
+              {subLabel?.position === 'tooltip' && (
+                <MDSTooltip title={subLabel.label} anchorStyle={{ display: 'inline', marginLeft: '4px' }}>
+                  <MDSIcon.Help variant="fill" size={12} />
+                </MDSTooltip>
+              )}
+              {subLabel?.position === 'bracket' && subLabelEl}
             </MDSTypography>
             {subLabel?.position === 'bottom' && subLabelEl}
           </StyledLabelWrap>

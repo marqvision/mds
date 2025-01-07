@@ -29,9 +29,7 @@ const StyledSticky = styled.div`
   position: sticky;
   top: 0;
   padding: 8px;
-  box-shadow:
-    0 1px 8px 0 #0000001f,
-    0 1px 2px 0 #0000000a;
+  box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
   z-index: 1;
@@ -46,9 +44,9 @@ const StyledStickyBottom = styled.button<{ isDisabled?: boolean }>`
   width: 100%;
   border: none;
   border-top: 1px solid ${({ theme }) => theme._raw_color.bluegray150};
-  height: 48px;
   text-align: left;
-  padding: 0 12px;
+  padding: 11px 16px 12px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -93,6 +91,11 @@ const StyledSort = styled.button`
   }
 `;
 
+const StyledStickyRightSection = styled.div`
+  margin-left: auto;
+  flex-shrink: 0;
+`;
+
 const Dropdown = <T, SortT>({
   value,
   list: _list,
@@ -100,6 +103,7 @@ const Dropdown = <T, SortT>({
   selectedValues,
   selectableValues,
   indeterminate,
+  isFoldAll,
   onChange,
   onClose,
   onMount,
@@ -132,8 +136,8 @@ const Dropdown = <T, SortT>({
     isMultiple && (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-        ? 'indeterminate'
-        : false;
+      ? 'indeterminate'
+      : false;
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
   const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
@@ -192,6 +196,19 @@ const Dropdown = <T, SortT>({
         color: stickyBottom.isDisabled
           ? 'color/content/primary/default/disabled'
           : 'color/content/primary/default/normal',
+        style: { flexShrink: 0 },
+      })
+    : undefined;
+
+  const stickyBottomRightSection = stickyBottom?.rightSection
+    ? cloneElement(stickyBottom.rightSection, {
+        onClick: (event: MouseEvent) => {
+          event.stopPropagation();
+          stickyBottom.rightSection?.props.onClick?.();
+          if (!stickyBottom?.preventClose) {
+            onClose();
+          }
+        },
       })
     : undefined;
 
@@ -281,8 +298,8 @@ const Dropdown = <T, SortT>({
                   {isMultiple && selectedValues.length > 0
                     ? `Selected (${selectedCount})`
                     : search
-                      ? `Searched (${searchedCount})`
-                      : `All (${allCount})`}
+                    ? `Searched (${searchedCount})`
+                    : `All (${allCount})`}
                 </MDSTypography>
               </StyledSelectAll>
               {hasSort && sortEle}
@@ -319,6 +336,7 @@ const Dropdown = <T, SortT>({
             selectedValue={selectedValues}
             is1DepthSingle={is1DepthSingle}
             isInfiniteAll={isInfiniteAll}
+            isDefaultFold={isFoldAll || false}
             onChange={onChange}
             onClose={onClose}
           />
@@ -344,9 +362,11 @@ const Dropdown = <T, SortT>({
                 ? 'color/content/primary/default/disabled'
                 : 'color/content/primary/default/normal'
             }
+            style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
           >
             {stickyBottom.label}
           </MDSTypography>
+          {stickyBottomRightSection && <StyledStickyRightSection>{stickyBottomRightSection}</StyledStickyRightSection>}
         </StyledStickyBottom>
       )}
     </StyledWrap>

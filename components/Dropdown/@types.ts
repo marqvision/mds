@@ -1,12 +1,11 @@
 import { CSSProperties, ReactElement } from 'react';
 
 type SubLabel = {
-  label: string;
+  label: number | string;
   /**
-   todo-@matthew add tooltip case after development to v2
    @default bottom
    */
-  position?: 'bottom' | 'top' | 'tooltip';
+  position?: 'bottom' | 'top' | 'tooltip' | 'bracket';
   /**
    * search 에 포함 여부
    @default false
@@ -16,7 +15,7 @@ type SubLabel = {
 
 export type DropdownItem<T> = {
   label: string | ReactElement;
-  subLabel?: string | SubLabel;
+  subLabel?: string | number | SubLabel;
   isDisabled?: boolean;
   icon?: ReactElement;
   imgUrl?: string;
@@ -61,6 +60,7 @@ export type BottomButtonModule = {
   type: 'bottom-button';
   icon?: ReactElement;
   label: string;
+  rightSection?: ReactElement;
   isDisabled?: boolean;
   // onClick 이후 해당 드롭다운이 닫힐지 닫히지 않을지 (default: false)
   preventClose?: boolean;
@@ -78,13 +78,14 @@ export type Props<T, SortT = unknown> = {
   indeterminate?: T;
   list: DropdownItem<ValueType<T>>[];
   label?: string;
+  width?: string | number | 'fit-anchor';
+  modules?: Module<SortT>[];
+  isLoading?: boolean;
+  isDisabled?: boolean;
+  isFoldAll?: boolean;
   onChange?: (value: InferType<T>, indeterminate?: InferType<T>) => void;
   onSelect?: (value: ValueType<T>[], selectedValues: ValueType<T>[], isSelected: boolean) => ValueType<T>[];
   renderAnchor?: (value: T | undefined, returnObj: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
-  isLoading?: boolean;
-  width?: string | number | 'fit-anchor';
-  modules?: Module<SortT>[];
-  isDisabled?: boolean;
 };
 
 export type SelectedType<T> = {

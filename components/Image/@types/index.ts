@@ -1,6 +1,7 @@
 import React from 'react';
 import * as CSS from 'csstype';
-import { MDSThemeColorPath } from '../../foundation';
+import { MDSThemeColorPath } from '../../../foundation';
+import { CustomProps } from './custom';
 
 type IconSize = 'x-small' | 'small' | 'medium' | 'large';
 type FallbackStyle = 'border' | 'tint';
@@ -47,26 +48,45 @@ type NoIcon = {
   iconSize?: never;
 };
 
+export type StyledHoverWrapperProps = {
+  isOpen: boolean;
+};
+
 export type StyledErrorWrapperProps = {
+  isDraggable: boolean;
   iconSize?: IconSize;
   fallbackStyle: FallbackStyle;
   isLoaded: boolean;
 };
 
 export type StyledImageWrapperProps = {
-  /**
-   * 컬러 값 전달 시 이미지 외부에 1px 의 테두리가 생깁니다.
-   */
+  isDraggable: boolean;
   borderColor?: MDSThemeColorPath;
 };
 
 export type StyledWrapperProps = {
+  width?: string;
+  height?: string;
+  aspectRatio?: string;
+  borderRadius: { topLeft: string; topRight: string; bottomLeft: string; bottomRight: string };
+};
+
+export type ImageProps = {
   /**
    * isDraggable `true` 시 이미지 자체를 드래그 할 수 있습니다.
    * isDraggable `false` 시 이미지를 드래그 할 수 없습니다. (listing select 시 필요)
    * @default 'false'
    */
   isDraggable?: boolean;
+  /**
+   * 로딩 상태 시 MDSIcon.Image 가 표시됩니다.
+   */
+  isLoading?: boolean;
+  /**
+   * loading 또는 error 시의 스타일.
+   * @default 'tint'
+   */
+  fallbackStyle?: FallbackStyle;
   /**
    * 이미지의 너비.
    */
@@ -79,19 +99,6 @@ export type StyledWrapperProps = {
    * 이미지의 비율.
    */
   aspectRatio?: string;
-  borderRadius: { topLeft: string; topRight: string; bottomLeft: string; bottomRight: string };
-};
-
-export type ImageProps = {
-  /**
-   * 로딩 상태 시 MDSIcon.Image 가 표시됩니다.
-   */
-  isLoading?: boolean;
-  /**
-   * loading 또는 error 시의 스타일.
-   * @default 'tint'
-   */
-  fallbackStyle?: FallbackStyle;
   /**
    * 이미지에 objectFit 스타일을 전달합니다.
    * @default 'cover'
@@ -109,10 +116,13 @@ export type ImageProps = {
    * @removeBorderRadius `object` - 부분 border-radius 제거
    */
   removeBorderRadius?: RemoveBorderRadius;
+  /**
+   * 컬러 값 전달 시 이미지 외부에 1px 의 테두리가 생깁니다.
+   */
+  borderColor?: MDSThemeColorPath;
+  custom?: CustomProps | CustomProps[];
   children?: React.ReactNode;
 } & (UseIcon | NoIcon) &
-  StyledImageWrapperProps &
-  Omit<StyledWrapperProps, 'borderRadius'> &
   React.ImgHTMLAttributes<HTMLImageElement>;
 
 export type StyledImageProps = {

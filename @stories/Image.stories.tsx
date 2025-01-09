@@ -362,3 +362,25 @@ export const RemoveBorderRadius: Story = {
     </Wrapper>
   ),
 };
+
+export const Hover: Story = {
+  args: {
+    aspectRatio: '1',
+    custom: {
+      type: 'hover',
+      element: <MDSTypography color="color/content/inverse/default/normal">hi!</MDSTypography>,
+    },
+    children: <BoundingBox />,
+  },
+  render: (props) => (
+    <Wrapper>
+      <MDSTypography>custom 속성 타입 hover 지정 시, 이미지에 마우스를 올리면 element 로 전달 된 요소가 출력됩니다.</MDSTypography>
+      <MDSTypography>기본적으로 display: flex 로 설정되어 이미지의 정 중앙에 출력되며 style 속성 전달 또한 가능합니다.</MDSTypography>
+      <Grid>
+        {[...Array(80)].map((_, i) => (
+          <MDSImage key={`preview-${i}`} aspectRatio="1" src={`https://picsum.photos/id/${10 + i}/200`} {...props} />
+        ))}
+      </Grid>
+    </Wrapper>
+  ),
+};

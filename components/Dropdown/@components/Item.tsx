@@ -11,6 +11,7 @@ import { MDSTooltip } from '../../Tooltip';
 import { HighLightLabel } from './HighlightLabel';
 
 type Props<T> = {
+  parentIndex?: string;
   selectedValue: SelectedType<T>[];
   indeterminate: T[];
   isMultiple: boolean;
@@ -100,6 +101,7 @@ const BACKGROUND_COLOR = [
 export const Item = <T,>(props: Props<T>) => {
   const {
     item,
+    parentIndex = '',
     search,
     indeterminate,
     isMultiple: _isMultiple,
@@ -217,8 +219,10 @@ export const Item = <T,>(props: Props<T>) => {
   );
 
   useEffect(() => {
-    if (!isDefaultFold) {
+    if (search) {
       setIsExpanded(true);
+    } else if (isDefaultFold) {
+      setIsExpanded(false);
     }
   }, [search, isDefaultFold]);
 
@@ -237,13 +241,18 @@ export const Item = <T,>(props: Props<T>) => {
   }
 
   return (
-    <div style={style}>
+    <div
+      style={{
+        ...style,
+        ...item.style,
+      }}
+    >
       <StyledWrap
         id={`mds-drop-item-${item.value}`}
         isDisabled={item.isDisabled}
         bgColor={BACKGROUND_COLOR[Math.min(depth, 2)]}
         onClick={handleClick}
-        style={{ paddingLeft: depth * 32 + 12, ...item.style }}
+        style={{ paddingLeft: depth * 32 + 12 }}
       >
         <StyledLabel>
           {isMultiple && (
@@ -311,10 +320,11 @@ export const Item = <T,>(props: Props<T>) => {
           )}
         </StyledRightDiv>
       </StyledWrap>
-      {item.children?.map((child) => (
+      {item.children?.map((child, index) => (
         <Item
-          key={`dropItem_${depth}_${child.value === undefined ? child.value : child.label}`}
+          key={`dropItem_${depth}_${child.value ?? `${child.label}_${parentIndex}_${index}`}`}
           {...props}
+          parentIndex={`${parentIndex}_${index}`}
           onChange={handleChange}
           item={child}
           depth={depth + 1}

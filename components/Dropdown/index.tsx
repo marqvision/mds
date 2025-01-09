@@ -5,6 +5,7 @@ import { MDSTypography } from '../Typography';
 import { MDSCheckbox } from '../Checkbox';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { MDSIcon } from '../Icon';
+import { MDSThemeValue } from '../../foundation';
 import { Item } from './@components/Item';
 import { useDropdown, useInitDropdown } from './@hooks';
 import {
@@ -144,7 +145,7 @@ const Dropdown = <T, SortT>({
   const isShowStickyHeader = hasSearch || hasSort || isMultiple;
 
   const stickyBottom = modules?.find((v) => typeof v === 'object' && v.type === 'bottom-button') as
-    | BottomButtonModule
+    | BottomButtonModule<T>
     | undefined;
   const customSearch = modules?.find((v) => typeof v === 'object' && v.type === 'search') as SearchModule | undefined;
   const customSort = modules?.find((v) => typeof v === 'object' && v.type === 'sort') as SortModule<SortT>;
@@ -233,7 +234,7 @@ const Dropdown = <T, SortT>({
     if (stickyBottom?.isDisabled) {
       return;
     }
-    stickyBottom?.onClick();
+    stickyBottom?.onClick?.();
     if (!stickyBottom?.preventClose) {
       onClose();
     }
@@ -326,9 +327,10 @@ const Dropdown = <T, SortT>({
         </MDSTypography>
       )}
       {!isSearchTooShort &&
-        list.map((v) => (
+        list.map((v, index) => (
           <Item<ValueType<T>>
-            key={`dropItem_0_${v.value !== undefined ? v.value : v.label}`}
+            key={`dropItem_0_${v.value ?? `${v.label}_${index}`}`}
+            parentIndex={`${index}`}
             item={v}
             indeterminate={indeterminate}
             search={search}
@@ -352,22 +354,48 @@ const Dropdown = <T, SortT>({
         </>
       )}
       {stickyBottom && (
-        <StyledStickyBottom isDisabled={stickyBottom.isDisabled} onClick={handleClickStickyBottom}>
-          {stickyBottomIcon}
-          <MDSTypography
-            variant="T14"
-            weight="medium"
-            color={
-              stickyBottom.isDisabled
-                ? 'color/content/primary/default/disabled'
-                : 'color/content/primary/default/normal'
-            }
-            style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
-          >
-            {stickyBottom.label}
-          </MDSTypography>
-          {stickyBottomRightSection && <StyledStickyRightSection>{stickyBottomRightSection}</StyledStickyRightSection>}
-        </StyledStickyBottom>
+        <>
+          {stickyBottom.onClick ? (
+            <StyledStickyBottom isDisabled={stickyBottom.isDisabled} onClick={handleClickStickyBottom}>
+              {stickyBottomIcon}
+              <MDSTypography
+                variant="T14"
+                weight="medium"
+                color={
+                  stickyBottom.isDisabled
+                    ? 'color/content/primary/default/disabled'
+                    : 'color/content/primary/default/normal'
+                }
+                style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+              >
+                {stickyBottom.label}
+              </MDSTypography>
+              {stickyBottomRightSection && (
+                <StyledStickyRightSection>{stickyBottomRightSection}</StyledStickyRightSection>
+              )}
+            </StyledStickyBottom>
+          ) : (
+            <Item<ValueType<T>>
+              item={{
+                label: stickyBottom.label,
+                value: stickyBottom.value,
+                rightSection: stickyBottom.rightSection,
+                isDisabled: stickyBottom.isDisabled,
+                icon: stickyBottom.icon,
+              }}
+              indeterminate={indeterminate}
+              search={search}
+              isMultiple={isMultiple}
+              selectedValue={selectedValues}
+              is1DepthSingle={is1DepthSingle}
+              isInfiniteAll={isInfiniteAll}
+              isDefaultFold={isFoldAll || false}
+              onChange={onChange}
+              onClose={onClose}
+              style={{ position: 'sticky', bottom: 0, borderTop: `1px solid ${MDSThemeValue._raw_color.bluegray150}` }}
+            />
+          )}
+        </>
       )}
     </StyledWrap>
   );
@@ -417,9 +445,10 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
       anchor={anchor}
       width={fitWidth || width || 'auto'}
       onClose={handler.close}
+      style={props.style}
     >
-      {({ close }) => {
-        closeRef.current = close;
+      {({ close, isOpen }) => {
+        closeRef.current = isOpen ? close : undefined;
         return (
           <Dropdown<T, SortT>
             {...restProps}

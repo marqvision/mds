@@ -56,7 +56,7 @@ export type InfiniteModule = {
   hasNextPage?: boolean;
 };
 
-export type BottomButtonModule = {
+export type BottomButtonModule<T> = {
   type: 'bottom-button';
   icon?: ReactElement;
   label: string;
@@ -64,12 +64,11 @@ export type BottomButtonModule = {
   isDisabled?: boolean;
   // onClick 이후 해당 드롭다운이 닫힐지 닫히지 않을지 (default: false)
   preventClose?: boolean;
-  onClick: () => void;
-};
+} & ({ onClick: () => void; value?: undefined } | { value: ValueType<T>; onClick?: undefined });
 
 export type CustomModule<T> = {
   type: ModuleType;
-} & (SearchModule | SortModule<T> | InfiniteModule | BottomButtonModule);
+} & (SearchModule | SortModule<T> | InfiniteModule | BottomButtonModule<T>);
 
 export type Module<T> = 'search' | 'sort' | '1-depth-single' | CustomModule<T>;
 
@@ -86,6 +85,7 @@ export type Props<T, SortT = unknown> = {
   onChange?: (value: InferType<T>, indeterminate?: InferType<T>) => void;
   onSelect?: (value: ValueType<T>[], selectedValues: ValueType<T>[], isSelected: boolean) => ValueType<T>[];
   renderAnchor?: (value: T | undefined, returnObj: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
+  style?: CSSProperties;
 };
 
 export type SelectedType<T> = {

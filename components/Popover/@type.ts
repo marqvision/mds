@@ -61,7 +61,10 @@ export type Props = {
   /**
    * (onClose) => ReactElement or ReactElement
    */
-  children: ((handler: { close: () => void }) => ReactElement | ReactElement[]) | ReactElement | ReactElement[];
+  children:
+    | ((handler: { close: () => void; isOpen: boolean }) => ReactElement | ReactElement[])
+    | ReactElement
+    | ReactElement[];
   onClose?: () => void;
   onVisibleChange?: (isOpen: boolean) => void;
 } & (ClickPropsDimmed | ClickPropsNoDimmed);

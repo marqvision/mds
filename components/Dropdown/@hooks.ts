@@ -58,7 +58,9 @@ export const useInitDropdown = <T, SortT>(
 
   const labels = (() => {
     const isAllSelected =
-      isMultiple && value.length !== 0 && (value.length === list.length || (value.length === 1 && value[0] === -1));
+      isMultiple &&
+      value.length !== 0 &&
+      (value.length === selectableValue.length || (value.length === 1 && value[0] === -1));
 
     if (isAllSelected) {
       return ['All'];

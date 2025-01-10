@@ -250,6 +250,7 @@ const Popover = (
   ) : typeof _children === 'function' ? (
     _children({
       close: onClosePopover,
+      isOpen: isOpen,
     })
   ) : (
     _children

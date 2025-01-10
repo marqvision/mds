@@ -1,34 +1,14 @@
 import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement, MutableRefObject } from 'react';
 import styled from '@emotion/styled';
-import { keyframes } from '@emotion/react';
 import { createPortal } from 'react-dom';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { findChildStickyHeight, findScrollOffset } from './@utils';
 import { Props, StyleProps, Coordinates } from './@type';
 
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
-const fadeOut = keyframes`
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
-
 const MIN_PADDING = 4;
 const TRANSITION = '300ms ease-out';
 
 const Dialog = styled.dialog<{ margin?: number }>`
-  animation: ${fadeOut} ${TRANSITION} forwards;
   border: none;
   padding: ${({ margin }) => (margin === undefined ? MIN_PADDING : margin)}px;
   margin: 0;
@@ -45,6 +25,7 @@ const Dialog = styled.dialog<{ margin?: number }>`
         }
       : undefined}
   transition: display 0.3s allow-discrete, opacity ${TRANSITION};
+  opacity: 0;
   &[open] {
     ${({ as }) =>
       as === 'div'
@@ -52,7 +33,7 @@ const Dialog = styled.dialog<{ margin?: number }>`
             display: 'block',
           }
         : undefined}
-    animation: ${fadeIn} ${TRANSITION} forwards;
+    opacity: 1;
     @starting-style {
       opacity: 0;
     }
@@ -266,7 +247,9 @@ const Popover = (
       onMouseLeave={onMouseLeave}
       onClick={onClosePopover}
       style={{
-        transform: `translate(${Math.max(coordinates?.x || 0, 0)}px, ${Math.max(coordinates?.y || 0, 0)}px)`,
+        transform: `translate(${Math.round(Math.max(coordinates?.x || 0, 0))}px, ${Math.round(
+          Math.max(coordinates?.y || 0, 0)
+        )}px)`,
         zIndex,
       }}
     >

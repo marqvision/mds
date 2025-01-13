@@ -64,13 +64,6 @@ export type StyledImageWrapperProps = {
   borderColor?: MDSThemeColorPath;
 };
 
-export type StyledWrapperProps = {
-  width?: string;
-  height?: string;
-  aspectRatio?: string;
-  borderRadius: { topLeft: string; topRight: string; bottomLeft: string; bottomRight: string };
-};
-
 export type ImageProps = {
   /**
    * isDraggable `true` 시 이미지 자체를 드래그 할 수 있습니다.
@@ -95,6 +88,14 @@ export type ImageProps = {
    * 이미지의 높이.
    */
   height?: string;
+  /**
+   * 이미지의 최대 너비.
+   */
+  maxWidth?: string;
+  /**
+   * 이미지의 최대 높이.
+   */
+  maxHeight?: string;
   /**
    * 이미지의 비율.
    */
@@ -128,3 +129,7 @@ export type ImageProps = {
 export type StyledImageProps = {
   isLoaded: boolean;
 } & Required<Pick<ImageProps, 'objectFit' | 'objectPosition'>>;
+
+export type StyledWrapperProps = {
+  borderRadius: { topLeft: string; topRight: string; bottomLeft: string; bottomRight: string };
+} & Pick<ImageProps, 'width' | 'height' | 'aspectRatio' | 'maxWidth' | 'maxHeight'>;

@@ -24,6 +24,8 @@ import { FilterChip } from './@components/FilterChip';
 import { Search } from './@components/Search';
 import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constants';
 
+export type MDSDropdownItem<T> = DropdownItem<T>;
+
 const StyledWrap = styled.div``;
 
 const StyledSticky = styled.div`
@@ -97,25 +99,33 @@ const StyledStickyRightSection = styled.div`
   flex-shrink: 0;
 `;
 
-const Dropdown = <T, SortT>({
-  value,
-  list: _list,
-  modules,
-  selectedValues,
-  selectableValues,
-  indeterminate,
-  isFoldAll,
-  onChange,
-  onClose,
-  onMount,
-}: Omit<Props<T, SortT>, 'renderAnchor' | 'onChange' | 'indeterminate'> & {
-  indeterminate: ValueType<T>[];
-  selectedValues: SelectedType<ValueType<T>>[];
-  selectableValues: SelectedType<ValueType<T>>[];
-  onChange: (value: SelectedType<ValueType<T>>[], isSelected: boolean) => void;
-  onClose: () => void;
-  onMount: () => void;
-}) => {
+const Dropdown = <T, SortT>(
+  props: Omit<Props<T, SortT>, 'renderAnchor' | 'onChange' | 'indeterminate'> & {
+    indeterminate: ValueType<T>[];
+    selectedValues: SelectedType<ValueType<T>>[];
+    selectableValues: SelectedType<ValueType<T>>[];
+    onChange: (value: SelectedType<ValueType<T>>[], isSelected: boolean) => void;
+    onClose: () => void;
+    onMount: () => void;
+  }
+) => {
+  const {
+    value,
+    list: _list,
+    modules,
+    selectedValues,
+    selectableValues,
+    indeterminate,
+    isFoldAll,
+    onChange,
+    onClose,
+    onMount,
+  } = props;
+
+  const stickyBottom = modules?.find((v) => typeof v === 'object' && v.type === 'bottom-button') as
+    | BottomButtonModule<T>
+    | undefined;
+
   const {
     search,
     sort,
@@ -127,6 +137,13 @@ const Dropdown = <T, SortT>({
     list: _list,
     hasSort: modules?.includes('sort'),
     hasCustomSearch: modules?.some((v) => typeof v === 'object' && v.type === 'search'),
+    stickyItem:
+      stickyBottom?.value !== undefined
+        ? {
+            label: stickyBottom.label,
+            value: stickyBottom.value,
+          }
+        : undefined,
   });
 
   const infiniteRef = useRef<HTMLDivElement>(null);
@@ -142,17 +159,16 @@ const Dropdown = <T, SortT>({
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
   const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
-  const isShowStickyHeader = hasSearch || hasSort || isMultiple;
 
-  const stickyBottom = modules?.find((v) => typeof v === 'object' && v.type === 'bottom-button') as
-    | BottomButtonModule<T>
-    | undefined;
   const customSearch = modules?.find((v) => typeof v === 'object' && v.type === 'search') as SearchModule | undefined;
   const customSort = modules?.find((v) => typeof v === 'object' && v.type === 'sort') as SortModule<SortT>;
   const infinite = modules?.find((v) => typeof v === 'object' && v.type === 'infinite') as InfiniteModule | undefined;
   const isEmpty = list.length === 0 && !infinite?.isLoading;
 
+  const hideSelectAllAndCount = modules?.some((v) => v === 'hide-select-all');
   const hideSelectAll = is1DepthSingle || !!infinite?.hideSelectAll;
+
+  const isShowStickyHeader = hasSearch || ((hasSort || isMultiple) && !hideSelectAllAndCount);
 
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
   const searchedCount = searchedValues.length;
@@ -291,7 +307,7 @@ const Dropdown = <T, SortT>({
       {isShowStickyHeader && (
         <StyledSticky>
           {hasSearch && <Search onChange={handleChangeSearch} />}
-          {(isMultiple || hasSort) && (
+          {(isMultiple || hasSort) && !hideSelectAllAndCount && (
             <StyledAction>
               <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
                 {!hideSelectAll && isMultiple && <MDSCheckbox value={isSelectedAll} onChange={handleSelectAll} />}

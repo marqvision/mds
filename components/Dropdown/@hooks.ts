@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useRef, useState, MutableRefObject } from 'react';
-import { InferType, ObjType, Props, SelectedType, SortType, ValueType } from './@types';
+import {
+  BottomButtonModule,
+  DropdownItem,
+  InferType,
+  ObjType,
+  Props,
+  SelectedType,
+  SortType,
+  ValueType,
+} from './@types';
 import { flattenDropdown, getFilteredList, getValueFromList } from './@utils';
 
 export const useDropdown = <T>({
@@ -7,7 +16,12 @@ export const useDropdown = <T>({
   list,
   hasSort,
   hasCustomSearch,
-}: Pick<Props<T>, 'value' | 'list'> & { hasSort?: boolean; hasCustomSearch?: boolean }) => {
+  stickyItem,
+}: Pick<Props<T>, 'value' | 'list'> & {
+  hasSort?: boolean;
+  hasCustomSearch?: boolean;
+  stickyItem?: SelectedType<ValueType<T>>;
+}) => {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<SortType | undefined>(hasSort ? 'asc' : undefined);
 
@@ -19,7 +33,7 @@ export const useDropdown = <T>({
   useEffect(() => {
     setTimeout(() => {
       if (!Array.isArray(value) && !!value) {
-        document.querySelector(`#mds-drop-item-${value}`)?.scrollIntoView({
+        document.querySelector(`#mds-drop-item-${`${value}`.replaceAll(' ', '\\ ')}`)?.scrollIntoView({
           block: 'center',
         });
       }
@@ -30,7 +44,7 @@ export const useDropdown = <T>({
     search,
     sort,
     filteredList,
-    searchedValues: getValueFromList(filteredList),
+    searchedValues: [...getValueFromList(filteredList), ...(stickyItem ? [stickyItem] : [])],
     handler: {
       search: setSearch,
       sort: setSort,
@@ -49,8 +63,32 @@ export const useInitDropdown = <T, SortT>(
   const lastValueRef = useRef<T>();
 
   const isMultiple = Array.isArray(value);
-  const flatItems = flattenDropdown(list);
-  const selectableValue = getValueFromList(list);
+  const stickyItem = props.modules?.find(
+    (v) => typeof v === 'object' && v.type === 'bottom-button' && v.value !== undefined
+  ) as BottomButtonModule<T> | undefined;
+
+  const flatItems = [
+    ...flattenDropdown(list),
+    ...(stickyItem
+      ? [
+          {
+            label: stickyItem.label,
+            value: stickyItem.value,
+          } as DropdownItem<ValueType<T>>,
+        ]
+      : []),
+  ];
+  const selectableValue = [
+    ...getValueFromList(list),
+    ...(stickyItem
+      ? [
+          {
+            label: stickyItem.label,
+            value: stickyItem.value,
+          } as SelectedType<ValueType<T>>,
+        ]
+      : []),
+  ];
   const hasList = list.length > 0;
   const is1DepthSingle = props.modules?.includes('1-depth-single');
 

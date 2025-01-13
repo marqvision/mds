@@ -70,7 +70,7 @@ export type CustomModule<T> = {
   type: ModuleType;
 } & (SearchModule | SortModule<T> | InfiniteModule | BottomButtonModule<T>);
 
-export type Module<T> = 'search' | 'sort' | '1-depth-single' | CustomModule<T>;
+export type Module<T> = 'search' | 'sort' | '1-depth-single' | 'hide-select-all' | CustomModule<T>;
 
 export type Props<T, SortT = unknown> = {
   value?: T;

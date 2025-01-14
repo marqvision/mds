@@ -133,9 +133,10 @@ export const MDSImage = (props: ImageProps) => {
 
   const imageRef = useRef<HTMLImageElement>(null);
 
-  const { isOnScreen, isLoaded, isError, onError, onLoad, size } = useLazyLoad(imageRef);
+  const { isOnScreen, isLoaded, isError: isLoadError, onError, onLoad, size } = useLazyLoad(imageRef);
   const { Element: HoverElement, hoverWrapperProps, wrapperProps } = useHover(custom);
 
+  const isError = isLoadError || (!isLoading && !src);
   const wrapperWidth = width || (!aspectRatio ? `${size?.width}px` : undefined);
   const wrapperHeight = width && height ? height || (!aspectRatio ? `${size?.height}px` : undefined) : undefined;
   const wrapperAspectRatio = aspectRatio || `${size?.width}/${size?.height}`;

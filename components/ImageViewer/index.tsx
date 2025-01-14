@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSDimmed } from '../Dimmed';
 import { MDSIcon } from '../Icon';
@@ -21,6 +21,13 @@ const StyledImageWrapper = styled.div`
   padding: 40px;
 `;
 
+const StyledLoading = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 const StyledZoomButton = styled.div`
   width: 40px;
   height: 40px;
@@ -36,18 +43,24 @@ const StyledZoomButton = styled.div`
 `;
 
 export const MDSImageViewer = (props: ImageViewerProps) => {
-  const { url, children, ...restProps } = props;
+  const { src, children, ImageProps } = props;
+
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const handleOpen = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsOpen(true);
   };
 
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.currentTarget !== event.target) return;
     setIsOpen(false);
+    timeoutRef.current = setTimeout(() => {
+      setIsLoaded(false);
+    }, 350);
   };
 
   const handleLoad = () => {
@@ -59,15 +72,19 @@ export const MDSImageViewer = (props: ImageViewerProps) => {
       <MDSDimmed intensity="strong" padding="0" isOpen={isOpen} onClose={handleClose}>
         <StyledScrollWrapper onClick={handleClose}>
           <StyledImageWrapper onClick={handleClose}>
-            {!isLoaded && <MDSIcon.Image variant="outline" size={46} color="color/content/inverse/default/normal" />}
             <MDSImage
-              src={url}
+              src={src}
               errorFallback="both"
               iconSize="large"
               maxWidth="100%"
               onLoad={handleLoad}
               onError={handleLoad}
             />
+            {!isLoaded && (
+              <StyledLoading>
+                <MDSIcon.Image variant="outline" size={46} color="color/content/inverse/default/normal" />
+              </StyledLoading>
+            )}
           </StyledImageWrapper>
         </StyledScrollWrapper>
       </MDSDimmed>
@@ -75,8 +92,8 @@ export const MDSImageViewer = (props: ImageViewerProps) => {
         children(handleOpen)
       ) : (
         <MDSImage
-          src={url}
-          {...restProps}
+          src={src}
+          {...ImageProps}
           custom={{
             type: 'hover',
             element: (

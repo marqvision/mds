@@ -13,6 +13,7 @@ export const useLazyLoad = (ref: React.RefObject<HTMLImageElement>) => {
   };
 
   const handleError = () => {
+    setSize({ width: 200, height: 200 });
     setIsError(true);
   };
 

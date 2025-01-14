@@ -13,7 +13,6 @@ const meta: Meta<typeof MDSImageViewer> = {
       },
     },
   },
-
   tags: ['autodocs'],
 };
 
@@ -40,10 +39,11 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
 
 export const Preview: Story = {
   args: {
-    fallbackStyle: 'border',
-    url: 'https://picsum.photos/200',
-    width: '200px',
-    height: '200px',
+    src: 'https://picsum.photos/200',
+    ImageProps: {
+      width: '200px',
+      height: '200px',
+    },
   },
   render: function Render(props) {
     return (
@@ -56,17 +56,19 @@ export const Preview: Story = {
 
 export const BigSizeImage: Story = {
   args: {
-    fallbackStyle: 'border',
-    src: 'https://picsum.photos/200',
-    url: 'https://picsum.photos/1920/3600',
-    width: '200px',
-    height: '200px',
+    src: 'https://picsum.photos/1920/3600',
+    ImageProps: {
+      src: 'https://picsum.photos/200',
+      fallbackStyle: 'border',
+      width: '200px',
+      height: '200px',
+    },
   },
   render: function Render(props) {
     return (
       <Wrapper>
         <MDSTypography>
-          MDSImage 의 prop 인 src 를 전달하면, 미리보기 이미지와 뷰어로 출력할 이미지를 별도로 지정할 수 있습니다.
+          ImageProps 에 src 를 전달하면, 미리보기 이미지와 뷰어로 출력할 이미지를 별도로 지정할 수 있습니다.
         </MDSTypography>
         <MDSImageViewer {...props} />
       </Wrapper>
@@ -76,10 +78,11 @@ export const BigSizeImage: Story = {
 
 export const VerticalImage: Story = {
   args: {
-    fallbackStyle: 'border',
-    url: 'https://picsum.photos/100/3600',
-    width: '200px',
-    height: '200px',
+    src: 'https://picsum.photos/100/3600',
+    ImageProps: {
+      width: '200px',
+      height: '200px',
+    },
   },
   render: function Render(props) {
     return (
@@ -92,10 +95,11 @@ export const VerticalImage: Story = {
 
 export const HorizontalImage: Story = {
   args: {
-    fallbackStyle: 'border',
-    url: 'https://picsum.photos/3600/100',
-    width: '200px',
-    height: '200px',
+    src: 'https://picsum.photos/3600/100',
+    ImageProps: {
+      width: '200px',
+      height: '200px',
+    },
   },
   render: function Render(props) {
     return (
@@ -107,23 +111,30 @@ export const HorizontalImage: Story = {
 };
 
 export const CustomElement: Story = {
-  args: {
-    url: 'https://picsum.photos/400',
-  },
-  render: function Render(props) {
+  render: function Render() {
     return (
       <Wrapper>
-        <MDSTypography>
-          You can use any element as a trigger for the viewer
-        </MDSTypography>
-        <MDSImageViewer {...props}>
-          {(open) => <MDSChip variant="border" size="medium" color="bluegray" onClick={open} startIcon={<MDSIcon.Image variant="fill" />}>
-            Image
-          </MDSChip>}
+        <MDSTypography>You can use any element as a trigger for the viewer</MDSTypography>
+        <MDSImageViewer src="https://picsum.photos/400">
+          {(open) => (
+            <MDSChip
+              variant="border"
+              size="medium"
+              color="bluegray"
+              onClick={open}
+              startIcon={<MDSIcon.Image variant="fill" />}
+            >
+              Image
+            </MDSChip>
+          )}
         </MDSImageViewer>
-        <MDSTypography as="code" variant="T14" style={{ whiteSpace: 'pre-wrap', backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}>
+        <MDSTypography
+          as="code"
+          variant="T14"
+          style={{ whiteSpace: 'pre-wrap', backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}
+        >
           {`
-            <MDSImageViewer {...props}>
+            <MDSImageViewer src="https://picsum.photos/400">
               {(open) => 
                 <MDSChip variant="border" size="medium" color="bluegray" onClick={open} startIcon={<MDSIcon.Image variant="fill" />}>
                   Image
@@ -131,6 +142,23 @@ export const CustomElement: Story = {
             </MDSImageViewer>
         `}
         </MDSTypography>
+      </Wrapper>
+    );
+  },
+};
+
+export const Error: Story = {
+  args: {
+    src: 'error',
+    ImageProps: {
+      width: '200px',
+      height: '200px',
+    },
+  },
+  render: function Render(props) {
+    return (
+      <Wrapper>
+        <MDSImageViewer {...props} />
       </Wrapper>
     );
   },

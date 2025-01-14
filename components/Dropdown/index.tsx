@@ -171,7 +171,7 @@ const Dropdown = <T, SortT>(
   const isShowStickyHeader = hasSearch || ((hasSort || isMultiple) && !hideSelectAllAndCount);
 
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
-  const searchedCount = searchedValues.length;
+  const searchedCount = infinite?.total || searchedValues.length;
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;
   const selectedCount = (isInfiniteAll ? allCount : selectedValues.length).toLocaleString();
 

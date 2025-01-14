@@ -286,10 +286,7 @@ export const StatusList = {
       {
         label: 'Registration granted',
         value: FolioCommonEnumsApplicationStatusEnum.RegistrationGranted,
-        children: [
-          { label: '등록결정 보고접수', value: FolioCommonEnumsApplicationStepEnum.RegReceive },
-          { label: '등록결정 보고완료', value: FolioCommonEnumsApplicationStepEnum.RegReport },
-        ],
+        children: [],
       },
       {
         label: 'Registration completed',

@@ -63,19 +63,18 @@ const StyledRightDiv = styled.div`
   gap: 12px;
 `;
 
-const StyledExpandIcon = styled.button<{ isDisabled?: boolean }>`
+const StyledExpandIcon = styled.button<{ disabled?: boolean }>`
   border: 0;
   margin: 0;
   padding: 0;
   background: transparent;
-  cursor: ${({ isDisabled }) => (isDisabled ? undefined : 'pointer')};
+  cursor: ${({ disabled }) => (disabled ? undefined : 'pointer')};
   transition: background-color 225ms ease;
   display: flex;
   align-items: center;
   border-radius: 4px;
   &:hover {
-    background-color: ${({ theme, isDisabled }) =>
-      !isDisabled ? theme.color.content.inverse.default.hover : undefined};
+    background-color: ${({ theme, disabled }) => (!disabled ? theme.color.content.inverse.default.hover : undefined)};
   }
 `;
 
@@ -127,7 +126,8 @@ export const Item = <T,>(props: Props<T>) => {
   const hasChildren = !!item.children;
 
   const selectedChildLength = allChildValue.filter((v) => selectedValue.some((v2) => v2.value === v)).length;
-  const isSelected = props.isInfiniteAll || selectedChildLength === allChildSelected.length;
+  const isSelected =
+    props.isInfiniteAll || (selectedChildLength === allChildSelected.length && allChildSelected.length !== 0);
   const is1DepthSingle = props.is1DepthSingle && depth === 0 && !hasChildren;
   const isMultiple = is1DepthSingle ? false : _isMultiple;
 
@@ -258,7 +258,7 @@ export const Item = <T,>(props: Props<T>) => {
           {isMultiple && (
             <MDSCheckbox
               value={isIndeterminate ? 'indeterminate' : isSelected}
-              isDisabled={item.isDisabled}
+              isDisabled={item.isDisabled || item.children?.length === 0}
               onChange={handleCheck}
             />
           )}
@@ -296,29 +296,37 @@ export const Item = <T,>(props: Props<T>) => {
             {subLabel?.position === 'bottom' && subLabelEl}
           </StyledLabelWrap>
         </StyledLabel>
-        <StyledRightDiv>
-          {item.rightSection}
-          {props.is1DepthSingle && depth === 0 && hasChildren && selectedChildLength > 0 ? (
-            <MDSTag size="medium" variant="tint" color="blue">
-              Selected {selectedChildLength}
-            </MDSTag>
-          ) : undefined}
-          {hasChildren && (
-            <StyledExpandIcon isDisabled={item.isDisabled} onClick={handleClickExpand}>
-              {isExpanded ? (
-                <MDSIcon.Fold
-                  size={24}
-                  color={item.isDisabled ? 'color/content/neutral/default/disabled' : undefined}
-                />
-              ) : (
-                <MDSIcon.Unfold
-                  size={24}
-                  color={item.isDisabled ? 'color/content/neutral/default/disabled' : undefined}
-                />
-              )}
-            </StyledExpandIcon>
-          )}
-        </StyledRightDiv>
+        {(item.rightSection ||
+          (props.is1DepthSingle && depth === 0 && hasChildren && selectedChildLength > 0) ||
+          hasChildren) && (
+          <StyledRightDiv>
+            {item.rightSection}
+            {props.is1DepthSingle && depth === 0 && hasChildren && selectedChildLength > 0 ? (
+              <MDSTag size="medium" variant="tint" color="blue">
+                Selected {selectedChildLength}
+              </MDSTag>
+            ) : undefined}
+            {hasChildren && (
+              <StyledExpandIcon disabled={item.isDisabled || !item.children.length} onClick={handleClickExpand}>
+                {isExpanded ? (
+                  <MDSIcon.Fold
+                    size={24}
+                    color={
+                      item.isDisabled || !item.children.length ? 'color/content/neutral/default/disabled' : undefined
+                    }
+                  />
+                ) : (
+                  <MDSIcon.Unfold
+                    size={24}
+                    color={
+                      item.isDisabled || !item.children.length ? 'color/content/neutral/default/disabled' : undefined
+                    }
+                  />
+                )}
+              </StyledExpandIcon>
+            )}
+          </StyledRightDiv>
+        )}
       </StyledWrap>
       {item.children?.map((child, index) => (
         <Item

@@ -1,4 +1,5 @@
 import { CSSProperties, InputHTMLAttributes, ReactElement, MouseEvent } from 'react';
+import { MDSDropdownItem } from '../Dropdown';
 
 export type Size = 'small' | 'medium' | 'large' | 'extra-large';
 
@@ -116,7 +117,7 @@ export type SelectProps<T = unknown> = {
   inputProps?: never;
   custom?: SelectCustom<T>;
   value: T;
-  list: { label: string; value: ElementType<T> }[];
+  list: MDSDropdownItem<ElementType<T>>[];
   format?: (label: string, value: ElementType<T>) => string;
   isMultiline?: never;
   outlineStyle?: CSSProperties;

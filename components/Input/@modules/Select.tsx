@@ -1,6 +1,7 @@
 import { MouseEvent } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
+import ReactHtmlParser from 'html-react-parser';
 import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { MDSChip } from '../../Chip';
@@ -173,7 +174,9 @@ export const Select = <T,>(props: Props<T>) => {
               title={label}
               disabled={isDisabled}
             >
-              {label || (
+              {label ? (
+                ReactHtmlParser(label)
+              ) : (
                 <Placeholder variant={variant} color="color/content/placeholder/normal">
                   {placeholder || '\u00A0'}
                 </Placeholder>

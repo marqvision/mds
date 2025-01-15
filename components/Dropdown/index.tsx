@@ -209,7 +209,7 @@ const Dropdown = <T, SortT>(
 
   const stickyBottomIcon = stickyBottom?.icon
     ? cloneElement(stickyBottom.icon, {
-        size: 16,
+        size: stickyBottom.icon.props.size || 16,
         color: stickyBottom.isDisabled
           ? 'color/content/primary/default/disabled'
           : 'color/content/primary/default/normal',

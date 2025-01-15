@@ -136,7 +136,7 @@ export const Item = <T,>(props: Props<T>) => {
   const iconEle =
     item.icon &&
     cloneElement(item.icon, {
-      size: 16,
+      size: item.icon.props.size || 16,
       style: { marginRight: '-8px' },
     });
 

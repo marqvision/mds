@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSChip, MDSIcon, MDSImageViewer, MDSTypography } from '../components';
+import { MDSChip, MDSIcon, MDSImage, MDSImageViewer, MDSTypography } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSImageViewer> = {
@@ -28,7 +28,7 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
         flexDirection: 'column',
         alignItems: 'center',
         gap: '24px',
-        height: '400px',
+        minHeight: '400px',
         overflow: 'auto',
       }}
     >
@@ -36,87 +36,140 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
     </div>
   );
 };
+const CodeStyle = {
+  width: '100%',
+  whiteSpace: 'pre-wrap',
+  backgroundColor: '#ddd',
+  padding: '8px',
+  borderRadius: '4px',
+};
 
 export const Preview: Story = {
-  args: {
-    src: 'https://picsum.photos/200',
-    ImageProps: {
-      width: '200px',
-      height: '200px',
-    },
-  },
-  render: function Render(props) {
-    return (
-      <Wrapper>
-        <MDSImageViewer {...props} />
-      </Wrapper>
-    );
-  },
-};
-
-export const BigSizeImage: Story = {
-  args: {
-    src: 'https://picsum.photos/1920/3600',
-    ImageProps: {
-      src: 'https://picsum.photos/200',
-      fallbackStyle: 'border',
-      width: '200px',
-      height: '200px',
-    },
-  },
-  render: function Render(props) {
-    return (
-      <Wrapper>
-        <MDSTypography>
-          ImageProps 에 src 를 전달하면, 미리보기 이미지와 뷰어로 출력할 이미지를 별도로 지정할 수 있습니다.
-        </MDSTypography>
-        <MDSImageViewer {...props} />
-      </Wrapper>
-    );
-  },
-};
-
-export const VerticalImage: Story = {
-  args: {
-    src: 'https://picsum.photos/100/3600',
-    ImageProps: {
-      width: '200px',
-      height: '200px',
-    },
-  },
-  render: function Render(props) {
-    return (
-      <Wrapper>
-        <MDSImageViewer {...props} />
-      </Wrapper>
-    );
-  },
-};
-
-export const HorizontalImage: Story = {
-  args: {
-    src: 'https://picsum.photos/3600/100',
-    ImageProps: {
-      width: '200px',
-      height: '200px',
-    },
-  },
-  render: function Render(props) {
-    return (
-      <Wrapper>
-        <MDSImageViewer {...props} />
-      </Wrapper>
-    );
-  },
-};
-
-export const CustomElement: Story = {
   render: function Render() {
     return (
       <Wrapper>
-        <MDSTypography>You can use any element as a trigger for the viewer</MDSTypography>
-        <MDSImageViewer src="https://picsum.photos/400">
-          {(open) => (
+        <MDSTypography>
+          renderAnchor 에서 제공하는 defaultButton 을 미리보기 이미지에서 사용할 수 있습니다.
+        </MDSTypography>
+        <MDSImageViewer
+          image="https://picsum.photos/200"
+          renderAnchor={({ defaultButton }) => (
+            <MDSImage
+              width="200px"
+              height="200px"
+              src="https://picsum.photos/200"
+              custom={{
+                type: 'hover',
+                element: defaultButton,
+              }}
+            />
+          )}
+        />
+        <MDSTypography as="code" variant="T14" style={CodeStyle}>
+          {`
+            <MDSImageViewer
+              image="https://picsum.photos/200"
+              renderAnchor={({ defaultButton }) => (
+                <MDSImage
+                  width="200px"
+                  height="200px"
+                  src="https://picsum.photos/200"
+                  custom={{
+                    type: 'hover',
+                    element: defaultButton,
+                  }}
+                />
+              )}
+            />
+        `}
+        </MDSTypography>
+      </Wrapper>
+    );
+  },
+};
+
+const BoundingBox = () => {
+  return (
+    <div
+      style={{
+        width: '80px',
+        height: '30px',
+        border: '4px solid red',
+        position: 'absolute',
+        top: '50%',
+        left: '30%',
+        textAlign: 'center',
+      }}
+    />
+  );
+};
+export const WithOverlayElement: Story = {
+  render: function Render() {
+    return (
+      <Wrapper>
+        <MDSTypography>image 를 객체 형태로 전달하면 원본 이미지 외에 다른 정보를 출력할 수 있습니다.</MDSTypography>
+        <MDSTypography>
+          overlay 는 원본 이미지(MDSImage) 의 children 으로 전달되어 이미지 내부에 다른 요소를 출력합니다.
+        </MDSTypography>
+        <MDSImageViewer
+          image={{
+            src: 'https://picsum.photos/200',
+            overlay: <BoundingBox />, // 원본 이미지 내 BoundingBox 추가
+          }}
+          renderAnchor={({ defaultButton }) => (
+            <MDSImage
+              width="200px"
+              height="200px"
+              src="https://picsum.photos/200"
+              custom={{
+                type: 'hover',
+                element: defaultButton,
+              }}
+            >
+              {/* 미리보기 이미지 내 BoundingBox 추가 */}
+              <BoundingBox />
+            </MDSImage>
+          )}
+        />
+        <MDSTypography as="code" variant="T14" style={CodeStyle}>
+          {`
+            <MDSImageViewer
+              image={{
+                src: 'https://picsum.photos/200',
+                overlay: <BoundingBox />, // 원본 이미지 내 BoundingBox 추가
+              }}
+              renderAnchor={({ defaultButton }) => (
+                <MDSImage
+                  width="200px"
+                  height="200px"
+                  src="https://picsum.photos/200"
+                  custom={{
+                    type: 'hover',
+                    element: defaultButton,
+                  }}
+                >
+                  {/* 미리보기 이미지 내 BoundingBox 추가 */}
+                  <BoundingBox />
+                </MDSImage>
+              )}
+            />
+        `}
+        </MDSTypography>
+      </Wrapper>
+    );
+  },
+};
+
+export const CustomButton: Story = {
+  render: function Render() {
+    return (
+      <Wrapper>
+        <MDSTypography>
+          renderAnchor 에서 제공하는 open 이벤트를 적용해 임의의 요소를 버튼으로 사용할 수 있습니다.
+        </MDSTypography>
+        <MDSImageViewer
+          image="https://picsum.photos/400"
+          renderAnchor={({ open }) => (
             <MDSChip
               variant="border"
               size="medium"
@@ -127,19 +180,23 @@ export const CustomElement: Story = {
               Image
             </MDSChip>
           )}
-        </MDSImageViewer>
-        <MDSTypography
-          as="code"
-          variant="T14"
-          style={{ whiteSpace: 'pre-wrap', backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}
-        >
+        />
+        <MDSTypography as="code" variant="T14" style={CodeStyle}>
           {`
-            <MDSImageViewer src="https://picsum.photos/400">
-              {(open) => 
-                <MDSChip variant="border" size="medium" color="bluegray" onClick={open} startIcon={<MDSIcon.Image variant="fill" />}>
+            <MDSImageViewer
+              image="https://picsum.photos/400"
+              renderAnchor={({ open }) => (
+                <MDSChip
+                  variant="border"
+                  size="medium"
+                  color="bluegray"
+                  onClick={open}
+                  startIcon={<MDSIcon.Image variant="fill" />}
+                >
                   Image
-                </MDSChip>}
-            </MDSImageViewer>
+                </MDSChip>
+              )}
+            />
         `}
         </MDSTypography>
       </Wrapper>
@@ -147,18 +204,57 @@ export const CustomElement: Story = {
   },
 };
 
-export const Error: Story = {
+export const BigImage: Story = {
   args: {
-    src: 'error',
-    ImageProps: {
-      width: '200px',
-      height: '200px',
-    },
+    image: 'https://picsum.photos/3600/400',
   },
   render: function Render(props) {
     return (
       <Wrapper>
-        <MDSImageViewer {...props} />
+        <MDSTypography>큰 사이즈의 이미지는 max-width 1280px 으로 출력됩니다.</MDSTypography>
+        <MDSImageViewer
+          {...props}
+          renderAnchor={({ defaultButton }) => (
+            <MDSImage
+              width="200px"
+              height="200px"
+              src="https://picsum.photos/200"
+              custom={{
+                type: 'hover',
+                element: defaultButton,
+              }}
+            />
+          )}
+        />
+      </Wrapper>
+    );
+  },
+};
+
+export const VerticalImage: Story = {
+  args: {
+    image: 'https://picsum.photos/400/3600',
+  },
+  render: function Render(props) {
+    return (
+      <Wrapper>
+        <Wrapper>
+          <MDSTypography>세로로 긴 이미지는 스크롤을 내려서 확인합니다.</MDSTypography>
+          <MDSImageViewer
+            {...props}
+            renderAnchor={({ defaultButton }) => (
+              <MDSImage
+                width="200px"
+                height="200px"
+                src="https://picsum.photos/200"
+                custom={{
+                  type: 'hover',
+                  element: defaultButton,
+                }}
+              />
+            )}
+          />
+        </Wrapper>
       </Wrapper>
     );
   },

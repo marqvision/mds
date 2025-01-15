@@ -43,12 +43,15 @@ const StyledZoomButton = styled.div`
 `;
 
 export const MDSImageViewer = (props: ImageViewerProps) => {
-  const { src, children, ImageProps } = props;
+  const { image, renderAnchor } = props;
 
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  const imageSrc = typeof image === 'string' ? image : image.src;
+  const imageChildren = typeof image === 'string' ? undefined : image.overlay;
 
   const handleOpen = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -73,13 +76,15 @@ export const MDSImageViewer = (props: ImageViewerProps) => {
         <StyledScrollWrapper onClick={handleClose}>
           <StyledImageWrapper onClick={handleClose}>
             <MDSImage
-              src={src}
+              src={imageSrc}
               errorFallback="both"
               iconSize="large"
               maxWidth="100%"
               onLoad={handleLoad}
               onError={handleLoad}
-            />
+            >
+              {imageChildren}
+            </MDSImage>
             {!isLoaded && (
               <StyledLoading>
                 <MDSIcon.Image variant="outline" size={46} color="color/content/inverse/default/normal" />
@@ -88,22 +93,14 @@ export const MDSImageViewer = (props: ImageViewerProps) => {
           </StyledImageWrapper>
         </StyledScrollWrapper>
       </MDSDimmed>
-      {children ? (
-        children(handleOpen)
-      ) : (
-        <MDSImage
-          src={src}
-          {...ImageProps}
-          custom={{
-            type: 'hover',
-            element: (
-              <StyledZoomButton onClick={handleOpen}>
-                <MDSIcon.ZoomIn />
-              </StyledZoomButton>
-            ),
-          }}
-        />
-      )}
+      {renderAnchor({
+        open: handleOpen,
+        defaultButton: (
+          <StyledZoomButton onClick={handleOpen}>
+            <MDSIcon.ZoomIn />
+          </StyledZoomButton>
+        ),
+      })}
     </>
   );
 };

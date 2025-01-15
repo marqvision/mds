@@ -18,6 +18,7 @@ export type DropdownItem<T> = {
   subLabel?: string | number | SubLabel;
   isDisabled?: boolean;
   icon?: ReactElement;
+  count?: number;
   imgUrl?: string;
   rightSection?: ReactElement;
   style?: CSSProperties;

@@ -286,7 +286,6 @@ export const Item = <T,>(props: Props<T>) => {
               style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
             >
               {typeof item.label === 'string' ? <HighLightLabel searchText={search} label={item.label} /> : item.label}
-              {typeof item.count === 'number' && ` (${item.count})`}
               {subLabel?.position === 'tooltip' && (
                 <MDSTooltip title={subLabel.label} anchorStyle={{ display: 'inline', marginLeft: '4px' }}>
                   <MDSIcon.Help variant="fill" size={12} />

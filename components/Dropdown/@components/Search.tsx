@@ -1,8 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import { MDSInput } from '../../Input';
 import { MDSIcon } from '../../Icon';
 
-export const Search = ({ onChange }: { onChange: (value: string) => void }) => {
+export const Search = ({
+  placeholder,
+  prefix,
+  onChange,
+}: {
+  placeholder?: string;
+  prefix?: string | ReactElement;
+  onChange: (value: string) => void;
+}) => {
   const [value, setValue] = useState('');
 
   const ref = useRef(onChange);
@@ -15,8 +23,8 @@ export const Search = ({ onChange }: { onChange: (value: string) => void }) => {
     <MDSInput
       value={value}
       onChange={setValue}
-      custom={{ prefix: <MDSIcon.Search size={16} /> }}
-      placeholder="Search"
+      custom={{ prefix: prefix || <MDSIcon.Search size={16} /> }}
+      placeholder={placeholder || 'Search'}
       fullWidth
       inputProps={{ autoFocus: true }}
     />

@@ -37,7 +37,9 @@ export type SearchModule = {
   type: 'search';
   minLength?: number;
   debounce?: number;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  prefix?: string | ReactElement;
 };
 
 export type SortModule<T> = {

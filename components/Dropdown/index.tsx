@@ -32,7 +32,9 @@ const StyledSticky = styled.div`
   position: sticky;
   top: 0;
   padding: 8px;
-  box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
+  box-shadow:
+    0 1px 8px 0 #0000001f,
+    0 1px 2px 0 #0000000a;
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
   z-index: 1;
@@ -154,8 +156,8 @@ const Dropdown = <T, SortT>(
     isMultiple && (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-      ? 'indeterminate'
-      : false;
+        ? 'indeterminate'
+        : false;
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
   const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
@@ -238,7 +240,7 @@ const Dropdown = <T, SortT>(
           clearTimeout(debounceRef.current);
         }
         debounceRef.current = window.setTimeout(() => {
-          customSearch.onChange(s);
+          customSearch.onChange?.(s);
           debounceRef.current = undefined;
         }, customSearch.debounce || DEFAULT_DEBOUNCE_TIMING);
       }
@@ -306,7 +308,13 @@ const Dropdown = <T, SortT>(
     <StyledWrap>
       {isShowStickyHeader && (
         <StyledSticky>
-          {hasSearch && <Search onChange={handleChangeSearch} />}
+          {hasSearch && (
+            <Search
+              placeholder={customSearch?.placeholder}
+              prefix={customSearch?.prefix}
+              onChange={handleChangeSearch}
+            />
+          )}
           {(isMultiple || hasSort) && !hideSelectAllAndCount && (
             <StyledAction>
               <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
@@ -315,8 +323,8 @@ const Dropdown = <T, SortT>(
                   {isMultiple && selectedValues.length > 0
                     ? `Selected (${selectedCount})`
                     : search
-                    ? `Searched (${searchedCount})`
-                    : `All (${allCount})`}
+                      ? `Searched (${searchedCount})`
+                      : `All (${allCount})`}
                 </MDSTypography>
               </StyledSelectAll>
               {hasSort && sortEle}

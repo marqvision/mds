@@ -118,8 +118,14 @@ export const useInitDropdown = <T, SortT>(
 
   const handleClose = () => {
     if (isMultiple) {
-      const newValue = selectedValues.flatMap((v) => v.value) as InferType<T>;
-      props.onChange?.(newValue, indeterminate as InferType<T>);
+      const newValue = selectedValues.flatMap((v) => v.value);
+      const isNotChanged = newValue.length === values.length && newValue.every((v) => values.includes(v));
+
+      if (isNotChanged) {
+        return;
+      }
+
+      props.onChange?.(newValue as InferType<T>, indeterminate as InferType<T>);
       lastValueRef.current = newValue as T;
     }
   };

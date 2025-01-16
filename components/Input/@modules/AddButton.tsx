@@ -5,7 +5,8 @@ import { theme } from '../@constants';
 const StyledAddButton = styled.button<{ size: Size; isError?: boolean }>`
   border: none;
   color: white;
-  font-weight: 500;
+  font-family: inherit;
+  font-weight: 560;
   transition: background-color ${theme.transitionTiming} ease;
   ${({ size }) => ({
     padding: `0 ${theme.size[size].buttonPadding}`,

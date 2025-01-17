@@ -26,6 +26,7 @@ export const findChildStickyHeight = (_element: HTMLElement | Window | undefined
   }
 
   const element = Array.from((_element as HTMLElement).querySelectorAll('*')).filter((v) => {
+    console.log(v);
     return (v.computedStyleMap().get('position') as CSSKeywordValue)?.value === 'sticky';
   });
 

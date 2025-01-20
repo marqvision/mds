@@ -26,15 +26,19 @@ import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constant
 
 export type MDSDropdownItem<T> = DropdownItem<T>;
 
-const StyledWrap = styled.div``;
+const StyledStickyTrigger = styled.div`
+  height: 1px;
+  flex: 0 0 1px;
+  width: 100%;
+  margin-top: -1px;
+`;
 
-const StyledSticky = styled.div`
+const StyledSticky = styled.div<{ isScrollTop: boolean }>`
   position: sticky;
   top: 0;
   padding: 8px;
-  box-shadow:
-    0 1px 8px 0 #0000001f,
-    0 1px 2px 0 #0000000a;
+  transition: 0.3s ease box-shadow;
+  box-shadow: ${({ isScrollTop }) => (isScrollTop ? '0 1px 8px 0 #0000001f, 1px 2px 0 #0000000a;' : 'none')};
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
   z-index: 1;
@@ -148,16 +152,20 @@ const Dropdown = <T, SortT>(
         : undefined,
   });
 
+  const [isScrollTop, setIsScrollTop] = useState(false);
+
   const infiniteRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number>();
+  const scrollOffsetRef = useRef<HTMLDivElement>(null);
+  const stickyTrigger = useRef<HTMLDivElement>(null);
 
   const isMultiple = Array.isArray(value);
   const isSelectedAll =
     isMultiple && (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-        ? 'indeterminate'
-        : false;
+      ? 'indeterminate'
+      : false;
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
   const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
   const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
@@ -277,7 +285,25 @@ const Dropdown = <T, SortT>(
   };
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setIsScrollTop(!entries.some((v) => v.isIntersecting));
+      },
+      {
+        root: scrollOffsetRef.current?.parentElement,
+      }
+    );
+
+    const sticky = stickyTrigger.current;
+
+    if (sticky) {
+      observer.observe(sticky);
+    }
+
     return () => {
+      if (sticky) {
+        observer.unobserve(sticky);
+      }
       handler.search('');
     };
     // intentional missing dependencies
@@ -305,9 +331,10 @@ const Dropdown = <T, SortT>(
   }, [onMount]);
 
   return (
-    <StyledWrap>
+    <div ref={scrollOffsetRef}>
+      <StyledStickyTrigger ref={stickyTrigger} />
       {isShowStickyHeader && (
-        <StyledSticky>
+        <StyledSticky isScrollTop={isScrollTop}>
           {hasSearch && (
             <Search
               placeholder={customSearch?.placeholder}
@@ -323,8 +350,8 @@ const Dropdown = <T, SortT>(
                   {isMultiple && selectedValues.length > 0
                     ? `Selected (${selectedCount})`
                     : search
-                      ? `Searched (${searchedCount})`
-                      : `All (${allCount})`}
+                    ? `Searched (${searchedCount})`
+                    : `All (${allCount})`}
                 </MDSTypography>
               </StyledSelectAll>
               {hasSort && sortEle}
@@ -421,7 +448,7 @@ const Dropdown = <T, SortT>(
           )}
         </>
       )}
-    </StyledWrap>
+    </div>
   );
 };
 

@@ -209,6 +209,18 @@ const Table = styled.table`
     border-top: 1px solid #e0e0e0;
   }
 `;
+const ToggleLanguageBox = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  border: 2px solid blue;
+
+  display: flex;
+  align-items: center;
+  padding: 16px 4px;
+`;
 export const Showcase: Story = {
   parameters: {
     layout: 'centered',
@@ -230,95 +242,13 @@ export const Showcase: Story = {
     }, [isKor]);
     return (
       <div>
-        <div
-          style={{ position: 'fixed', top: 0, left: 0, zIndex: 1000, background: 'white', border: '1px solid black' }}
-        >
-          <MDSCheckbox value={isKor} onChange={handleLangChange} /> Toggle html lang
-        </div>
+        <ToggleLanguageBox>
+          <MDSCheckbox value={isKor} onChange={handleLangChange} /> 현재 언어 {isKor ? 'ko' : 'en'}
+        </ToggleLanguageBox>
         <Container>
-          {/* title - Visuelt */}
-          <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-              Title - Visuelt
-            </MDSTypography2>
-            <Table cellPadding={12}>
-              <thead>
-                <tr>
-                  <th align="left">Example</th>
-                  <th>Size</th>
-                </tr>
-              </thead>
-              <hr />
-              <tbody>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="2xl" weight="semibold" color={color}>
-                        MARQVISION 24 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-                        MARQVISION 24 Medium 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>2xl (=24px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="xl" weight="semibold" color={color}>
-                        MARQVISION 20 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="xl" weight="medium" color={color}>
-                        MARQVISION 20 Medium 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>xl (=20px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="l" weight="semibold" color={color}>
-                        MARQVISION 18 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="l" weight="medium" color={color}>
-                        MARQVISION 18 Medium 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>l (=18px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="m" weight="semibold" color={color}>
-                        MARQVISION 16 Semibold 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>m (=16px)</td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="s" weight="semibold" color={color}>
-                        MARQVISION 14 Semibold 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>s (=14px)</td>
-                </tr>
-              </tbody>
-            </Table>
-          </div>
-
-          {/* title - pp neue montreal */}
           <div>
             <MDSTypography2 variant="title" size="2xl" weight="medium" color={color} __useNewFont>
-              Title - PP Neue Montreal
+              Title (English) - {isKor ? 'Pretendard' : 'PP Neue Montreal'}
             </MDSTypography2>
             <Table cellPadding={12}>
               <thead>
@@ -395,86 +325,10 @@ export const Showcase: Story = {
             </Table>
           </div>
 
-          {/* body - visuelt */}
           <div>
             <div>
               <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-                Body - Visuelt
-              </MDSTypography2>
-              <Table cellPadding={12}>
-                <thead>
-                  <tr>
-                    <th align="left">Example</th>
-                    <th>Size</th>
-                  </tr>
-                </thead>
-                <hr />
-                <tbody>
-                  <tr>
-                    <td>
-                      <div>
-                        <MDSTypography2 variant="body" size="l" weight="medium" color={color}>
-                          MARQVISION 16 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="l" weight="regular" color={color}>
-                          MARQVISION 16 Regular 1234567890
-                        </MDSTypography2>
-                      </div>
-                    </td>
-
-                    <td>l (=16px)</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div>
-                        <MDSTypography2 variant="body" size="m" weight="medium" color={color}>
-                          MARQVISION 14 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="m" weight="regular" color={color}>
-                          MARQVISION 14 Regular 1234567890
-                        </MDSTypography2>
-                      </div>
-                    </td>
-                    <td>xl (=20px)</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div>
-                        <MDSTypography2 variant="body" size="s" weight="medium" color={color}>
-                          MARQVISION 13 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="s" weight="regular" color={color}>
-                          MARQVISION 13 Regular 1234567890
-                        </MDSTypography2>
-                      </div>
-                    </td>
-
-                    <td>s (=13px)</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div>
-                        <MDSTypography2 variant="body" size="xs" weight="medium" color={color}>
-                          MARQVISION 12 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="xs" weight="regular" color={color}>
-                          MARQVISION 12 Regular 1234567890
-                        </MDSTypography2>
-                      </div>
-                    </td>
-
-                    <td>xs (=12px)</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          </div>
-
-          {/* body - visuelt */}
-          <div>
-            <div>
-              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-                Body - PP Neue Montreal
+                Body (English) - {isKor ? 'Pretendard' : 'PP Neue Montreal'}
               </MDSTypography2>
               <Table cellPadding={12}>
                 <thead>
@@ -545,7 +399,6 @@ export const Showcase: Story = {
             </div>
           </div>
 
-          {/* title - korean - pretendard */}
           <div>
             <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
               Title (Korean) - Pretendard
@@ -624,7 +477,6 @@ export const Showcase: Story = {
             </Table>
           </div>
 
-          {/* body - korean - pretendard */}
           <div>
             <div>
               <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
@@ -699,76 +551,9 @@ export const Showcase: Story = {
             </div>
           </div>
 
-          {/* title - english - number - visuelt */}
           <div>
             <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-              Title (English-Number) - Visuelt
-            </MDSTypography2>
-            <Table cellPadding={12}>
-              <thead>
-                <tr>
-                  <th align="left">Example</th>
-
-                  <th>Size</th>
-                </tr>
-              </thead>
-              <hr />
-              <tbody>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="xl" weight="semibold" char="number" color={color}>
-                        MARQVISION 20 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="xl" weight="medium" char="number" color={color}>
-                        MARQVISION 20 Medium 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>xl (=20px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="l" weight="semibold" char="number" color={color}>
-                        MARQVISION 18 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="l" weight="medium" char="number" color={color}>
-                        MARQVISION 18 Medium 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>l (=18px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="m" weight="semibold" char="number" color={color}>
-                        MARQVISION 16 Semibold 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>m (=16px)</td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="title" size="s" weight="semibold" char="number" color={color}>
-                        MARQVISION 14 Semibold 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>s (=14px)</td>
-                </tr>
-              </tbody>
-            </Table>
-          </div>
-
-          {/* title - english - number - pp neue montreal */}
-          <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-              Title (English-Number) - PP Neue Montreal
+              Title (English-Number) - {isKor ? 'Pretendard' : 'PP Neue Montreal'}
             </MDSTypography2>
             <Table cellPadding={12}>
               <thead>
@@ -865,86 +650,10 @@ export const Showcase: Story = {
             </Table>
           </div>
 
-          {/* body - english - number - visuelt */}
           <div>
             <div>
               <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-                Body (English-Number) - Visuelt
-              </MDSTypography2>
-              <Table cellPadding={12}>
-                <thead>
-                  <tr>
-                    <th align="left">Example</th>
-                    <th>Size</th>
-                  </tr>
-                </thead>
-                <hr />
-                <tbody>
-                  <tr>
-                    <td>
-                      <div>
-                        <MDSTypography2 variant="body" size="l" weight="medium" char="number" color={color}>
-                          MARQVISION 16 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="l" weight="regular" char="number" color={color}>
-                          MARQVISION 16 Regular 1234567890
-                        </MDSTypography2>
-                      </div>
-                    </td>
-
-                    <td>l (=16px)</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div>
-                        <MDSTypography2 variant="body" size="m" weight="medium" char="number" color={color}>
-                          MARQVISION 14 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="m" weight="regular" char="number" color={color}>
-                          MARQVISION 14 Regular 1234567890
-                        </MDSTypography2>
-                      </div>
-                    </td>
-                    <td>xl (=20px)</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div>
-                        <MDSTypography2 variant="body" size="s" weight="medium" char="number" color={color}>
-                          MARQVISION 13 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="s" weight="regular" char="number" color={color}>
-                          MARQVISION 13 Regular 1234567890
-                        </MDSTypography2>
-                      </div>
-                    </td>
-
-                    <td>s (=13px)</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div>
-                        <MDSTypography2 variant="body" size="xs" weight="medium" char="number" color={color}>
-                          MARQVISION 12 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="xs" weight="regular" char="number" color={color}>
-                          MARQVISION 12 Regular 1234567890
-                        </MDSTypography2>
-                      </div>
-                    </td>
-
-                    <td>xs (=12px)</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          </div>
-
-          {/* body - english - number - pp neue montreal */}
-          <div>
-            <div>
-              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-                Body (English-Number) - PP Neue Montreal
+                Body (English-Number) - {isKor ? 'Pretendard' : 'PP Neue Montreal'}
               </MDSTypography2>
               <Table cellPadding={12}>
                 <thead>
@@ -1071,7 +780,6 @@ export const Showcase: Story = {
             </div>
           </div>
 
-          {/* title - korean - number - pretendard */}
           <div>
             <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
               Title (Korean-Number) - Pretendard
@@ -1137,7 +845,6 @@ export const Showcase: Story = {
             </Table>
           </div>
 
-          {/* body - korean - number - pretendard */}
           <div>
             <div>
               <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>

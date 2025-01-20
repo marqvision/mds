@@ -1,8 +1,9 @@
 import { Global, css } from '@emotion/react';
 import { COLOR_TOKENS } from './colors';
-export const MDSResetCSS = () => (
+export const MDSGlobalCSS = () => (
   <Global
     styles={css`
+      // 기본 폰트 설정
       :root {
         --font-title-semibold: 680;
         --font-title-medium: 560;
@@ -32,6 +33,11 @@ export const MDSResetCSS = () => (
         --font-body-letter-spacing-xs: -0.6;
       }
 
+      /**
+       * 왜 :lang과 html[lang='ko'] 둘 다 써야 하는가?
+       * :lang으로만 설정했을 경우에, 영어는 계속 PP Neue Montreal로 나온다.
+       * 그래서 html[lang=]을 이용해서 영어폰트도 Pretendard로 리셋시켜버린다.
+       */
       html[lang='ko'] {
         font-family: 'Pretendard Variable';
         --font-title-semibold: 720;
@@ -62,6 +68,10 @@ export const MDSResetCSS = () => (
         --font-body-letter-spacing-s: -0.65;
         --font-body-letter-spacing-xs: -0.6;
       }
+
+
+
+      // 기본 리셋
 
       /***
         The new CSS reset - version 1.11.2 (last updated 15.11.2023)

@@ -12,7 +12,7 @@ import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
-    const { color, lineClamp, wordBreak, whiteSpace, textDecoration, lang, __useNewFont } = features;
+    const { color, lineClamp, wordBreak, whiteSpace, textDecoration } = features;
     const fontSize = resolveFontSize(features);
     const fontWeight = resolveFontWeight(features);
     const fontColor = resolveColor(color!);

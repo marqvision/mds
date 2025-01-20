@@ -42,21 +42,7 @@ export const resolveFontSize = (features: InnerTypographyStyleProps) => {
   }
 };
 export const resolveFontWeight = (features: InnerTypographyStyleProps) => {
-  if (features.variant === 'title') {
-    switch (features.weight) {
-      case 'semibold':
-        return `var(--font-title-semibold)`;
-      case 'medium':
-        return `var(--font-title-medium)`;
-    }
-  } else if (features.variant === 'body') {
-    switch (features.weight) {
-      case 'medium':
-        return `var(--font-body-medium)`;
-      case 'regular':
-        return `var(--font-body-regular)`;
-    }
-  }
+  return `var(--font-${features.variant}-${features.weight})`;
 };
 
 export const resolveFontFamily = (fontWeight: number) => {
@@ -82,44 +68,11 @@ export const resolveLineClamp = (lineClamp: InnerTypographyStyleProps['lineClamp
 
 export const resolveFontVariantNumeric = (features: InnerTypographyStyleProps) => {
   if (features.char === 'number') {
-    let letterSpacing = '';
-
-    if (features.variant === 'title') {
-      switch (features.size) {
-        case 'xl':
-          letterSpacing = `var(--font-title-letter-spacing-xl)`;
-          break;
-        case 'l':
-          letterSpacing = `var(--font-title-letter-spacing-l)`;
-          break;
-        case 'm':
-          letterSpacing = `var(--font-title-letter-spacing-m)`;
-          break;
-        case 's':
-          letterSpacing = `var(--font-title-letter-spacing-s)`;
-          break;
-      }
-    } else {
-      // body
-      switch (features.size) {
-        case 'l':
-          letterSpacing = `var(--font-body-letter-spacing-l)`;
-          break;
-        case 'm':
-          letterSpacing = `var(--font-body-letter-spacing-m)`;
-          break;
-        case 's':
-          letterSpacing = `var(--font-body-letter-spacing-s)`;
-          break;
-        case 'xs':
-          letterSpacing = `var(--font-body-letter-spacing-xs)`;
-          break;
-      }
-    }
-
     return `
       font-variant-numeric: tabular-nums;
-      letter-spacing: ${letterSpacing}px;
+      letter-spacing: var(--font-${features.variant}-letter-spacing-${features.size})px;
     `;
-  } else return '';
+  } else {
+    return '';
+  }
 };

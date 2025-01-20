@@ -4,7 +4,6 @@ import type { MDSThemeColorPath } from '../../foundation';
 type Variant = 'title' | 'body';
 type Size = '2xl' | 'xl' | 'l' | 'm' | 's' | 'xs';
 type Weight = 'semibold' | 'medium' | 'regular';
-type Lang = 'en' | 'ko';
 type Char = 'letter' | 'number';
 
 type BaseFeatures<T extends ElementType = 'p'> = {
@@ -57,7 +56,6 @@ type NewTypographyStyle =
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'letter'>;
-      lang?: Lang;
       size?: Extract<Size, '2xl' | 'xl' | 'l'>;
       /**
        * 타이포그래피의 굵기. - variant와 size에 따라 사용 가능한 값이 다릅니다
@@ -69,27 +67,23 @@ type NewTypographyStyle =
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'letter'>;
-      lang?: Lang;
       size?: Extract<Size, 'm' | 's'>;
       weight?: Extract<Weight, 'semibold'>;
     }
   | {
       variant?: Extract<Variant, 'title'>;
-      lang?: Lang;
       char?: Extract<Char, 'number'>;
       size?: Extract<Size, 'xl' | 'l'>;
       weight?: Extract<Weight, 'semibold' | 'medium'>;
     }
   | {
       variant?: Extract<Variant, 'title'>;
-      lang?: Lang;
       char?: Extract<Char, 'number'>;
       size?: Extract<Size, 'm' | 's'>;
       weight?: Extract<Weight, 'semibold'>;
     }
   | {
       variant?: Extract<Variant, 'body'>;
-      lang?: Lang;
       char?: Char;
       size?: Extract<Size, 'l' | 'm' | 's' | 'xs'>;
       weight?: Extract<Weight, 'medium' | 'regular'>;
@@ -99,7 +93,6 @@ type NewTypographyStyle =
 export type InnerTypographyStyleProps<T extends ElementType = 'p'> = {
   variant: Variant;
   char: Char;
-  lang: Lang;
   size: Size;
   weight: Weight;
 } & BaseFeatures<T>;

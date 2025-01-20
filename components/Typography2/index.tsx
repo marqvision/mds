@@ -2,7 +2,6 @@ import { ElementType } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system/resolvers';
 import {
-  resolveFontFamily,
   resolveFontSize,
   resolveFontVariantNumeric,
   resolveFontWeight,
@@ -16,7 +15,6 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const { color, lineClamp, wordBreak, whiteSpace, textDecoration, lang, __useNewFont } = features;
     const fontSize = resolveFontSize(features);
     const fontWeight = resolveFontWeight(features);
-    const fontFamily = resolveFontFamily(lang, fontWeight || 400, __useNewFont);
     const fontColor = resolveColor(color!);
     const lineClampStyles = lineClamp !== undefined ? resolveLineClamp(lineClamp) : '';
     const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';
@@ -26,7 +24,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
 
     return `
       margin: 0;
-      font-family: ${fontFamily};
+      
       font-size: ${fontSize};
       color: ${fontColor};
       font-weight: ${fontWeight};
@@ -34,8 +32,9 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${wordBreakStyles};
       ${whiteSpaceStyles};
       ${textDecorationStyles};
-      ${numberStyles};
+      ${numberStyles}
       line-height: 1.5;
+
     `;
   }}
 `;
@@ -47,7 +46,6 @@ export const MDSTypography2 = <T extends ElementType = 'p'>({
   lineClamp,
   size = 'm',
   char = 'letter',
-  lang = 'en',
   as,
   wordBreak,
   ...props
@@ -60,7 +58,6 @@ export const MDSTypography2 = <T extends ElementType = 'p'>({
       size={size}
       variant={variant}
       char={char}
-      lang={lang}
       lineClamp={lineClamp}
       as={tagName}
       color={color}

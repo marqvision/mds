@@ -3,6 +3,66 @@ import { COLOR_TOKENS } from './colors';
 export const MDSResetCSS = () => (
   <Global
     styles={css`
+      :root {
+        --font-title-semibold: 680;
+        --font-title-medium: 560;
+        --font-body-medium: 560;
+        --font-body-regular: 450;
+        --font-title-letter-spacing-xl: -1.6;
+        --font-title-letter-spacing-l: -1.4;
+        --font-title-letter-spacing-m: -1.2;
+        --font-title-letter-spacing-s: -1;
+        --font-body-letter-spacing-l: -0.8;
+        --font-body-letter-spacing-m: -0.7;
+        --font-body-letter-spacing-s: -0.65;
+        --font-body-letter-spacing-xs: -0.6;
+      }
+      :lang(ko) {
+        --font-title-semibold: 720;
+        --font-title-medium: 540;
+        --font-body-medium: 540;
+        --font-body-regular: 400;
+        --font-title-letter-spacing-xl: -1;
+        --font-title-letter-spacing-l: -0.9;
+        --font-title-letter-spacing-m: -0.8;
+        --font-title-letter-spacing-s: -0.7;
+        --font-body-letter-spacing-l: -0.8;
+        --font-body-letter-spacing-m: -0.7;
+        --font-body-letter-spacing-s: -0.65;
+        --font-body-letter-spacing-xs: -0.6;
+      }
+
+      html[lang='ko'] {
+        font-family: 'Pretendard Variable';
+        --font-title-semibold: 720;
+        --font-title-medium: 540;
+        --font-body-medium: 540;
+        --font-body-regular: 400;
+        --font-title-letter-spacing-xl: -1;
+        --font-title-letter-spacing-l: -0.9;
+        --font-title-letter-spacing-m: -0.8;
+        --font-title-letter-spacing-s: -0.7;
+        --font-body-letter-spacing-l: -0.8;
+        --font-body-letter-spacing-m: -0.7;
+        --font-body-letter-spacing-s: -0.65;
+        --font-body-letter-spacing-xs: -0.6;
+      }
+      html[lang='en'] {
+        font-family: 'PPNeueMontreal-Variable', 'Pretendard Variable';
+        --font-title-semibold: 680;
+        --font-title-medium: 560;
+        --font-body-medium: 560;
+        --font-body-regular: 450;
+        --font-title-letter-spacing-xl: -1.6;
+        --font-title-letter-spacing-l: -1.4;
+        --font-title-letter-spacing-m: -1.2;
+        --font-title-letter-spacing-s: -1;
+        --font-body-letter-spacing-l: -0.8;
+        --font-body-letter-spacing-m: -0.7;
+        --font-body-letter-spacing-s: -0.65;
+        --font-body-letter-spacing-xs: -0.6;
+      }
+
       /***
         The new CSS reset - version 1.11.2 (last updated 15.11.2023)
         GitHub page: https://github.com/elad2412/the-new-css-reset

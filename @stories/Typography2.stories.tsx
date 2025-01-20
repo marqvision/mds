@@ -1,5 +1,8 @@
+// @ts-nocheck
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography2 } from '../components/Typography2';
+import { MDSCheckbox } from '../components';
 import { MDSTHEME_COLORS } from './@helper';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -212,173 +215,31 @@ export const Showcase: Story = {
     controls: { include: ['color'] },
   },
   render: ({ color }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [isKor, setIsKor] = useState(false);
+    const handleLangChange = (checked: boolean) => {
+      setIsKor(checked);
+    };
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      if (isKor) {
+        document.documentElement.setAttribute('lang', 'ko');
+      } else {
+        document.documentElement.setAttribute('lang', 'en');
+      }
+    }, [isKor]);
     return (
-      <Container>
-        {/* title - Visuelt */}
-        <div>
-          <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-            Title - Visuelt
-          </MDSTypography2>
-          <Table cellPadding={12}>
-            <thead>
-              <tr>
-                <th align="left">Example</th>
-
-                <th>Size</th>
-              </tr>
-            </thead>
-            <hr />
-            <tbody>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="2xl" weight="semibold" lang="en" color={color}>
-                      MARQVISION 24 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-                      MARQVISION 24 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>2xl (=24px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="xl" weight="semibold" lang="en" color={color}>
-                      MARQVISION 20 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="xl" weight="medium" lang="en" color={color}>
-                      MARQVISION 20 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-
-                <td>xl (=20px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="l" weight="semibold" lang="en" color={color}>
-                      MARQVISION 18 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="l" weight="medium" lang="en" color={color}>
-                      MARQVISION 18 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>l (=18px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="m" weight="semibold" lang="en" color={color}>
-                      MARQVISION 16 Semibold 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>m (=16px)</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="s" weight="semibold" lang="en" color={color}>
-                      MARQVISION 14 Semibold 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>s (=14px)</td>
-              </tr>
-            </tbody>
-          </Table>
+      <div>
+        <div
+          style={{ position: 'fixed', top: 0, left: 0, zIndex: 1000, background: 'white', border: '1px solid black' }}
+        >
+          <MDSCheckbox value={isKor} onChange={handleLangChange} /> Toggle html lang
         </div>
-
-        {/* title - pp neue montreal */}
-        <div>
-          <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color} __useNewFont>
-            Title - PP Neue Montreal
-          </MDSTypography2>
-          <Table cellPadding={12}>
-            <thead>
-              <tr>
-                <th align="left">Example</th>
-
-                <th>Size</th>
-              </tr>
-            </thead>
-            <hr />
-            <tbody>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="2xl" weight="semibold" lang="en" color={color} __useNewFont>
-                      MARQVISION 24 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color} __useNewFont>
-                      MARQVISION 24 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>2xl (=24px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="xl" weight="semibold" lang="en" color={color} __useNewFont>
-                      MARQVISION 20 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="xl" weight="medium" lang="en" color={color} __useNewFont>
-                      MARQVISION 20 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-
-                <td>xl (=20px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="l" weight="semibold" lang="en" color={color} __useNewFont>
-                      MARQVISION 18 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="l" weight="medium" lang="en" color={color} __useNewFont>
-                      MARQVISION 18 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>l (=18px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="m" weight="semibold" lang="en" color={color} __useNewFont>
-                      MARQVISION 16 Semibold 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>m (=16px)</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="s" weight="semibold" lang="en" color={color} __useNewFont>
-                      MARQVISION 14 Semibold 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>s (=14px)</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-
-        {/* body - visuelt */}
-        <div>
+        <Container>
+          {/* title - Visuelt */}
           <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-              Body - Visuelt
+            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              Title - Visuelt
             </MDSTypography2>
             <Table cellPadding={12}>
               <thead>
@@ -392,25 +253,334 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="l" weight="medium" lang="en" color={color}>
-                        MARQVISION 16 Medium 1234567890
+                      <MDSTypography2 variant="title" size="2xl" weight="semibold" color={color}>
+                        MARQVISION 24 Semibold 1234567890
                       </MDSTypography2>
-                      <MDSTypography2 variant="body" size="l" weight="regular" lang="en" color={color}>
-                        MARQVISION 16 Regular 1234567890
+                      <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                        MARQVISION 24 Medium 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
-
-                  <td>l (=16px)</td>
+                  <td>2xl (=24px)</td>
                 </tr>
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="m" weight="medium" lang="en" color={color}>
-                        MARQVISION 14 Medium 1234567890
+                      <MDSTypography2 variant="title" size="xl" weight="semibold" color={color}>
+                        MARQVISION 20 Semibold 1234567890
                       </MDSTypography2>
-                      <MDSTypography2 variant="body" size="m" weight="regular" lang="en" color={color}>
-                        MARQVISION 14 Regular 1234567890
+                      <MDSTypography2 variant="title" size="xl" weight="medium" color={color}>
+                        MARQVISION 20 Medium 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+
+                  <td>xl (=20px)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="l" weight="semibold" color={color}>
+                        MARQVISION 18 Semibold 1234567890
+                      </MDSTypography2>
+                      <MDSTypography2 variant="title" size="l" weight="medium" color={color}>
+                        MARQVISION 18 Medium 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>l (=18px)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="m" weight="semibold" color={color}>
+                        MARQVISION 16 Semibold 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>m (=16px)</td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="s" weight="semibold" color={color}>
+                        MARQVISION 14 Semibold 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>s (=14px)</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+
+          {/* title - pp neue montreal */}
+          <div>
+            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color} __useNewFont>
+              Title - PP Neue Montreal
+            </MDSTypography2>
+            <Table cellPadding={12}>
+              <thead>
+                <tr>
+                  <th align="left">Example</th>
+
+                  <th>Size</th>
+                </tr>
+              </thead>
+              <hr />
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="2xl" weight="semibold" color={color} __useNewFont>
+                        MARQVISION 24 Semibold 1234567890
+                      </MDSTypography2>
+                      <MDSTypography2 variant="title" size="2xl" weight="medium" color={color} __useNewFont>
+                        MARQVISION 24 Medium 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>2xl (=24px)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="xl" weight="semibold" color={color} __useNewFont>
+                        MARQVISION 20 Semibold 1234567890
+                      </MDSTypography2>
+                      <MDSTypography2 variant="title" size="xl" weight="medium" color={color} __useNewFont>
+                        MARQVISION 20 Medium 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+
+                  <td>xl (=20px)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="l" weight="semibold" color={color} __useNewFont>
+                        MARQVISION 18 Semibold 1234567890
+                      </MDSTypography2>
+                      <MDSTypography2 variant="title" size="l" weight="medium" color={color} __useNewFont>
+                        MARQVISION 18 Medium 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>l (=18px)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="m" weight="semibold" color={color} __useNewFont>
+                        MARQVISION 16 Semibold 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>m (=16px)</td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="s" weight="semibold" color={color} __useNewFont>
+                        MARQVISION 14 Semibold 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>s (=14px)</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+
+          {/* body - visuelt */}
+          <div>
+            <div>
+              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                Body - Visuelt
+              </MDSTypography2>
+              <Table cellPadding={12}>
+                <thead>
+                  <tr>
+                    <th align="left">Example</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <hr />
+                <tbody>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="l" weight="medium" color={color}>
+                          MARQVISION 16 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="l" weight="regular" color={color}>
+                          MARQVISION 16 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>l (=16px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="m" weight="medium" color={color}>
+                          MARQVISION 14 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="m" weight="regular" color={color}>
+                          MARQVISION 14 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+                    <td>xl (=20px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="s" weight="medium" color={color}>
+                          MARQVISION 13 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="s" weight="regular" color={color}>
+                          MARQVISION 13 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>s (=13px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="xs" weight="medium" color={color}>
+                          MARQVISION 12 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="xs" weight="regular" color={color}>
+                          MARQVISION 12 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>xs (=12px)</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
+          </div>
+
+          {/* body - visuelt */}
+          <div>
+            <div>
+              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                Body - PP Neue Montreal
+              </MDSTypography2>
+              <Table cellPadding={12}>
+                <thead>
+                  <tr>
+                    <th align="left">Example</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <hr />
+                <tbody>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="l" weight="medium" color={color} __useNewFont>
+                          MARQVISION 16 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="l" weight="regular" color={color} __useNewFont>
+                          MARQVISION 16 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>l (=16px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="m" weight="medium" color={color} __useNewFont>
+                          MARQVISION 14 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="m" weight="regular" color={color} __useNewFont>
+                          MARQVISION 14 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+                    <td>xl (=20px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="s" weight="medium" color={color} __useNewFont>
+                          MARQVISION 13 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="s" weight="regular" color={color} __useNewFont>
+                          MARQVISION 13 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>s (=13px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="xs" weight="medium" color={color} __useNewFont>
+                          MARQVISION 12 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="xs" weight="regular" color={color} __useNewFont>
+                          MARQVISION 12 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>xs (=12px)</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
+          </div>
+
+          {/* title - korean - pretendard */}
+          <div>
+            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              Title (Korean) - Pretendard
+            </MDSTypography2>
+            <Table cellPadding={12}>
+              <thead>
+                <tr>
+                  <th align="left">Example</th>
+
+                  <th>Size</th>
+                </tr>
+              </thead>
+              <hr />
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="2xl" weight="semibold" color={color}>
+                        마크비전 24 세미볼드 1234567890
+                      </MDSTypography2>
+                      <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                        마크비전 24 미디움 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>2xl (=24px)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="xl" weight="semibold" color={color}>
+                        마크비전 20 세미볼드 1234567890
+                      </MDSTypography2>
+                      <MDSTypography2 variant="title" size="xl" weight="medium" color={color}>
+                        마크비전 20 미디움 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
@@ -419,41 +589,186 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="s" weight="medium" lang="en" color={color}>
-                        MARQVISION 13 Medium 1234567890
+                      <MDSTypography2 variant="title" size="l" weight="semibold" color={color}>
+                        마크비전 18 세미볼드 1234567890
                       </MDSTypography2>
-                      <MDSTypography2 variant="body" size="s" weight="regular" lang="en" color={color}>
-                        MARQVISION 13 Regular 1234567890
+                      <MDSTypography2 variant="title" size="l" weight="medium" color={color}>
+                        마크비전 18 미디움 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
-
-                  <td>s (=13px)</td>
+                  <td>l (=18px)</td>
                 </tr>
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="xs" weight="medium" lang="en" color={color}>
-                        MARQVISION 12 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="xs" weight="regular" lang="en" color={color}>
-                        MARQVISION 12 Regular 1234567890
+                      <MDSTypography2 variant="title" size="m" weight="semibold" color={color}>
+                        마크비전 16 세미볼드 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
+                  <td>m (=16px)</td>
+                </tr>
 
-                  <td>xs (=12px)</td>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="s" weight="semibold" color={color}>
+                        마크비전 14 세미볼드 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>s (=14px)</td>
                 </tr>
               </tbody>
             </Table>
           </div>
-        </div>
 
-        {/* body - visuelt */}
-        <div>
+          {/* body - korean - pretendard */}
           <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-              Body - PP Neue Montreal
+            <div>
+              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                Body (Korean) - Pretendard
+              </MDSTypography2>
+              <Table cellPadding={12}>
+                <thead>
+                  <tr>
+                    <th align="left">Example</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <hr />
+                <tbody>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="l" weight="medium" color={color}>
+                          마크비전 16 미디움 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="l" weight="regular" color={color}>
+                          마크비전 16 레귤러 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>l (=16px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="m" weight="medium" color={color}>
+                          마크비전 14 미디움 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="m" weight="regular" color={color}>
+                          마크비전 14 레귤러 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+                    <td>xl (=20px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="s" weight="medium" color={color}>
+                          마크비전 13 미디움 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="s" weight="regular" color={color}>
+                          마크비전 13 레귤러 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>s (=13px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="xs" weight="medium" color={color}>
+                          마크비전 12 미디움 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="xs" weight="regular" color={color}>
+                          마크비전 12 레귤러 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>xs (=12px)</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
+          </div>
+
+          {/* title - english - number - visuelt */}
+          <div>
+            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              Title (English-Number) - Visuelt
+            </MDSTypography2>
+            <Table cellPadding={12}>
+              <thead>
+                <tr>
+                  <th align="left">Example</th>
+
+                  <th>Size</th>
+                </tr>
+              </thead>
+              <hr />
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="xl" weight="semibold" char="number" color={color}>
+                        MARQVISION 20 Semibold 1234567890
+                      </MDSTypography2>
+                      <MDSTypography2 variant="title" size="xl" weight="medium" char="number" color={color}>
+                        MARQVISION 20 Medium 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>xl (=20px)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="l" weight="semibold" char="number" color={color}>
+                        MARQVISION 18 Semibold 1234567890
+                      </MDSTypography2>
+                      <MDSTypography2 variant="title" size="l" weight="medium" char="number" color={color}>
+                        MARQVISION 18 Medium 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>l (=18px)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="m" weight="semibold" char="number" color={color}>
+                        MARQVISION 16 Semibold 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>m (=16px)</td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="s" weight="semibold" char="number" color={color}>
+                        MARQVISION 14 Semibold 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>s (=14px)</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+
+          {/* title - english - number - pp neue montreal */}
+          <div>
+            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              Title (English-Number) - PP Neue Montreal
             </MDSTypography2>
             <Table cellPadding={12}>
               <thead>
@@ -467,25 +782,25 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="l" weight="medium" lang="en" color={color} __useNewFont>
-                        MARQVISION 16 Medium 1234567890
+                      <MDSTypography2
+                        variant="title"
+                        size="xl"
+                        weight="semibold"
+                        char="number"
+                        color={color}
+                        __useNewFont
+                      >
+                        MARQVISION 20 Semibold 1234567890
                       </MDSTypography2>
-                      <MDSTypography2 variant="body" size="l" weight="regular" lang="en" color={color} __useNewFont>
-                        MARQVISION 16 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>l (=16px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="m" weight="medium" lang="en" color={color} __useNewFont>
-                        MARQVISION 14 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="m" weight="regular" lang="en" color={color} __useNewFont>
-                        MARQVISION 14 Regular 1234567890
+                      <MDSTypography2
+                        variant="title"
+                        size="xl"
+                        weight="medium"
+                        char="number"
+                        color={color}
+                        __useNewFont
+                      >
+                        MARQVISION 20 Medium 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
@@ -494,125 +809,278 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="s" weight="medium" lang="en" color={color} __useNewFont>
-                        MARQVISION 13 Medium 1234567890
+                      <MDSTypography2
+                        variant="title"
+                        size="l"
+                        weight="semibold"
+                        char="number"
+                        color={color}
+                        __useNewFont
+                      >
+                        MARQVISION 18 Semibold 1234567890
                       </MDSTypography2>
-                      <MDSTypography2 variant="body" size="s" weight="regular" lang="en" color={color} __useNewFont>
-                        MARQVISION 13 Regular 1234567890
+                      <MDSTypography2 variant="title" size="l" weight="medium" char="number" color={color} __useNewFont>
+                        MARQVISION 18 Medium 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
-
-                  <td>s (=13px)</td>
+                  <td>l (=18px)</td>
                 </tr>
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="xs" weight="medium" lang="en" color={color} __useNewFont>
-                        MARQVISION 12 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="xs" weight="regular" lang="en" color={color} __useNewFont>
-                        MARQVISION 12 Regular 1234567890
+                      <MDSTypography2
+                        variant="title"
+                        size="m"
+                        weight="semibold"
+                        char="number"
+                        color={color}
+                        __useNewFont
+                      >
+                        MARQVISION 16 Semibold 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
+                  <td>m (=16px)</td>
+                </tr>
 
-                  <td>xs (=12px)</td>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2
+                        variant="title"
+                        size="s"
+                        weight="semibold"
+                        char="number"
+                        color={color}
+                        __useNewFont
+                      >
+                        MARQVISION 14 Semibold 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>s (=14px)</td>
                 </tr>
               </tbody>
             </Table>
           </div>
-        </div>
 
-        {/* title - korean - pretendard */}
-        <div>
-          <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-            Title (Korean) - Pretendard
-          </MDSTypography2>
-          <Table cellPadding={12}>
-            <thead>
-              <tr>
-                <th align="left">Example</th>
-
-                <th>Size</th>
-              </tr>
-            </thead>
-            <hr />
-            <tbody>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="2xl" weight="semibold" lang="ko" color={color}>
-                      마크비전 24 세미볼드 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="2xl" weight="medium" lang="ko" color={color}>
-                      마크비전 24 미디움 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>2xl (=24px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="xl" weight="semibold" lang="ko" color={color}>
-                      마크비전 20 세미볼드 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="xl" weight="medium" lang="ko" color={color}>
-                      마크비전 20 미디움 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>xl (=20px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="l" weight="semibold" lang="ko" color={color}>
-                      마크비전 18 세미볼드 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="l" weight="medium" lang="ko" color={color}>
-                      마크비전 18 미디움 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>l (=18px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="m" weight="semibold" lang="ko" color={color}>
-                      마크비전 16 세미볼드 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>m (=16px)</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="s" weight="semibold" lang="ko" color={color}>
-                      마크비전 14 세미볼드 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>s (=14px)</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-
-        {/* body - korean - pretendard */}
-        <div>
+          {/* body - english - number - visuelt */}
           <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" lang="ko" color={color}>
-              Body (Korean) - Pretendard
+            <div>
+              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                Body (English-Number) - Visuelt
+              </MDSTypography2>
+              <Table cellPadding={12}>
+                <thead>
+                  <tr>
+                    <th align="left">Example</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <hr />
+                <tbody>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="l" weight="medium" char="number" color={color}>
+                          MARQVISION 16 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="l" weight="regular" char="number" color={color}>
+                          MARQVISION 16 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>l (=16px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="m" weight="medium" char="number" color={color}>
+                          MARQVISION 14 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="m" weight="regular" char="number" color={color}>
+                          MARQVISION 14 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+                    <td>xl (=20px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="s" weight="medium" char="number" color={color}>
+                          MARQVISION 13 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="s" weight="regular" char="number" color={color}>
+                          MARQVISION 13 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>s (=13px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="xs" weight="medium" char="number" color={color}>
+                          MARQVISION 12 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="xs" weight="regular" char="number" color={color}>
+                          MARQVISION 12 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>xs (=12px)</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
+          </div>
+
+          {/* body - english - number - pp neue montreal */}
+          <div>
+            <div>
+              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                Body (English-Number) - PP Neue Montreal
+              </MDSTypography2>
+              <Table cellPadding={12}>
+                <thead>
+                  <tr>
+                    <th align="left">Example</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <hr />
+                <tbody>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2
+                          variant="body"
+                          size="l"
+                          weight="medium"
+                          char="number"
+                          color={color}
+                          __useNewFont
+                        >
+                          MARQVISION 16 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2
+                          variant="body"
+                          size="l"
+                          weight="regular"
+                          char="number"
+                          color={color}
+                          __useNewFont
+                        >
+                          MARQVISION 16 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>l (=16px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2
+                          variant="body"
+                          size="m"
+                          weight="medium"
+                          char="number"
+                          color={color}
+                          __useNewFont
+                        >
+                          MARQVISION 14 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2
+                          variant="body"
+                          size="m"
+                          weight="regular"
+                          char="number"
+                          color={color}
+                          __useNewFont
+                        >
+                          MARQVISION 14 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+                    <td>xl (=20px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2
+                          variant="body"
+                          size="s"
+                          weight="medium"
+                          char="number"
+                          color={color}
+                          __useNewFont
+                        >
+                          MARQVISION 13 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2
+                          variant="body"
+                          size="s"
+                          weight="regular"
+                          char="number"
+                          color={color}
+                          __useNewFont
+                        >
+                          MARQVISION 13 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>s (=13px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2
+                          variant="body"
+                          size="xs"
+                          weight="medium"
+                          char="number"
+                          color={color}
+                          __useNewFont
+                        >
+                          MARQVISION 12 Medium 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2
+                          variant="body"
+                          size="xs"
+                          weight="regular"
+                          char="number"
+                          color={color}
+                          __useNewFont
+                        >
+                          MARQVISION 12 Regular 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+
+                    <td>xs (=12px)</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
+          </div>
+
+          {/* title - korean - number - pretendard */}
+          <div>
+            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              Title (Korean-Number) - Pretendard
             </MDSTypography2>
             <Table cellPadding={12}>
               <thead>
                 <tr>
                   <th align="left">Example</th>
+
                   <th>Size</th>
                 </tr>
               </thead>
@@ -621,25 +1089,11 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="l" weight="medium" lang="ko" color={color}>
-                        마크비전 16 미디움 1234567890
+                      <MDSTypography2 variant="title" size="xl" weight="semibold" char="number" color={color}>
+                        마크비전 20 세미볼드 1234567890
                       </MDSTypography2>
-                      <MDSTypography2 variant="body" size="l" weight="regular" lang="ko" color={color}>
-                        마크비전 16 레귤러 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>l (=16px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="m" weight="medium" lang="ko" color={color}>
-                        마크비전 14 미디움 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="m" weight="regular" lang="ko" color={color}>
-                        마크비전 14 레귤러 1234567890
+                      <MDSTypography2 variant="title" size="xl" weight="medium" char="number" color={color}>
+                        마크비전 20 미디움 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
@@ -648,506 +1102,117 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="s" weight="medium" lang="ko" color={color}>
-                        마크비전 13 미디움 1234567890
+                      <MDSTypography2 variant="title" size="l" weight="semibold" char="number" color={color}>
+                        마크비전 18 세미볼드 1234567890
                       </MDSTypography2>
-                      <MDSTypography2 variant="body" size="s" weight="regular" lang="ko" color={color}>
-                        마크비전 13 레귤러 1234567890
+                      <MDSTypography2 variant="title" size="l" weight="medium" char="number" color={color}>
+                        마크비전 18 미디움 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
-
-                  <td>s (=13px)</td>
+                  <td>l (=18px)</td>
                 </tr>
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="body" size="xs" weight="medium" lang="ko" color={color}>
-                        마크비전 12 미디움 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="xs" weight="regular" lang="ko" color={color}>
-                        마크비전 12 레귤러 1234567890
+                      <MDSTypography2 variant="title" size="m" weight="semibold" char="number" color={color}>
+                        마크비전 16 세미볼드 1234567890
                       </MDSTypography2>
                     </div>
                   </td>
+                  <td>m (=16px)</td>
+                </tr>
 
-                  <td>xs (=12px)</td>
+                <tr>
+                  <td>
+                    <div>
+                      <MDSTypography2 variant="title" size="s" weight="semibold" char="number" color={color}>
+                        마크비전 14 세미볼드 1234567890
+                      </MDSTypography2>
+                    </div>
+                  </td>
+                  <td>s (=14px)</td>
                 </tr>
               </tbody>
             </Table>
           </div>
-        </div>
 
-        {/* title - english - number - visuelt */}
-        <div>
-          <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-            Title (English-Number) - Visuelt
-          </MDSTypography2>
-          <Table cellPadding={12}>
-            <thead>
-              <tr>
-                <th align="left">Example</th>
-
-                <th>Size</th>
-              </tr>
-            </thead>
-            <hr />
-            <tbody>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="xl" weight="semibold" lang="en" char="number" color={color}>
-                      MARQVISION 20 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="xl" weight="medium" lang="en" char="number" color={color}>
-                      MARQVISION 20 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>xl (=20px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="l" weight="semibold" lang="en" char="number" color={color}>
-                      MARQVISION 18 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="l" weight="medium" lang="en" char="number" color={color}>
-                      MARQVISION 18 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>l (=18px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="m" weight="semibold" lang="en" char="number" color={color}>
-                      MARQVISION 16 Semibold 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>m (=16px)</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="s" weight="semibold" lang="en" char="number" color={color}>
-                      MARQVISION 14 Semibold 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>s (=14px)</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-
-        {/* title - english - number - pp neue montreal */}
-        <div>
-          <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-            Title (English-Number) - PP Neue Montreal
-          </MDSTypography2>
-          <Table cellPadding={12}>
-            <thead>
-              <tr>
-                <th align="left">Example</th>
-                <th>Size</th>
-              </tr>
-            </thead>
-            <hr />
-            <tbody>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2
-                      variant="title"
-                      size="xl"
-                      weight="semibold"
-                      lang="en"
-                      char="number"
-                      color={color}
-                      __useNewFont
-                    >
-                      MARQVISION 20 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2
-                      variant="title"
-                      size="xl"
-                      weight="medium"
-                      lang="en"
-                      char="number"
-                      color={color}
-                      __useNewFont
-                    >
-                      MARQVISION 20 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>xl (=20px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2
-                      variant="title"
-                      size="l"
-                      weight="semibold"
-                      lang="en"
-                      char="number"
-                      color={color}
-                      __useNewFont
-                    >
-                      MARQVISION 18 Semibold 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2
-                      variant="title"
-                      size="l"
-                      weight="medium"
-                      lang="en"
-                      char="number"
-                      color={color}
-                      __useNewFont
-                    >
-                      MARQVISION 18 Medium 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>l (=18px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2
-                      variant="title"
-                      size="m"
-                      weight="semibold"
-                      lang="en"
-                      char="number"
-                      color={color}
-                      __useNewFont
-                    >
-                      MARQVISION 16 Semibold 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>m (=16px)</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2
-                      variant="title"
-                      size="s"
-                      weight="semibold"
-                      lang="en"
-                      char="number"
-                      color={color}
-                      __useNewFont
-                    >
-                      MARQVISION 14 Semibold 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>s (=14px)</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-
-        {/* body - english - number - visuelt */}
-        <div>
+          {/* body - korean - number - pretendard */}
           <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-              Body (English-Number) - Visuelt
-            </MDSTypography2>
-            <Table cellPadding={12}>
-              <thead>
-                <tr>
-                  <th align="left">Example</th>
-                  <th>Size</th>
-                </tr>
-              </thead>
-              <hr />
-              <tbody>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="l" weight="medium" lang="en" char="number" color={color}>
-                        MARQVISION 16 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="l" weight="regular" lang="en" char="number" color={color}>
-                        MARQVISION 16 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
+            <div>
+              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                Body (Korean-Number) - Pretendard
+              </MDSTypography2>
+              <Table cellPadding={12}>
+                <thead>
+                  <tr>
+                    <th align="left">Example</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <hr />
+                <tbody>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="l" weight="medium" char="number" color={color}>
+                          마크비전 16 미디움 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="l" weight="regular" char="number" color={color}>
+                          마크비전 16 레귤러 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
 
-                  <td>l (=16px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="m" weight="medium" lang="en" char="number" color={color}>
-                        MARQVISION 14 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="m" weight="regular" lang="en" char="number" color={color}>
-                        MARQVISION 14 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>xl (=20px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="s" weight="medium" lang="en" char="number" color={color}>
-                        MARQVISION 13 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="s" weight="regular" lang="en" char="number" color={color}>
-                        MARQVISION 13 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
+                    <td>l (=16px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="m" weight="medium" char="number" color={color}>
+                          마크비전 14 미디움 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="m" weight="regular" char="number" color={color}>
+                          마크비전 14 레귤러 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
+                    <td>xl (=20px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="s" weight="medium" char="number" color={color}>
+                          마크비전 13 미디움 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="s" weight="regular" char="number" color={color}>
+                          마크비전 13 레귤러 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
 
-                  <td>s (=13px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="xs" weight="medium" lang="en" char="number" color={color}>
-                        MARQVISION 12 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="xs" weight="regular" lang="en" char="number" color={color}>
-                        MARQVISION 12 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
+                    <td>s (=13px)</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div>
+                        <MDSTypography2 variant="body" size="xs" weight="medium" char="number" color={color}>
+                          마크비전 12 미디움 1234567890
+                        </MDSTypography2>
+                        <MDSTypography2 variant="body" size="xs" weight="regular" char="number" color={color}>
+                          마크비전 12 레귤러 1234567890
+                        </MDSTypography2>
+                      </div>
+                    </td>
 
-                  <td>xs (=12px)</td>
-                </tr>
-              </tbody>
-            </Table>
+                    <td>xs (=12px)</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
           </div>
-        </div>
-
-        {/* body - english - number - pp neue montreal */}
-        <div>
-          <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-              Body (English-Number) - PP Neue Montreal
-            </MDSTypography2>
-            <Table cellPadding={12}>
-              <thead>
-                <tr>
-                  <th align="left">Example</th>
-                  <th>Size</th>
-                </tr>
-              </thead>
-              <hr />
-              <tbody>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="l" weight="medium" lang="en" char="number" color={color} __useNewFont>
-                        MARQVISION 16 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="l" weight="regular" lang="en" char="number" color={color} __useNewFont>
-                        MARQVISION 16 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>l (=16px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="m" weight="medium" lang="en" char="number" color={color} __useNewFont>
-                        MARQVISION 14 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="m" weight="regular" lang="en" char="number" color={color} __useNewFont>
-                        MARQVISION 14 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>xl (=20px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="s" weight="medium" lang="en" char="number" color={color} __useNewFont>
-                        MARQVISION 13 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="s" weight="regular" lang="en" char="number" color={color} __useNewFont>
-                        MARQVISION 13 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>s (=13px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="xs" weight="medium" lang="en" char="number" color={color} __useNewFont>
-                        MARQVISION 12 Medium 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="xs" weight="regular" lang="en" char="number" color={color} __useNewFont>
-                        MARQVISION 12 Regular 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>xs (=12px)</td>
-                </tr>
-              </tbody>
-            </Table>
-          </div>
-        </div>
-
-        {/* title - korean - number - pretendard */}
-        <div>
-          <MDSTypography2 variant="title" size="2xl" weight="medium" lang="en" color={color}>
-            Title (Korean-Number) - Pretendard
-          </MDSTypography2>
-          <Table cellPadding={12}>
-            <thead>
-              <tr>
-                <th align="left">Example</th>
-
-                <th>Size</th>
-              </tr>
-            </thead>
-            <hr />
-            <tbody>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="xl" weight="semibold" lang="ko" char="number" color={color}>
-                      마크비전 20 세미볼드 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="xl" weight="medium" lang="ko" char="number" color={color}>
-                      마크비전 20 미디움 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>xl (=20px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="l" weight="semibold" lang="ko" char="number" color={color}>
-                      마크비전 18 세미볼드 1234567890
-                    </MDSTypography2>
-                    <MDSTypography2 variant="title" size="l" weight="medium" lang="ko" char="number" color={color}>
-                      마크비전 18 미디움 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>l (=18px)</td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="m" weight="semibold" lang="ko" char="number" color={color}>
-                      마크비전 16 세미볼드 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>m (=16px)</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div>
-                    <MDSTypography2 variant="title" size="s" weight="semibold" lang="ko" char="number" color={color}>
-                      마크비전 14 세미볼드 1234567890
-                    </MDSTypography2>
-                  </div>
-                </td>
-                <td>s (=14px)</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-
-        {/* body - korean - number - pretendard */}
-        <div>
-          <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" lang="ko" color={color}>
-              Body (Korean-Number) - Pretendard
-            </MDSTypography2>
-            <Table cellPadding={12}>
-              <thead>
-                <tr>
-                  <th align="left">Example</th>
-                  <th>Size</th>
-                </tr>
-              </thead>
-              <hr />
-              <tbody>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="l" weight="medium" lang="ko" char="number" color={color}>
-                        마크비전 16 미디움 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="l" weight="regular" lang="ko" char="number" color={color}>
-                        마크비전 16 레귤러 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>l (=16px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="m" weight="medium" lang="ko" char="number" color={color}>
-                        마크비전 14 미디움 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="m" weight="regular" lang="ko" char="number" color={color}>
-                        마크비전 14 레귤러 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-                  <td>xl (=20px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="s" weight="medium" lang="ko" char="number" color={color}>
-                        마크비전 13 미디움 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="s" weight="regular" lang="ko" char="number" color={color}>
-                        마크비전 13 레귤러 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>s (=13px)</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <MDSTypography2 variant="body" size="xs" weight="medium" lang="ko" char="number" color={color}>
-                        마크비전 12 미디움 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="body" size="xs" weight="regular" lang="ko" char="number" color={color}>
-                        마크비전 12 레귤러 1234567890
-                      </MDSTypography2>
-                    </div>
-                  </td>
-
-                  <td>xs (=12px)</td>
-                </tr>
-              </tbody>
-            </Table>
-          </div>
-        </div>
-      </Container>
+        </Container>
+      </div>
     );
   },
 };

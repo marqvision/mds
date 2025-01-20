@@ -1,4 +1,4 @@
-import { useState, MouseEvent, CSSProperties, useEffect, cloneElement } from 'react';
+import { useState, MouseEvent, CSSProperties, useEffect, cloneElement, useRef } from 'react';
 import styled from '@emotion/styled';
 import { DropdownItem, SelectedType } from '../@types';
 import { MDSTypography } from '../../Typography';
@@ -97,7 +97,7 @@ const BACKGROUND_COLOR = [
   MDSThemeValue._raw_color.bluegray150,
 ];
 
-export const Item = <T,>(props: Props<T>) => {
+export const ItemInnerComponent = <T,>(props: Props<T>) => {
   const {
     item,
     parentIndex = '',
@@ -248,7 +248,6 @@ export const Item = <T,>(props: Props<T>) => {
       }}
     >
       <StyledWrap
-        id={`mds-drop-item-${item.value}`}
         isDisabled={item.isDisabled}
         bgColor={BACKGROUND_COLOR[Math.min(depth, 2)]}
         onClick={handleClick}
@@ -339,6 +338,58 @@ export const Item = <T,>(props: Props<T>) => {
           style={{ display: isExpanded ? 'block' : 'none' }}
         />
       ))}
+    </div>
+  );
+};
+
+export const Item = <T,>(props: Props<T>) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [height, setHeight] = useState(48);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries.at(-1);
+      if (!entry) return;
+      setIsIntersecting(entry.isIntersecting);
+    });
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries.at(-1);
+      if (!entry) return;
+      if (entry.contentRect.height > height) {
+        setHeight(entry.contentRect.height);
+      }
+      if (entry.contentRect.width > width) {
+        setWidth(entry.contentRect.width);
+      }
+    });
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => {
+      observer.disconnect();
+    };
+  }, [height, width]);
+
+  return (
+    <div
+      ref={ref}
+      id={props.item.value ? `mds-drop-item-${props.item.value}` : undefined}
+      style={{ minHeight: height, minWidth: width }}
+    >
+      {isIntersecting ? <ItemInnerComponent<T> {...props} /> : undefined}
     </div>
   );
 };

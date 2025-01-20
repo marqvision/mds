@@ -5,7 +5,7 @@
   font-weight: 700;
   font-display: swap;
   ascent-override: 110%;
-  src: url(./visuelt-bold-pro.woff2) format('woff2');
+  src: url(./visuelt/visuelt-bold-pro.woff2) format('woff2');
 }
 
 @font-face {
@@ -13,7 +13,7 @@
   font-weight: 500;
   font-display: swap;
   ascent-override: 110%;
-  src: url(./visuelt-medium-pro.woff2) format('woff2');
+  src: url(./visuelt/visuelt-medium-pro.woff2) format('woff2');
 }
 
 @font-face {
@@ -21,7 +21,7 @@
   font-weight: 400;
   font-display: swap;
   ascent-override: 110%;
-  src: url(./visuelt-regular-pro.woff2) format('woff2');
+  src: url(./visuelt/visuelt-regular-pro.woff2) format('woff2');
 }
 
 @font-face {
@@ -29,5 +29,11 @@
   font-weight: 300;
   font-display: swap;
   ascent-override: 110%;
-  src: url(./visuelt-light-pro.woff2) format('woff2');
+  src: url(./visuelt/visuelt-light-pro.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'PPNeueMontreal-Variable';
+  src: url(./PPNeueMontreal/PPNeueMontreal-Variable.woff2) format('woff2'),
+    url(./PPNeueMontreal/PPNeueMontreal-Variable.woff) format('woff');
 }

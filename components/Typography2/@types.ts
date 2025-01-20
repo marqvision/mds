@@ -48,6 +48,9 @@ type BaseFeatures<T extends ElementType = 'p'> = {
    * 기본값은 없음(=none)입니다.
    */
   textDecoration?: 'none' | 'underline' | 'line-through';
+
+  // PROD-12587 에서 새로운 font를 적용하는 케이스를 위한 속성
+  __useNewFont?: boolean;
 };
 
 type NewTypographyStyle =

@@ -13,10 +13,10 @@ import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
-    const { color, lineClamp, wordBreak, whiteSpace, textDecoration, char, lang } = features;
+    const { color, lineClamp, wordBreak, whiteSpace, textDecoration, lang, __useNewFont } = features;
     const fontSize = resolveFontSize(features);
     const fontWeight = resolveFontWeight(features);
-    const fontFamily = resolveFontFamily(lang, fontWeight || 400);
+    const fontFamily = resolveFontFamily(lang, fontWeight || 400, __useNewFont);
     const fontColor = resolveColor(color!);
     const lineClampStyles = lineClamp !== undefined ? resolveLineClamp(lineClamp) : '';
     const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';

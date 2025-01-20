@@ -63,9 +63,11 @@ export const resolveFontWeight = (features: InnerTypographyStyleProps) => {
   }
 };
 
-export const resolveFontFamily = (lang: 'ko' | 'en', fontWeight: number) => {
+export const resolveFontFamily = (lang: 'ko' | 'en', fontWeight: number, __useNewFont?: boolean) => {
   if (lang === 'ko') {
     return '"Pretendard Variable"';
+  } else if (__useNewFont) {
+    return '"PPNeueMontreal-Variable"';
   } else {
     if (fontWeight >= 680) return '"Visuelt-Bold"';
     else if (fontWeight >= 560) return '"Visuelt-Medium"';

@@ -113,6 +113,7 @@ const Dropdown = <T, SortT>(
     onChange: (value: SelectedType<ValueType<T>>[], isSelected: boolean) => void;
     onClose: () => void;
     onMount: () => void;
+    onClear: () => void;
   }
 ) => {
   const {
@@ -124,6 +125,7 @@ const Dropdown = <T, SortT>(
     indeterminate,
     isFoldAll,
     onChange,
+    onClear,
     onClose,
     onMount,
   } = props;
@@ -176,7 +178,7 @@ const Dropdown = <T, SortT>(
   const isEmpty = list.length === 0 && !infinite?.isLoading;
 
   const hideSelectAllAndCount = modules?.some((v) => v === 'hide-select-all');
-  const hideSelectAll = is1DepthSingle || !!infinite?.hideSelectAll;
+  const hideSelectAll = is1DepthSingle || (!!infinite?.hideSelectAll && selectedValues.length === 0);
 
   const isShowStickyHeader = hasSearch || ((hasSort || isMultiple) && !hideSelectAllAndCount);
 
@@ -277,10 +279,10 @@ const Dropdown = <T, SortT>(
         ],
         !isSelectedAll
       );
-    } else if (isSelectedAll) {
-      onChange(selectableValues, !isSelectedAll);
+    } else if (selectedValues.length > 0) {
+      onClear();
     } else {
-      onChange(searchedValues, !isSelectedAll);
+      onChange(selectableValues, !isSelectedAll);
     }
   };
 
@@ -365,7 +367,7 @@ const Dropdown = <T, SortT>(
           color="color/content/neutral/default/disabled"
           style={{ height: '48px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
         >
-          No list
+          No results
         </MDSTypography>
       )}
       {isSearchTooShort && (
@@ -509,6 +511,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
             onChange={(v: SelectedType<ValueType<T>>[], isSelected, forceClose?: boolean) =>
               handler.change(v, isSelected, close, forceClose)
             }
+            onClear={handler.clear}
             onClose={close}
             onMount={handleResize}
           />

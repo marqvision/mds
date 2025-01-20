@@ -1,36 +1,60 @@
 import { Global, css } from '@emotion/react';
 import { COLOR_TOKENS } from './colors';
+
+const FONT_STYLE_VALUES = {
+  EN: {
+    title: `
+      --font-title-semibold: 680;
+      --font-title-medium: 560;
+
+      --font-title-letter-spacing-xl: -1.6;
+      --font-title-letter-spacing-l: -1.4;
+      --font-title-letter-spacing-m: -1.2;
+      --font-title-letter-spacing-s: -1;
+    `,
+    body: `
+      --font-body-medium: 560;
+      --font-body-regular: 450;
+
+      --font-body-letter-spacing-l: -0.8;
+      --font-body-letter-spacing-m: -0.7;
+      --font-body-letter-spacing-s: -0.65;
+      --font-body-letter-spacing-xs: -0.6;
+    `,
+  },
+  KO: {
+    title: `
+      --font-title-semibold: 720;
+      --font-title-medium: 540;
+
+      --font-title-letter-spacing-xl: -1;
+      --font-title-letter-spacing-l: -0.9;
+      --font-title-letter-spacing-m: -0.8;
+      --font-title-letter-spacing-s: -0.7;
+    `,
+    body: `
+      --font-body-medium: 540;
+      --font-body-regular: 400;
+
+      --font-body-letter-spacing-l: -0.8;
+      --font-body-letter-spacing-m: -0.7;
+      --font-body-letter-spacing-s: -0.65;
+      --font-body-letter-spacing-xs: -0.6;
+    `,
+  },
+};
+
 export const MDSGlobalCSS = () => (
   <Global
     styles={css`
       // 기본 폰트 설정
       :root {
-        --font-title-semibold: 680;
-        --font-title-medium: 560;
-        --font-body-medium: 560;
-        --font-body-regular: 450;
-        --font-title-letter-spacing-xl: -1.6;
-        --font-title-letter-spacing-l: -1.4;
-        --font-title-letter-spacing-m: -1.2;
-        --font-title-letter-spacing-s: -1;
-        --font-body-letter-spacing-l: -0.8;
-        --font-body-letter-spacing-m: -0.7;
-        --font-body-letter-spacing-s: -0.65;
-        --font-body-letter-spacing-xs: -0.6;
+        ${FONT_STYLE_VALUES.EN.title}
+        ${FONT_STYLE_VALUES.EN.body}
       }
       :lang(ko) {
-        --font-title-semibold: 720;
-        --font-title-medium: 540;
-        --font-body-medium: 540;
-        --font-body-regular: 400;
-        --font-title-letter-spacing-xl: -1;
-        --font-title-letter-spacing-l: -0.9;
-        --font-title-letter-spacing-m: -0.8;
-        --font-title-letter-spacing-s: -0.7;
-        --font-body-letter-spacing-l: -0.8;
-        --font-body-letter-spacing-m: -0.7;
-        --font-body-letter-spacing-s: -0.65;
-        --font-body-letter-spacing-xs: -0.6;
+        ${FONT_STYLE_VALUES.KO.title}
+        ${FONT_STYLE_VALUES.KO.body}
       }
 
       /**
@@ -40,36 +64,14 @@ export const MDSGlobalCSS = () => (
        */
       html[lang='ko'] {
         font-family: 'Pretendard Variable';
-        --font-title-semibold: 720;
-        --font-title-medium: 540;
-        --font-body-medium: 540;
-        --font-body-regular: 400;
-        --font-title-letter-spacing-xl: -1;
-        --font-title-letter-spacing-l: -0.9;
-        --font-title-letter-spacing-m: -0.8;
-        --font-title-letter-spacing-s: -0.7;
-        --font-body-letter-spacing-l: -0.8;
-        --font-body-letter-spacing-m: -0.7;
-        --font-body-letter-spacing-s: -0.65;
-        --font-body-letter-spacing-xs: -0.6;
+        ${FONT_STYLE_VALUES.KO.title}
+        ${FONT_STYLE_VALUES.KO.body}
       }
       html[lang='en'] {
         font-family: 'PPNeueMontreal-Variable', 'Pretendard Variable';
-        --font-title-semibold: 680;
-        --font-title-medium: 560;
-        --font-body-medium: 560;
-        --font-body-regular: 450;
-        --font-title-letter-spacing-xl: -1.6;
-        --font-title-letter-spacing-l: -1.4;
-        --font-title-letter-spacing-m: -1.2;
-        --font-title-letter-spacing-s: -1;
-        --font-body-letter-spacing-l: -0.8;
-        --font-body-letter-spacing-m: -0.7;
-        --font-body-letter-spacing-s: -0.65;
-        --font-body-letter-spacing-xs: -0.6;
+        ${FONT_STYLE_VALUES.EN.title}
+        ${FONT_STYLE_VALUES.EN.body}
       }
-
-
 
       // 기본 리셋
 

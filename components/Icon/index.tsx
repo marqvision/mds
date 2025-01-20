@@ -210,4 +210,5 @@ export const MDSIcon = {
   ShapeArrow: createIcon(Editor.ShapeArrow),
   FormulaComponent: createIcon(Editor.FormulaComponent),
   Eth: createIcon(Editor.Eth),
+  ZoomIn: createIcon(Editor.ZoomIn),
 };

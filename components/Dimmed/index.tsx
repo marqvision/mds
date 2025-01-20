@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { keyframes } from '@emotion/react';
+import { Props, StyledProps } from './@types';
+import { theme } from './@constants';
 
 const transition = 300; //TODO-@morgan: 디자인 팀 확인 필요
 
@@ -24,7 +26,7 @@ const fadeOut = keyframes`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<StyledProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -33,8 +35,8 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  padding: 20px;
-  background-color: ${({ theme }) => theme.color.comp.dimmed.color.default};
+  padding: ${({ padding }) => padding};
+  background-color: ${({ intensity }) => theme.color[intensity].backgroundColor};
   overflow: hidden;
   display: none;
   transition: display ${transition}ms allow-discrete, overlay ${transition}ms allow-discrete;
@@ -48,19 +50,13 @@ const Wrapper = styled.div`
   }
 `;
 
-type Props = React.PropsWithChildren<{
-  isOpen: boolean;
-  style?: React.CSSProperties;
-  onClose?: () => void;
-}>;
-
 const clearBodyStyle = () => {
   document.body.style.overflow = '';
   document.body.style.paddingRight = '';
 };
 
 export const MDSDimmed = (props: Props) => {
-  const { isOpen: _isOpen, style, onClose, children } = props;
+  const { isOpen: _isOpen, padding = '20px', intensity = 'default', style, onClose, children } = props;
 
   //@morgan: mui portal 의 createPortal 타이밍에 맞추기 위해 동일하게 mountNode state 추가함
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
@@ -71,7 +67,7 @@ export const MDSDimmed = (props: Props) => {
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     if (event.target !== event.currentTarget) return;
-    onClose?.();
+    onClose?.(event);
   };
 
   const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -123,11 +119,13 @@ export const MDSDimmed = (props: Props) => {
   return mountNode
     ? createPortal(
         <Wrapper
-          className={clsx({ isOpen: isOpen }, 'mds-dimmed')}
+          className={clsx({ isOpen }, 'mds-dimmed')}
           onMouseMove={stopPropagation}
           onMouseDown={stopPropagation}
           onMouseUp={stopPropagation}
           onClick={handleClose}
+          padding={padding}
+          intensity={intensity}
           style={style}
         >
           {(_isOpen || mountNode) && children}

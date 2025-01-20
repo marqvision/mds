@@ -1,33 +1,37 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system';
 import { MDSIcon } from '../Icon';
 import { MDSTypography } from '../Typography';
 import { borderRadius, theme } from './@constants';
+import { useHover } from './@hooks/useHover';
 import { useLazyLoad } from './@hooks/useLazyLoad';
 import {
   ImageProps,
   RemoveBorderRadius,
   StyledErrorWrapperProps,
+  StyledHoverWrapperProps,
   StyledImageProps,
   StyledImageWrapperProps,
   StyledWrapperProps,
 } from './@types';
+
+export type MDSImageProps = ImageProps;
 
 const Wrapper = styled.div<StyledWrapperProps>`
   position: relative;
   display: grid;
   place-content: center;
   overflow: hidden;
-  user-select: ${({ isDraggable }) => (isDraggable ? 'auto' : 'none')};
-  pointer-events: ${({ isDraggable }) => (isDraggable ? 'auto' : 'none')};
   ${({ borderRadius }) => `
     border-radius: ${borderRadius.topLeft} ${borderRadius.topRight} ${borderRadius.bottomRight} ${borderRadius.bottomLeft};
   `}
-  ${({ width, height, aspectRatio }) => `
+  ${({ width, height, aspectRatio, maxWidth, maxHeight }) => `
     ${width ? `width: ${width};` : ''}
     ${height ? `height: ${height};` : ''}
     ${aspectRatio ? `aspect-ratio: ${aspectRatio};` : ''}
+    ${maxWidth ? `max-width: ${maxWidth};` : ''}
+    ${maxHeight ? `max-height: ${maxHeight};` : ''}
   `}
 `;
 
@@ -43,6 +47,7 @@ const ErrorWrapper = styled.div<StyledErrorWrapperProps>`
   overflow: hidden;
   border-radius: inherit;
   user-select: inherit;
+  pointer-events: ${({ isDraggable }) => (isDraggable ? 'auto' : 'none')};
   background-color: ${({ fallbackStyle }) => resolveColor(theme.color[fallbackStyle].backgroundColor)};
   ${({ fallbackStyle, iconSize }) => `
     border-style: solid;
@@ -62,7 +67,26 @@ const ImageWrapper = styled.div<StyledImageWrapperProps>`
   overflow: hidden;
   user-select: inherit;
   border-radius: inherit;
+  pointer-events: ${({ isDraggable }) => (isDraggable ? 'auto' : 'none')};
   ${({ borderColor }) => (borderColor ? `border: 1px solid ${resolveColor(borderColor)};` : '')}
+`;
+
+const HoverWrapper = styled.div<StyledHoverWrapperProps>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme._raw_color.blackAlpha50};
+  transition: opacity 0.3s;
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  user-select: none;
+  @starting-style {
+    opacity: 0;
+  }
 `;
 
 const Image = styled.img<StyledImageProps>`
@@ -88,10 +112,16 @@ export const MDSImage = (props: ImageProps) => {
     alt,
     width,
     height,
+    maxWidth,
+    maxHeight,
     aspectRatio,
     objectFit = 'cover',
     objectPosition = 'center',
     borderColor,
+    custom,
+    isDraggable = false,
+    onLoad: _onLoad,
+    onError: _onError,
     ...restProps
   } = props;
 
@@ -103,11 +133,36 @@ export const MDSImage = (props: ImageProps) => {
 
   const imageRef = useRef<HTMLImageElement>(null);
 
-  const { isOnScreen, isLoaded, isError, onError, onLoad } = useLazyLoad(imageRef);
+  const { isOnScreen, isLoaded, isError: isLoadError, onError, onLoad, size } = useLazyLoad(imageRef);
+  const { Element: HoverElement, hoverWrapperProps, wrapperProps } = useHover(custom);
+
+  const isError = isLoadError || (!isLoading && !src);
+  const wrapperWidth = width || (!aspectRatio ? `${size?.width}px` : undefined);
+  const wrapperHeight = width && height ? height || (!aspectRatio ? `${size?.height}px` : undefined) : undefined;
+  const wrapperAspectRatio = aspectRatio || `${size?.width}/${size?.height}`;
+
+  const handleLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    _onLoad?.(event);
+    onLoad(event);
+  };
+
+  const handleError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    _onError?.(event);
+    onError();
+  };
 
   return (
-    <Wrapper width={width} height={height} aspectRatio={aspectRatio} borderRadius={borderRadius} {...restProps}>
-      <ErrorWrapper fallbackStyle={fallbackStyle} iconSize={_iconSize} isLoaded={isLoaded}>
+    <Wrapper
+      width={wrapperWidth}
+      height={wrapperHeight}
+      maxWidth={maxWidth}
+      maxHeight={maxHeight}
+      aspectRatio={wrapperAspectRatio}
+      borderRadius={borderRadius}
+      {...restProps}
+      {...wrapperProps}
+    >
+      <ErrorWrapper isDraggable={isDraggable} fallbackStyle={fallbackStyle} iconSize={_iconSize} isLoaded={isLoaded}>
         {!isError ? (
           <MDSIcon.Image variant="outline" size={iconSize} color={color} />
         ) : (
@@ -123,14 +178,14 @@ export const MDSImage = (props: ImageProps) => {
       </ErrorWrapper>
 
       {!isLoading && !isError && (
-        <ImageWrapper borderColor={borderColor}>
+        <ImageWrapper isDraggable={isDraggable} borderColor={borderColor}>
           <Image
             ref={imageRef}
             src={isOnScreen ? src : undefined}
             alt={alt}
             isLoaded={isLoaded}
-            onLoad={onLoad}
-            onError={onError}
+            onLoad={handleLoad}
+            onError={handleError}
             objectFit={objectFit}
             objectPosition={objectPosition}
             loading="lazy"
@@ -138,6 +193,7 @@ export const MDSImage = (props: ImageProps) => {
           {children}
         </ImageWrapper>
       )}
+      {HoverElement && <HoverWrapper {...hoverWrapperProps}>{HoverElement}</HoverWrapper>}
     </Wrapper>
   );
 };

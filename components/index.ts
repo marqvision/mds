@@ -17,3 +17,4 @@ export * from './LoadingIndicator';
 export * from './Panel';
 export * from './Tooltip';
 export * from './EmptyView';
+export * from './ImageViewer';

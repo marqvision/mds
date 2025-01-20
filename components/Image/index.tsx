@@ -26,10 +26,12 @@ const Wrapper = styled.div<StyledWrapperProps>`
   ${({ borderRadius }) => `
     border-radius: ${borderRadius.topLeft} ${borderRadius.topRight} ${borderRadius.bottomRight} ${borderRadius.bottomLeft};
   `}
-  ${({ width, height, aspectRatio, maxWidth, maxHeight }) => `
+  ${({ width, height, aspectRatio, minWidth, minHeight, maxWidth, maxHeight }) => `
     ${width ? `width: ${width};` : ''}
     ${height ? `height: ${height};` : ''}
     ${aspectRatio ? `aspect-ratio: ${aspectRatio};` : ''}
+    ${minWidth ? `min-width: ${minWidth};` : ''}
+    ${minHeight ? `min-height: ${minHeight};` : ''}
     ${maxWidth ? `max-width: ${maxWidth};` : ''}
     ${maxHeight ? `max-height: ${maxHeight};` : ''}
   `}
@@ -112,6 +114,8 @@ export const MDSImage = (props: ImageProps) => {
     alt,
     width,
     height,
+    minWidth,
+    minHeight,
     maxWidth,
     maxHeight,
     aspectRatio,
@@ -155,6 +159,8 @@ export const MDSImage = (props: ImageProps) => {
     <Wrapper
       width={wrapperWidth}
       height={wrapperHeight}
+      minWidth={minWidth}
+      minHeight={minHeight}
       maxWidth={maxWidth}
       maxHeight={maxHeight}
       aspectRatio={wrapperAspectRatio}

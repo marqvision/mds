@@ -316,7 +316,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
           onChange={handleChange}
           item={child}
           depth={depth + 1}
-          style={{ display: isExpanded ? 'block' : 'none' }}
+          isExpanded={isExpanded}
         />
       ))}
     </>
@@ -328,7 +328,6 @@ export const Item = <T,>(props: Props<T>) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [height, setHeight] = useState(48);
   const [width, setWidth] = useState(0);
-
   const [isExpanded, setIsExpanded] = useState(!props.isDefaultFold);
 
   useEffect(() => {
@@ -384,11 +383,14 @@ export const Item = <T,>(props: Props<T>) => {
     <div
       ref={ref}
       id={props.item.value ? `mds-drop-item-${props.item.value}` : undefined}
-      style={{ minHeight: height, minWidth: width, ...props.style, ...props.item.style }}
+      style={{
+        // minHeight: props.isExpanded ? 48 : height,
+        // minWidth: width,
+        ...props.item.style,
+        display: props.isExpanded === false ? 'none' : 'block',
+      }}
     >
-      {isIntersecting ? (
-        <ItemInnerComponent<T> {...props} isExpanded={isExpanded} onExpand={setIsExpanded} />
-      ) : undefined}
+      <ItemInnerComponent<T> {...props} isExpanded={isExpanded} onExpand={setIsExpanded} />
     </div>
   );
 };

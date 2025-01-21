@@ -234,7 +234,7 @@ const Popover = (
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClosePopover();
+        closeRef.current();
       }
     };
 
@@ -247,7 +247,7 @@ const Popover = (
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClosePopover]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) {

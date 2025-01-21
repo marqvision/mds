@@ -200,6 +200,9 @@ export const MDSGlobalCSS = ({
         ${FONT_STYLE_VALUES.KO.body}
       }
 
+
+
+      // todo-@jamie: [PROD-12758] prop 값들로 조건 걸린 코드들 삭제하기
       /**
        * 왜 :lang과 html[lang='ko'] 둘 다 써야 하는가?
        * :lang으로만 설정했을 경우에, 영어는 계속 PP Neue Montreal로 나온다.
@@ -211,14 +214,25 @@ export const MDSGlobalCSS = ({
         ${FONT_STYLE_VALUES.KO.body}
       }
       html[lang='en'] {
-        font-family: ${useNewFont ? "'PPNeueMontreal-Variable', 'Pretendard Variable'" : '"Visuelt-Regular"'};
+        font-family: ${useNewFont ? 'PPNeueMontreal-Variable, Pretendard Variable !important' : 'Visuelt-Regular'};
         ${FONT_STYLE_VALUES.EN.title}
         ${FONT_STYLE_VALUES.EN.body}
       }
 
+      ${useNewFont
+        ? `
+        html[lang='en'] *[data-typography-new-font] {
+          font-family: "PPNeueMontreal-Variable", "Pretendard Variable" !important;
+        }
+        html[lang='ko'] *[data-typography-new-font] {
+          font-family: "Pretendard Variable" !important;
+        }
+        `
+        : ''}
+
       ${isDisplayTypographyDebug
         ? `
-        *[data-typography-debug] {
+        *[data-typography-new-font] {
           background-color: red !important;
         }
         `

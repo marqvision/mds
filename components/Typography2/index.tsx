@@ -72,7 +72,7 @@ export const MDSTypography2 = <T extends ElementType = 'p'>({
       as={tagName}
       color={color}
       wordBreak={wordBreak}
-      data-typography-debug
+      data-typography-new-font
       {...props}
     />
   );

@@ -45,11 +45,13 @@ export const resolveFontWeight = (features: InnerTypographyStyleProps) => {
   return `var(--font-${features.variant}-${features.weight})`;
 };
 
-export const resolveFontFamily = (fontWeight: number) => {
-  if (fontWeight >= 680) return '"Visuelt-Bold"';
-  else if (fontWeight >= 560) return '"Visuelt-Medium"';
-  else if (fontWeight >= 450) return '"Visuelt-Regular"';
-  else if (fontWeight >= 400) return '"Visuelt-Light"';
+
+// todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
+export const resolveFontFamily = (features: InnerTypographyStyleProps) => {
+  if (features.weight === 'bold') return '"Visuelt-Bold"';
+  else if (features.weight === 'medium') return '"Visuelt-Medium"';
+  else if (features.weight === 'regular') return '"Visuelt-Regular"';
+  else if (features.weight === 'light') return '"Visuelt-Light"';
   else return '"Visuelt-Regular"';
 };
 

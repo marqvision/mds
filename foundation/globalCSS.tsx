@@ -45,7 +45,13 @@ const FONT_STYLE_VALUES = {
   },
 };
 
-export const MDSGlobalCSS = ({ useNewFont }: { useNewFont?: boolean }) => (
+export const MDSGlobalCSS = ({
+  useNewFont,
+  isDisplayTypographyDebug,
+}: {
+  useNewFont?: boolean;
+  isDisplayTypographyDebug?: boolean;
+}) => (
   <Global
     styles={css`
       // 기본 리셋
@@ -184,9 +190,6 @@ export const MDSGlobalCSS = ({ useNewFont }: { useNewFont?: boolean }) => (
         display: none;
       }
 
-
-
-      
       // 기본 폰트 설정
       :root {
         ${FONT_STYLE_VALUES.EN.title}
@@ -212,6 +215,14 @@ export const MDSGlobalCSS = ({ useNewFont }: { useNewFont?: boolean }) => (
         ${FONT_STYLE_VALUES.EN.title}
         ${FONT_STYLE_VALUES.EN.body}
       }
+
+      ${isDisplayTypographyDebug
+        ? `
+        *[data-typography-debug] {
+          background-color: red !important;
+        }
+        `
+        : ''}
     `}
   />
 );

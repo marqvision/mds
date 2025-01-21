@@ -94,7 +94,7 @@ export type InnerTypographyStyleProps<T extends ElementType = 'p'> = {
   variant: Variant;
   char: Char;
   size: Size;
-  weight: Weight;
+  weight: Weight | 'bold' | 'light'; // todo-@jamie: [PROD-12758] bold, light: 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 } & BaseFeatures<T>;
 
 // 최종 + 외부 노출을 위한 Props 타입

@@ -2,6 +2,7 @@ import { ElementType } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system/resolvers';
 import {
+  resolveFontFamily,
   resolveFontSize,
   resolveFontVariantNumeric,
   resolveFontWeight,
@@ -35,8 +36,15 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${numberStyles};
       line-height: ${variant === 'title' ? 1.2 : 1.5};
 
+
       // todo-@jamie: [PROD-12758] 완료되면 반드시 삭제!!!
-      background-color: red;
+      ${
+        typeof window !== 'undefined' &&
+        //@ts-ignore
+        !window.___mdsv2_use_new_font &&
+        `font-family: ${resolveFontFamily(features)};`
+      }
+
     `;
   }}
 `;
@@ -64,6 +72,7 @@ export const MDSTypography2 = <T extends ElementType = 'p'>({
       as={tagName}
       color={color}
       wordBreak={wordBreak}
+      data-typography-debug
       {...props}
     />
   );

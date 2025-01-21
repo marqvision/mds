@@ -386,6 +386,7 @@ export const Item = <T,>(props: Props<T>) => {
       style={{
         // minHeight: props.isExpanded ? 48 : height,
         // minWidth: width,
+        ...props.style,
         ...props.item.style,
         display: props.isExpanded === false ? 'none' : 'block',
       }}

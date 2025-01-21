@@ -6,7 +6,7 @@ import { MDSCheckbox } from '../Checkbox';
 import { MDSIcon } from '../Icon';
 import { MDSThemeValue } from '../../foundation';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
-import { Item, ItemInnerComponent } from './@components/Item';
+import { Item } from './@components/Item';
 import { useDropdown, useInitDropdown } from './@hooks';
 import {
   BottomButtonModule,
@@ -182,8 +182,8 @@ const Dropdown = <T, SortT>(
     (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-        ? 'indeterminate'
-        : false;
+      ? 'indeterminate'
+      : false;
   const isEmpty = list.length === 0 && !infinite?.isLoading && !isLoading;
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;
@@ -459,7 +459,7 @@ const Dropdown = <T, SortT>(
               )}
             </StyledStickyBottom>
           ) : (
-            <ItemInnerComponent<ValueType<T>>
+            <Item<ValueType<T>>
               item={{
                 label: stickyBottom.label,
                 value: stickyBottom.value,

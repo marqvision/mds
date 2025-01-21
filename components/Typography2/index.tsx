@@ -12,7 +12,7 @@ import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
-    const { color, lineClamp, wordBreak, whiteSpace, textDecoration } = features;
+    const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration } = features;
     const fontSize = resolveFontSize(features);
     const fontWeight = resolveFontWeight(features);
     const fontColor = resolveColor(color!);
@@ -32,9 +32,11 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${wordBreakStyles};
       ${whiteSpaceStyles};
       ${textDecorationStyles};
-      ${numberStyles}
-      line-height: 1.5;
+      ${numberStyles};
+      line-height: ${variant === 'title' ? 1.2 : 1.5};
 
+      // todo-@jamie: [PROD-12758] 완료되면 반드시 삭제!!!
+      background-color: red;
     `;
   }}
 `;

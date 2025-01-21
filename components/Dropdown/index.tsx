@@ -3,10 +3,10 @@ import styled from '@emotion/styled';
 import { MDSPopover } from '../Popover';
 import { MDSTypography } from '../Typography';
 import { MDSCheckbox } from '../Checkbox';
-import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { MDSIcon } from '../Icon';
 import { MDSThemeValue } from '../../foundation';
-import { Item } from './@components/Item';
+import { MDSLoadingIndicator } from '../LoadingIndicator';
+import { Item, ItemInnerComponent } from './@components/Item';
 import { useDropdown, useInitDropdown } from './@hooks';
 import {
   BottomButtonModule,
@@ -26,15 +26,19 @@ import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constant
 
 export type MDSDropdownItem<T> = DropdownItem<T>;
 
-const StyledWrap = styled.div``;
+const StyledStickyTrigger = styled.div`
+  height: 1px;
+  flex: 0 0 1px;
+  width: 100%;
+  margin-top: -1px;
+`;
 
-const StyledSticky = styled.div`
+const StyledSticky = styled.div<{ isScrollTop: boolean }>`
   position: sticky;
   top: 0;
   padding: 8px;
-  box-shadow:
-    0 1px 8px 0 #0000001f,
-    0 1px 2px 0 #0000000a;
+  transition: 0.3s ease box-shadow;
+  box-shadow: ${({ isScrollTop }) => (isScrollTop ? '0 1px 8px 0 #0000001f, 1px 2px 0 #0000000a;' : 'none')};
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
   z-index: 1;
@@ -109,6 +113,8 @@ const Dropdown = <T, SortT>(
     onChange: (value: SelectedType<ValueType<T>>[], isSelected: boolean) => void;
     onClose: () => void;
     onMount: () => void;
+    onUnmount: () => void;
+    onClear: () => void;
   }
 ) => {
   const {
@@ -119,9 +125,12 @@ const Dropdown = <T, SortT>(
     selectableValues,
     indeterminate,
     isFoldAll,
+    isLoading,
     onChange,
+    onClear,
     onClose,
     onMount,
+    onUnmount,
   } = props;
 
   const stickyBottom = modules?.find((v) => typeof v === 'object' && v.type === 'bottom-button') as
@@ -148,39 +157,55 @@ const Dropdown = <T, SortT>(
         : undefined,
   });
 
+  const [isScrollTop, setIsScrollTop] = useState(false);
+
   const infiniteRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number>();
+  const scrollOffsetRef = useRef<HTMLDivElement>(null);
+  const stickyTrigger = useRef<HTMLDivElement>(null);
+
+  const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
+  const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
+  const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
+  const customSearch = modules?.find((v) => typeof v === 'object' && v.type === 'search') as SearchModule | undefined;
+  const customSort = modules?.find((v) => typeof v === 'object' && v.type === 'sort') as SortModule<SortT>;
+  const infinite = modules?.find((v) => typeof v === 'object' && v.type === 'infinite') as InfiniteModule | undefined;
+
+  const hideSelectAllAndCount = modules?.some((v) => v === 'hide-select-all');
+  const hideSelectAll = is1DepthSingle || (!!infinite?.hideSelectAll && selectedValues.length === 0);
 
   const isMultiple = Array.isArray(value);
+  const isShowStickyHeader = hasSearch || ((hasSort || isMultiple) && !hideSelectAllAndCount);
   const isSelectedAll =
-    isMultiple && (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
+    isMultiple &&
+    selectedValues.length > 0 &&
+    (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
         ? 'indeterminate'
         : false;
-  const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
-  const hasSort = modules?.some((v) => v === 'sort' || (typeof v === 'object' && v.type === 'sort'));
-  const is1DepthSingle = modules?.some((v) => v === '1-depth-single');
-
-  const customSearch = modules?.find((v) => typeof v === 'object' && v.type === 'search') as SearchModule | undefined;
-  const customSort = modules?.find((v) => typeof v === 'object' && v.type === 'sort') as SortModule<SortT>;
-  const infinite = modules?.find((v) => typeof v === 'object' && v.type === 'infinite') as InfiniteModule | undefined;
-  const isEmpty = list.length === 0 && !infinite?.isLoading;
-
-  const hideSelectAllAndCount = modules?.some((v) => v === 'hide-select-all');
-  const hideSelectAll = is1DepthSingle || !!infinite?.hideSelectAll;
-
-  const isShowStickyHeader = hasSearch || ((hasSort || isMultiple) && !hideSelectAllAndCount);
-
+  const isEmpty = list.length === 0 && !infinite?.isLoading && !isLoading;
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
-  const searchedCount = infinite?.total || searchedValues.length;
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;
   const selectedCount = (isInfiniteAll ? allCount : selectedValues.length).toLocaleString();
-
   const isSearchTooShort =
     !!customSearch &&
     search.trim().length !== 0 &&
     search.trim().length < (customSearch.minLength || DEFAULT_MIN_SEARCH_LETTERS);
+  const searchedCount = isSearchTooShort ? 0 : infinite?.total || searchedValues.length;
+
+  const countLabel = (() => {
+    if (isMultiple && selectedValues.length > 0) {
+      return `Selected (${selectedCount})`;
+    }
+    if (isLoading) {
+      return 'Searching';
+    }
+    if (search && !debounceRef.current) {
+      return `Searched (${searchedCount})`;
+    }
+    return `All (${allCount})`;
+  })();
 
   const sortEle = customSort ? (
     <MDSDropdown<SortT>
@@ -235,14 +260,21 @@ const Dropdown = <T, SortT>(
     if (customSearch) {
       const minLength = customSearch.minLength || DEFAULT_MIN_SEARCH_LETTERS;
       const trimmedLength = s.trim().length;
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = undefined;
+      }
       if (trimmedLength >= minLength || trimmedLength === 0) {
-        if (debounceRef.current) {
-          clearTimeout(debounceRef.current);
-        }
-        debounceRef.current = window.setTimeout(() => {
+        if (trimmedLength === 0) {
           customSearch.onChange?.(s);
-          debounceRef.current = undefined;
-        }, customSearch.debounce || DEFAULT_DEBOUNCE_TIMING);
+        } else {
+          debounceRef.current = window.setTimeout(() => {
+            customSearch.onChange?.(s);
+            debounceRef.current = undefined;
+            handler.search(s);
+          }, customSearch.debounce || DEFAULT_DEBOUNCE_TIMING);
+          return;
+        }
       }
     }
     handler.search(s);
@@ -269,15 +301,33 @@ const Dropdown = <T, SortT>(
         ],
         !isSelectedAll
       );
-    } else if (isSelectedAll) {
-      onChange(selectableValues, !isSelectedAll);
+    } else if (selectedValues.length > 0) {
+      onClear();
     } else {
-      onChange(searchedValues, !isSelectedAll);
+      onChange(selectableValues, !isSelectedAll);
     }
   };
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setIsScrollTop(!entries.some((v) => v.isIntersecting));
+      },
+      {
+        root: scrollOffsetRef.current?.parentElement,
+      }
+    );
+
+    const sticky = stickyTrigger.current;
+
+    if (sticky) {
+      observer.observe(sticky);
+    }
+
     return () => {
+      if (sticky) {
+        observer.unobserve(sticky);
+      }
       handler.search('');
     };
     // intentional missing dependencies
@@ -286,7 +336,14 @@ const Dropdown = <T, SortT>(
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((v) => v.isIntersecting)) {
-        if (infinite && !infinite.isLoading && infinite.hasNextPage) {
+        if (
+          infinite &&
+          !infinite.isLoading &&
+          infinite.hasNextPage &&
+          !debounceRef.current &&
+          !isLoading &&
+          !isSearchTooShort
+        ) {
           infinite.onScrollBottom();
         }
       }
@@ -298,16 +355,21 @@ const Dropdown = <T, SortT>(
     return () => {
       observer.disconnect();
     };
-  }, [infinite]);
+  }, [infinite, isLoading, isSearchTooShort]);
 
   useEffect(() => {
     onMount();
-  }, [onMount]);
+
+    return () => {
+      onUnmount();
+    };
+  }, [onMount, onUnmount]);
 
   return (
-    <StyledWrap>
+    <div ref={scrollOffsetRef}>
+      <StyledStickyTrigger ref={stickyTrigger} />
       {isShowStickyHeader && (
-        <StyledSticky>
+        <StyledSticky isScrollTop={isScrollTop}>
           {hasSearch && (
             <Search
               placeholder={customSearch?.placeholder}
@@ -318,13 +380,15 @@ const Dropdown = <T, SortT>(
           {(isMultiple || hasSort) && !hideSelectAllAndCount && (
             <StyledAction>
               <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
-                {!hideSelectAll && isMultiple && <MDSCheckbox value={isSelectedAll} onChange={handleSelectAll} />}
+                {!hideSelectAll && isMultiple && (
+                  <MDSCheckbox
+                    isDisabled={selectableValues.length === 0 || isSearchTooShort}
+                    value={isSelectedAll}
+                    onChange={handleSelectAll}
+                  />
+                )}
                 <MDSTypography variant="T14" weight="medium">
-                  {isMultiple && selectedValues.length > 0
-                    ? `Selected (${selectedCount})`
-                    : search
-                      ? `Searched (${searchedCount})`
-                      : `All (${allCount})`}
+                  {countLabel}
                 </MDSTypography>
               </StyledSelectAll>
               {hasSort && sortEle}
@@ -338,7 +402,7 @@ const Dropdown = <T, SortT>(
           color="color/content/neutral/default/disabled"
           style={{ height: '48px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
         >
-          No list
+          No results
         </MDSTypography>
       )}
       {isSearchTooShort && (
@@ -367,16 +431,12 @@ const Dropdown = <T, SortT>(
             onClose={onClose}
           />
         ))}
-      {infinite && (
-        <>
-          {infinite.isLoading && !isSearchTooShort && (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '48px' }}>
-              <MDSLoadingIndicator size={24} strokeWidth={2} />
-            </div>
-          )}
-          <div ref={infiniteRef} style={{ height: '1px' }} />
-        </>
+      {(infinite?.isLoading || isLoading) && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '48px' }}>
+          <MDSLoadingIndicator size={24} strokeWidth={2} />
+        </div>
       )}
+      {infinite && <div ref={infiniteRef} style={{ height: '1px' }} />}
       {stickyBottom && (
         <>
           {stickyBottom.onClick ? (
@@ -399,7 +459,7 @@ const Dropdown = <T, SortT>(
               )}
             </StyledStickyBottom>
           ) : (
-            <Item<ValueType<T>>
+            <ItemInnerComponent<ValueType<T>>
               item={{
                 label: stickyBottom.label,
                 value: stickyBottom.value,
@@ -408,7 +468,7 @@ const Dropdown = <T, SortT>(
                 icon: stickyBottom.icon,
               }}
               indeterminate={indeterminate}
-              search={search}
+              search={''}
               isMultiple={isMultiple}
               selectedValue={selectedValues}
               is1DepthSingle={is1DepthSingle}
@@ -421,7 +481,7 @@ const Dropdown = <T, SortT>(
           )}
         </>
       )}
-    </StyledWrap>
+    </div>
   );
 };
 
@@ -438,6 +498,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
   });
 
   const [fitWidth, setFitWidth] = useState<number>();
+  const [isOpen, setIsOpen] = useState(false);
 
   const ref = useRef<EventTarget & Element>(null);
 
@@ -447,12 +508,13 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
     <FilterChip
       label={props.label || ''}
       selectedLabel={labels}
-      isLoading={isLoading}
+      isLoading={!isOpen && isLoading}
       isDisabled={isDisabled || selectableValue.length === 0}
     />
   );
 
-  const handleResize = useCallback(() => {
+  const handleMount = useCallback(() => {
+    setIsOpen(true);
     if (width === 'fit-anchor' && ref.current) {
       setFitWidth(ref.current.clientWidth);
     } else {
@@ -460,16 +522,22 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
     }
   }, [width]);
 
+  const handleUnmount = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   return (
     <MDSPopover
-      isLoading={isLoading}
       hasDim={false}
       padding={0}
       forwardRef={ref}
       anchor={anchor}
       width={fitWidth || width || 'auto'}
       onClose={handler.close}
-      style={props.style}
+      style={{
+        ...props.style,
+        overflowX: 'hidden',
+      }}
     >
       {({ close, isOpen }) => {
         closeRef.current = isOpen ? close : undefined;
@@ -482,8 +550,10 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
             onChange={(v: SelectedType<ValueType<T>>[], isSelected, forceClose?: boolean) =>
               handler.change(v, isSelected, close, forceClose)
             }
+            onClear={handler.clear}
             onClose={close}
-            onMount={handleResize}
+            onMount={handleMount}
+            onUnmount={handleUnmount}
           />
         );
       }}

@@ -89,6 +89,14 @@ export type ImageProps = {
    */
   height?: string;
   /**
+   * 이미지의 최소 너비.
+   */
+  minWidth?: string;
+  /**
+   * 이미지의 최소 높이.
+   */
+  minHeight?: string;
+  /**
    * 이미지의 최대 너비.
    */
   maxWidth?: string;
@@ -132,4 +140,4 @@ export type StyledImageProps = {
 
 export type StyledWrapperProps = {
   borderRadius: { topLeft: string; topRight: string; bottomLeft: string; bottomRight: string };
-} & Pick<ImageProps, 'width' | 'height' | 'aspectRatio' | 'maxWidth' | 'maxHeight'>;
+} & Pick<ImageProps, 'width' | 'height' | 'aspectRatio' | 'maxWidth' | 'maxHeight' | 'minWidth' | 'minHeight'>;

@@ -1,8 +1,80 @@
 import { Global, css } from '@emotion/react';
 import { COLOR_TOKENS } from './colors';
-export const MDSResetCSS = () => (
+
+const FONT_STYLE_VALUES = {
+  EN: {
+    title: `
+      --font-title-semibold: 680;
+      --font-title-medium: 560;
+
+      --font-title-letter-spacing-xl: -1.6;
+      --font-title-letter-spacing-l: -1.4;
+      --font-title-letter-spacing-m: -1.2;
+      --font-title-letter-spacing-s: -1;
+    `,
+    body: `
+      --font-body-medium: 560;
+      --font-body-regular: 450;
+
+      --font-body-letter-spacing-l: -0.8;
+      --font-body-letter-spacing-m: -0.7;
+      --font-body-letter-spacing-s: -0.65;
+      --font-body-letter-spacing-xs: -0.6;
+    `,
+  },
+  KO: {
+    title: `
+      --font-title-semibold: 720;
+      --font-title-medium: 540;
+
+      --font-title-letter-spacing-xl: -1;
+      --font-title-letter-spacing-l: -0.9;
+      --font-title-letter-spacing-m: -0.8;
+      --font-title-letter-spacing-s: -0.7;
+    `,
+    body: `
+      --font-body-medium: 540;
+      --font-body-regular: 400;
+
+      --font-body-letter-spacing-l: -0.8;
+      --font-body-letter-spacing-m: -0.7;
+      --font-body-letter-spacing-s: -0.65;
+      --font-body-letter-spacing-xs: -0.6;
+    `,
+  },
+};
+
+export const MDSGlobalCSS = () => (
   <Global
     styles={css`
+      // 기본 폰트 설정
+      :root {
+        ${FONT_STYLE_VALUES.EN.title}
+        ${FONT_STYLE_VALUES.EN.body}
+      }
+      :lang(ko) {
+        ${FONT_STYLE_VALUES.KO.title}
+        ${FONT_STYLE_VALUES.KO.body}
+      }
+
+      /**
+       * 왜 :lang과 html[lang='ko'] 둘 다 써야 하는가?
+       * :lang으로만 설정했을 경우에, 영어는 계속 PP Neue Montreal로 나온다.
+       * 그래서 html[lang=]을 이용해서 영어폰트도 Pretendard로 리셋시켜버린다.
+       */
+      html[lang='ko'] {
+        font-family: 'Pretendard Variable';
+        ${FONT_STYLE_VALUES.KO.title}
+        ${FONT_STYLE_VALUES.KO.body}
+      }
+      html[lang='en'] {
+        font-family: 'PPNeueMontreal-Variable', 'Pretendard Variable';
+        ${FONT_STYLE_VALUES.EN.title}
+        ${FONT_STYLE_VALUES.EN.body}
+      }
+
+      // 기본 리셋
+
       /***
         The new CSS reset - version 1.11.2 (last updated 15.11.2023)
         GitHub page: https://github.com/elad2412/the-new-css-reset

@@ -48,7 +48,7 @@ export const resolveFontWeight = (features: InnerTypographyStyleProps) => {
 
 // todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 export const resolveFontFamily = (features: InnerTypographyStyleProps) => {
-  if (features.weight === 'bold') return '"Visuelt-Bold"';
+  if (features.weight === 'bold' || features.weight === 'semibold') return '"Visuelt-Bold"';
   else if (features.weight === 'medium') return '"Visuelt-Medium"';
   else if (features.weight === 'regular') return '"Visuelt-Regular"';
   else if (features.weight === 'light') return '"Visuelt-Light"';

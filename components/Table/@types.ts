@@ -92,7 +92,7 @@ export type StyledTableCellProps = {
 export type TableCellInnerProps = {
   // cell 에 text-align 스타일을 부여합니다.
   align?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent' | 'justify-all';
-  size: CellSize;
+  cellSize: CellSize;
 };
 
 export type TableCellProps = React.PropsWithChildren<
@@ -101,9 +101,9 @@ export type TableCellProps = React.PropsWithChildren<
      * cell 의 padding 스타일을 지정합니다.
      * @default 'medium'
      */
-    size?: CellSize;
+    cellSize?: CellSize;
   } & StyledTableCellProps &
-    Omit<TableCellInnerProps, 'size'>
+    Omit<TableCellInnerProps, 'cellSize'>
 > &
   Omit<TdHTMLAttributes<HTMLTableCellElement>, 'align'>;
 

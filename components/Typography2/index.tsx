@@ -24,8 +24,6 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const numberStyles = resolveFontVariantNumeric(features);
 
     return `
-      margin: 0;
-      
       font-size: ${fontSize};
       color: ${fontColor};
       font-weight: ${fontWeight};

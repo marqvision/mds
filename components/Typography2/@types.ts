@@ -1,4 +1,4 @@
-import { ElementType } from 'react';
+import { CSSProperties, ElementType } from 'react';
 import type { MDSThemeColorPath } from '../../foundation';
 
 type Variant = 'title' | 'body';
@@ -34,19 +34,19 @@ type BaseFeatures<T extends ElementType = 'p'> = {
    * break-word를 사용하고 싶다면 다음 문서를 참고하세요
    * https://developer.mozilla.org/docs/Web/CSS/word-break#break-word
    */
-  wordBreak?: 'normal' | 'keep-all' | 'break-all';
+  wordBreak?: CSSProperties['wordBreak'];
 
   /**
    * 타이포그래피의 white-space 속성.
    * 기본값은 브라우저 기본값을 따릅니다.
    */
-  whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap';
+  whiteSpace?: CSSProperties['whiteSpace'];
 
   /**
    * 타이포그래피의 text-decoration 속성.
    * 기본값은 없음(=none)입니다.
    */
-  textDecoration?: 'none' | 'underline' | 'line-through';
+  textDecoration?: CSSProperties['textDecoration'];
 
   // PROD-12587 에서 새로운 font를 적용하는 케이스를 위한 속성
   __useNewFont?: boolean;

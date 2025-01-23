@@ -46,7 +46,6 @@ export const getFilteredList = <T>(items: DropdownItem<T>[], search: string, sor
       return [currentItem];
     } else if (getAllChildLabel(currentItem).some((value) => value.match(regex))) {
       return [
-        /* @ts-ignore */
         {
           ...currentItem,
           children: currentItem.children?.reduce(
@@ -121,4 +120,21 @@ const stringSort = (a: string, b: string, orderBy: SortType) => {
   if (nameA > nameB) return orderBy === 'asc' ? 1 : -1;
 
   return 0;
+};
+
+export const getAllListIndex = <T>(list: DropdownItem<T>[]) => {
+  const arr: string[] = [];
+
+  const loop = (curItem: DropdownItem<T>, index: string) => {
+    if (curItem.children) {
+      arr.push(index);
+      curItem.children.forEach((item, index2) => {
+        loop(item, `${index}_${index2}`);
+      });
+    }
+  };
+
+  list.forEach((item, index) => loop(item, `${index}`));
+
+  return arr;
 };

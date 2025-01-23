@@ -1,5 +1,7 @@
-import { useState, MouseEvent, CSSProperties, useEffect, cloneElement, useRef, SetStateAction, Dispatch } from 'react';
+import { useState, MouseEvent, useEffect, cloneElement, useRef } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
+import { foldedItemIndexAtom } from '../@atoms';
 import { DropdownItem, SelectedType } from '../@types';
 import { MDSTypography } from '../../Typography';
 import { MDSCheckbox } from '../../Checkbox';
@@ -11,7 +13,6 @@ import { MDSTooltip } from '../../Tooltip';
 import { HighLightLabel } from './HighlightLabel';
 
 type Props<T> = {
-  isExpanded?: boolean;
   parentIndex?: string;
   selectedValue: SelectedType<T>[];
   indeterminate: T[];
@@ -21,10 +22,7 @@ type Props<T> = {
   depth?: number;
   is1DepthSingle?: boolean;
   isInfiniteAll: boolean;
-  isDefaultFold: boolean;
-  style?: CSSProperties;
   onChange: (value: SelectedType<T>[], checked: boolean, forceClose?: boolean) => void;
-  onExpand?: Dispatch<SetStateAction<boolean>>;
   onClose: () => void;
 };
 
@@ -108,11 +106,11 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     isMultiple: _isMultiple,
     selectedValue,
     depth = 0,
-    isExpanded,
     onChange,
     onClose,
-    onExpand,
   } = props;
+
+  const [foldedIndex, setFoldedIndex] = useAtom(foldedItemIndexAtom);
 
   const allChildSelected = item.children
     ? getValueFromList(item.children)
@@ -171,8 +169,9 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     if (item.isDisabled) {
       return;
     }
-
-    onExpand?.((ps) => !ps);
+    if (parentIndex) {
+      setFoldedIndex((ps) => (ps.includes(parentIndex) ? ps.filter((v) => v !== parentIndex) : [...ps, parentIndex]));
+    }
   };
 
   const handleChange = (value: SelectedType<T>[], checked: boolean, forceClose?: boolean) => {
@@ -226,6 +225,8 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     );
   }
 
+  const isFolded = foldedIndex.includes(parentIndex) || item.isDisabled;
+
   return (
     <>
       <StyledWrap
@@ -260,8 +261,8 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
                 !isMultiple && isSelected
                   ? 'color/content/primary/default/normal'
                   : item.isDisabled
-                  ? 'color/content/neutral/default/disabled'
-                  : undefined
+                    ? 'color/content/neutral/default/disabled'
+                    : undefined
               }
               style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
             >
@@ -288,15 +289,15 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
             ) : undefined}
             {hasChildren && (
               <StyledExpandIcon disabled={item.isDisabled || !item.children.length} onClick={handleClickExpand}>
-                {isExpanded ? (
-                  <MDSIcon.Fold
+                {isFolded ? (
+                  <MDSIcon.Unfold
                     size={24}
                     color={
                       item.isDisabled || !item.children.length ? 'color/content/neutral/default/disabled' : undefined
                     }
                   />
                 ) : (
-                  <MDSIcon.Unfold
+                  <MDSIcon.Fold
                     size={24}
                     color={
                       item.isDisabled || !item.children.length ? 'color/content/neutral/default/disabled' : undefined
@@ -308,17 +309,17 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
           </StyledRightDiv>
         )}
       </StyledWrap>
-      {item.children?.map((child, index) => (
-        <Item
-          key={`dropItem_${depth}_${child.value ?? `${child.label}_${parentIndex}_${index}`}`}
-          {...props}
-          parentIndex={`${parentIndex}_${index}`}
-          onChange={handleChange}
-          item={child}
-          depth={depth + 1}
-          isExpanded={isExpanded}
-        />
-      ))}
+      {!isFolded &&
+        item.children?.map((child, index) => (
+          <Item
+            key={`dropItem_${depth}_${child.value ?? `${child.label}_${parentIndex}_${index}`}`}
+            {...props}
+            parentIndex={`${parentIndex}_${index}`}
+            onChange={handleChange}
+            item={child}
+            depth={depth + 1}
+          />
+        ))}
     </>
   );
 };
@@ -328,14 +329,21 @@ export const Item = <T,>(props: Props<T>) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [height, setHeight] = useState(48);
   const [width, setWidth] = useState(0);
-  const [isExpanded, setIsExpanded] = useState(!props.isDefaultFold);
+
+  const foldedItemIndex = useAtomValue(foldedItemIndexAtom);
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries.at(-1);
-      if (!entry) return;
-      setIsIntersecting(entry.isIntersecting);
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries.at(-1);
+        if (!entry) return;
+        setIsIntersecting(entry.isIntersecting);
+      },
+      {
+        rootMargin: '100px 0px',
+        root: ref.current?.closest('.mds-popover')?.children[0],
+      }
+    );
 
     if (ref.current) {
       observer.observe(ref.current);
@@ -365,33 +373,20 @@ export const Item = <T,>(props: Props<T>) => {
     };
   }, [height, width]);
 
-  useEffect(() => {
-    if (props.search) {
-      setIsExpanded(true);
-    } else if (props.isDefaultFold) {
-      setIsExpanded(false);
-    }
-  }, [props.search, props.isDefaultFold]);
-
-  useEffect(() => {
-    if (props.item.isDisabled) {
-      setIsExpanded(false);
-    }
-  }, [props.item]);
+  const isShow = !props.parentIndex || !foldedItemIndex.includes(props.parentIndex.split('_').slice(0, -1).join('_'));
 
   return (
     <div
       ref={ref}
       id={props.item.value ? `mds-drop-item-${props.item.value}` : undefined}
       style={{
-        // minHeight: props.isExpanded ? 48 : height,
-        // minWidth: width,
-        ...props.style,
         ...props.item.style,
-        display: props.isExpanded === false ? 'none' : 'block',
+        minHeight: isIntersecting ? 'unset' : height,
+        minWidth: width,
+        display: isShow ? 'block' : 'none',
       }}
     >
-      <ItemInnerComponent<T> {...props} isExpanded={isExpanded} onExpand={setIsExpanded} />
+      {isIntersecting && <ItemInnerComponent<T> {...props} />}
     </div>
   );
 };

@@ -9,4 +9,4 @@ export const MDSThemeValue = {
 export type MDSTheme = typeof MDSThemeValue;
 export type MDSThemeColorPath = Path<Pick<MDSTheme, 'color'>>;
 
-export { MDSResetCSS } from './resetCSS';
+export { MDSResetCSS, MDSFontCSS } from './globalCSS';

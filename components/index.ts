@@ -1,5 +1,6 @@
 export * from './Icon';
 export * from './Typography';
+export * from './Typography2';
 export * from './SelectContainer';
 export * from './Modal';
 export * from './Dimmed';

@@ -44,14 +44,38 @@ const FONT_STYLE_VALUES = {
     `,
   },
 };
+export const MDSFontCSS = () => (
+  <Global
+    styles={css`
+      // 기본 폰트 설정
+      :root {
+        ${FONT_STYLE_VALUES.EN.title}
+        ${FONT_STYLE_VALUES.EN.body}
+      }
+      :lang(ko) {
+        ${FONT_STYLE_VALUES.KO.title}
+        ${FONT_STYLE_VALUES.KO.body}
+      }
 
-export const MDSGlobalCSS = ({
-  useNewFont,
-  isDisplayTypographyDebug,
-}: {
-  useNewFont?: boolean;
-  isDisplayTypographyDebug?: boolean;
-}) => (
+      /**
+       * 왜 :lang과 html[lang='ko'] 둘 다 써야 하는가?
+       * :lang으로만 설정했을 경우에, 영어는 계속 PP Neue Montreal로 나온다.
+       * 그래서 html[lang=]을 이용해서 영어폰트도 Pretendard로 리셋시켜버린다.
+       */
+      html[lang='ko'] {
+        font-family: 'Pretendard Variable';
+        ${FONT_STYLE_VALUES.KO.title}
+        ${FONT_STYLE_VALUES.KO.body}
+      }
+      html[lang='en'] {
+        font-family: 'PPNeueMontreal-Variable', 'Pretendard Variable';
+        ${FONT_STYLE_VALUES.EN.title}
+        ${FONT_STYLE_VALUES.EN.body}
+      }
+    `}
+  />
+);
+export const MDSResetCSS = () => (
   <Global
     styles={css`
       // 기본 리셋

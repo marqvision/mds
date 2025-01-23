@@ -1,5 +1,6 @@
 import { Global, css } from '@emotion/react';
 import { COLOR_TOKENS } from './colors';
+import './statics/fonts/index.css';
 
 const FONT_STYLE_VALUES = {
   EN: {
@@ -43,8 +44,7 @@ const FONT_STYLE_VALUES = {
     `,
   },
 };
-
-export const MDSGlobalCSS = () => (
+export const MDSFontCSS = () => (
   <Global
     styles={css`
       // 기본 폰트 설정
@@ -72,7 +72,12 @@ export const MDSGlobalCSS = () => (
         ${FONT_STYLE_VALUES.EN.title}
         ${FONT_STYLE_VALUES.EN.body}
       }
-
+    `}
+  />
+);
+export const MDSResetCSS = () => (
+  <Global
+    styles={css`
       // 기본 리셋
 
       /***

@@ -1,7 +1,7 @@
-import { MDSDimmed } from '../components/Dimmed';
-import type { Meta, StoryObj } from '@storybook/react';
 import { useArgs } from '@storybook/preview-api';
+import { MDSDimmed } from '../components/Dimmed';
 import { MDSTypography } from '../components';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDimmed> = {
   component: MDSDimmed,
@@ -24,6 +24,10 @@ const meta: Meta<typeof MDSDimmed> = {
       description:
         '현재 버그로 autoDoc 에서 액션 불가<br/>[참고] https://storybook.js.org/docs/api/doc-block-story#inline',
     },
+    intensity: {
+      control: 'select',
+      options: ['default', 'strong'],
+    },
   },
 };
 
@@ -34,6 +38,7 @@ export const Default: Story = {
   args: {
     isOpen: true,
     children: '이곳에 하위 컴포넌트가 출력됩니다.',
+    intensity: 'default',
   },
 };
 

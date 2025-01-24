@@ -53,7 +53,7 @@ const Chip = styled.button<StyledChipProps>`
   }}
 
   ${({ size, flat }) => {
-    const chipSpacing = `calc(${ChipTheme.size[size].gap} * 2)`;
+    const chipSpacing = ChipTheme.size[size].flatPadding;
 
     return `
       ${
@@ -192,7 +192,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
 
       {endIcon && <Icon size={size} icon={endIcon} />}
 
-      {isDividerVisible && <Divider variant={variant} color={color} size={size} flat={flat} />}
+      {isDividerVisible && <Divider variant={variant} color={color} size={size} />}
     </Chip>
   );
 };

@@ -2,8 +2,8 @@ import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement, Mut
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
-import { findChildStickyHeight, findScrollOffset } from './@utils';
 import { Props, StyleProps, Coordinates } from './@type';
+import { findScrollOffset } from './@utils';
 
 const MIN_PADDING = 4;
 const TRANSITION = '300ms ease-out';
@@ -100,8 +100,6 @@ const Popover = (
   const scrollOffsetRef = useRef<HTMLElement | Window>();
   const coordinatesRef = useRef<Coordinates>();
   const closeRef = useRef(onClosePopover);
-  const stickyTopHeight = useRef<number>(0);
-  const stickyBottomHeight = useRef<number>(0);
 
   const setPosition = useCallback(() => {
     if (!init) {
@@ -188,40 +186,6 @@ const Popover = (
     setCoordinates(coordinatesRef.current);
   }, [init, position, anchorRef, dialogRef, margin]);
 
-  const handleScroll = useCallback(() => {
-    setPosition();
-
-    if (anchorRef.current) {
-      const anchorHeight = anchorRef.current.clientHeight;
-
-      const isWindow = scrollOffsetRef.current === window;
-
-      const { scrollTop, minTop, maxTop } = (() => {
-        if (isWindow) {
-          return {
-            scrollTop: anchorRef.current.getBoundingClientRect().top,
-            minTop: 0,
-            maxTop: (scrollOffsetRef.current as Window).innerHeight - anchorHeight,
-          };
-        }
-        return {
-          scrollTop: (scrollOffsetRef.current as HTMLElement).scrollTop,
-          minTop:
-            (anchorRef.current as HTMLElement).offsetTop -
-            (scrollOffsetRef.current as HTMLElement).offsetHeight +
-            stickyBottomHeight.current,
-          maxTop: (anchorRef.current as HTMLElement).offsetTop - stickyTopHeight.current,
-        };
-      })();
-
-      if (scrollTop < minTop) {
-        closeRef.current();
-      } else if (scrollTop > maxTop) {
-        closeRef.current();
-      }
-    }
-  }, [setPosition, anchorRef]);
-
   const children = isLoading ? (
     <div
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px 0', minWidth: '100%' }}
@@ -268,6 +232,48 @@ const Popover = (
   );
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeRef.current();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.at(-1)?.isIntersecting) {
+          closeRef.current();
+        }
+      },
+      {
+        threshold: 0,
+      }
+    );
+
+    if (anchorRef.current) {
+      observer.observe(anchorRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [anchorRef, isOpen]);
+
+  useEffect(() => {
     const observer = new ResizeObserver(() => {
       setPosition();
     });
@@ -292,9 +298,6 @@ const Popover = (
   useEffect(() => {
     if (isOpen && anchorRef.current) {
       scrollOffsetRef.current = findScrollOffset(anchorRef.current);
-      const { top, bottom } = findChildStickyHeight(scrollOffsetRef.current);
-      stickyTopHeight.current = top;
-      stickyBottomHeight.current = bottom;
     }
   }, [anchorRef, isOpen]);
 
@@ -304,20 +307,20 @@ const Popover = (
       if (hasDim) {
         dialogRef.current?.showModal();
       } else if (anchorRef.current) {
-        scrollOffsetRef.current?.addEventListener('scroll', handleScroll);
+        scrollOffsetRef.current?.addEventListener('scroll', setPosition);
         dialogRef.current?.toggleAttribute('open');
       }
       setPosition();
     } else {
-      scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
+      scrollOffsetRef.current?.removeEventListener('scroll', setPosition);
     }
-  }, [handleScroll, isOpen, setPosition, hasDim, anchorRef, dialogRef, focusRef, scrollOffsetRef]);
+  }, [isOpen, setPosition, hasDim, anchorRef, dialogRef, focusRef, scrollOffsetRef]);
 
   useEffect(() => {
     return () => {
-      scrollOffsetRef.current?.removeEventListener('scroll', handleScroll);
+      scrollOffsetRef.current?.removeEventListener('scroll', setPosition);
     };
-  }, [handleScroll]);
+  }, [setPosition]);
 
   useEffect(() => {
     closeRef.current = onClosePopover;

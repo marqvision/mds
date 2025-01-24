@@ -26,6 +26,7 @@ export type ChipTheme = {
       icon: number;
       padding: `${Token['pddng']['v'][keyof Token['pddng']['v']]} ${Token['pddng']['h'][keyof Token['pddng']['v']]}`; //h key type 고의로 v 로 지정함 (v 와 한 쌍으로 된 h 값 사용)
       gap: Token['gap'][keyof Token['gap']];
+      flatPadding: Token['gap'][keyof Token['gap']];
       radius: Token['radius'][keyof Token['radius']];
       minHeight: Token['minSize'][keyof Token['minSize']];
       spinnerSize: number;
@@ -58,7 +59,6 @@ export type DividerProps = {
   variant: ChipVariant;
   size: ChipSize;
   color: ChipColor;
-  flat?: Flat;
 };
 
 export type ChipProps = {

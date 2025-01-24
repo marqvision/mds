@@ -303,6 +303,8 @@ const Dropdown = <T, SortT>(
       );
     } else if (selectedValues.length > 0) {
       onClear();
+    } else if (searchedValues.length > 0) {
+      onChange(searchedValues, !isSelectedAll);
     } else {
       onChange(selectableValues, !isSelectedAll);
     }

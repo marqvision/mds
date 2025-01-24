@@ -204,6 +204,11 @@ export const useInitDropdown = <T, SortT>(
     }
   };
 
+  const handleClear = () => {
+    setSelectedValues([]);
+    setIndeterminate([]);
+  };
+
   useEffect(() => {
     if (hasList) {
       const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
@@ -264,6 +269,7 @@ export const useInitDropdown = <T, SortT>(
     returnObj,
     handler: {
       change: handleChange,
+      clear: handleClear,
       close: handleClose,
     },
   };

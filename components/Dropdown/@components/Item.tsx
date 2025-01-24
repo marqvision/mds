@@ -1,4 +1,4 @@
-import { useState, MouseEvent, CSSProperties, useEffect, cloneElement } from 'react';
+import { useState, MouseEvent, CSSProperties, useEffect, cloneElement, useRef, SetStateAction, Dispatch } from 'react';
 import styled from '@emotion/styled';
 import { DropdownItem, SelectedType } from '../@types';
 import { MDSTypography } from '../../Typography';
@@ -11,6 +11,7 @@ import { MDSTooltip } from '../../Tooltip';
 import { HighLightLabel } from './HighlightLabel';
 
 type Props<T> = {
+  isExpanded?: boolean;
   parentIndex?: string;
   selectedValue: SelectedType<T>[];
   indeterminate: T[];
@@ -23,6 +24,7 @@ type Props<T> = {
   isDefaultFold: boolean;
   style?: CSSProperties;
   onChange: (value: SelectedType<T>[], checked: boolean, forceClose?: boolean) => void;
+  onExpand?: Dispatch<SetStateAction<boolean>>;
   onClose: () => void;
 };
 
@@ -97,7 +99,7 @@ const BACKGROUND_COLOR = [
   MDSThemeValue._raw_color.bluegray150,
 ];
 
-export const Item = <T,>(props: Props<T>) => {
+export const ItemInnerComponent = <T,>(props: Props<T>) => {
   const {
     item,
     parentIndex = '',
@@ -105,14 +107,12 @@ export const Item = <T,>(props: Props<T>) => {
     indeterminate,
     isMultiple: _isMultiple,
     selectedValue,
-    isDefaultFold,
     depth = 0,
-    style,
+    isExpanded,
     onChange,
     onClose,
+    onExpand,
   } = props;
-
-  const [isExpanded, setIsExpanded] = useState(!isDefaultFold);
 
   const allChildSelected = item.children
     ? getValueFromList(item.children)
@@ -172,7 +172,7 @@ export const Item = <T,>(props: Props<T>) => {
       return;
     }
 
-    setIsExpanded((ps) => !ps);
+    onExpand?.((ps) => !ps);
   };
 
   const handleChange = (value: SelectedType<T>[], checked: boolean, forceClose?: boolean) => {
@@ -218,20 +218,6 @@ export const Item = <T,>(props: Props<T>) => {
     </MDSTypography>
   );
 
-  useEffect(() => {
-    if (search) {
-      setIsExpanded(true);
-    } else if (isDefaultFold) {
-      setIsExpanded(false);
-    }
-  }, [search, isDefaultFold]);
-
-  useEffect(() => {
-    if (item.isDisabled) {
-      setIsExpanded(false);
-    }
-  }, [item]);
-
   if (item.value === undefined && !item.onClick && !item.children) {
     return (
       <StyledDivider variant="T13" color="color/content/neutral/secondary/normal" style={item.style}>
@@ -241,14 +227,8 @@ export const Item = <T,>(props: Props<T>) => {
   }
 
   return (
-    <div
-      style={{
-        ...style,
-        ...item.style,
-      }}
-    >
+    <>
       <StyledWrap
-        id={`mds-drop-item-${item.value}`}
         isDisabled={item.isDisabled}
         bgColor={BACKGROUND_COLOR[Math.min(depth, 2)]}
         onClick={handleClick}
@@ -336,9 +316,82 @@ export const Item = <T,>(props: Props<T>) => {
           onChange={handleChange}
           item={child}
           depth={depth + 1}
-          style={{ display: isExpanded ? 'block' : 'none' }}
+          isExpanded={isExpanded}
         />
       ))}
+    </>
+  );
+};
+
+export const Item = <T,>(props: Props<T>) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [height, setHeight] = useState(48);
+  const [width, setWidth] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(!props.isDefaultFold);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries.at(-1);
+      if (!entry) return;
+      setIsIntersecting(entry.isIntersecting);
+    });
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries.at(-1);
+      if (!entry) return;
+      if (entry.contentRect.height > height) {
+        setHeight(entry.contentRect.height);
+      }
+      if (entry.contentRect.width > width) {
+        setWidth(entry.contentRect.width);
+      }
+    });
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => {
+      observer.disconnect();
+    };
+  }, [height, width]);
+
+  useEffect(() => {
+    if (props.search) {
+      setIsExpanded(true);
+    } else if (props.isDefaultFold) {
+      setIsExpanded(false);
+    }
+  }, [props.search, props.isDefaultFold]);
+
+  useEffect(() => {
+    if (props.item.isDisabled) {
+      setIsExpanded(false);
+    }
+  }, [props.item]);
+
+  return (
+    <div
+      ref={ref}
+      id={props.item.value ? `mds-drop-item-${props.item.value}` : undefined}
+      style={{
+        // minHeight: props.isExpanded ? 48 : height,
+        // minWidth: width,
+        ...props.style,
+        ...props.item.style,
+        display: props.isExpanded === false ? 'none' : 'block',
+      }}
+    >
+      <ItemInnerComponent<T> {...props} isExpanded={isExpanded} onExpand={setIsExpanded} />
     </div>
   );
 };

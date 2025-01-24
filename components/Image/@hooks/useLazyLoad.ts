@@ -5,12 +5,15 @@ export const useLazyLoad = (ref: React.RefObject<HTMLImageElement>) => {
   const [isOnScreen, setIsOnScreen] = useState<boolean>(isLazyLoadingEnabled);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [size, setSize] = useState<{ width: number; height: number }>();
 
-  const handleLoad = () => {
+  const handleLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    setSize({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight });
     setIsLoaded(true);
   };
 
   const handleError = () => {
+    setSize({ width: 200, height: 200 });
     setIsError(true);
   };
 
@@ -43,5 +46,6 @@ export const useLazyLoad = (ref: React.RefObject<HTMLImageElement>) => {
     onLoad: handleLoad,
     isError,
     onError: handleError,
+    size,
   };
 };

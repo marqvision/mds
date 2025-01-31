@@ -24,8 +24,6 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const numberStyles = resolveFontVariantNumeric(features);
 
     return `
-      margin: 0;
-      
       font-size: ${fontSize};
       color: ${fontColor};
       font-weight: ${fontWeight};
@@ -51,7 +49,6 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
 
 export const MDSTypography2 = <T extends ElementType = 'p'>({
   variant = 'body',
-  weight = 'regular',
   color = 'color/content/neutral/default/normal',
   lineClamp,
   size = 'm',
@@ -64,7 +61,6 @@ export const MDSTypography2 = <T extends ElementType = 'p'>({
 
   return (
     <TypographyStyles
-      weight={weight}
       size={size}
       variant={variant}
       char={char}

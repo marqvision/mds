@@ -42,9 +42,16 @@ export const resolveFontSize = (features: InnerTypographyStyleProps) => {
   }
 };
 export const resolveFontWeight = (features: InnerTypographyStyleProps) => {
-  return `var(--font-${features.variant}-${features.weight})`;
+  let defaultWeight = 'regular';
+  if (features.variant === 'title') {
+    if (features.size === '2xl' || features.size === 'xl') {
+      defaultWeight = 'medium';
+    } else {
+      defaultWeight = 'semibold';
+    }
+  }
+  return `var(--font-${features.variant}-${features.weight || defaultWeight})`;
 };
-
 
 // todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 export const resolveFontFamily = (features: InnerTypographyStyleProps) => {

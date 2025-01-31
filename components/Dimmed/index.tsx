@@ -58,6 +58,8 @@ const clearBodyStyle = () => {
 export const MDSDimmed = (props: Props) => {
   const { isOpen: _isOpen, padding = '20px', intensity = 'default', style, onClose, children } = props;
 
+  const closeRef = useRef(onClose);
+
   //@morgan: mui portal 의 createPortal 타이밍에 맞추기 위해 동일하게 mountNode state 추가함
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +69,7 @@ export const MDSDimmed = (props: Props) => {
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     if (event.target !== event.currentTarget) return;
-    onClose?.(event);
+    onClose?.();
   };
 
   const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -115,6 +117,28 @@ export const MDSDimmed = (props: Props) => {
       clearBodyStyle();
     };
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeRef.current?.();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown, { capture: true });
+    } else {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    closeRef.current = onClose;
+  }, [onClose]);
 
   return mountNode
     ? createPortal(

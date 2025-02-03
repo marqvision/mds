@@ -94,7 +94,7 @@ export const MDSFontCSS = ({
       ${isDisplayTypographyDebug
         ? `
         *[data-typography-new-font] {
-          background-color: red !important;
+          background-color: #ffcece !important;
         }
         `
         : ''}

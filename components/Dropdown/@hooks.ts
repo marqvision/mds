@@ -205,7 +205,21 @@ export const useInitDropdown = <T, SortT>(
   };
 
   const handleClear = () => {
-    setSelectedValues([]);
+    if (onSelect) {
+      const adaptedValue = onSelect(
+        selectedValues.flatMap((v) => v.value),
+        selectedValues.flatMap((v) => v.value),
+        false
+      ).map(
+        (v) =>
+          (selectableValue.find((v2) => v2.value === v) || selectedValues.find((v2) => v2.value === v)) as SelectedType<
+            ValueType<T>
+          >
+      );
+      setSelectedValues(adaptedValue);
+    } else {
+      setSelectedValues([]);
+    }
     setIndeterminate([]);
   };
 

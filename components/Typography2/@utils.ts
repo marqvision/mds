@@ -14,6 +14,14 @@ export const resolveTagName = (
   return 'p';
 };
 
+/*
+  T18 > variant="title" size="l"
+  T16 > variant="body" size="l"
+  T14 > variant="body" size="m"
+  T13 > variant="body" size="s"
+  T12 > variant="body" size="xs"
+ */
+
 export const resolveFontSize = (features: InnerTypographyStyleProps) => {
   if (features.variant === 'title') {
     switch (features.size) {

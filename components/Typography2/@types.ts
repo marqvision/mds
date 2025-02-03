@@ -16,7 +16,7 @@ type BaseFeatures<T extends ElementType = 'p'> = {
    * 타이포그래피의 색상.
    * 기본값은 content.neutral.default(=bluegray900)입니다.
    */
-  color?: MDSThemeColorPath;
+  color?: MDSThemeColorPath | 'inherit';
 
   /**
    * 타이포그래피의 태그. 기본값은 variant에 따라 자동으로 결정됩니다.

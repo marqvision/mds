@@ -16,7 +16,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration } = features;
     const fontSize = resolveFontSize(features);
     const fontWeight = resolveFontWeight(features);
-    const fontColor = resolveColor(color!);
+    const fontColor = color === 'inherit' ? 'inherit' : resolveColor(color!);
     const lineClampStyles = lineClamp !== undefined ? resolveLineClamp(lineClamp) : '';
     const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';
     const whiteSpaceStyles = whiteSpace ? `white-space: ${whiteSpace};` : '';

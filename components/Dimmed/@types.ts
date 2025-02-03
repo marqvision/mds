@@ -26,9 +26,9 @@ export type Props = React.PropsWithChildren<{
 
   /**
    * 컴포넌트가 닫힐 때 호출되는 선택적 콜백 함수.
-   * @type {(event: React.MouseEvent<HTMLDivElement>) => void | undefined}
+   * @type {() => void | undefined}
    */
-  onClose?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClose?: () => void;
 
   /**
    * 배경의 강도 수준.

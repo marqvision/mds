@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDSThemeColorPath } from '../../foundation';
-import { Features as MDSTypographyFeatures } from '../Typography';
+import { MDSTypographyProps2 } from '../Typography2';
 import { token } from './@constants';
 
 export type Variant = 'fill' | 'tint' | 'border' | 'ai';
@@ -30,7 +30,7 @@ export type TagTheme = {
   size: Record<
     Size,
     {
-      label: MDSTypographyFeatures['variant'];
+      size: Extract<MDSTypographyProps2['size'], 'xs' | 'm'>;
       icon: number;
       padding: `${Token['pddng']['v'][keyof Token['pddng']['v']]} ${Token['pddng']['h'][keyof Token['pddng']['v']]}`; //h key type 고의로 v 로 지정함 (v 와 한 쌍으로 된 h 값 사용)
       gap: Token['gap'][keyof Token['gap']];

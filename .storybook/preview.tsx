@@ -26,7 +26,7 @@ const preview = {
 export const decorators = [
   (Story) => (
     <ThemeProvider theme={MDSThemeValue}>
-      <MDSFontCSS useNewFont={true} isDisplayTypographyDebug={true} />
+      <MDSFontCSS useNewFont={true} />
       <MDSResetCSS />
       <Story />
     </ThemeProvider>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSChip, MDSIcon, MDSTooltip, MDSTypography } from '../components';
+import { MDSChip, MDSIcon, MDSTooltip, MDSTypography2 } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const LONG_TEXT =
@@ -69,7 +69,7 @@ export const Preview: Story = {
           </MDSChip>
         </MDSTooltip>
       </div>
-      <MDSTypography style={{ marginTop: '20px' }}>Layout test</MDSTypography>
+      <MDSTypography2 style={{ marginTop: '20px' }}>Layout test</MDSTypography2>
       <div style={{ display: 'flex', gap: '16px', width: '80%' }}>
         <MDSTooltip {...args} title={`${LONG_TEXT} ${LONG_TEXT} ${LONG_TEXT}`}>
           <MDSChip variant="fill" color="yellow" size="medium">
@@ -100,7 +100,7 @@ export const WithoutChildren: Story = {
   render: (args) => (
     <Wrapper>
       <div style={{ display: 'flex', gap: '4px' }}>
-        <MDSTypography>children 없으면 Help border 아이콘(16px, color: second) 노출 기본</MDSTypography>
+        <MDSTypography2>children 없으면 Help border 아이콘(16px, color: second) 노출 기본</MDSTypography2>
         <MDSTooltip {...args} />
       </div>
     </Wrapper>
@@ -113,7 +113,7 @@ export const CustomTooltipContents: Story = {
       <div style={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}>
         <div>
           {[...Array(5)].map(() => (
-            <MDSTypography color="color/content/on_default_color">{LONG_TEXT}</MDSTypography>
+            <MDSTypography2 color="color/content/on_default_color">{LONG_TEXT}</MDSTypography2>
           ))}
         </div>
         <MDSIcon.ArrowRight
@@ -135,9 +135,9 @@ export const CustomTooltipContents: Story = {
             size="medium"
             style={{ padding: '12px 4px 12px 16px' }}
           >
-            <MDSTypography style={{ textDecoration: 'underline' }}>
+            <MDSTypography2 style={{ textDecoration: 'underline' }}>
               툴팁 우측에 버튼 넣는 케이스는 padding 수정해서 씁시다.
-            </MDSTypography>
+            </MDSTypography2>
           </MDSTooltip>
         </div>
       </Wrapper>
@@ -154,9 +154,9 @@ export const CustomWidth: Story = {
   render: (args) => {
     const ele = (
       <div style={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}>
-        <MDSTypography color="color/content/on_default_color">
+        <MDSTypography2 color="color/content/on_default_color">
           {[...Array(5)].map(() => args.title).join(', ')}
-        </MDSTypography>
+        </MDSTypography2>
         <MDSIcon.ArrowRight
           variant="outline"
           size={24}
@@ -170,7 +170,7 @@ export const CustomWidth: Story = {
       <Wrapper>
         <div style={{ display: 'flex', gap: '4px' }}>
           <MDSTooltip {...args} title={ele}>
-            <MDSTypography style={{ textDecoration: 'underline' }}>width를 고정하는 케이스</MDSTypography>
+            <MDSTypography2 style={{ textDecoration: 'underline' }}>width를 고정하는 케이스</MDSTypography2>
           </MDSTooltip>
         </div>
       </Wrapper>

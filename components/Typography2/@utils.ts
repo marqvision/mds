@@ -1,5 +1,5 @@
 import { ElementType } from 'react';
-import { InnerTypographyStyleProps, MDSTypographyProps2 } from './@types';
+import { InnerTypographyStyleProps, MDSTypographyProps2, Size, Variant, Weight } from './@types';
 
 export const resolveTagName = (
   variant: MDSTypographyProps2['variant'],
@@ -41,7 +41,7 @@ export const resolveFontSize = (features: InnerTypographyStyleProps) => {
     }
   }
 };
-export const resolveFontWeight = (features: InnerTypographyStyleProps) => {
+export const resolveFontWeight = (features: Pick<InnerTypographyStyleProps, 'variant' | 'size' | 'weight'>) => {
   let defaultWeight = 'regular';
   if (features.variant === 'title') {
     if (features.size === '2xl' || features.size === 'xl') {
@@ -83,5 +83,61 @@ export const resolveFontVariantNumeric = (features: InnerTypographyStyleProps) =
     `;
   } else {
     return '';
+  }
+};
+
+export const getTypographyProps = (
+  fontSize: number,
+  weight?: string
+): { variant: Variant; size: Size; weight?: Weight } => {
+  switch (fontSize) {
+    case 24:
+      return {
+        variant: 'title',
+        size: '2xl',
+      };
+    case 20:
+      return {
+        variant: 'title',
+        size: 'xl',
+      };
+    case 18:
+      return {
+        variant: 'title',
+        size: 'l',
+      };
+    case 16:
+      return weight === 'bold'
+        ? {
+            variant: 'title',
+            size: 'm',
+            weight: 'semibold',
+          }
+        : {
+            variant: 'body',
+            size: 'l',
+          };
+    case 14:
+      return weight === 'bold'
+        ? {
+            variant: 'title',
+            size: 's',
+            weight: 'semibold',
+          }
+        : {
+            variant: 'body',
+            size: 'm',
+          };
+    case 13:
+      return {
+        variant: 'body',
+        size: 's',
+      };
+    default:
+    case 12:
+      return {
+        variant: 'body',
+        size: 'xs',
+      };
   }
 };

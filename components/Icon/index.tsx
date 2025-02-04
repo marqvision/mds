@@ -35,6 +35,8 @@ export const MDSIcon = {
   ArrowRight: createIcon(Arrows.ArrowRight),
   ArrowUp: createIcon(Arrows.ArrowUp),
   ArrowDown: createIcon(Arrows.ArrowDown),
+  ArrowUpward: createIcon(Arrows.ArrowUpward),
+  ArrowDownward: createIcon(Arrows.ArrowDownward),
 
   // symbols
   Check: createIcon(Symbols.Check),

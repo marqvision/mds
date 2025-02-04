@@ -103,3 +103,23 @@ export const ArrowDown = ({ variant }: Features<'ArrowDown'>) =>
       fill="currentColor"
     />
   );
+
+export const ArrowUpward = () => (
+  <>
+    <rect width="24" height="24" fill="white" fillOpacity="0.01" />
+    <path
+      d="M5.62761 15.193C5.37217 15.5215 5.60621 16 6.02229 16H17.9776C18.3937 16 18.6278 15.5215 18.3723 15.193L12.5525 7.71043C12.2723 7.3501 11.7277 7.35011 11.4474 7.71043L5.62761 15.193Z"
+      fill="currentColor"
+    />
+  </>
+);
+
+export const ArrowDownward = () => (
+  <>
+    <rect width="24" height="24" fill="white" fillOpacity="0.01" />
+    <path
+      d="M5.62761 8.80697C5.37217 8.47854 5.60621 8 6.02229 8H17.9776C18.3937 8 18.6278 8.47854 18.3723 8.80697L12.5525 16.2896C12.2723 16.6499 11.7277 16.6499 11.4474 16.2896L5.62761 8.80697Z"
+      fill="currentColor"
+    />
+  </>
+);

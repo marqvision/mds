@@ -39,8 +39,8 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${
         typeof window !== 'undefined' &&
         //@ts-ignore
-        !window.___mdsv2_use_new_font &&
-        `font-family: ${resolveFontFamily(features)};`
+        !window.___mdsv2_use_new_font ?
+        `font-family: ${resolveFontFamily(features)};` : ''
       }
 
     `;

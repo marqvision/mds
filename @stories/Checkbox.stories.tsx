@@ -2,7 +2,7 @@ import React from 'react';
 import { useArgs } from '@storybook/preview-api';
 import { MDSCheckbox } from '../components/Checkbox';
 import { MDSThemeValue } from '../foundation';
-import { MDSTypography } from '../components';
+import { MDSTypography2 } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSCheckbox> = {
@@ -65,7 +65,7 @@ export const Small: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>가로 세로 20px 의 small 사이즈 입니다.</MDSTypography>
+      <MDSTypography2>가로 세로 20px 의 small 사이즈 입니다.</MDSTypography2>
       <MDSCheckbox {...props} />
       <MDSCheckbox {...props} value="indeterminate" />
       <MDSCheckbox {...props} value={false} />
@@ -80,7 +80,7 @@ export const Medium: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>가로 세로 24px 의 medium 사이즈 입니다.</MDSTypography>
+      <MDSTypography2>가로 세로 24px 의 medium 사이즈 입니다.</MDSTypography2>
       <MDSCheckbox {...props} />
       <MDSCheckbox {...props} value="indeterminate" />
       <MDSCheckbox {...props} value={false} />
@@ -94,7 +94,7 @@ export const Checked: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>Check 된 상태입니다.</MDSTypography>
+      <MDSTypography2>Check 된 상태입니다.</MDSTypography2>
       <MDSCheckbox {...props} />
       <MDSCheckbox color="white" {...props} />
       <MDSCheckbox color="bluegray" {...props} />
@@ -109,7 +109,7 @@ export const CheckedDisabled: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>Check 되었으나 비활성화 된 상태 입니다.</MDSTypography>
+      <MDSTypography2>Check 되었으나 비활성화 된 상태 입니다.</MDSTypography2>
       <MDSCheckbox {...props} />
       <MDSCheckbox color="white" {...props} />
       <MDSCheckbox color="bluegray" {...props} />
@@ -123,7 +123,7 @@ export const UnChecked: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>Check 되지 않은 상태입니다.</MDSTypography>
+      <MDSTypography2>Check 되지 않은 상태입니다.</MDSTypography2>
       <MDSCheckbox {...props} />
       <MDSCheckbox color="white" {...props} />
       <MDSCheckbox color="bluegray" {...props} />
@@ -138,7 +138,7 @@ export const UnCheckedDisabled: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>Check 되지 않고 비활성화 된 상태 입니다.</MDSTypography>
+      <MDSTypography2>Check 되지 않고 비활성화 된 상태 입니다.</MDSTypography2>
       <MDSCheckbox {...props} />
       <MDSCheckbox color="white" {...props} />
       <MDSCheckbox color="bluegray" {...props} />
@@ -152,7 +152,7 @@ export const Indeterminate: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>불확정 Check 상태입니다.</MDSTypography>
+      <MDSTypography2>불확정 Check 상태입니다.</MDSTypography2>
       <MDSCheckbox {...props} />
       <MDSCheckbox color="white" {...props} />
       <MDSCheckbox color="bluegray" {...props} />
@@ -167,7 +167,7 @@ export const IndeterminateDisabled: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>불확정 Check + 비활성화 된 상태입니다.</MDSTypography>
+      <MDSTypography2>불확정 Check + 비활성화 된 상태입니다.</MDSTypography2>
       <MDSCheckbox {...props} />
       <MDSCheckbox color="white" {...props} />
       <MDSCheckbox color="bluegray" {...props} />

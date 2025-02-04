@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useArgs } from '@storybook/preview-api';
-import { MDSIcon, MDSModal, MDSTypography } from '../../components';
+import { MDSIcon, MDSModal, MDSTypography2 } from '../../components';
 import { Doc } from './Doc';
 
 const meta: Meta<typeof MDSModal.Wrapper> = {
@@ -39,14 +39,14 @@ export const Preview: StoryObj<typeof MDSModal.Wrapper> = {
         <MDSModal.Header onClose={handleClose}>Title</MDSModal.Header>
         <MDSModal.Content>
           {[...Array(10)].map((_, index) => (
-            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+            <MDSTypography2 key={index}>ReactElement {index}</MDSTypography2>
           ))}
         </MDSModal.Content>
         <MDSModal.Action>
-          <MDSTypography onClick={handleClose} style={{ cursor: 'pointer' }}>
+          <MDSTypography2 onClick={handleClose} style={{ cursor: 'pointer' }}>
             Close
-          </MDSTypography>
-          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+          </MDSTypography2>
+          <MDSTypography2 color="color/content/primary/default/normal">Action</MDSTypography2>
         </MDSModal.Action>
       </MDSModal.Wrapper>
     );
@@ -136,9 +136,9 @@ export const ModalHeader: StoryObj<typeof MDSModal.Header> = {
         {...restProps}
         rightSideElement={
           rightSideElement && (
-            <MDSTypography weight="bold" color="color/content/critical/default/normal">
+            <MDSTypography2 variant="title" size="m" weight="semibold" color="color/content/critical/default/normal">
               여기에 출력
-            </MDSTypography>
+            </MDSTypography2>
           )
         }
         icon={icon && <MDSIcon.ErrorWarning variant="fill" />}
@@ -162,7 +162,7 @@ export const ModalContent: StoryObj<typeof MDSModal.Content> = {
     children: (
       <>
         {[...Array(50)].map((_, index) => (
-          <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+          <MDSTypography2 key={index}>ReactElement {index}</MDSTypography2>
         ))}
       </>
     ),
@@ -194,8 +194,8 @@ export const ModalAction: StoryObj<typeof MDSModal.Action> = {
     justifyContent: 'flex-end',
     children: (
       <>
-        <MDSTypography>Close</MDSTypography>
-        <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+        <MDSTypography2>Close</MDSTypography2>
+        <MDSTypography2 color="color/content/primary/default/normal">Action</MDSTypography2>
       </>
     ),
   },
@@ -212,12 +212,12 @@ export const WithoutHeader: StoryObj = {
     <MDSModal.Wrapper isOpen={true}>
       <MDSModal.Content>
         {[...Array(20)].map((_, index) => (
-          <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+          <MDSTypography2 key={index}>ReactElement {index}</MDSTypography2>
         ))}
       </MDSModal.Content>
       <MDSModal.Action>
-        <MDSTypography>Close</MDSTypography>
-        <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+        <MDSTypography2>Close</MDSTypography2>
+        <MDSTypography2 color="color/content/primary/default/normal">Action</MDSTypography2>
       </MDSModal.Action>
     </MDSModal.Wrapper>
   ),
@@ -229,7 +229,7 @@ export const WithoutAction: StoryObj = {
       <MDSModal.Header onClose={() => {}}>header</MDSModal.Header>
       <MDSModal.Content>
         {[...Array(20)].map((_, index) => (
-          <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+          <MDSTypography2 key={index}>ReactElement {index}</MDSTypography2>
         ))}
       </MDSModal.Content>
     </MDSModal.Wrapper>
@@ -243,9 +243,9 @@ export const RightSideElement: StoryObj<typeof MDSModal.Header> = {
   args: {
     isBorderBottom: false,
     rightSideElement: (
-      <MDSTypography weight="bold" color="color/content/critical/default/normal">
+      <MDSTypography2 variant="title" size="m" weight="semibold" color="color/content/critical/default/normal">
         여기에 출력
-      </MDSTypography>
+      </MDSTypography2>
     ),
   },
   render: (args) => {
@@ -256,14 +256,14 @@ export const RightSideElement: StoryObj<typeof MDSModal.Header> = {
         </MDSModal.Header>
         <MDSModal.Content>
           {[...Array(10)].map((_, index) => (
-            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+            <MDSTypography2 key={index}>ReactElement {index}</MDSTypography2>
           ))}
         </MDSModal.Content>
         <MDSModal.Action>
-          <MDSTypography onClick={() => {}} style={{ cursor: 'pointer' }}>
+          <MDSTypography2 onClick={() => {}} style={{ cursor: 'pointer' }}>
             Close
-          </MDSTypography>
-          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+          </MDSTypography2>
+          <MDSTypography2 color="color/content/primary/default/normal">Action</MDSTypography2>
         </MDSModal.Action>
       </MDSModal.Wrapper>
     );
@@ -282,14 +282,14 @@ export const TitleIcon: StoryObj<typeof MDSModal.Header> = {
         </MDSModal.Header>
         <MDSModal.Content>
           {[...Array(10)].map((_, index) => (
-            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+            <MDSTypography2 key={index}>ReactElement {index}</MDSTypography2>
           ))}
         </MDSModal.Content>
         <MDSModal.Action>
-          <MDSTypography onClick={() => {}} style={{ cursor: 'pointer' }}>
+          <MDSTypography2 onClick={() => {}} style={{ cursor: 'pointer' }}>
             Close
-          </MDSTypography>
-          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+          </MDSTypography2>
+          <MDSTypography2 color="color/content/primary/default/normal">Action</MDSTypography2>
         </MDSModal.Action>
       </MDSModal.Wrapper>
     );
@@ -305,18 +305,18 @@ export const CustomTitle: StoryObj<typeof MDSModal.Header> = {
       <MDSModal.Wrapper height="240px" isOpen={true}>
         <MDSModal.Header {...args} onClose={() => {}}>
           <p>Title</p>
-          <MDSTypography>Sub title</MDSTypography>
+          <MDSTypography2>Sub title</MDSTypography2>
         </MDSModal.Header>
         <MDSModal.Content>
           {[...Array(10)].map((_, index) => (
-            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+            <MDSTypography2 key={index}>ReactElement {index}</MDSTypography2>
           ))}
         </MDSModal.Content>
         <MDSModal.Action>
-          <MDSTypography onClick={() => {}} style={{ cursor: 'pointer' }}>
+          <MDSTypography2 onClick={() => {}} style={{ cursor: 'pointer' }}>
             Close
-          </MDSTypography>
-          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+          </MDSTypography2>
+          <MDSTypography2 color="color/content/primary/default/normal">Action</MDSTypography2>
         </MDSModal.Action>
       </MDSModal.Wrapper>
     );
@@ -344,14 +344,14 @@ export const JustifyContent: StoryObj<typeof MDSModal.Action> = {
         <MDSModal.Header onClose={() => {}}>Title</MDSModal.Header>
         <MDSModal.Content>
           {[...Array(10)].map((_, index) => (
-            <MDSTypography key={index}>ReactElement {index}</MDSTypography>
+            <MDSTypography2 key={index}>ReactElement {index}</MDSTypography2>
           ))}
         </MDSModal.Content>
         <MDSModal.Action {...args}>
-          <MDSTypography onClick={() => {}} style={{ cursor: 'pointer' }}>
+          <MDSTypography2 onClick={() => {}} style={{ cursor: 'pointer' }}>
             Close
-          </MDSTypography>
-          <MDSTypography color="color/content/primary/default/normal">Action</MDSTypography>
+          </MDSTypography2>
+          <MDSTypography2 color="color/content/primary/default/normal">Action</MDSTypography2>
         </MDSModal.Action>
       </MDSModal.Wrapper>
     );

@@ -1,7 +1,7 @@
 import React, { isValidElement } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system';
-import { MDSTypography } from '../Typography';
+import { MDSTypography2 } from '../Typography2';
 import { Divider } from './@components/Divider';
 import { Icon } from './@components/Icon';
 import { theme as ChipTheme } from './@constants';
@@ -183,9 +183,9 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       {isValidElement(label)
         ? label
         : label && (
-            <MDSTypography variant={ChipTheme.size[size].label} weight="medium" lineClamp={1} wordBreak="break-all">
+            <MDSTypography2 variant={ChipTheme.size[size].label} weight="medium" lineClamp={1} wordBreak="break-all">
               {label}
-            </MDSTypography>
+            </MDSTypography2>
           )}
 
       {Array.isArray(tags) ? tags.map((tag) => tag) : tags}

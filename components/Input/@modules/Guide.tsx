@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { InputStatus, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
-import { MDSTypography } from '../../Typography';
+import { MDSTypography2 } from '../../Typography2';
+import { getTypographyProps } from '../../Typography2/@utils';
 
 type Props = {
   label?: string;
@@ -11,25 +12,25 @@ type Props = {
 
 const GUIDE_SIZE = {
   small: {
-    fontSize: 'T12',
+    fontSize: 12,
     iconSize: 16,
     iconPadding: '1px',
     gap: '4px',
   },
   medium: {
-    fontSize: 'T12',
+    fontSize: 12,
     iconSize: 16,
     iconPadding: '1px',
     gap: '4px',
   },
   large: {
-    fontSize: 'T14',
+    fontSize: 14,
     iconSize: 18,
     iconPadding: '1.5px',
     gap: '6px',
   },
   'extra-large': {
-    fontSize: 'T16',
+    fontSize: 16,
     iconSize: 20,
     iconPadding: '2px',
     gap: '8px',
@@ -74,12 +75,15 @@ export const Guide = (props: Props) => {
       ? 'color/content/success/default/normal'
       : undefined;
 
+  const typographyProps = getTypographyProps(GUIDE_SIZE[size].fontSize, 'medium');
+
   return (
     <StyledWrap customSize={size}>
       {Icon}
-      <MDSTypography variant={GUIDE_SIZE[size].fontSize} weight="medium" color={fontColor}>
+      {/* @ts-expect-error - variant=title/body에 따라 사용 가능한 size가 상이해서 에러 발생함. 추후 수정 필요 */}
+      <MDSTypography2 variant={typographyProps.variant} size={typographyProps.size} weight="medium" color={fontColor}>
         {label}
-      </MDSTypography>
+      </MDSTypography2>
     </StyledWrap>
   );
 };

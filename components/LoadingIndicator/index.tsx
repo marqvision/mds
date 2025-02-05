@@ -1,6 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { MDSTypography } from '../Typography';
+import { MDSTypography2 } from '../Typography2';
 import { DEFAULT_SIZE, theme } from './@constants';
 import { LoadingIndicatorProps } from './@types';
 
@@ -82,7 +82,7 @@ const BackgroundCircle = styled.circle<{
   stroke: ${({ backgroundColor }) => (backgroundColor ? theme.color.backgroundColor : '')};
 `;
 
-const Label = styled(MDSTypography)<{ customColor: string }>`
+const Label = styled(MDSTypography2)<{ customColor: string }>`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -144,7 +144,7 @@ export const MDSLoadingIndicator = (props: LoadingIndicatorProps) => {
         <Circle cx={cxy} cy={cxy} r={r} fill="none" progress={progress} />
       </SVG>
       {typeof label === 'number' && (
-        <Label variant="T12" customColor={color}>
+        <Label variant="body" size="xs" weight="regular" customColor={color}>
           {label}%
         </Label>
       )}

@@ -1,10 +1,10 @@
 import { CSSProperties, ElementType } from 'react';
 import type { MDSThemeColorPath } from '../../foundation';
 
-type Variant = 'title' | 'body';
-type Size = '2xl' | 'xl' | 'l' | 'm' | 's' | 'xs';
-type Weight = 'semibold' | 'medium' | 'regular';
-type Char = 'letter' | 'number';
+export type Variant = 'title' | 'body';
+export type Size = '2xl' | 'xl' | 'l' | 'm' | 's' | 'xs';
+export type Weight = 'semibold' | 'medium' | 'regular';
+export type Char = 'letter' | 'number';
 
 type BaseFeatures<T extends ElementType = 'p'> = {
   /**

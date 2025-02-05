@@ -75,3 +75,5 @@ export const MDSTypography2 = <T extends ElementType = 'p'>({
 };
 
 export * from './@types';
+
+export { getTypographyProps } from './@utils';

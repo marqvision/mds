@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/blocks';
-import { MDSIcon, MDSTag, MDSTypography } from '../components';
+import { MDSIcon, MDSTag, MDSTypography2 } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSTag> = {
@@ -93,7 +93,7 @@ export const StartIcon: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>label 의 앞에 아이콘을 추가합니다.</MDSTypography>
+      <MDSTypography2>label 의 앞에 아이콘을 추가합니다.</MDSTypography2>
       <MDSTag {...args}>Tag</MDSTag>
     </Wrapper>
   ),
@@ -105,7 +105,7 @@ export const EndIcon: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>label 의 뒤에 아이콘을 추가합니다.</MDSTypography>
+      <MDSTypography2>label 의 뒤에 아이콘을 추가합니다.</MDSTypography2>
       <MDSTag {...args}>Tag</MDSTag>
     </Wrapper>
   ),
@@ -119,7 +119,7 @@ export const ColoredIcon: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>color 가 지정된 아이콘을 전달할 경우 아이콘의 컬러를 우선 적용합니다.</MDSTypography>
+      <MDSTypography2>color 가 지정된 아이콘을 전달할 경우 아이콘의 컬러를 우선 적용합니다.</MDSTypography2>
       <MDSTag {...args}>Tag</MDSTag>
     </Wrapper>
   ),
@@ -131,7 +131,7 @@ export const XSmallSize: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography>x-small 사이즈는 startIcon, endIcon 대신 icon 을 전달해 중앙에 출력합니다.</MDSTypography>
+      <MDSTypography2>x-small 사이즈는 startIcon, endIcon 대신 icon 을 전달해 중앙에 출력합니다.</MDSTypography2>
       <MDSTag {...props}>A</MDSTag>
       <MDSTag {...props}>Tag</MDSTag>
       <MDSTag size="x-small" variant="border" color="blue" icon={<MDSIcon.Flag variant="outline" />} />
@@ -153,13 +153,13 @@ export const Clickable: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>
+      <MDSTypography2>
         onClick 이벤트가 없는 경우 div 요소로 출력되며,
         <br />
         onClick 이벤트가 있는 경우 button 요소로 출력됨과 동시에 hover 컬러 및 cursor: pointer 스타일이 적용됩니다.
         <br />
         로딩 상태에는 onClick 이벤트가 무시됩니다.
-      </MDSTypography>
+      </MDSTypography2>
 
       <MDSTag {...args}>Clickable Tag</MDSTag>
     </Wrapper>
@@ -175,7 +175,7 @@ export const Disabled: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>disabled 상태 시 클릭 이벤트 및 hover 효과가 제거됩니다.</MDSTypography>
+      <MDSTypography2>disabled 상태 시 클릭 이벤트 및 hover 효과가 제거됩니다.</MDSTypography2>
       <MDSTag {...args}>Diabled Tag</MDSTag>
     </Wrapper>
   ),
@@ -189,11 +189,11 @@ export const LikelyCounterfeit: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>
+      <MDSTypography2>
         Gen AI 태그 스타일입니다.
         <br />
         그라데이션 효과가 적용되어 있습니다.
-      </MDSTypography>
+      </MDSTypography2>
       <MDSTag {...args}>Likely counterfeit</MDSTag>
     </Wrapper>
   ),

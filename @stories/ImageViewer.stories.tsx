@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSChip, MDSIcon, MDSImage, MDSImageViewer, MDSTypography } from '../components';
+import { MDSChip, MDSIcon, MDSImage, MDSImageViewer, MDSTypography2 } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSImageViewer> = {
@@ -48,9 +48,9 @@ export const Preview: Story = {
   render: function Render() {
     return (
       <Wrapper>
-        <MDSTypography>
+        <MDSTypography2>
           renderAnchor 에서 제공하는 defaultButton 을 미리보기 이미지에서 사용할 수 있습니다.
-        </MDSTypography>
+        </MDSTypography2>
         <MDSImageViewer
           image="https://picsum.photos/200"
           renderAnchor={({ defaultButton }) => (
@@ -65,7 +65,7 @@ export const Preview: Story = {
             />
           )}
         />
-        <MDSTypography as="code" variant="T14" style={CodeStyle}>
+        <MDSTypography2 as="code" variant="body" size="m" style={CodeStyle}>
           {`
             <MDSImageViewer
               image="https://picsum.photos/200"
@@ -82,7 +82,7 @@ export const Preview: Story = {
               )}
             />
         `}
-        </MDSTypography>
+        </MDSTypography2>
       </Wrapper>
     );
   },
@@ -107,10 +107,10 @@ export const WithOverlayElement: Story = {
   render: function Render() {
     return (
       <Wrapper>
-        <MDSTypography>image 를 객체 형태로 전달하면 원본 이미지 외에 다른 정보를 출력할 수 있습니다.</MDSTypography>
-        <MDSTypography>
+        <MDSTypography2>image 를 객체 형태로 전달하면 원본 이미지 외에 다른 정보를 출력할 수 있습니다.</MDSTypography2>
+        <MDSTypography2>
           overlay 는 원본 이미지(MDSImage) 의 children 으로 전달되어 이미지 내부에 다른 요소를 출력합니다.
-        </MDSTypography>
+        </MDSTypography2>
         <MDSImageViewer
           image={{
             src: 'https://picsum.photos/200',
@@ -131,7 +131,7 @@ export const WithOverlayElement: Story = {
             </MDSImage>
           )}
         />
-        <MDSTypography as="code" variant="T14" style={CodeStyle}>
+        <MDSTypography2 as="code" variant="body" size="m" style={CodeStyle}>
           {`
             <MDSImageViewer
               image={{
@@ -154,7 +154,7 @@ export const WithOverlayElement: Story = {
               )}
             />
         `}
-        </MDSTypography>
+        </MDSTypography2>
       </Wrapper>
     );
   },
@@ -164,9 +164,9 @@ export const CustomButton: Story = {
   render: function Render() {
     return (
       <Wrapper>
-        <MDSTypography>
+        <MDSTypography2>
           renderAnchor 에서 제공하는 open 이벤트를 적용해 임의의 요소를 버튼으로 사용할 수 있습니다.
-        </MDSTypography>
+        </MDSTypography2>
         <MDSImageViewer
           image="https://picsum.photos/400"
           renderAnchor={({ open }) => (
@@ -181,7 +181,7 @@ export const CustomButton: Story = {
             </MDSChip>
           )}
         />
-        <MDSTypography as="code" variant="T14" style={CodeStyle}>
+        <MDSTypography2 as="code" variant="body" size="m" style={CodeStyle}>
           {`
             <MDSImageViewer
               image="https://picsum.photos/400"
@@ -198,7 +198,7 @@ export const CustomButton: Story = {
               )}
             />
         `}
-        </MDSTypography>
+        </MDSTypography2>
       </Wrapper>
     );
   },
@@ -211,7 +211,7 @@ export const BigImage: Story = {
   render: function Render(props) {
     return (
       <Wrapper>
-        <MDSTypography>큰 사이즈의 이미지는 max-width 1280px 으로 출력됩니다.</MDSTypography>
+        <MDSTypography2>큰 사이즈의 이미지는 max-width 1280px 으로 출력됩니다.</MDSTypography2>
         <MDSImageViewer
           {...props}
           renderAnchor={({ defaultButton }) => (
@@ -239,7 +239,7 @@ export const VerticalImage: Story = {
     return (
       <Wrapper>
         <Wrapper>
-          <MDSTypography>세로로 긴 이미지는 스크롤을 내려서 확인합니다.</MDSTypography>
+          <MDSTypography2>세로로 긴 이미지는 스크롤을 내려서 확인합니다.</MDSTypography2>
           <MDSImageViewer
             {...props}
             renderAnchor={({ defaultButton }) => (

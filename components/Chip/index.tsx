@@ -1,7 +1,7 @@
 import React, { isValidElement } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system';
-import { MDSTypography } from '../Typography';
+import { MDSTypography2 } from '../Typography2';
 import { Divider } from './@components/Divider';
 import { Icon } from './@components/Icon';
 import { theme as ChipTheme } from './@constants';
@@ -183,9 +183,16 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       {isValidElement(label)
         ? label
         : label && (
-            <MDSTypography variant={ChipTheme.size[size].label} weight="medium" lineClamp={1} wordBreak="break-all">
+            // @ts-expect-error - variant=title/body에 따라 사용 가능한 size가 상이해서 에러 발생함. 추후 수정 필요
+            <MDSTypography2
+              variant={ChipTheme.size[size].label}
+              weight={ChipTheme.size[size].weight}
+              size={ChipTheme.size[size].size}
+              lineClamp={1}
+              wordBreak="break-all"
+            >
               {label}
-            </MDSTypography>
+            </MDSTypography2>
           )}
 
       {Array.isArray(tags) ? tags.map((tag) => tag) : tags}

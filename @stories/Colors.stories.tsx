@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { COLOR_TOKENS as color } from '../foundation/colors';
-import { MDSTypography } from '../components';
+import { MDSTypography2 } from '../components';
 
 export default {
   title: '1. Foundation/Colors',
@@ -34,6 +34,7 @@ const ColorBox = styled.div<{ color: string; name: string }>`
     }
   `}
 `;
+
 const ColorWithAlphaBox = styled.div`
   width: 100%;
   height: 56px;
@@ -62,7 +63,7 @@ export const WithEmotionTheme = () => {
 const Palette = ({ title, colors }: { title: string; colors: { [name: string]: string } }) => {
   return (
     <div>
-      <MDSTypography>{title}</MDSTypography>
+      <MDSTypography2>{title}</MDSTypography2>
       <div>
         {Object.entries(colors).map(([name, color]) =>
           color.includes('rgba') ? (
@@ -87,10 +88,14 @@ export const SystemColorTokens = () => {
   return (
     <div>
       <Container>
-        <MDSTypography variant="T24">bg/fill</MDSTypography>
+        <MDSTypography2 variant="title" size="2xl">
+          bg/fill
+        </MDSTypography2>
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
           <div>
-            <MDSTypography variant="T20">neutral</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              neutral
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.fill.neutral.default} />
               <Palette title="strong" colors={color.bg.fill.neutral.strong} />
@@ -99,49 +104,63 @@ export const SystemColorTokens = () => {
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">primary</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              primary
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.fill.primary.default} />
               <Palette title="tint" colors={color.bg.fill.primary.tint} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">critical</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              critical
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.fill.critical.default} />
               <Palette title="tint" colors={color.bg.fill.critical.tint} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">success</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              success
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.fill.success.default} />
               <Palette title="tint" colors={color.bg.fill.success.tint} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">warning</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              warning
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.fill.warning.default} />
               <Palette title="tint" colors={color.bg.fill.warning.tint} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">teal</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              teal
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.fill.teal.default} />
               <Palette title="tint" colors={color.bg.fill.teal.tint} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">purple</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              purple
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.fill.purple.default} />
               <Palette title="tint" colors={color.bg.fill.purple.tint} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">inverse</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              inverse
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="white.default" colors={color.bg.fill.inverse.default} />
               <Palette title="white.tint" colors={color.bg.fill.inverse.tint} />
@@ -152,10 +171,14 @@ export const SystemColorTokens = () => {
       </Container>
 
       <Container>
-        <MDSTypography variant="T24">bg/surface</MDSTypography>
+        <MDSTypography2 variant="title" size="2xl">
+          bg/surface
+        </MDSTypography2>
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
           <div>
-            <MDSTypography variant="T20">neutral</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              neutral
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.neutral.default} />
               <Palette title="secondary" colors={color.bg.surface.neutral.secondary} />
@@ -163,49 +186,65 @@ export const SystemColorTokens = () => {
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">primary</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              primary
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.primary.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">critical</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              critical
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.critical.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">success</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              success
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.success.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">warning</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              warning
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.warning.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">teal</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              teal
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.teal.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">purple</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              purple
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.purple.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">inverse</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              inverse
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.inverse} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">selected</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              selected
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.bg.surface.selected.default} />
             </ColorPalette>
@@ -214,7 +253,9 @@ export const SystemColorTokens = () => {
       </Container>
 
       <Container>
-        <MDSTypography variant="T24">content</MDSTypography>
+        <MDSTypography2 variant="title" size="2xl">
+          content
+        </MDSTypography2>
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
           <div>
             <div style={{ height: 29 }} />
@@ -224,7 +265,9 @@ export const SystemColorTokens = () => {
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">neutral</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              neutral
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.neutral.default} />
               <Palette title="secondary" colors={color.content.neutral.secondary} />
@@ -232,50 +275,66 @@ export const SystemColorTokens = () => {
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">primary</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              primary
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.primary.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">critical</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              critical
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.critical.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">success</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              success
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.success.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">warning</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              warning
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.warning.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">teal</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              teal
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.teal.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">purple</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              purple
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.purple.default} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">inverse</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              inverse
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.inverse.default} />
               <Palette title="_" colors={{ primary: color.content.inverse.primary }} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">selected</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              selected
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.content.selected.default} />
             </ColorPalette>
@@ -284,10 +343,14 @@ export const SystemColorTokens = () => {
       </Container>
 
       <Container>
-        <MDSTypography variant="T24">border</MDSTypography>
+        <MDSTypography2 variant="title" size="2xl">
+          border
+        </MDSTypography2>
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
           <div>
-            <MDSTypography variant="T20">neutral</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              neutral
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.border.neutral.default} />
               <Palette title="_" colors={{ strong: color.border.neutral.strong.normal }} />
@@ -295,49 +358,63 @@ export const SystemColorTokens = () => {
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">primary</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              primary
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.border.primary.default} />
               <Palette title="weak" colors={color.border.primary.weak} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">critical</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              critical
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.border.critical.default} />
               <Palette title="weak" colors={color.border.critical.weak} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">success</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              success
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.border.success.default} />
               <Palette title="weak" colors={color.border.success.weak} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">warning</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              warning
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.border.warning.default} />
               <Palette title="weak" colors={color.border.warning.weak} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">teal</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              teal
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.border.teal.default} />
               <Palette title="weak" colors={color.border.teal.weak} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">purple</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              purple
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.border.purple.default} />
               <Palette title="weak" colors={color.border.purple.weak} />
             </ColorPalette>
           </div>
           <div>
-            <MDSTypography variant="T20">inverse</MDSTypography>
+            <MDSTypography2 variant="title" size="xl">
+              inverse
+            </MDSTypography2>
             <ColorPalette>
               <Palette title="default" colors={color.border.inverse.default} />
               <Palette title="_" colors={{ primary: color.border.inverse.primary.normal }} />
@@ -351,23 +428,31 @@ export const SystemColorTokens = () => {
 export const ComponentColorTokens = () => {
   return (
     <Container>
-      <MDSTypography variant="T24">Comp</MDSTypography>
+      <MDSTypography2 variant="title" size="2xl">
+        Comp
+      </MDSTypography2>
       <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
         <div>
-          <MDSTypography variant="T20">divider</MDSTypography>
+          <MDSTypography2 variant="title" size="xl">
+            divider
+          </MDSTypography2>
           <ColorPalette>
             <Palette title="_" colors={color.comp.divider.color} />
           </ColorPalette>
         </div>
         <div>
-          <MDSTypography variant="T20">input</MDSTypography>
+          <MDSTypography2 variant="title" size="xl">
+            input
+          </MDSTypography2>
           <ColorPalette>
             <Palette title="bg" colors={color.comp.input.color.bg} />
             <Palette title="border" colors={color.comp.input.color.border} />
           </ColorPalette>
         </div>
         <div>
-          <MDSTypography variant="T20">dimmed</MDSTypography>
+          <MDSTypography2 variant="title" size="xl">
+            dimmed
+          </MDSTypography2>
           <ColorPalette>
             <Palette title="_" colors={color.comp.dimmed.color} />
           </ColorPalette>

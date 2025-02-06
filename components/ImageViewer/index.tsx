@@ -13,12 +13,12 @@ const StyledScrollWrapper = styled.div`
   text-align: center;
   overflow-y: auto;
   font-size: 0;
+  padding: 40px;
 `;
 
 const StyledImageWrapper = styled.div`
   display: inline-block;
   max-width: min(100%, 1280px + 80px);
-  padding: 40px;
 `;
 
 const StyledLoading = styled.div`
@@ -58,8 +58,7 @@ export const MDSImageViewer = (props: ImageViewerProps) => {
     setIsOpen(true);
   };
 
-  const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.currentTarget !== event.target) return;
+  const handleClose = () => {
     setIsOpen(false);
     timeoutRef.current = setTimeout(() => {
       setIsLoaded(false);
@@ -74,7 +73,7 @@ export const MDSImageViewer = (props: ImageViewerProps) => {
     <>
       <MDSDimmed intensity="strong" padding="0" isOpen={isOpen} onClose={handleClose}>
         <StyledScrollWrapper onClick={handleClose}>
-          <StyledImageWrapper onClick={handleClose}>
+          <StyledImageWrapper onClick={(event) => event.stopPropagation()}>
             <MDSImage
               src={imageSrc}
               errorFallback="both"

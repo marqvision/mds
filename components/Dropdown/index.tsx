@@ -1,4 +1,5 @@
 import { cloneElement, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { Provider, useSetAtom } from 'jotai';
 import styled from '@emotion/styled';
 import { MDSPopover } from '../Popover';
 import { MDSTypography2 } from '../Typography2';
@@ -23,6 +24,8 @@ import {
 import { FilterChip } from './@components/FilterChip';
 import { Search } from './@components/Search';
 import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constants';
+import { foldedItemIndexAtom } from './@atoms';
+import { getAllListIndex } from './@utils';
 
 export type MDSDropdownItem<T> = DropdownItem<T>;
 
@@ -158,6 +161,7 @@ const Dropdown = <T, SortT>(
   });
 
   const [isScrollTop, setIsScrollTop] = useState(false);
+  const setFoldedItemIndex = useSetAtom(foldedItemIndexAtom);
 
   const infiniteRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number>();
@@ -182,8 +186,8 @@ const Dropdown = <T, SortT>(
     (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-      ? 'indeterminate'
-      : false;
+        ? 'indeterminate'
+        : false;
   const isEmpty = list.length === 0 && !infinite?.isLoading && !isLoading;
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;
@@ -367,6 +371,13 @@ const Dropdown = <T, SortT>(
     };
   }, [onMount, onUnmount]);
 
+  useEffect(() => {
+    if (isFoldAll) {
+      setFoldedItemIndex(getAllListIndex(list));
+    }
+    // intentionally omitting list
+  }, [getAllListIndex, isFoldAll]);
+
   return (
     <div ref={scrollOffsetRef}>
       <StyledStickyTrigger ref={stickyTrigger} />
@@ -432,7 +443,6 @@ const Dropdown = <T, SortT>(
             selectedValue={selectedValues}
             is1DepthSingle={is1DepthSingle}
             isInfiniteAll={isInfiniteAll}
-            isDefaultFold={isFoldAll || false}
             onChange={onChange}
             onClose={onClose}
           />
@@ -473,6 +483,11 @@ const Dropdown = <T, SortT>(
                 rightSection: stickyBottom.rightSection,
                 isDisabled: stickyBottom.isDisabled,
                 icon: stickyBottom.icon,
+                style: {
+                  position: 'sticky',
+                  bottom: 0,
+                  borderTop: `1px solid ${MDSThemeValue._raw_color.bluegray150}`,
+                },
               }}
               indeterminate={indeterminate}
               search={''}
@@ -480,10 +495,8 @@ const Dropdown = <T, SortT>(
               selectedValue={selectedValues}
               is1DepthSingle={is1DepthSingle}
               isInfiniteAll={isInfiniteAll}
-              isDefaultFold={isFoldAll || false}
               onChange={onChange}
               onClose={onClose}
-              style={{ position: 'sticky', bottom: 0, borderTop: `1px solid ${MDSThemeValue._raw_color.bluegray150}` }}
             />
           )}
         </>
@@ -549,19 +562,21 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
       {({ close, isOpen }) => {
         closeRef.current = isOpen ? close : undefined;
         return (
-          <Dropdown<T, SortT>
-            {...restProps}
-            selectedValues={selectedValues}
-            indeterminate={indeterminate}
-            selectableValues={selectableValue}
-            onChange={(v: SelectedType<ValueType<T>>[], isSelected, forceClose?: boolean) =>
-              handler.change(v, isSelected, close, forceClose)
-            }
-            onClear={handler.clear}
-            onClose={close}
-            onMount={handleMount}
-            onUnmount={handleUnmount}
-          />
+          <Provider>
+            <Dropdown<T, SortT>
+              {...restProps}
+              selectedValues={selectedValues}
+              indeterminate={indeterminate}
+              selectableValues={selectableValue}
+              onChange={(v: SelectedType<ValueType<T>>[], isSelected, forceClose?: boolean) =>
+                handler.change(v, isSelected, close, forceClose)
+              }
+              onClear={handler.clear}
+              onClose={close}
+              onMount={handleMount}
+              onUnmount={handleUnmount}
+            />
+          </Provider>
         );
       }}
     </MDSPopover>

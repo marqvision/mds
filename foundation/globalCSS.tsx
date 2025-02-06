@@ -80,10 +80,10 @@ export const MDSFontCSS = ({
         ${FONT_STYLE_VALUES.EN.body}
       }
 
-      html[lang='ko'] button {
+      html[lang='ko'] button, html[lang='ko'] input {
         font-family: 'Pretendard Variable !important';
       }
-      html[lang='en'] button {
+      html[lang='en'] button, html[lang='en'] input {
         font-family: ${useNewFont ? 'PPNeueMontreal-Variable, Pretendard Variable !important' : 'Visuelt-Regular'};
       }
 

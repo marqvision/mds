@@ -86,6 +86,7 @@ export const resolveFontVariantNumeric = (features: InnerTypographyStyleProps) =
   }
 };
 
+// todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 export const getTypographyProps = (
   fontSize: number,
   weight?: string

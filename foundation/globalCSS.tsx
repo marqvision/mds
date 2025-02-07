@@ -9,18 +9,18 @@ const FONT_STYLE_VALUES = {
       --font-title-medium: 560;
 
       --font-title-letter-spacing-xl: -1.6;
-      --font-title-letter-spacing-l: -1.4;
-      --font-title-letter-spacing-m: -1.2;
-      --font-title-letter-spacing-s: -1;
+      --font-title-letter-spacing-l: -1.44;
+      --font-title-letter-spacing-m: -1.28;
+      --font-title-letter-spacing-s: -1.12;
     `,
     body: `
       --font-body-medium: 560;
       --font-body-regular: 450;
 
-      --font-body-letter-spacing-l: -0.8;
-      --font-body-letter-spacing-m: -0.7;
-      --font-body-letter-spacing-s: -0.65;
-      --font-body-letter-spacing-xs: -0.6;
+      --font-body-letter-spacing-l: -1.28;
+      --font-body-letter-spacing-m: -1.12;
+      --font-body-letter-spacing-s: -1.04;
+      --font-body-letter-spacing-xs: -0.96;
     `,
   },
   KO: {

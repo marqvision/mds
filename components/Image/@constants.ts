@@ -1,8 +1,8 @@
 import { Theme } from './@types';
 
-export const borderRadius = '4px';
+export const BORDER_RADIUS = '4px';
 
-export const theme: Theme = {
+export const THEME: Theme = {
   color: {
     border: {
       borderColor: 'color/border/neutral/default/normal',

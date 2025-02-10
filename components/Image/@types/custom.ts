@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type UnwrapArray<T> = T extends (infer U)[] ? U : T;
+
 export type CustomType = 'hover';
 type SafeExtract<T, U extends T> = U;
 

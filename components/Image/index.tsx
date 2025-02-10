@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { resolveColor } from '../../@system';
 import { MDSIcon } from '../Icon';
 import { MDSTypography2 } from '../Typography2';
-import { borderRadius, theme } from './@constants';
+import { BORDER_RADIUS, THEME } from './@constants';
 import { useHover } from './@hooks/useHover';
 import { useLazyLoad } from './@hooks/useLazyLoad';
 import {
@@ -50,11 +50,11 @@ const ErrorWrapper = styled.div<StyledErrorWrapperProps>`
   border-radius: inherit;
   user-select: inherit;
   pointer-events: ${({ isDraggable }) => (isDraggable ? 'auto' : 'none')};
-  background-color: ${({ fallbackStyle }) => resolveColor(theme.color[fallbackStyle].backgroundColor)};
+  background-color: ${({ fallbackStyle }) => resolveColor(THEME.color[fallbackStyle].backgroundColor)};
   ${({ fallbackStyle, iconSize }) => `
     border-style: solid;
     border-width: ${iconSize === 'x-small' || fallbackStyle === 'border' ? '1px' : '0'};
-    border-color: ${resolveColor(theme.color[fallbackStyle].borderColor)};
+    border-color: ${resolveColor(THEME.color[fallbackStyle].borderColor)};
   `}
   opacity: ${({ isLoaded }) => (isLoaded ? '0' : '1')};
   transition: opacity 0.3s;
@@ -131,8 +131,8 @@ export const MDSImage = (props: ImageProps) => {
 
   const isIconVisible = errorFallback === 'icon' || errorFallback === 'both';
   const isTextVisible = errorFallback === 'text' || errorFallback === 'both';
-  const iconSize = _iconSize && theme.size.iconSize[_iconSize];
-  const color = theme.color[fallbackStyle].color;
+  const iconSize = _iconSize && THEME.size.iconSize[_iconSize];
+  const color = THEME.color[fallbackStyle].color;
   const borderRadius = getRadius(removeBorderRadius);
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -196,22 +196,22 @@ export const MDSImage = (props: ImageProps) => {
             objectPosition={objectPosition}
             loading="lazy"
           />
-          {children}
         </ImageWrapper>
       )}
+      {children}
       {HoverElement && <HoverWrapper {...hoverWrapperProps}>{HoverElement}</HoverWrapper>}
     </Wrapper>
   );
 };
 
 const getRadius = (removeData?: RemoveBorderRadius) => {
-  const topLeft = (typeof removeData !== 'boolean' && removeData?.topLeft) || removeData === true ? '0' : borderRadius;
+  const topLeft = (typeof removeData !== 'boolean' && removeData?.topLeft) || removeData === true ? '0' : BORDER_RADIUS;
   const topRight =
-    (typeof removeData !== 'boolean' && removeData?.topRight) || removeData === true ? '0' : borderRadius;
+    (typeof removeData !== 'boolean' && removeData?.topRight) || removeData === true ? '0' : BORDER_RADIUS;
   const bottomLeft =
-    (typeof removeData !== 'boolean' && removeData?.bottomLeft) || removeData === true ? '0' : borderRadius;
+    (typeof removeData !== 'boolean' && removeData?.bottomLeft) || removeData === true ? '0' : BORDER_RADIUS;
   const bottomRight =
-    (typeof removeData !== 'boolean' && removeData?.bottomRight) || removeData === true ? '0' : borderRadius;
+    (typeof removeData !== 'boolean' && removeData?.bottomRight) || removeData === true ? '0' : BORDER_RADIUS;
 
   return { topLeft, topRight, bottomLeft, bottomRight };
 };

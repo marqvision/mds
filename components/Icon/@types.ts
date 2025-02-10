@@ -50,6 +50,7 @@ export type IconVariant = {
   NoEmail: VariantSet['OutlineFill'];
   Celebration: VariantSet['OutlineFill'];
   Pin: VariantSet['OutlineFill'];
+  Unpin: VariantSet['OutlineFill'];
   AssignmentConfirm: VariantSet['OutlineFill'];
   Document: VariantSet['OutlineFill'];
   Ppt: VariantSet['OutlineFill'];

@@ -148,6 +148,7 @@ export const MDSIcon = {
   NoEmail: createIcon(Symbols.NoEmail),
   Celebration: createIcon(Symbols.Celebration),
   Pin: createIcon(Symbols.Pin),
+  Unpin: createIcon(Symbols.Unpin),
   AssignmentConfirm: createIcon(Symbols.AssignmentConfirm),
   Document: createIcon(Symbols.Document),
   Ppt: createIcon(Symbols.Ppt),

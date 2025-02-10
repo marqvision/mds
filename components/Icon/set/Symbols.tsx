@@ -1141,6 +1141,19 @@ export const Pin = ({ variant }: Features<'Pin'>) =>
     <path d="M16 12L18 14V16H13V22L12 23L11 22V16H6V14L8 12V5H7V3H17V5H16V12Z" fill="currentColor" />
   );
 
+export const Unpin = ({ variant }: Features<'Unpin'>) =>
+  variant === 'outline' ? (
+    <path
+      d="M17 2.99999V4.99999H16V13.175L14 11.175V4.99999H10V7.17499L7.82503 4.99999L7.00002 4.17499V2.99999H17ZM12 23L11 22V16H6.00002V14L8.00002 12V10.85L1.40002 4.19999L2.80002 2.79999L21.2 21.2L19.75 22.6L13.15 16H13V22L12 23ZM8.85003 14H11.15L10.05 12.9L10 12.85L8.85003 14Z"
+      fill="currentColor"
+    />
+  ) : (
+    <path
+      d="M17 2.99999V4.99999H16V13.175L7.82503 4.99999L7.00002 4.17499V2.99999H17ZM12 23L11 22V16H6.00002V14L8.00002 12V10.85L1.40002 4.19999L2.80002 2.79999L21.2 21.2L19.75 22.6L13.15 16H13V22L12 23Z"
+      fill="currentColor"
+    />
+  );
+
 export const AssignmentConfirm = ({ variant }: Features<'AssignmentConfirm'>) =>
   variant === 'outline' ? (
     <>

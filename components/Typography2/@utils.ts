@@ -1,5 +1,5 @@
 import { ElementType } from 'react';
-import { InnerTypographyStyleProps, MDSTypographyProps2 } from './@types';
+import { InnerTypographyStyleProps, MDSTypographyProps2, Size, Variant, Weight } from './@types';
 
 export const resolveTagName = (
   variant: MDSTypographyProps2['variant'],
@@ -41,15 +41,24 @@ export const resolveFontSize = (features: InnerTypographyStyleProps) => {
     }
   }
 };
-export const resolveFontWeight = (features: InnerTypographyStyleProps) => {
-  return `var(--font-${features.variant}-${features.weight})`;
+export const resolveFontWeight = (features: Pick<InnerTypographyStyleProps, 'variant' | 'size' | 'weight'>) => {
+  let defaultWeight = 'regular';
+  if (features.variant === 'title') {
+    if (features.size === '2xl' || features.size === 'xl') {
+      defaultWeight = 'medium';
+    } else {
+      defaultWeight = 'semibold';
+    }
+  }
+  return `var(--font-${features.variant}-${features.weight || defaultWeight})`;
 };
 
-export const resolveFontFamily = (fontWeight: number) => {
-  if (fontWeight >= 680) return '"Visuelt-Bold"';
-  else if (fontWeight >= 560) return '"Visuelt-Medium"';
-  else if (fontWeight >= 450) return '"Visuelt-Regular"';
-  else if (fontWeight >= 400) return '"Visuelt-Light"';
+// todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
+export const resolveFontFamily = (features: InnerTypographyStyleProps) => {
+  if (features.weight === 'bold' || features.weight === 'semibold') return '"Visuelt-Bold"';
+  else if (features.weight === 'medium') return '"Visuelt-Medium"';
+  else if (features.weight === 'regular') return '"Visuelt-Regular"';
+  else if (features.weight === 'light') return '"Visuelt-Light"';
   else return '"Visuelt-Regular"';
 };
 
@@ -74,5 +83,62 @@ export const resolveFontVariantNumeric = (features: InnerTypographyStyleProps) =
     `;
   } else {
     return '';
+  }
+};
+
+// todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
+export const getTypographyProps = (
+  fontSize: number,
+  weight?: string
+): { variant: Variant; size: Size; weight?: Weight } => {
+  switch (fontSize) {
+    case 24:
+      return {
+        variant: 'title',
+        size: '2xl',
+      };
+    case 20:
+      return {
+        variant: 'title',
+        size: 'xl',
+      };
+    case 18:
+      return {
+        variant: 'title',
+        size: 'l',
+      };
+    case 16:
+      return weight === 'bold'
+        ? {
+            variant: 'title',
+            size: 'm',
+            weight: 'semibold',
+          }
+        : {
+            variant: 'body',
+            size: 'l',
+          };
+    case 14:
+      return weight === 'bold'
+        ? {
+            variant: 'title',
+            size: 's',
+            weight: 'semibold',
+          }
+        : {
+            variant: 'body',
+            size: 'm',
+          };
+    case 13:
+      return {
+        variant: 'body',
+        size: 's',
+      };
+    default:
+    case 12:
+      return {
+        variant: 'body',
+        size: 'xs',
+      };
   }
 };

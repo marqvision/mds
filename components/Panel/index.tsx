@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { keyframes } from '@emotion/react';
 import { MDSDimmed } from '../Dimmed';
 import { MDSIcon } from '../Icon';
-import { MDSTypography } from '../Typography';
+import { MDSTypography2 } from '../Typography2';
 import { MDSPanelActionProps, MDSPanelBodyProps, MDSPanelHeaderProps, MDSPanelProps } from './@type';
 import { panelAtom } from './@atom';
 
@@ -153,9 +153,9 @@ const Header = (props: MDSPanelHeaderProps) => {
     <StyledHeader style={{ ...style }}>
       <div style={{ flex: 'auto' }}>
         {!isElement ? (
-          <MDSTypography variant="T20" weight="bold">
+          <MDSTypography2 variant="title" size="xl" weight="semibold">
             {children}
-          </MDSTypography>
+          </MDSTypography2>
         ) : (
           children
         )}

@@ -2,7 +2,7 @@ import { cloneElement, SetStateAction, useCallback, useEffect, useRef, useState 
 import { Provider, useSetAtom } from 'jotai';
 import styled from '@emotion/styled';
 import { MDSPopover } from '../Popover';
-import { MDSTypography } from '../Typography';
+import { MDSTypography2 } from '../Typography2';
 import { MDSCheckbox } from '../Checkbox';
 import { MDSIcon } from '../Icon';
 import { MDSThemeValue } from '../../foundation';
@@ -400,9 +400,9 @@ const Dropdown = <T, SortT>(
                     onChange={handleSelectAll}
                   />
                 )}
-                <MDSTypography variant="T14" weight="medium">
+                <MDSTypography2 variant="body" size="m" weight="medium">
                   {countLabel}
-                </MDSTypography>
+                </MDSTypography2>
               </StyledSelectAll>
               {hasSort && sortEle}
             </StyledAction>
@@ -410,22 +410,26 @@ const Dropdown = <T, SortT>(
         </StyledSticky>
       )}
       {isEmpty && (
-        <MDSTypography
-          variant="T14"
+        <MDSTypography2
+          variant="body"
+          size="m"
+          weight="regular"
           color="color/content/neutral/default/disabled"
           style={{ height: '48px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
         >
           No results
-        </MDSTypography>
+        </MDSTypography2>
       )}
       {isSearchTooShort && (
-        <MDSTypography
-          variant="T14"
+        <MDSTypography2
+          variant="body"
+          size="m"
+          weight="regular"
           color="color/content/neutral/default/disabled"
           style={{ height: '48px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
         >
           Search more than {customSearch?.minLength || DEFAULT_MIN_SEARCH_LETTERS} letters
-        </MDSTypography>
+        </MDSTypography2>
       )}
       {!isSearchTooShort &&
         list.map((v, index) => (
@@ -454,8 +458,9 @@ const Dropdown = <T, SortT>(
           {stickyBottom.onClick ? (
             <StyledStickyBottom isDisabled={stickyBottom.isDisabled} onClick={handleClickStickyBottom}>
               {stickyBottomIcon}
-              <MDSTypography
-                variant="T14"
+              <MDSTypography2
+                variant="body"
+                size="m"
                 weight="medium"
                 color={
                   stickyBottom.isDisabled
@@ -465,7 +470,7 @@ const Dropdown = <T, SortT>(
                 style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
               >
                 {stickyBottom.label}
-              </MDSTypography>
+              </MDSTypography2>
               {stickyBottomRightSection && (
                 <StyledStickyRightSection>{stickyBottomRightSection}</StyledStickyRightSection>
               )}

@@ -504,7 +504,7 @@ export const theme: TagTheme = {
   },
   size: {
     'x-small': {
-      label: 'T12',
+      size: 'xs',
       icon: token.iconSize.xs,
       padding: `${token.pddng.v.xs} ${token.pddng.h.xs}`,
       gap: token.gap.xs,
@@ -514,7 +514,7 @@ export const theme: TagTheme = {
       clickAreaPadding: 0,
     },
     small: {
-      label: 'T12',
+      size: 'xs',
       icon: token.iconSize.sm,
       padding: `${token.pddng.v.sm} ${token.pddng.h.sm}`,
       gap: token.gap.sm,
@@ -524,7 +524,7 @@ export const theme: TagTheme = {
       clickAreaPadding: 4,
     },
     medium: {
-      label: 'T14',
+      size: 'm',
       icon: token.iconSize.md,
       padding: `${token.pddng.v.md} ${token.pddng.h.md}`,
       gap: token.gap.md,

@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
 import styled from '@emotion/styled';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
-import { MDSIcon, MDSIconProps, MDSTypography } from '../components';
+import { MDSIcon, MDSIconProps, MDSTypography2 } from '../components';
 import { MDSTHEME_COLORS } from './@helper';
 
 const meta: Meta<typeof MDSIcon.ArrowLeft> = {
@@ -155,20 +155,24 @@ export const Showcase = (props: MDSIconProps) => {
         const variantList = key in IconVariant ? IconVariant[key as keyof typeof IconVariant] : [''];
         return (
           <Item key={key}>
-            <MDSTypography>{key}</MDSTypography>
+            <MDSTypography2>{key}</MDSTypography2>
             <VariantBox>
               {variantList.map((v) =>
                 v === '' ? (
                   <VariantItem key={v}>
                     {/* @ts-ignore */}
                     <Icon {...props} />
-                    <MDSTypography variant="T12">{v}</MDSTypography>
+                    <MDSTypography2 variant="body" size="xs">
+                      {v}
+                    </MDSTypography2>
                   </VariantItem>
                 ) : (
                   <VariantItem key={v}>
                     {/* @ts-ignore */}
                     <Icon {...props} variant={v} />
-                    <MDSTypography variant="T12">{v}</MDSTypography>
+                    <MDSTypography2 variant="body" size="xs">
+                      {v}
+                    </MDSTypography2>
                   </VariantItem>
                 )
               )}

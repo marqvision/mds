@@ -482,7 +482,9 @@ export const theme: ChipTheme = {
   },
   size: {
     small: {
-      label: 'T13',
+      label: 'body',
+      size: 's',
+      weight: 'medium',
       icon: token.iconSize.sm,
       padding: `${token.pddng.v.sm} ${token.pddng.h.sm}`,
       gap: token.gap.sm,
@@ -492,7 +494,9 @@ export const theme: ChipTheme = {
       spinnerSize: 16,
     },
     medium: {
-      label: 'T14',
+      label: 'body',
+      size: 'm',
+      weight: 'medium',
       icon: token.iconSize.md,
       padding: `${token.pddng.v.md} ${token.pddng.h.md}`,
       gap: token.gap.md,
@@ -502,7 +506,9 @@ export const theme: ChipTheme = {
       spinnerSize: 16,
     },
     large: {
-      label: 'T16',
+      label: 'body',
+      size: 'l',
+      weight: 'medium',
       icon: token.iconSize.lg,
       padding: `${token.pddng.v.lg} ${token.pddng.h.lg}`,
       gap: token.gap.lg,
@@ -512,7 +518,9 @@ export const theme: ChipTheme = {
       spinnerSize: 20,
     },
     'extra-large': {
-      label: 'T20',
+      label: 'title',
+      size: 'xl',
+      weight: 'medium',
       icon: token.iconSize.xl,
       padding: `${token.pddng.v.xl} ${token.pddng.h.xl}`,
       gap: token.gap.xl,

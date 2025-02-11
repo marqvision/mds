@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system';
-import { MDSTypography } from '../Typography';
+import { MDSTypography2 } from '../Typography2';
 import { EmptyViewProps, StyledWrapperProps } from './@types';
 
 const Wrapper = styled.div<StyledWrapperProps>`
@@ -33,13 +33,13 @@ export const MDSEmptyView = (props: EmptyViewProps) => {
     <Wrapper height={height}>
       <Content>
         <TextBox>
-          <MDSTypography variant="T18" weight="medium">
+          <MDSTypography2 variant="title" size="l" weight="medium">
             {title}
-          </MDSTypography>
+          </MDSTypography2>
           {description && (
-            <MDSTypography variant="T14" color="color/content/neutral/secondary/normal">
+            <MDSTypography2 variant="body" size="m" weight="regular" color="color/content/neutral/secondary/normal">
               {description}
-            </MDSTypography>
+            </MDSTypography2>
           )}
         </TextBox>
         {children}

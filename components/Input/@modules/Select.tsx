@@ -5,10 +5,10 @@ import ReactHtmlParser from 'html-react-parser';
 import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { MDSChip } from '../../Chip';
-import { resolveFontWeight } from '../../Typography/@utils';
 import { theme } from '../@constants';
-import { Features, MDSTypography } from '../../Typography';
+import { MDSTypography2 } from '../../Typography2';
 import { flattenDropdown } from '../@utils';
+import { getTypographyProps } from '../../Typography2/@utils';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
 const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>``;
@@ -28,7 +28,6 @@ const StyledChipList = styled.button`
 `;
 
 const StyledButton = styled.button<{ customSize: Size }>`
-  ${resolveFontWeight('regular')}
   display: block;
   font-size: ${({ customSize }) => theme.size[customSize].fontSize};
   line-height: 1.5;
@@ -43,7 +42,7 @@ const StyledButton = styled.button<{ customSize: Size }>`
   cursor: pointer;
 `;
 
-const Placeholder = styled(MDSTypography)`
+const Placeholder = styled(MDSTypography2)`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: pre-wrap;
@@ -73,7 +72,7 @@ export const Select = <T,>(props: Props<T>) => {
 
   const isWithChip = !!custom?.withChip || false;
   const isError = status === 'error';
-  const variant = `T${theme.size[size].fontSize.replace('px', '')}` as Features['variant'];
+  const variant = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', '')))?.variant;
 
   const flatList = flattenDropdown(list);
 
@@ -132,7 +131,12 @@ export const Select = <T,>(props: Props<T>) => {
         );
       })
     ) : (
-      <Placeholder variant={variant} color="color/content/placeholder/normal">
+      <Placeholder
+        variant={variant as 'body'}
+        size="m"
+        weight={variant === 'body' ? 'regular' : 'medium'}
+        color="color/content/placeholder/normal"
+      >
         {placeholder || '\u00A0'}
       </Placeholder>
     );
@@ -177,7 +181,12 @@ export const Select = <T,>(props: Props<T>) => {
               {label ? (
                 ReactHtmlParser(label)
               ) : (
-                <Placeholder variant={variant} color="color/content/placeholder/normal">
+                <Placeholder
+                  variant={variant as 'body'}
+                  size={variant === 'body' ? 'm' : 's'}
+                  weight={variant === 'body' ? 'regular' : 'medium'}
+                  color="color/content/placeholder/normal"
+                >
                   {placeholder || '\u00A0'}
                 </Placeholder>
               )}

@@ -63,6 +63,9 @@ const Wrapper = styled.td<StyledTableCellProps>`
 const CellBox = styled.div<TableCellInnerProps>`
   padding: ${({ cellSize }) => theme.cell.size[cellSize].padding};
   text-align: ${({ align }) => align};
+  & > div {
+    height: 100%;
+  }
 `;
 
 export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCellElement>) => {

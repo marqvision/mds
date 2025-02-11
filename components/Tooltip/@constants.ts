@@ -1,13 +1,17 @@
 export const Theme = {
   size: {
     small: {
-      fontSize: 'T12',
+      variant: 'body',
+      size: 'xs',
+      weight: 'regular',
       padding: '4px 8px',
       margin: 4,
       maxWidth: 160,
     },
     medium: {
-      fontSize: 'T14',
+      variant: 'body',
+      size: 'm',
+      weight: 'regular',
       padding: '12px 16px',
       margin: 6,
       maxWidth: 240,

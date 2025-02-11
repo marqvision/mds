@@ -3,7 +3,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
 import { foldedItemIndexAtom } from '../@atoms';
 import { DropdownItem, SelectedType } from '../@types';
-import { MDSTypography } from '../../Typography';
+import { MDSTypography2 } from '../../Typography2';
 import { MDSCheckbox } from '../../Checkbox';
 import { MDSIcon } from '../../Icon';
 import { MDSTag } from '../../Tag';
@@ -85,7 +85,7 @@ const StyledImg = styled.img`
   border-radius: 4px;
 `;
 
-const StyledDivider = styled(MDSTypography)`
+const StyledDivider = styled(MDSTypography2)`
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.tertiary.normal};
   padding: 6px 12px;
 `;
@@ -202,8 +202,10 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
   })();
 
   const subLabelEl = subLabel && (
-    <MDSTypography
-      variant="T13"
+    <MDSTypography2
+      variant="body"
+      size="s"
+      weight="regular"
       color={
         subLabel.position === 'bracket'
           ? 'color/content/neutral/default/normal'
@@ -214,12 +216,18 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
       {subLabel.position === 'bracket' && '('}
       {subLabel.includeSearch ? <HighLightLabel searchText={search} label={`${subLabel.label}`} /> : subLabel.label}
       {subLabel.position === 'bracket' && ')'}
-    </MDSTypography>
+    </MDSTypography2>
   );
 
   if (item.value === undefined && !item.onClick && !item.children) {
     return (
-      <StyledDivider variant="T13" color="color/content/neutral/secondary/normal" style={item.style}>
+      <StyledDivider
+        variant="body"
+        size="s"
+        weight="regular"
+        color="color/content/neutral/secondary/normal"
+        style={item.style}
+      >
         {item.label}
       </StyledDivider>
     );
@@ -255,8 +263,10 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
           {iconEle}
           <StyledLabelWrap>
             {subLabel?.position === 'top' && subLabelEl}
-            <MDSTypography
-              variant="T14"
+            <MDSTypography2
+              variant="body"
+              size="m"
+              weight="regular"
               color={
                 !isMultiple && isSelected
                   ? 'color/content/primary/default/normal'
@@ -273,7 +283,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
                 </MDSTooltip>
               )}
               {subLabel?.position === 'bracket' && subLabelEl}
-            </MDSTypography>
+            </MDSTypography2>
             {subLabel?.position === 'bottom' && subLabelEl}
           </StyledLabelWrap>
         </StyledLabel>

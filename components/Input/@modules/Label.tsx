@@ -1,6 +1,7 @@
 import { LabelType, Size } from '../@types';
-import { Features, MDSTypography } from '../../Typography';
+import { MDSTypography2 } from '../../Typography2';
 import { theme } from '../@constants';
+import { getTypographyProps } from '../../Typography2/@utils';
 
 type Props = {
   label: LabelType;
@@ -11,27 +12,27 @@ type Props = {
 export const Label = (props: Props) => {
   const { label, size, isDisabled } = props;
 
-  const variant = `T${theme.size[size].fontSize.replace('px', '')}` as Features['variant'];
+  const variant = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', '')))?.variant;
 
   const color = isDisabled ? 'color/content/neutral/default/disabled' : undefined;
   const subColor = isDisabled ? 'color/content/neutral/secondary/disabled' : 'color/content/neutral/secondary/normal';
 
   return typeof label === 'string' ? (
-    <MDSTypography variant={variant} weight="medium" color={color}>
+    <MDSTypography2 variant={variant} weight="medium" color={color}>
       {label}
-    </MDSTypography>
+    </MDSTypography2>
   ) : (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
       {(label.main || label.sub) && (
         <div>
-          <MDSTypography variant={variant} weight="medium" color={color}>
+          <MDSTypography2 variant={variant} weight="medium" color={color}>
             {label.main}{' '}
             {label.sub && (
-              <MDSTypography as="span" variant={variant} color={subColor}>
+              <MDSTypography2 as="span" variant={variant} color={subColor}>
                 ({label.sub})
-              </MDSTypography>
+              </MDSTypography2>
             )}
-          </MDSTypography>
+          </MDSTypography2>
         </div>
       )}
       {label.right}

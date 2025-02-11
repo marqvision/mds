@@ -1,6 +1,6 @@
 import React, { cloneElement } from 'react';
 import styled from '@emotion/styled';
-import { MDSTypography } from '../Typography';
+import { MDSTypography2 } from '../Typography2';
 import { theme as TagTheme } from './@constants';
 import { IconProps, StyledTagProps, TagProps } from './@types';
 import { getColor } from './@utils';
@@ -136,9 +136,13 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
     >
       {startIcon && <Icon size={size} icon={startIcon} />}
 
-      <MDSTypography variant={TagTheme.size[size].label} weight="medium">
+      <MDSTypography2
+        variant='body'
+        weight='medium'
+        size={TagTheme.size[size].size}
+      >
         {label}
-      </MDSTypography>
+      </MDSTypography2>
 
       {icon && <Icon size={size} icon={icon} />}
 

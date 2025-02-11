@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/blocks';
-import { MDSChip, MDSIcon, MDSTag, MDSTypography } from '../components';
+import { MDSChip, MDSIcon, MDSTag, MDSTypography2 } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSChip> = {
@@ -48,7 +48,7 @@ export const Preview: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>기본형 width 값을 전달하지 않으면 hug 로 적용되어 내용에 맞게 사이즈가 조절됩니다.</MDSTypography>
+      <MDSTypography2>기본형 width 값을 전달하지 않으면 hug 로 적용되어 내용에 맞게 사이즈가 조절됩니다.</MDSTypography2>
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
@@ -61,7 +61,7 @@ export const WidthFill: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>width: fill 지정 시 width: 100% 스타일이 지정됩니다.</MDSTypography>
+      <MDSTypography2>width: fill 지정 시 width: 100% 스타일이 지정됩니다.</MDSTypography2>
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
@@ -74,7 +74,7 @@ export const WidthFixed: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>width: hug 또는 fill 이외의 값 지정 시 입력한 width 사이즈가 지정됩니다.</MDSTypography>
+      <MDSTypography2>width: hug 또는 fill 이외의 값 지정 시 입력한 width 사이즈가 지정됩니다.</MDSTypography2>
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
@@ -123,7 +123,7 @@ export const StartIcon: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>label 의 앞에 아이콘을 추가합니다.</MDSTypography>
+      <MDSTypography2>label 의 앞에 아이콘을 추가합니다.</MDSTypography2>
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
@@ -136,7 +136,7 @@ export const EndIcon: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>label 의 뒤에 아이콘을 추가합니다.</MDSTypography>
+      <MDSTypography2>label 의 뒤에 아이콘을 추가합니다.</MDSTypography2>
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
@@ -150,7 +150,7 @@ export const ColoredIcon: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>color 가 지정된 아이콘을 전달할 경우 아이콘의 컬러를 우선 적용합니다.</MDSTypography>
+      <MDSTypography2>color 가 지정된 아이콘을 전달할 경우 아이콘의 컬러를 우선 적용합니다.</MDSTypography2>
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
@@ -165,13 +165,13 @@ export const Clickable: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>
+      <MDSTypography2>
         onClick 이벤트가 없는 경우 div 요소로 출력되며,
         <br />
         onClick 이벤트가 있는 경우 button 요소로 출력됨과 동시에 hover 컬러 및 cursor: pointer 스타일이 적용됩니다.
         <br />
         로딩 상태에는 onClick 이벤트가 무시됩니다.
-      </MDSTypography>
+      </MDSTypography2>
 
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
@@ -188,11 +188,11 @@ export const Loading: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>
+      <MDSTypography2>
         isLoading: true 전달 시 startIcon 대신 로딩 스피너가 그려지며,
         <br />
         onClick 이벤트 및 hover 효과가 사라집니다.
-      </MDSTypography>
+      </MDSTypography2>
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
@@ -208,11 +208,11 @@ export const LoadingHideLabel: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>
+      <MDSTypography2>
         isLoading: hideLabel 전달 시 내부의 label, icon 대신 중앙에 로딩 스피너가 그려지며,
         <br />
         onClick 이벤트 및 hover 효과가 사라집니다.
-      </MDSTypography>
+      </MDSTypography2>
       <MDSChip {...args}>{args.children}</MDSChip>
     </Wrapper>
   ),
@@ -225,13 +225,13 @@ export const ChipWithTags: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>
+      <MDSTypography2>
         tags: 단일 태그 또는 태그들의 배열 형태로 전달합니다.
         <br />
         label 과 endIcon 사이에 위치되며, Chip 에서 설정한 gap 사이즈가 Tag 사이의 gap 으로 적용됩니다.
         <br />
         Tag 의 size, color 등의 스타일은 전적으로 사용처에서 결정하며, Chip 에서는 어떠한 값도 전달하지 않습니다.
-      </MDSTypography>
+      </MDSTypography2>
       <MDSChip
         {...args}
         tags={
@@ -284,9 +284,9 @@ export const Chips: Story = {
   },
   render: ({ children, ...args }) => (
     <Wrapper>
-      <MDSTypography>flat 속성으로 Chip 을 연결해서 배치할 수 있습니다.</MDSTypography>
-      <MDSTypography>flat `right` 또는 `both` 설정 시 오른쪽에 divider 가 나타납니다.</MDSTypography>
-      <MDSTypography>기본적으로 inline-flex 이기 때문에 사용 시 div 로 한 번 감싸주기만 하면 됩니다.</MDSTypography>
+      <MDSTypography2>flat 속성으로 Chip 을 연결해서 배치할 수 있습니다.</MDSTypography2>
+      <MDSTypography2>flat `right` 또는 `both` 설정 시 오른쪽에 divider 가 나타납니다.</MDSTypography2>
+      <MDSTypography2>기본적으로 inline-flex 이기 때문에 사용 시 div 로 한 번 감싸주기만 하면 됩니다.</MDSTypography2>
       <div>
         <MDSChip {...args} startIcon={<MDSIcon.Calendar />} flat="right" onClick={() => {}}>
           Filter

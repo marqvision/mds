@@ -9,18 +9,18 @@ const FONT_STYLE_VALUES = {
       --font-title-medium: 560;
 
       --font-title-letter-spacing-xl: -1.6;
-      --font-title-letter-spacing-l: -1.4;
-      --font-title-letter-spacing-m: -1.2;
-      --font-title-letter-spacing-s: -1;
+      --font-title-letter-spacing-l: -1.44;
+      --font-title-letter-spacing-m: -1.28;
+      --font-title-letter-spacing-s: -1.12;
     `,
     body: `
       --font-body-medium: 560;
       --font-body-regular: 450;
 
-      --font-body-letter-spacing-l: -0.8;
-      --font-body-letter-spacing-m: -0.7;
-      --font-body-letter-spacing-s: -0.65;
-      --font-body-letter-spacing-xs: -0.6;
+      --font-body-letter-spacing-l: -1.28;
+      --font-body-letter-spacing-m: -1.12;
+      --font-body-letter-spacing-s: -1.04;
+      --font-body-letter-spacing-xs: -0.96;
     `,
   },
   KO: {
@@ -44,7 +44,13 @@ const FONT_STYLE_VALUES = {
     `,
   },
 };
-export const MDSFontCSS = () => (
+export const MDSFontCSS = ({
+  useNewFont,
+  isDisplayTypographyDebug,
+}: {
+  useNewFont?: boolean;
+  isDisplayTypographyDebug?: boolean;
+}) => (
   <Global
     styles={css`
       // 기본 폰트 설정
@@ -57,21 +63,48 @@ export const MDSFontCSS = () => (
         ${FONT_STYLE_VALUES.KO.body}
       }
 
+      // todo-@jamie: [PROD-12758] prop 값들로 조건 걸린 코드들 삭제하기
       /**
        * 왜 :lang과 html[lang='ko'] 둘 다 써야 하는가?
        * :lang으로만 설정했을 경우에, 영어는 계속 PP Neue Montreal로 나온다.
        * 그래서 html[lang=]을 이용해서 영어폰트도 Pretendard로 리셋시켜버린다.
        */
       html[lang='ko'] {
-        font-family: 'Pretendard Variable';
+        font-family: 'Pretendard Variable !important';
         ${FONT_STYLE_VALUES.KO.title}
         ${FONT_STYLE_VALUES.KO.body}
       }
       html[lang='en'] {
-        font-family: 'PPNeueMontreal-Variable', 'Pretendard Variable';
+        font-family: ${useNewFont ? 'PPNeueMontreal-Variable, Pretendard Variable !important' : 'Visuelt-Regular'};
         ${FONT_STYLE_VALUES.EN.title}
         ${FONT_STYLE_VALUES.EN.body}
       }
+
+      html[lang='ko'] button, html[lang='ko'] input, html[lang='ko'] textarea, html[lang='ko'] select, html[lang='ko'] svg {
+        font-family: 'Pretendard Variable !important';
+      }
+      html[lang='en'] button, html[lang='en'] input, html[lang='en'] textarea, html[lang='en'] select, html[lang='en'] svg {
+        font-family: ${useNewFont ? 'PPNeueMontreal-Variable, Pretendard Variable !important' : 'Visuelt-Regular'};
+      }
+
+      ${useNewFont
+        ? `
+        html[lang='en'] *[data-typography-new-font] {
+          font-family: "PPNeueMontreal-Variable", "Pretendard Variable" !important;
+        }
+        html[lang='ko'] *[data-typography-new-font] {
+          font-family: "Pretendard Variable" !important;
+        }
+        `
+        : ''}
+
+      ${isDisplayTypographyDebug
+        ? `
+        *[data-typography-new-font] {
+          background-color: #ffcece !important;
+        }
+        `
+        : ''}
     `}
   />
 );

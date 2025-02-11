@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { MDSCheckbox, MDSChip, MDSTable, MDSTypography } from '../../components';
+import { MDSCheckbox, MDSChip, MDSTable, MDSTypography2 } from '../../components';
 
 const meta: Meta<typeof MDSTable> = {
   title: '2. Components/Table',
@@ -138,7 +138,7 @@ export const CellSize: StoryObj<typeof MDSTable> = {
     <MDSTable>
       <MDSTable.Head>
         <MDSTable.Row variant="secondary">
-          <MDSTable.Cell size="small" colSpan={3}>
+          <MDSTable.Cell cellSize="small" colSpan={3}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <MDSCheckbox value={true} onChange={() => {}} />
               <MDSChip variant="fill" size="medium" color="blue">
@@ -713,10 +713,10 @@ export const NestedTable: StoryObj<typeof MDSTable> = {
         <MDSTable.Row isContainer variant="secondary">
           <MDSTable.Cell colSpan={3}>
             <div style={{ padding: '12px' }}>
-              <MDSTypography weight="medium">
+              <MDSTypography2 weight="medium">
                 row 에 isContainer 설정 시 cell 하위에 복잡한 요소를 넣을 수 있는 디자인이 적용됩니다.
-              </MDSTypography>
-              <MDSTypography>padding 이 초기화 되고 hover 효과가 사라지며, 내부에 그림자가 추가됩니다.</MDSTypography>
+              </MDSTypography2>
+              <MDSTypography2>padding 이 초기화 되고 hover 효과가 사라지며, 내부에 그림자가 추가됩니다.</MDSTypography2>
             </div>
 
             <MDSTable>
@@ -742,7 +742,7 @@ export const NestedTable: StoryObj<typeof MDSTable> = {
             </MDSTable>
 
             <div style={{ textAlign: 'center', padding: '12px' }}>
-              <MDSTypography weight="medium">View more</MDSTypography>
+              <MDSTypography2 weight="medium">View more</MDSTypography2>
             </div>
           </MDSTable.Cell>
         </MDSTable.Row>

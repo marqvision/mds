@@ -1,10 +1,10 @@
-import { ElementType } from 'react';
+import { CSSProperties, ElementType } from 'react';
 import type { MDSThemeColorPath } from '../../foundation';
 
-type Variant = 'title' | 'body';
-type Size = '2xl' | 'xl' | 'l' | 'm' | 's' | 'xs';
-type Weight = 'semibold' | 'medium' | 'regular';
-type Char = 'letter' | 'number';
+export type Variant = 'title' | 'body';
+export type Size = '2xl' | 'xl' | 'l' | 'm' | 's' | 'xs';
+export type Weight = 'semibold' | 'medium' | 'regular';
+export type Char = 'letter' | 'number';
 
 type BaseFeatures<T extends ElementType = 'p'> = {
   /**
@@ -16,7 +16,7 @@ type BaseFeatures<T extends ElementType = 'p'> = {
    * 타이포그래피의 색상.
    * 기본값은 content.neutral.default(=bluegray900)입니다.
    */
-  color?: MDSThemeColorPath;
+  color?: MDSThemeColorPath | 'inherit';
 
   /**
    * 타이포그래피의 태그. 기본값은 variant에 따라 자동으로 결정됩니다.
@@ -34,19 +34,19 @@ type BaseFeatures<T extends ElementType = 'p'> = {
    * break-word를 사용하고 싶다면 다음 문서를 참고하세요
    * https://developer.mozilla.org/docs/Web/CSS/word-break#break-word
    */
-  wordBreak?: 'normal' | 'keep-all' | 'break-all';
+  wordBreak?: CSSProperties['wordBreak'];
 
   /**
    * 타이포그래피의 white-space 속성.
    * 기본값은 브라우저 기본값을 따릅니다.
    */
-  whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap';
+  whiteSpace?: CSSProperties['whiteSpace'];
 
   /**
    * 타이포그래피의 text-decoration 속성.
    * 기본값은 없음(=none)입니다.
    */
-  textDecoration?: 'none' | 'underline' | 'line-through';
+  textDecoration?: CSSProperties['textDecoration'];
 
   // PROD-12587 에서 새로운 font를 적용하는 케이스를 위한 속성
   __useNewFont?: boolean;
@@ -94,7 +94,7 @@ export type InnerTypographyStyleProps<T extends ElementType = 'p'> = {
   variant: Variant;
   char: Char;
   size: Size;
-  weight: Weight;
+  weight?: Weight | 'bold' | 'light'; // todo-@jamie: [PROD-12758] bold, light: 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 } & BaseFeatures<T>;
 
 // 최종 + 외부 노출을 위한 Props 타입

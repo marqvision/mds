@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system';
 import { MDSIcon } from '../Icon';
-import { MDSTypography } from '../Typography';
+import { MDSTypography2 } from '../Typography2';
 import { borderRadius, theme } from './@constants';
 import { useHover } from './@hooks/useHover';
 import { useLazyLoad } from './@hooks/useLazyLoad';
@@ -175,9 +175,9 @@ export const MDSImage = (props: ImageProps) => {
           <>
             {isIconVisible && <MDSIcon.ImageNotSupported size={iconSize} color={color} />}
             {isTextVisible && (
-              <MDSTypography variant="T20" weight="medium" color={color}>
+              <MDSTypography2 variant="title" size="xl" weight="medium" color={color}>
                 No image
-              </MDSTypography>
+              </MDSTypography2>
             )}
           </>
         )}

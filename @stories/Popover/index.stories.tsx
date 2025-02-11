@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useArgs } from '@storybook/preview-api';
-import { MDSPopover, MDSRadioButton, MDSTypography } from '../../components';
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { MDSPopover, MDSTypography2 } from '../../components';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSPopover> = {
   component: MDSPopover,
@@ -42,7 +41,7 @@ export const Preview: Story = {
     return (
       <Wrapper>
         <MDSPopover {...props}>
-          <MDSTypography>팝업</MDSTypography>
+          <MDSTypography2>팝업</MDSTypography2>
         </MDSPopover>
       </Wrapper>
     );
@@ -56,14 +55,14 @@ export const Hover: Story = {
         <div>
           <div style={{ display: 'flex', gap: 0 }}>
             <MDSPopover anchor={<button style={{ width: '200px' }}>마우스 호버</button>} hasDim={false} trigger="hover">
-              <MDSTypography>팝업</MDSTypography>
+              <MDSTypography2>팝업</MDSTypography2>
             </MDSPopover>
             <MDSPopover
               anchor={<button style={{ width: '200px' }}>마우스 호버2</button>}
               hasDim={false}
               trigger="hover"
             >
-              <MDSTypography>팝업2</MDSTypography>
+              <MDSTypography2>팝업2</MDSTypography2>
             </MDSPopover>
           </div>
           <div style={{ display: 'flex', gap: 0 }}>
@@ -72,14 +71,14 @@ export const Hover: Story = {
               hasDim={false}
               trigger="hover"
             >
-              <MDSTypography>팝업3</MDSTypography>
+              <MDSTypography2>팝업3</MDSTypography2>
             </MDSPopover>
             <MDSPopover
               anchor={<button style={{ width: '200px' }}>마우스 호버4</button>}
               hasDim={false}
               trigger="hover"
             >
-              <MDSTypography>팝업4</MDSTypography>
+              <MDSTypography2>팝업4</MDSTypography2>
             </MDSPopover>
           </div>
         </div>
@@ -120,7 +119,7 @@ export const CustomEvent: Story = {
         >
           {({ close }) => (
             <>
-              <MDSTypography>팝업 {data}</MDSTypography>
+              <MDSTypography2>팝업 {data}</MDSTypography2>
               <button onClick={close}>닫기</button>
             </>
           )}

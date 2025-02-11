@@ -1,6 +1,6 @@
 import React from 'react';
-import { Features as MDSTypographyFeatures } from '../Typography';
 import { MDSThemeColorPath } from '../../foundation';
+import { MDSTypographyProps2 } from '../Typography2';
 import { token } from './@constants';
 
 export type ChipVariant = 'fill' | 'tint' | 'border';
@@ -22,7 +22,9 @@ export type ChipTheme = {
   size: Record<
     ChipSize,
     {
-      label: MDSTypographyFeatures['variant'];
+      label: MDSTypographyProps2['variant'];
+      size: MDSTypographyProps2['size'];
+      weight: MDSTypographyProps2['weight'];
       icon: number;
       padding: `${Token['pddng']['v'][keyof Token['pddng']['v']]} ${Token['pddng']['h'][keyof Token['pddng']['v']]}`; //h key type 고의로 v 로 지정함 (v 와 한 쌍으로 된 h 값 사용)
       gap: Token['gap'][keyof Token['gap']];

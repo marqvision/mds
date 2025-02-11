@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { theme } from '../@constants';
-import { resolveFontWeight } from '../../Typography/@utils';
-import { Features, MDSTypography } from '../../Typography';
+import { resolveFontWeight, getTypographyProps } from '../../Typography2/@utils';
+import { MDSTypography2 } from '../../Typography2';
 import { AddButton } from './AddButton';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
@@ -20,7 +20,6 @@ const StyledInput = styled.input<{ customSize: Size }>`
   height: 100%;
   font-size: ${({ customSize }) => theme.size[customSize].fontSize};
   word-break: break-word;
-  ${resolveFontWeight('regular')}
   &[type=number] {
     -moz-appearance: textfield;
   }
@@ -30,7 +29,7 @@ const StyledInput = styled.input<{ customSize: Size }>`
   },
 `;
 
-const StyledPrefix = styled(MDSTypography)`
+const StyledPrefix = styled(MDSTypography2)`
   cursor: default;
   flex: 0 0 auto;
 `;
@@ -40,7 +39,6 @@ const StyledMirror = styled.div<{ isMultiline: boolean }>`
   visibility: hidden;
   word-break: break-word;
   white-space: ${({ isMultiline }) => (isMultiline ? 'pre-wrap' : 'pre')};
-  ${resolveFontWeight('regular')}
 `;
 
 type Props = CommonProps & TextFieldProps & { onFocus: () => void; onResize: (gap: number) => void };
@@ -87,7 +85,7 @@ export const TextField = (props: Props) => {
   const toFitMultiline = custom?.multiline?.expandToFit;
   const py = parseFloat(theme.size[size].paddingY) * 2 + 2;
 
-  const variant = `T${theme.size[size].fontSize.replace('px', '')}` as Features['variant'];
+  const variant = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', '')))?.variant;
 
   const Prefix = prefix ? (
     isValidElement(prefix) ? (

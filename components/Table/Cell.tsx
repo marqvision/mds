@@ -1,7 +1,7 @@
 import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
-import { MDSTypography } from '../Typography';
 import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../Typography/@utils';
+import { MDSTypography2 } from '../Typography2';
 import { theme } from './@constants';
 import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
 
@@ -60,28 +60,29 @@ const Wrapper = styled.td<StyledTableCellProps>`
   }
 `;
 
-const CellBox = styled(MDSTypography)<TableCellInnerProps>`
-  padding: ${({ size }) => theme.cell.size[size].padding};
+const CellBox = styled.div<TableCellInnerProps>`
+  padding: ${({ cellSize }) => theme.cell.size[cellSize].padding};
   text-align: ${({ align }) => align};
 `;
 
 export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCellElement>) => {
-  const { children, isNewHeader, align = 'left', valign = 'middle', size = 'medium', ...restProps } = props;
+  const { children, isNewHeader, align = 'left', valign = 'middle', cellSize = 'medium', ...restProps } = props;
 
   const color = props.as === 'th' ? 'color/content/neutral/secondary/normal' : undefined;
   const weight = isNewHeader ? 'medium' : undefined;
 
   return (
     <Wrapper ref={ref} valign={valign} {...restProps}>
-      <CellBox
-        as={typeof children !== 'string' && typeof children !== 'number' ? 'div' : undefined}
-        variant="T14"
-        align={align}
-        size={size}
-        color={color}
-        weight={weight}
-      >
-        {children}
+      <CellBox cellSize={cellSize} align={align}>
+        <MDSTypography2
+          as={typeof children !== 'string' && typeof children !== 'number' ? 'div' : undefined}
+          variant="body"
+          size="m"
+          color={color}
+          weight={weight}
+        >
+          {children}
+        </MDSTypography2>
       </CellBox>
     </Wrapper>
   );

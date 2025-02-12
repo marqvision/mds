@@ -2,20 +2,21 @@ import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography2 } from '../Typography2';
 import { MDSIcon } from '../Icon';
+import { getCorrectContainerStyle, getLayoutStyle, getSizeStyle } from './@utils';
 import {
-  MDSSelectContainerProps,
   MDSSelectContainerItemProps,
+  MDSSelectContainerProps,
   SelectContainerItemFeatures,
-  UnwrapArray,
   StyledWrapperProps,
+  UnwrapArray,
 } from './@types';
-import { getCorrectContainerStyle, getLayoutStyle } from './@utils';
 
 const SelectContainerStyles = styled.div<StyledWrapperProps>`
   display: flex;
   flex-direction: ${({ orientation }) => (orientation === 'horizontal' ? 'row' : 'column')};
   flex-wrap: wrap;
   gap: 8px;
+  width: inherit;
 `;
 
 const SelectContainerTitleStyles = styled.div`
@@ -31,34 +32,40 @@ const SelectContainerItemContentStyles = styled.div`
 `;
 
 const MainIconWrapperStyles = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 24px;
   height: 24px;
 `;
 
 const CheckedIconWrapperStyles = styled.div`
   ${({ theme }) => `
-      position: absolute;
-      top: -9px;
-      left: -9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 100px;
-      background-color: ${theme.color.bg.surface.neutral.default.normal};
+    position: absolute;
+    top: -9px;
+    left: -9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 100px;
+    background-color: ${theme.color.bg.surface.neutral.default.normal};
     
-      & path {
-        width: 16px;
-        height: 16px;
-      }
-    `}
+    & path {
+      width: 16px;
+      height: 16px;
+    }
+  `}
 `;
 
 const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
-  ${({ disabled, isSelected, isVariantCenter }) => {
+  ${({ disabled, isSelected, isVariantCenter, orientation, orientationType, fixedHeightValue, fixedWidthValue }) => {
     const containerStyle = getCorrectContainerStyle(disabled, isSelected);
-    const layoutStyle = getLayoutStyle(isVariantCenter);
+    const layoutStyle = getLayoutStyle(orientationType, isVariantCenter);
+    const sizeStyle = getSizeStyle(orientation, fixedHeightValue, fixedWidthValue);
+
+    console.log(layoutStyle, orientationType, isVariantCenter, '!?');
 
     return ` 
       position: relative;
@@ -67,7 +74,8 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease-in-out; 
-      
+     
+      ${sizeStyle} 
       ${containerStyle}
       ${layoutStyle}
     `;
@@ -77,8 +85,11 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
 const Wrapper = <T extends string | string[] | number | number[]>({
   value,
   children,
-  orientation = 'horizontal',
+  fixedWidthValue,
+  fixedHeightValue,
   variant = 'left',
+  orientationType = 'hug',
+  orientation = 'horizontal',
 }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
     children,
@@ -90,6 +101,10 @@ const Wrapper = <T extends string | string[] | number | number[]>({
 
       return cloneElement(child, {
         isSelected,
+        orientation,
+        orientationType,
+        fixedWidthValue,
+        fixedHeightValue,
         isVariantCenter: variant === 'center',
       });
     }
@@ -106,7 +121,11 @@ const Item = <T extends string | number>({
   onClick,
   disabled,
   isSelected,
+  orientation,
+  fixedWidthValue,
+  fixedHeightValue,
   isVariantCenter,
+  orientationType,
   ...props
 }: MDSSelectContainerItemProps<T>) => {
   return (
@@ -115,6 +134,10 @@ const Item = <T extends string | number>({
       disabled={disabled}
       isSelected={isSelected}
       isVariantCenter={isVariantCenter}
+      fixedWidthValue={fixedWidthValue}
+      fixedHeightValue={fixedHeightValue}
+      orientation={orientation}
+      orientationType={orientationType}
       {...props}
     >
       {isSelected && (

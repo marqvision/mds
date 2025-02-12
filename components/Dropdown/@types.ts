@@ -1,4 +1,5 @@
 import { CSSProperties, ReactElement } from 'react';
+import { PopoverPosition } from '../Popover/@type';
 
 type SubLabel = {
   label: number | string;
@@ -88,6 +89,7 @@ export type Props<T, SortT = unknown> = {
   onSelect?: (value: ValueType<T>[], selectedValues: ValueType<T>[], isSelected: boolean) => ValueType<T>[];
   renderAnchor?: (value: T | undefined, returnObj: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
   style?: CSSProperties;
+  position?: PopoverPosition;
 };
 
 export type SelectedType<T> = {

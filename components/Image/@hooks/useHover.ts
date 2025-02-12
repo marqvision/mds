@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { ImageProps } from '../@types';
-import { Hover } from '../@types/custom';
+import { Hover, UnwrapArray } from '../@types/custom';
 
 export const useHover = (custom: ImageProps['custom']) => {
   const timeoutRef = useRef<NodeJS.Timeout>();
@@ -33,13 +33,14 @@ export const useHover = (custom: ImageProps['custom']) => {
   };
 };
 
-const checkIsCustomHover = (custom: ImageProps['custom']): custom is Hover | Hover[] => {
-  return (
-    !!custom &&
-    (Array.isArray(custom) ? custom.some(({ type }) => type === 'hover') : 'type' in custom && custom.type === 'hover')
-  );
+const checkIsCustomHover = (custom: UnwrapArray<ImageProps['custom']>): custom is Hover => {
+  return !!custom && 'type' in custom && custom.type === 'hover';
 };
 
 const getCustomHover = (custom: ImageProps['custom']): Hover | undefined => {
-  return checkIsCustomHover(custom) ? (Array.isArray(custom) ? custom[0] : custom) : undefined;
+  return Array.isArray(custom)
+    ? (custom.find(checkIsCustomHover))
+    : checkIsCustomHover(custom)
+    ? custom
+    : undefined;
 };

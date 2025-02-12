@@ -506,7 +506,7 @@ const Dropdown = <T, SortT>(
 };
 
 export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>) => {
-  const { renderAnchor, width, ...restProps } = props;
+  const { renderAnchor, width, position, ...restProps } = props;
 
   const { value, list, isLoading, isDisabled } = restProps;
 
@@ -554,6 +554,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
       anchor={anchor}
       width={fitWidth || width || 'auto'}
       onClose={handler.close}
+      position={position}
       style={{
         ...props.style,
         overflowX: 'hidden',

@@ -193,7 +193,7 @@ export const TextField = (props: Props) => {
       if (resizeRef.current) {
         clearTimeout(resizeRef.current);
       }
-      setTimeout(fn, 10);
+      setTimeout(fn, 50);
     });
 
     if (mirrorRef.current && (hasCustomToFit || toFitMultiline)) {

@@ -74,6 +74,7 @@ export const TextField = (props: Props) => {
   const formatRef = useRef(format);
   const preventResizeRef = useRef(false);
   const mirrorRef = useRef<HTMLDivElement>(null);
+  const resizeRef = useRef<number>();
 
   const add = custom?.add;
   const debounce = custom?.debounce || 0;
@@ -171,21 +172,28 @@ export const TextField = (props: Props) => {
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
-      if (hasCustomToFit) {
-        const gap = (entries[0].target.clientWidth || 0) - (entries[0].target.nextElementSibling?.clientWidth || 0);
-        onResize(gap);
-      }
-      if (toFitMultiline) {
-        const defaultHeight = toFitMultiline.defaultHeight || py + parseInt(theme.size[size].fontSize) * 1.5 * 2;
-
-        let newHeight = Math.max((entries[0].target.clientHeight || 0) + py, parseInt(`${defaultHeight}`));
-
-        if (toFitMultiline.maxHeight) {
-          newHeight = Math.min(parseFloat(`${toFitMultiline.maxHeight}`), newHeight);
+      const fn = () => {
+        if (hasCustomToFit) {
+          const gap = (entries[0].target.clientWidth || 0) - (entries[0].target.nextElementSibling?.clientWidth || 0);
+          onResize(gap);
         }
+        if (toFitMultiline) {
+          const defaultHeight = toFitMultiline.defaultHeight || py + parseInt(theme.size[size].fontSize) * 1.5 * 2;
 
-        setHeight(newHeight);
+          let newHeight = Math.max((entries[0].target.clientHeight || 0) + py, parseInt(`${defaultHeight}`));
+
+          if (toFitMultiline.maxHeight) {
+            newHeight = Math.min(parseFloat(`${toFitMultiline.maxHeight}`), newHeight);
+          }
+
+          setHeight(newHeight);
+        }
+      };
+
+      if (resizeRef.current) {
+        clearTimeout(resizeRef.current);
       }
+      setTimeout(fn, 10);
     });
 
     if (mirrorRef.current && (hasCustomToFit || toFitMultiline)) {

@@ -55,11 +55,11 @@ export const resolveFontWeight = (features: Pick<InnerTypographyStyleProps, 'var
 
 // todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 export const resolveFontFamily = (features: InnerTypographyStyleProps) => {
-  if (features.weight === 'bold' || features.weight === 'semibold') return '"Visuelt-Bold"';
-  else if (features.weight === 'medium') return '"Visuelt-Medium"';
-  else if (features.weight === 'regular') return '"Visuelt-Regular"';
-  else if (features.weight === 'light') return '"Visuelt-Light"';
-  else return '"Visuelt-Regular"';
+  if (features.weight === 'bold' || features.weight === 'semibold') return '"Visuelt-Bold", "Pretendard Variable"';
+  else if (features.weight === 'medium') return '"Visuelt-Medium", "Pretendard Variable"';
+  else if (features.weight === 'regular') return '"Visuelt-Regular", "Pretendard Variable"';
+  else if (features.weight === 'light') return '"Visuelt-Light", "Pretendard Variable"';
+  else return '"Visuelt-Regular", "Pretendard Variable"';
 };
 
 export const resolveLineClamp = (lineClamp: InnerTypographyStyleProps['lineClamp']) => {

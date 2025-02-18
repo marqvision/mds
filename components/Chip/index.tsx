@@ -20,6 +20,7 @@ const Chip = styled.button<StyledChipProps>`
   border-width: 1px;
   border-style: solid;
   user-select: none;
+  background-clip: padding-box;
 
   & i,
   & svg {

@@ -33,6 +33,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${textDecorationStyles};
       ${numberStyles};
       line-height: ${variant === 'title' ? 1.2 : 1.5};
+      overflow-wrap: anywhere;
 
 
       // todo-@jamie: [PROD-12758] 완료되면 반드시 삭제!!!

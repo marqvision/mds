@@ -60,12 +60,12 @@ const CheckedIconWrapperStyles = styled.div`
 `;
 
 const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
-  ${({ disabled, isSelected, isVariantCenter, orientation, orientationType, fixedHeightValue, fixedWidthValue }) => {
+  ${({ disabled, isSelected, isVariantCenter, orientation, containerSizing }) => {
     const containerStyle = getCorrectContainerStyle(disabled, isSelected);
-    const layoutStyle = getLayoutStyle(orientationType, isVariantCenter);
-    const sizeStyle = getSizeStyle(orientation, fixedHeightValue, fixedWidthValue);
+    const layoutStyle = getLayoutStyle(containerSizing, isVariantCenter);
+    const sizeStyle = getSizeStyle(containerSizing, orientation);
 
-    console.log(layoutStyle, orientationType, isVariantCenter, '!?');
+    console.log(sizeStyle, '?!');
 
     return ` 
       position: relative;
@@ -85,10 +85,8 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
 const Wrapper = <T extends string | string[] | number | number[]>({
   value,
   children,
-  fixedWidthValue,
-  fixedHeightValue,
   variant = 'left',
-  orientationType = 'hug',
+  containerSizing = 'hug',
   orientation = 'horizontal',
 }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
@@ -102,9 +100,7 @@ const Wrapper = <T extends string | string[] | number | number[]>({
       return cloneElement(child, {
         isSelected,
         orientation,
-        orientationType,
-        fixedWidthValue,
-        fixedHeightValue,
+        containerSizing,
         isVariantCenter: variant === 'center',
       });
     }
@@ -122,10 +118,8 @@ const Item = <T extends string | number>({
   disabled,
   isSelected,
   orientation,
-  fixedWidthValue,
-  fixedHeightValue,
   isVariantCenter,
-  orientationType,
+  containerSizing,
   ...props
 }: MDSSelectContainerItemProps<T>) => {
   return (
@@ -134,10 +128,8 @@ const Item = <T extends string | number>({
       disabled={disabled}
       isSelected={isSelected}
       isVariantCenter={isVariantCenter}
-      fixedWidthValue={fixedWidthValue}
-      fixedHeightValue={fixedHeightValue}
       orientation={orientation}
-      orientationType={orientationType}
+      containerSizing={containerSizing}
       {...props}
     >
       {isSelected && (

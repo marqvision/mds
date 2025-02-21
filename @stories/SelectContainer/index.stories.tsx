@@ -29,7 +29,7 @@ export const DefaultPreview: StoryObj<typeof MDSSelectContainer.Wrapper> = {
     }, []);
 
     return (
-      <MDSSelectContainer.Wrapper value={selectedItem}>
+      <MDSSelectContainer.Wrapper value={selectedItem} orientation="horizontal" containerSizing="fit">
         {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
           (value) => (
             <MDSSelectContainer.Item<ValueEnum>
@@ -67,7 +67,7 @@ export const VerticalOrientation: StoryObj<typeof MDSSelectContainer.Wrapper> = 
     }, []);
 
     return (
-      <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} orientationType="hug">
+      <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} containerSizing="hug">
         {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
           (value) => (
             <MDSSelectContainer.Item<ValueEnum>
@@ -105,13 +105,7 @@ export const VariantCenter: StoryObj<typeof MDSSelectContainer.Wrapper> = {
     }, []);
 
     return (
-      <MDSSelectContainer.Wrapper
-        value={selectedItem}
-        orientation="horizontal"
-        orientationType="fixed"
-        fixedWidthValue={300}
-        variant={variant}
-      >
+      <MDSSelectContainer.Wrapper value={selectedItem} orientation="horizontal" containerSizing={300} variant={variant}>
         {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
           (value) => (
             <MDSSelectContainer.Item<ValueEnum>
@@ -187,7 +181,7 @@ export const OrientationFit: StoryObj<typeof MDSSelectContainer.Wrapper> = {
 
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
-        <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} orientationType="fit">
+        <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} containerSizing="fit">
           {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.LongNameForTesting].map((value) => (
             <MDSSelectContainer.Item<ValueEnum>
               key={value}
@@ -231,7 +225,7 @@ export const OrientationHug: StoryObj<typeof MDSSelectContainer.Wrapper> = {
 
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
-        <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} orientationType="hug">
+        <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} containerSizing="hug">
           {Object.values(ValueEnum).map((value) => (
             <MDSSelectContainer.Item<ValueEnum>
               key={value}
@@ -251,15 +245,20 @@ export const OrientationHorizontalFixed: StoryObj<typeof MDSSelectContainer.Wrap
     controls: { expanded: true },
   },
   argTypes: {
-    fixedWidthValue: {
-      control: { type: 'number' },
-      defaultValue: 200,
+    orientation: {
+      defaultValue: {
+        summary: 'vertical',
+      },
+      options: ['horizontal', 'vertical'],
+      control: {
+        type: 'radio',
+      },
     },
   },
   args: {
-    fixedWidthValue: 200,
+    containerSizing: 200,
   },
-  render: function Render({ fixedWidthValue = 200 }) {
+  render: function Render({ containerSizing = 200 }) {
     const [selectedItem, setSelectedItem] = useState(ValueEnum.Lorem);
 
     const handleSelect = useCallback((value: ValueEnum) => {
@@ -268,12 +267,7 @@ export const OrientationHorizontalFixed: StoryObj<typeof MDSSelectContainer.Wrap
 
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
-        <MDSSelectContainer.Wrapper
-          value={selectedItem}
-          orientation="horizontal"
-          orientationType="fixed"
-          fixedWidthValue={fixedWidthValue}
-        >
+        <MDSSelectContainer.Wrapper value={selectedItem} orientation="horizontal" containerSizing={containerSizing}>
           {Object.values(ValueEnum).map((value) => (
             <MDSSelectContainer.Item<ValueEnum>
               key={value}
@@ -293,15 +287,20 @@ export const OrientationVerticalFixed: StoryObj<typeof MDSSelectContainer.Wrappe
     controls: { expanded: true },
   },
   argTypes: {
-    fixedHeightValue: {
-      control: { type: 'number' },
-      defaultValue: 80,
+    orientation: {
+      defaultValue: {
+        summary: 'vertical',
+      },
+      options: ['horizontal', 'vertical'],
+      control: {
+        type: 'radio',
+      },
     },
   },
   args: {
-    fixedHeightValue: 80,
+    containerSizing: 200,
   },
-  render: function Render({ fixedHeightValue = 80 }) {
+  render: function Render({ containerSizing = 80 }) {
     const [selectedItem, setSelectedItem] = useState(ValueEnum.Lorem);
 
     const handleSelect = useCallback((value: ValueEnum) => {
@@ -310,12 +309,7 @@ export const OrientationVerticalFixed: StoryObj<typeof MDSSelectContainer.Wrappe
 
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
-        <MDSSelectContainer.Wrapper
-          value={selectedItem}
-          orientation="vertical"
-          orientationType="fixed"
-          fixedHeightValue={fixedHeightValue}
-        >
+        <MDSSelectContainer.Wrapper value={selectedItem} orientation="vertical" containerSizing={containerSizing}>
           {Object.values(ValueEnum).map((value) => (
             <MDSSelectContainer.Item<ValueEnum>
               key={value}

@@ -69,7 +69,6 @@ export type IconVariant = {
   Siren: VariantSet['OutlineFill'];
   Chat: VariantSet['OutlineFill'];
   Shopping: VariantSet['OutlineFill'];
-  Translate: VariantSet['OutlineFill'];
 
   // Editor
   Circle: VariantSet['OutlineFill'] | 'outline_small' | 'fill_small';

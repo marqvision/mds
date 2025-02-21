@@ -42,8 +42,8 @@ const MainIconWrapperStyles = styled.div`
 const CheckedIconWrapperStyles = styled.div`
   ${({ theme }) => `
     position: absolute;
-    top: -9px;
-    left: -9px;
+    top: -7px;
+    left: -7px;
     display: flex;
     align-items: center;
     justify-content: center;

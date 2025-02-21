@@ -35,6 +35,7 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
     `,
 
     disabledSelected: `
+      background-color: ${MDSThemeValue.color.bg.surface.neutral.default.disabled};
       box-shadow: inset 0 0 0 2px ${MDSThemeValue.color.border.primary.default.disabled};
       
       p {
@@ -46,7 +47,6 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
       }
       
       &:hover {
-        background-color: ${MDSThemeValue.color.bg.surface.neutral.default.disabled};
         .checked-icon-wrapper path {
           fill: ${MDSThemeValue.color.content.primary.default.disabled};
         }

@@ -8,7 +8,7 @@ type ContainerFeatures<T> = {
   children: ReactElement | ReactElement[];
   variant?: 'left' | 'center';
   orientation: 'horizontal' | 'vertical';
-  containerSizing: 'fit' | 'hug' | number;
+  itemSizing: 'fit' | 'hug' | number;
 };
 
 export type StyledWrapperProps = {
@@ -33,7 +33,7 @@ type ItemFeatures<T> = {
   isSelected?: boolean;
   isVariantCenter?: boolean;
   orientation?: 'horizontal' | 'vertical';
-  containerSizing?: 'fit' | 'hug' | number;
+  itemSizing?: 'fit' | 'hug' | number;
 };
 
 export type SelectContainerItemFeatures = {
@@ -41,7 +41,7 @@ export type SelectContainerItemFeatures = {
   isSelected?: boolean;
   isVariantCenter?: boolean;
   orientation?: 'horizontal' | 'vertical';
-  containerSizing?: 'fit' | 'hug' | number;
+  itemSizing?: 'fit' | 'hug' | number;
 };
 
 export type UnwrapArray<T> = T extends (infer U)[] ? U : T;

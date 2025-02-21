@@ -60,10 +60,10 @@ const CheckedIconWrapperStyles = styled.div`
 `;
 
 const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
-  ${({ disabled, isSelected, isVariantCenter, orientation, containerSizing }) => {
+  ${({ disabled, isSelected, isVariantCenter, orientation, itemSizing }) => {
     const containerStyle = getCorrectContainerStyle(disabled, isSelected);
-    const layoutStyle = getLayoutStyle(containerSizing, isVariantCenter);
-    const sizeStyle = getSizeStyle(containerSizing, orientation);
+    const layoutStyle = getLayoutStyle(itemSizing, isVariantCenter);
+    const sizeStyle = getSizeStyle(itemSizing, orientation);
 
     return ` 
       position: relative;
@@ -84,7 +84,7 @@ const Wrapper = <T extends string | string[] | number | number[]>({
   value,
   children,
   variant = 'left',
-  containerSizing = 'hug',
+  itemSizing = 'hug',
   orientation = 'horizontal',
 }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
@@ -98,7 +98,7 @@ const Wrapper = <T extends string | string[] | number | number[]>({
       return cloneElement(child, {
         isSelected,
         orientation,
-        containerSizing,
+        itemSizing,
         isVariantCenter: variant === 'center',
       });
     }
@@ -117,7 +117,7 @@ const Item = <T extends string | number>({
   isSelected,
   orientation,
   isVariantCenter,
-  containerSizing,
+  itemSizing,
   ...props
 }: MDSSelectContainerItemProps<T>) => {
   return (
@@ -127,7 +127,7 @@ const Item = <T extends string | number>({
       isSelected={isSelected}
       isVariantCenter={isVariantCenter}
       orientation={orientation}
-      containerSizing={containerSizing}
+      itemSizing={itemSizing}
       {...props}
     >
       {isSelected && (

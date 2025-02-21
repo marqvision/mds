@@ -65,8 +65,6 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
     const layoutStyle = getLayoutStyle(containerSizing, isVariantCenter);
     const sizeStyle = getSizeStyle(containerSizing, orientation);
 
-    console.log(sizeStyle, '?!');
-
     return ` 
       position: relative;
       gap: 16px;

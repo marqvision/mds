@@ -4,7 +4,7 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
   const styles = {
     base: `
       background-color: ${MDSThemeValue.color.bg.surface.neutral.default.normal};
-      outline: 1px solid ${MDSThemeValue.color.border.neutral.default.normal};
+      box-shadow: inset 0 0 0 1px ${MDSThemeValue.color.border.neutral.default.normal};
       
       .checked-icon-wrapper path {
         fill: ${MDSThemeValue.color.content.primary.default.normal};
@@ -19,7 +19,7 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
     `,
 
     disabled: `
-      outline: 1px solid ${MDSThemeValue.color.border.neutral.default.normal};
+      box-shadow: inset 0 0 0 1px ${MDSThemeValue.color.border.neutral.default.normal};
       
       p {
         color: ${MDSThemeValue.color.content.neutral.default.disabled};
@@ -35,7 +35,7 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
     `,
 
     disabledSelected: `
-      outline: 2px solid ${MDSThemeValue.color.border.primary.default.disabled};
+      box-shadow: inset 0 0 0 2px ${MDSThemeValue.color.border.primary.default.disabled};
       
       p {
         color: ${MDSThemeValue.color.content.neutral.default.disabled};
@@ -55,7 +55,7 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
 
     selected: `
       background-color: ${MDSThemeValue.color.bg.surface.neutral.default.normal};
-      outline: 2px solid ${MDSThemeValue.color.border.primary.default.normal};
+      box-shadow: inset 0 0 0 2px ${MDSThemeValue.color.border.primary.default.normal};
       
       .checked-icon-wrapper path {
         fill: ${MDSThemeValue.color.content.primary.default.normal};
@@ -63,7 +63,7 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
       
       &:hover {
         background-color: ${MDSThemeValue.color.bg.surface.neutral.default.hover};
-        outline: 2px solid ${MDSThemeValue.color.border.primary.default.hover};
+        box-shadow: inset 0 0 0 2px ${MDSThemeValue.color.border.primary.default.hover};
         .checked-icon-wrapper path {
           fill: ${MDSThemeValue.color.content.primary.default.hover};
         }

@@ -185,6 +185,7 @@ export const MDSIcon = {
   Domain: createIcon(Symbols.Domain),
   Rocket: createIcon(Symbols.Rocket),
   SocialMedia: createIcon(Symbols.SocialMedia),
+  Translate: createIcon(Symbols.Translate),
 
   // editor
   Bold: createIcon(Editor.Bold),

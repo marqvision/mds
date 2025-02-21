@@ -28,17 +28,20 @@ export const DefaultPreview: StoryObj<typeof MDSSelectContainer.Wrapper> = {
       setSelectedItem(value);
     }, []);
 
-    const renderItems = () =>
-      [ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map((value) => (
-        <MDSSelectContainer.Item<ValueEnum>
-          key={value}
-          title={{ label: LABEL_MAP[value] }}
-          value={value}
-          onClick={() => handleSelect(value)}
-        />
-      ));
-
-    return <MDSSelectContainer.Wrapper value={selectedItem}>{renderItems()}</MDSSelectContainer.Wrapper>;
+    return (
+      <MDSSelectContainer.Wrapper value={selectedItem}>
+        {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
+          (value) => (
+            <MDSSelectContainer.Item<ValueEnum>
+              key={value}
+              title={{ label: LABEL_MAP[value] }}
+              value={value}
+              onClick={() => handleSelect(value)}
+            />
+          )
+        )}
+      </MDSSelectContainer.Wrapper>
+    );
   },
 };
 
@@ -63,19 +66,18 @@ export const VerticalOrientation: StoryObj<typeof MDSSelectContainer.Wrapper> = 
       setSelectedItem(value);
     }, []);
 
-    const renderItems = () =>
-      [ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map((value) => (
-        <MDSSelectContainer.Item<ValueEnum>
-          key={value}
-          title={{ label: LABEL_MAP[value] }}
-          value={value}
-          onClick={() => handleSelect(value)}
-        />
-      ));
-
     return (
       <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} orientationType="hug">
-        {renderItems()}
+        {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
+          (value) => (
+            <MDSSelectContainer.Item<ValueEnum>
+              key={value}
+              title={{ label: LABEL_MAP[value] }}
+              value={value}
+              onClick={() => handleSelect(value)}
+            />
+          )
+        )}
       </MDSSelectContainer.Wrapper>
     );
   },
@@ -102,16 +104,6 @@ export const VariantCenter: StoryObj<typeof MDSSelectContainer.Wrapper> = {
       setSelectedItem(value);
     }, []);
 
-    const renderItems = () =>
-      [ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map((value) => (
-        <MDSSelectContainer.Item<ValueEnum>
-          key={value}
-          title={{ label: LABEL_MAP[value] }}
-          value={value}
-          onClick={() => handleSelect(value)}
-        />
-      ));
-
     return (
       <MDSSelectContainer.Wrapper
         value={selectedItem}
@@ -120,7 +112,16 @@ export const VariantCenter: StoryObj<typeof MDSSelectContainer.Wrapper> = {
         fixedWidthValue={300}
         variant={variant}
       >
-        {renderItems()}
+        {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
+          (value) => (
+            <MDSSelectContainer.Item<ValueEnum>
+              key={value}
+              title={{ label: LABEL_MAP[value] }}
+              value={value}
+              onClick={() => handleSelect(value)}
+            />
+          )
+        )}
       </MDSSelectContainer.Wrapper>
     );
   },
@@ -184,20 +185,17 @@ export const OrientationFit: StoryObj<typeof MDSSelectContainer.Wrapper> = {
       setSelectedItem(value);
     }, []);
 
-    const renderItems = () =>
-      [ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.LongNameForTesting].map((value) => (
-        <MDSSelectContainer.Item<ValueEnum>
-          key={value}
-          title={{ label: LABEL_MAP[value] }}
-          value={value}
-          onClick={() => handleSelect(value)}
-        />
-      ));
-
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
         <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} orientationType="fit">
-          {renderItems()}
+          {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.LongNameForTesting].map((value) => (
+            <MDSSelectContainer.Item<ValueEnum>
+              key={value}
+              title={{ label: LABEL_MAP[value] }}
+              value={value}
+              onClick={() => handleSelect(value)}
+            />
+          ))}
         </MDSSelectContainer.Wrapper>
       </div>
     );
@@ -231,20 +229,17 @@ export const OrientationHug: StoryObj<typeof MDSSelectContainer.Wrapper> = {
       setSelectedItem(value);
     }, []);
 
-    const renderItems = () =>
-      Object.values(ValueEnum).map((value) => (
-        <MDSSelectContainer.Item<ValueEnum>
-          key={value}
-          title={{ label: LABEL_MAP[value] }}
-          value={value}
-          onClick={() => handleSelect(value)}
-        />
-      ));
-
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
         <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} orientationType="hug">
-          {renderItems()}
+          {Object.values(ValueEnum).map((value) => (
+            <MDSSelectContainer.Item<ValueEnum>
+              key={value}
+              title={{ label: LABEL_MAP[value] }}
+              value={value}
+              onClick={() => handleSelect(value)}
+            />
+          ))}
         </MDSSelectContainer.Wrapper>
       </div>
     );
@@ -271,16 +266,6 @@ export const OrientationHorizontalFixed: StoryObj<typeof MDSSelectContainer.Wrap
       setSelectedItem(value);
     }, []);
 
-    const renderItems = () =>
-      Object.values(ValueEnum).map((value) => (
-        <MDSSelectContainer.Item<ValueEnum>
-          key={value}
-          title={{ label: LABEL_MAP[value] }}
-          value={value}
-          onClick={() => handleSelect(value)}
-        />
-      ));
-
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
         <MDSSelectContainer.Wrapper
@@ -289,7 +274,14 @@ export const OrientationHorizontalFixed: StoryObj<typeof MDSSelectContainer.Wrap
           orientationType="fixed"
           fixedWidthValue={fixedWidthValue}
         >
-          {renderItems()}
+          {Object.values(ValueEnum).map((value) => (
+            <MDSSelectContainer.Item<ValueEnum>
+              key={value}
+              title={{ label: LABEL_MAP[value] }}
+              value={value}
+              onClick={() => handleSelect(value)}
+            />
+          ))}
         </MDSSelectContainer.Wrapper>
       </div>
     );
@@ -316,16 +308,6 @@ export const OrientationVerticalFixed: StoryObj<typeof MDSSelectContainer.Wrappe
       setSelectedItem(value);
     }, []);
 
-    const renderItems = () =>
-      Object.values(ValueEnum).map((value) => (
-        <MDSSelectContainer.Item<ValueEnum>
-          key={value}
-          title={{ label: LABEL_MAP[value] }}
-          value={value}
-          onClick={() => handleSelect(value)}
-        />
-      ));
-
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
         <MDSSelectContainer.Wrapper
@@ -334,7 +316,14 @@ export const OrientationVerticalFixed: StoryObj<typeof MDSSelectContainer.Wrappe
           orientationType="fixed"
           fixedHeightValue={fixedHeightValue}
         >
-          {renderItems()}
+          {Object.values(ValueEnum).map((value) => (
+            <MDSSelectContainer.Item<ValueEnum>
+              key={value}
+              title={{ label: LABEL_MAP[value] }}
+              value={value}
+              onClick={() => handleSelect(value)}
+            />
+          ))}
         </MDSSelectContainer.Wrapper>
       </div>
     );

@@ -60,6 +60,8 @@ export const MDSIcon = {
   Folder: createIcon(Symbols.Folder),
   Label: createIcon(Symbols.Label),
   More: createIcon(Symbols.More),
+  Notifications: createIcon(Symbols.Notifications),
+  NotificationsOn: createIcon(Symbols.NotificationsOn),
   NotificationsOff: createIcon(Symbols.NotificationsOff),
   Settings: createIcon(Symbols.Settings),
   AccountProfile: createIcon(Symbols.AccountProfile),

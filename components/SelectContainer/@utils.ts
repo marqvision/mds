@@ -78,7 +78,7 @@ export const getCorrectContainerStyle = (disabled?: boolean, isSelected?: boolea
   return styles.base;
 };
 
-export const getLayoutStyle = (type?: 'fit' | 'hug' | number, isCenter?: boolean) => {
+export const getLayoutStyle = (type?: 'fit' | number, isCenter?: boolean) => {
   let additionalStyle = '';
 
   if (isCenter) {
@@ -92,16 +92,10 @@ export const getLayoutStyle = (type?: 'fit' | 'hug' | number, isCenter?: boolean
   return `display: flex; ${additionalStyle}`;
 };
 
-export const getSizeStyle = (orientationType?: 'fit' | 'hug' | number, orientation?: 'horizontal' | 'vertical') => {
-  if (typeof orientationType !== 'number') return;
+export const getSizeStyle = (itemSizing?: 'fit' | number, orientation?: 'horizontal' | 'vertical') => {
+  if (typeof itemSizing !== 'number') return;
 
-  const heightStyle =
-    orientation === 'horizontal'
-      ? 'height: fit-content;'
-      : `height: ${orientationType ? `${orientationType}px` : 'auto'};`;
-
-  const widthStyle =
-    orientation === 'vertical' ? 'width: fit-content;' : `width: ${orientationType ? `${orientationType}px` : 'auto'};`;
-
-  return `${heightStyle} ${widthStyle}`;
+  return orientation === 'horizontal'
+    ? `height: fit-content; width: ${itemSizing}px;`
+    : `width: fit-content; height: ${itemSizing}px;`;
 };

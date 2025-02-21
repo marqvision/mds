@@ -16,7 +16,6 @@ const SelectContainerStyles = styled.div<StyledWrapperProps>`
   flex-direction: ${({ orientation }) => (orientation === 'horizontal' ? 'row' : 'column')};
   flex-wrap: wrap;
   gap: 8px;
-  width: inherit;
 `;
 
 const SelectContainerTitleStyles = styled.div`
@@ -84,7 +83,7 @@ const Wrapper = <T extends string | string[] | number | number[]>({
   value,
   children,
   variant = 'left',
-  itemSizing = 'hug',
+  itemSizing,
   orientation = 'horizontal',
 }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(

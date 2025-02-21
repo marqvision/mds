@@ -73,7 +73,7 @@ export const VerticalOrientation: StoryObj<typeof MDSSelectContainer.Wrapper> = 
     }, []);
 
     return (
-      <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} itemSizing="hug">
+      <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation}>
         {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
           (value) => (
             <MDSSelectContainer.Item<ValueEnum>
@@ -242,7 +242,7 @@ export const OrientationHug: StoryObj<typeof MDSSelectContainer.Wrapper> = {
 
     return (
       <div style={{ minHeight: '500px', display: 'flex' }}>
-        <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation} itemSizing="hug">
+        <MDSSelectContainer.Wrapper value={selectedItem} orientation={orientation}>
           {Object.values(ValueEnum).map((value) => (
             <MDSSelectContainer.Item<ValueEnum>
               key={value}

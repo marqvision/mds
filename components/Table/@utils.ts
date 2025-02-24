@@ -20,8 +20,8 @@ export const updateScrollPosition = (
     if (!scrollRequested) {
       scrollRequested = true;
       requestAnimationFrame(() => {
-        const leftShadowVisible = target.scrollLeft > 0;
-        const rightShadowVisible = target.scrollWidth - target.scrollLeft - target.clientWidth > 0;
+        const leftShadowVisible = Math.floor(target.scrollLeft) > 0;
+        const rightShadowVisible = Math.floor(target.scrollWidth - target.scrollLeft - target.clientWidth) > 0;
         updateShadowsVisibility(leftShadowVisible, rightShadowVisible);
 
         scrollRequested = false;

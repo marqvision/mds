@@ -6,8 +6,9 @@ import { MDSThemeColorPath } from '../../foundation';
 type ContainerFeatures<T> = {
   value: T;
   children: ReactElement | ReactElement[];
-  orientation?: 'horizontal' | 'vertical';
   variant?: 'left' | 'center';
+  orientation: 'horizontal' | 'vertical';
+  itemSizing?: 'fit' | number;
 };
 
 export type StyledWrapperProps = {
@@ -31,12 +32,16 @@ type ItemFeatures<T> = {
   disabled?: boolean;
   isSelected?: boolean;
   isVariantCenter?: boolean;
+  orientation?: 'horizontal' | 'vertical';
+  itemSizing?: 'fit' | number;
 };
 
 export type SelectContainerItemFeatures = {
   disabled?: boolean;
   isSelected?: boolean;
   isVariantCenter?: boolean;
+  orientation?: 'horizontal' | 'vertical';
+  itemSizing?: 'fit' | number;
 };
 
 export type UnwrapArray<T> = T extends (infer U)[] ? U : T;

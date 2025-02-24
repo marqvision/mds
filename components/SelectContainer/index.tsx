@@ -2,14 +2,14 @@ import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography2 } from '../Typography2';
 import { MDSIcon } from '../Icon';
+import { getCorrectContainerStyle, getLayoutStyle, getSizeStyle } from './@utils';
 import {
-  MDSSelectContainerProps,
   MDSSelectContainerItemProps,
+  MDSSelectContainerProps,
   SelectContainerItemFeatures,
-  UnwrapArray,
   StyledWrapperProps,
+  UnwrapArray,
 } from './@types';
-import { getCorrectContainerStyle, getLayoutStyle } from './@utils';
 
 const SelectContainerStyles = styled.div<StyledWrapperProps>`
   display: flex;
@@ -31,34 +31,38 @@ const SelectContainerItemContentStyles = styled.div`
 `;
 
 const MainIconWrapperStyles = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 24px;
   height: 24px;
 `;
 
 const CheckedIconWrapperStyles = styled.div`
   ${({ theme }) => `
-      position: absolute;
-      top: -9px;
-      left: -9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 100px;
-      background-color: ${theme.color.bg.surface.neutral.default.normal};
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 100px;
+    background-color: ${theme.color.bg.surface.neutral.default.normal};
     
-      & path {
-        width: 16px;
-        height: 16px;
-      }
-    `}
+    & path {
+      width: 16px;
+      height: 16px;
+    }
+  `}
 `;
 
 const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
-  ${({ disabled, isSelected, isVariantCenter }) => {
+  ${({ disabled, isSelected, isVariantCenter, orientation, itemSizing }) => {
     const containerStyle = getCorrectContainerStyle(disabled, isSelected);
-    const layoutStyle = getLayoutStyle(isVariantCenter);
+    const layoutStyle = getLayoutStyle(itemSizing, isVariantCenter);
+    const sizeStyle = getSizeStyle(itemSizing, orientation);
 
     return ` 
       position: relative;
@@ -67,7 +71,8 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease-in-out; 
-      
+     
+      ${sizeStyle} 
       ${containerStyle}
       ${layoutStyle}
     `;
@@ -77,8 +82,9 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
 const Wrapper = <T extends string | string[] | number | number[]>({
   value,
   children,
-  orientation = 'horizontal',
   variant = 'left',
+  itemSizing,
+  orientation = 'horizontal',
 }: MDSSelectContainerProps<T>) => {
   const modifiedChildrenWithProps = Children.map(
     children,
@@ -90,6 +96,8 @@ const Wrapper = <T extends string | string[] | number | number[]>({
 
       return cloneElement(child, {
         isSelected,
+        orientation,
+        itemSizing,
         isVariantCenter: variant === 'center',
       });
     }
@@ -106,7 +114,9 @@ const Item = <T extends string | number>({
   onClick,
   disabled,
   isSelected,
+  orientation,
   isVariantCenter,
+  itemSizing,
   ...props
 }: MDSSelectContainerItemProps<T>) => {
   return (
@@ -115,6 +125,8 @@ const Item = <T extends string | number>({
       disabled={disabled}
       isSelected={isSelected}
       isVariantCenter={isVariantCenter}
+      orientation={orientation}
+      itemSizing={itemSizing}
       {...props}
     >
       {isSelected && (

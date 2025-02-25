@@ -27,11 +27,6 @@ const Chip = styled.button<StyledChipProps>`
     flex-shrink: 0;
   }
 
-  & p,
-  & h2 {
-    color: inherit;
-  }
-
   ${({ isLoading }) =>
     isLoading === 'hideLabel'
       ? `& *:not([role=loading-indicator], [role=loading-indicator] *, hr) { opacity: 0; }`
@@ -189,6 +184,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
               variant={ChipTheme.size[size].label}
               weight={ChipTheme.size[size].weight}
               size={ChipTheme.size[size].size}
+              color="inherit"
               lineClamp={1}
               wordBreak="break-all"
             >

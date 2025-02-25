@@ -17,11 +17,6 @@ const Tag = styled.button<StyledTagProps>`
   display: inline-flex;
   transition: 0.3s;
 
-  & p,
-  & h2 {
-    color: inherit;
-  }
-
   ${({ size }) => {
     return `
       gap: ${TagTheme.size[size].gap};
@@ -140,6 +135,7 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
         variant='body'
         weight='medium'
         size={TagTheme.size[size].size}
+        color="inherit"
       >
         {label}
       </MDSTypography2>

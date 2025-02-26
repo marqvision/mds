@@ -75,7 +75,7 @@ export const MDSFontCSS = ({
         ${FONT_STYLE_VALUES.KO.body}
       }
       html[lang='en'] {
-        font-family: ${useNewFont ? 'PPNeueMontreal-Variable, Pretendard Variable !important' : 'Visuelt-Regular'};
+        font-family: ${useNewFont ? '"Inter", Pretendard Variable !important' : 'Visuelt-Regular'};
         ${FONT_STYLE_VALUES.EN.title}
         ${FONT_STYLE_VALUES.EN.body}
       }
@@ -84,13 +84,13 @@ export const MDSFontCSS = ({
         font-family: 'Pretendard Variable !important';
       }
       html[lang='en'] button, html[lang='en'] input, html[lang='en'] textarea, html[lang='en'] select, html[lang='en'] svg {
-        font-family: ${useNewFont ? 'PPNeueMontreal-Variable, Pretendard Variable !important' : 'Visuelt-Regular'};
+        font-family: ${useNewFont ? '"Inter", Pretendard Variable !important' : 'Visuelt-Regular'};
       }
 
       ${useNewFont
         ? `
         html[lang='en'] *[data-typography-new-font] {
-          font-family: "PPNeueMontreal-Variable", "Pretendard Variable" !important;
+          font-family: "Inter", "Pretendard Variable" !important;
         }
         html[lang='ko'] *[data-typography-new-font] {
           font-family: "Pretendard Variable" !important;
@@ -148,7 +148,7 @@ export const MDSResetCSS = () => (
         text-size-adjust: none;
       }
 
-      /* Reapply the pointer cursor for anchor tags */
+      /* Reapply the pointer  cursor for anchor tags */
       a,
       button {
         cursor: revert;

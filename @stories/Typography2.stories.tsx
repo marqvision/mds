@@ -248,7 +248,7 @@ export const Showcase: Story = {
         <Container>
           <div>
             <MDSTypography2 variant="title" size="2xl" weight="medium" color={color} __useNewFont>
-              Title (English) - {isKor ? 'Pretendard' : 'PP Neue Montreal'}
+              Title (English) - {isKor ? 'Pretendard' : 'Inter'}
             </MDSTypography2>
             <Table cellPadding={12}>
               <thead>
@@ -328,7 +328,7 @@ export const Showcase: Story = {
           <div>
             <div>
               <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-                Body (English) - {isKor ? 'Pretendard' : 'PP Neue Montreal'}
+                Body (English) - {isKor ? 'Pretendard' : 'Inter'}
               </MDSTypography2>
               <Table cellPadding={12}>
                 <thead>
@@ -553,7 +553,7 @@ export const Showcase: Story = {
 
           <div>
             <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-              Title (English-Number) - {isKor ? 'Pretendard' : 'PP Neue Montreal'}
+              Title (English-Number) - {isKor ? 'Pretendard' : 'Inter'}
             </MDSTypography2>
             <Table cellPadding={12}>
               <thead>
@@ -653,7 +653,7 @@ export const Showcase: Story = {
           <div>
             <div>
               <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
-                Body (English-Number) - {isKor ? 'Pretendard' : 'PP Neue Montreal'}
+                Body (English-Number) - {isKor ? 'Pretendard' : 'Inter'}
               </MDSTypography2>
               <Table cellPadding={12}>
                 <thead>

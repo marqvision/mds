@@ -5,42 +5,60 @@ import './statics/fonts/index.css';
 const FONT_STYLE_VALUES = {
   EN: {
     title: `
-      --font-title-semibold: 680;
-      --font-title-medium: 560;
+      --font-title-semibold: 640;
+      --font-title-medium: 540;
 
-      --font-title-letter-spacing-xl: -1.6;
-      --font-title-letter-spacing-l: -1.44;
-      --font-title-letter-spacing-m: -1.28;
-      --font-title-letter-spacing-s: -1.12;
+      --font-title-letter-spacing-2xl-semibold: -0.55;
+      --font-title-letter-spacing-2xl-medium: -0.48;
+      --font-title-letter-spacing-xl-semibold: -0.4;
+      --font-title-letter-spacing-xl-medium: -0.35;
+      --font-title-letter-spacing-l-semibold: -0.315;
+      --font-title-letter-spacing-l-medium: -0.27;
+      --font-title-letter-spacing-m-semibold: -0.24;
+      --font-title-letter-spacing-m-medium: -0.175;
     `,
     body: `
-      --font-body-medium: 560;
-      --font-body-regular: 450;
+      --font-body-medium: 540;
+      --font-body-regular: 420;
 
-      --font-body-letter-spacing-l: -1.28;
-      --font-body-letter-spacing-m: -1.12;
-      --font-body-letter-spacing-s: -1.04;
-      --font-body-letter-spacing-xs: -0.96;
+      --font-body-letter-spacing-l-medium: -0.28;
+      --font-body-letter-spacing-l-regular: -0.24;
+      --font-body-letter-spacing-m-medium: -0.21;
+      --font-body-letter-spacing-m-regular: -0.175;
+      --font-body-letter-spacing-s-medium: -0.162;
+      --font-body-letter-spacing-s-regular: -0.13;
+      --font-body-letter-spacing-xs-medium: -0.12;
+      --font-body-letter-spacing-xs-regular: -0.09;
     `,
   },
   KO: {
     title: `
-      --font-title-semibold: 720;
+      --font-title-semibold: 640;
       --font-title-medium: 540;
 
-      --font-title-letter-spacing-xl: -1;
-      --font-title-letter-spacing-l: -0.9;
-      --font-title-letter-spacing-m: -0.8;
-      --font-title-letter-spacing-s: -0.7;
+      --font-title-letter-spacing-xl-semibold: 0;
+      --font-title-letter-spacing-xl-medium: 0;
+      --font-title-letter-spacing-l-semibold: 0;
+      --font-title-letter-spacing-l-medium: 0;
+      --font-title-letter-spacing-m-semibold: 0;
+      --font-title-letter-spacing-m-medium: 0;
+      --font-title-letter-spacing-s-semibold: 0;
+      --font-title-letter-spacing-s-medium: 0;
+      --font-title-letter-spacing-s-regular: 0;
+      
     `,
     body: `
       --font-body-medium: 540;
-      --font-body-regular: 400;
+      --font-body-regular: 420;
 
-      --font-body-letter-spacing-l: -0.8;
-      --font-body-letter-spacing-m: -0.7;
-      --font-body-letter-spacing-s: -0.65;
-      --font-body-letter-spacing-xs: -0.6;
+      --font-body-letter-spacing-l-medium: 0;
+      --font-body-letter-spacing-l-regular: 0;
+      --font-body-letter-spacing-m-medium: 0;
+      --font-body-letter-spacing-m-regular: 0;
+      --font-body-letter-spacing-s-medium: 0;
+      --font-body-letter-spacing-s-regular: 0;
+      --font-body-letter-spacing-xs-medium: 0;
+      --font-body-letter-spacing-xs-regular: 0;
     `,
   },
 };
@@ -59,6 +77,7 @@ export const MDSFontCSS = ({
         ${FONT_STYLE_VALUES.EN.body}
       }
       :lang(ko) {
+        letter-spacing: 0;
         ${FONT_STYLE_VALUES.KO.title}
         ${FONT_STYLE_VALUES.KO.body}
       }
@@ -71,6 +90,7 @@ export const MDSFontCSS = ({
        */
       html[lang='ko'] {
         font-family: 'Pretendard Variable !important';
+        letter-spacing: 0;
         ${FONT_STYLE_VALUES.KO.title}
         ${FONT_STYLE_VALUES.KO.body}
       }
@@ -80,10 +100,18 @@ export const MDSFontCSS = ({
         ${FONT_STYLE_VALUES.EN.body}
       }
 
-      html[lang='ko'] button, html[lang='ko'] input, html[lang='ko'] textarea, html[lang='ko'] select, html[lang='ko'] svg {
+      html[lang='ko'] button,
+      html[lang='ko'] input,
+      html[lang='ko'] textarea,
+      html[lang='ko'] select,
+      html[lang='ko'] svg {
         font-family: 'Pretendard Variable !important';
       }
-      html[lang='en'] button, html[lang='en'] input, html[lang='en'] textarea, html[lang='en'] select, html[lang='en'] svg {
+      html[lang='en'] button,
+      html[lang='en'] input,
+      html[lang='en'] textarea,
+      html[lang='en'] select,
+      html[lang='en'] svg {
         font-family: ${useNewFont ? '"Inter", Pretendard Variable !important' : 'Visuelt-Regular'};
       }
 

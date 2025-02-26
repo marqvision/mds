@@ -1,19 +1,12 @@
 import { ElementType } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system/resolvers';
-import {
-  resolveFontFamily,
-  resolveFontSize,
-  resolveFontVariantNumeric,
-  resolveFontWeight,
-  resolveLineClamp,
-  resolveTagName,
-} from './@utils';
+import { resolveFontFamily, resolveFontSize, resolveFontWeight, resolveLineClamp, resolveTagName } from './@utils';
 import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
-    const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration } = features;
+    const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration, char } = features;
     const fontSize = resolveFontSize(features);
     const fontWeight = resolveFontWeight(features);
     const fontColor = color === 'inherit' ? 'inherit' : resolveColor(color!);
@@ -21,7 +14,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';
     const whiteSpaceStyles = whiteSpace ? `white-space: ${whiteSpace};` : '';
     const textDecorationStyles = textDecoration ? `text-decoration: ${textDecoration};` : '';
-    const numberStyles = resolveFontVariantNumeric(features);
+    const numberStyles = char === 'number' ? 'font-variant-numeric: tabular-nums;' : '';
 
     return `
       font-size: ${fontSize};
@@ -34,14 +27,16 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${numberStyles};
       line-height: ${variant === 'title' ? 1.2 : 1.5};
       overflow-wrap: anywhere;
+      letter-spacing: var(--font-${features.variant}-letter-spacing-${features.size}-${features.weight})px;
 
 
       // todo-@jamie: [PROD-12758] 완료되면 반드시 삭제!!!
       ${
         typeof window !== 'undefined' &&
         //@ts-ignore
-        !window.___mdsv2_use_new_font ?
-        `font-family: ${resolveFontFamily(features)};` : ''
+        !window.___mdsv2_use_new_font
+          ? `font-family: ${resolveFontFamily(features)};`
+          : ''
       }
 
     `;

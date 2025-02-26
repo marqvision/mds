@@ -75,17 +75,6 @@ export const resolveLineClamp = (lineClamp: InnerTypographyStyleProps['lineClamp
   }
 };
 
-export const resolveFontVariantNumeric = (features: InnerTypographyStyleProps) => {
-  if (features.char === 'number') {
-    return `
-      font-variant-numeric: tabular-nums;
-      letter-spacing: var(--font-${features.variant}-letter-spacing-${features.size})px;
-    `;
-  } else {
-    return '';
-  }
-};
-
 // todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 export const getTypographyProps = (
   fontSize: number,

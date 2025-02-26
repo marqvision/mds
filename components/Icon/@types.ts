@@ -35,8 +35,9 @@ export type IconVariant = {
   Folder: VariantSet['OutlineFill'];
   Label: VariantSet['OutlineFill'];
   More: VariantSet['Orientation'];
+  Notifications: VariantSet['OutlineFill'];
+  NotificationsOn: VariantSet['OutlineFill'];
   NotificationsOff: VariantSet['OutlineFill'];
-  // NotificationsOn: VariantSet['OutlineFill'];
   Settings: VariantSet['OutlineFill'];
   AccountProfile: VariantSet['OutlineFill'];
   StoreMarket: VariantSet['OutlineFill'];

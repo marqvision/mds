@@ -109,7 +109,7 @@ const IconVariant = {
   Folder: VariantSet['OutlineFill'],
   Label: VariantSet['OutlineFill'],
   More: VariantSet['Orientation'],
-  NotificationsOff: VariantSet['OutlineFill'],
+  Notifications: VariantSet['OutlineFill'],
   Settings: VariantSet['OutlineFill'],
   AccountProfile: VariantSet['OutlineFill'],
   StoreMarket: VariantSet['OutlineFill'],

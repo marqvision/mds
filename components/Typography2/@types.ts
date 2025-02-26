@@ -48,6 +48,12 @@ type BaseFeatures<T extends ElementType = 'p'> = {
    */
   textDecoration?: CSSProperties['textDecoration'];
 
+  /**
+   * 타이포그래피의 overflow-wrap 속성.
+   * 기본값은 anywhere입니다.
+   */
+  overflowWrap?: CSSProperties['overflowWrap'];
+
   // PROD-12587 에서 새로운 font를 적용하는 케이스를 위한 속성
   __useNewFont?: boolean;
 };

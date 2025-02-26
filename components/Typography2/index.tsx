@@ -6,7 +6,7 @@ import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
-    const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration, char } = features;
+    const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration, char, overflowWrap } = features;
     const fontSize = resolveFontSize(features);
     const fontWeight = resolveFontWeight(features);
     const fontColor = color === 'inherit' ? 'inherit' : resolveColor(color!);
@@ -26,7 +26,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${textDecorationStyles};
       ${numberStyles};
       line-height: ${variant === 'title' ? 1.2 : 1.5};
-      overflow-wrap: anywhere;
+      overflow-wrap: ${overflowWrap || 'anywhere'};
       letter-spacing: var(--font-${features.variant}-letter-spacing-${features.size}-${features.weight})px;
 
 

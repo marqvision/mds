@@ -12,6 +12,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const fontColor = color === 'inherit' ? 'inherit' : resolveColor(color!);
     const lineClampStyles = lineClamp !== undefined ? resolveLineClamp(lineClamp) : '';
     const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';
+    const overflowWrapStyles = overflowWrap ? `overflow-wrap: ${overflowWrap};` : '';
     const whiteSpaceStyles = whiteSpace ? `white-space: ${whiteSpace};` : '';
     const textDecorationStyles = textDecoration ? `text-decoration: ${textDecoration};` : '';
     const numberStyles = char === 'number' ? 'font-variant-numeric: tabular-nums;' : '';
@@ -22,11 +23,11 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       font-weight: ${fontWeight};
       ${lineClampStyles};
       ${wordBreakStyles};
+      ${overflowWrapStyles};
       ${whiteSpaceStyles};
       ${textDecorationStyles};
       ${numberStyles};
       line-height: ${variant === 'title' ? 1.2 : 1.5};
-      overflow-wrap: ${overflowWrap || 'anywhere'};
       letter-spacing: var(--font-${features.variant}-letter-spacing-${features.size}-${features.weight})px;
 
 

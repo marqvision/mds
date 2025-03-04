@@ -61,7 +61,7 @@ export const resolveLetterSpacing = (features: Pick<InnerTypographyStyleProps, '
       defaultWeight = 'semibold';
     }
   }
-  return `var(--font-${features.variant}-letter-spacing-${features.size}-${features.weight || defaultWeight})px`;
+  return `var(--font-${features.variant}-letter-spacing-${features.size}-${features.weight || defaultWeight})`;
 };
 
 // todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!

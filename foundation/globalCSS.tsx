@@ -8,27 +8,27 @@ const FONT_STYLE_VALUES = {
       --font-title-semibold: 640;
       --font-title-medium: 540;
 
-      --font-title-letter-spacing-2xl-semibold: -0.55;
-      --font-title-letter-spacing-2xl-medium: -0.48;
-      --font-title-letter-spacing-xl-semibold: -0.4;
-      --font-title-letter-spacing-xl-medium: -0.35;
-      --font-title-letter-spacing-l-semibold: -0.315;
-      --font-title-letter-spacing-l-medium: -0.27;
-      --font-title-letter-spacing-m-semibold: -0.24;
-      --font-title-letter-spacing-m-medium: -0.175;
+      --font-title-letter-spacing-2xl-semibold: -0.55px;
+      --font-title-letter-spacing-2xl-medium: -0.48px;
+      --font-title-letter-spacing-xl-semibold: -0.4px;
+      --font-title-letter-spacing-xl-medium: -0.35px;
+      --font-title-letter-spacing-l-semibold: -0.315px;
+      --font-title-letter-spacing-l-medium: -0.27px;
+      --font-title-letter-spacing-m-semibold: -0.24px;
+      --font-title-letter-spacing-m-medium: -0.175px;
     `,
     body: `
       --font-body-medium: 540;
       --font-body-regular: 420;
 
-      --font-body-letter-spacing-l-medium: -0.28;
-      --font-body-letter-spacing-l-regular: -0.24;
-      --font-body-letter-spacing-m-medium: -0.21;
-      --font-body-letter-spacing-m-regular: -0.175;
-      --font-body-letter-spacing-s-medium: -0.162;
-      --font-body-letter-spacing-s-regular: -0.13;
-      --font-body-letter-spacing-xs-medium: -0.12;
-      --font-body-letter-spacing-xs-regular: -0.09;
+      --font-body-letter-spacing-l-medium: -0.28px;
+      --font-body-letter-spacing-l-regular: -0.24px;
+      --font-body-letter-spacing-m-medium: -0.21px;
+      --font-body-letter-spacing-m-regular: -0.175px;
+      --font-body-letter-spacing-s-medium: -0.162px;
+      --font-body-letter-spacing-s-regular: -0.13px;
+      --font-body-letter-spacing-xs-medium: -0.12px;
+      --font-body-letter-spacing-xs-regular: -0.09px;
     `,
   },
   KO: {
@@ -36,29 +36,29 @@ const FONT_STYLE_VALUES = {
       --font-title-semibold: 640;
       --font-title-medium: 540;
 
-      --font-title-letter-spacing-xl-semibold: 0;
-      --font-title-letter-spacing-xl-medium: 0;
-      --font-title-letter-spacing-l-semibold: 0;
-      --font-title-letter-spacing-l-medium: 0;
-      --font-title-letter-spacing-m-semibold: 0;
-      --font-title-letter-spacing-m-medium: 0;
-      --font-title-letter-spacing-s-semibold: 0;
-      --font-title-letter-spacing-s-medium: 0;
-      --font-title-letter-spacing-s-regular: 0;
+      --font-title-letter-spacing-xl-semibold: 0px;
+      --font-title-letter-spacing-xl-medium: 0px;
+      --font-title-letter-spacing-l-semibold: 0px;
+      --font-title-letter-spacing-l-medium: 0px;
+      --font-title-letter-spacing-m-semibold: 0px;
+      --font-title-letter-spacing-m-medium: 0px;
+      --font-title-letter-spacing-s-semibold: 0px;
+      --font-title-letter-spacing-s-medium: 0px;
+      --font-title-letter-spacing-s-regular: 0px;
       
     `,
     body: `
       --font-body-medium: 540;
       --font-body-regular: 420;
 
-      --font-body-letter-spacing-l-medium: 0;
-      --font-body-letter-spacing-l-regular: 0;
-      --font-body-letter-spacing-m-medium: 0;
-      --font-body-letter-spacing-m-regular: 0;
-      --font-body-letter-spacing-s-medium: 0;
-      --font-body-letter-spacing-s-regular: 0;
-      --font-body-letter-spacing-xs-medium: 0;
-      --font-body-letter-spacing-xs-regular: 0;
+      --font-body-letter-spacing-l-medium: 0px;
+      --font-body-letter-spacing-l-regular: 0px;
+      --font-body-letter-spacing-m-medium: 0px;
+      --font-body-letter-spacing-m-regular: 0px;
+      --font-body-letter-spacing-s-medium: 0px;
+      --font-body-letter-spacing-s-regular: 0px;
+      --font-body-letter-spacing-xs-medium: 0px;
+      --font-body-letter-spacing-xs-regular: 0px;
     `,
   },
 };

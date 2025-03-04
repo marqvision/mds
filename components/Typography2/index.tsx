@@ -1,7 +1,7 @@
 import { ElementType } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../@system/resolvers';
-import { resolveFontFamily, resolveFontSize, resolveFontWeight, resolveLineClamp, resolveTagName } from './@utils';
+import { resolveFontFamily, resolveFontSize, resolveFontWeight, resolveLetterSpacing, resolveLineClamp, resolveTagName } from './@utils';
 import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
@@ -9,6 +9,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration, char, overflowWrap } = features;
     const fontSize = resolveFontSize(features);
     const fontWeight = resolveFontWeight(features);
+    const letterSpacing = resolveLetterSpacing(features);
     const fontColor = color === 'inherit' ? 'inherit' : resolveColor(color!);
     const lineClampStyles = lineClamp !== undefined ? resolveLineClamp(lineClamp) : '';
     const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';
@@ -21,6 +22,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       font-size: ${fontSize};
       color: ${fontColor};
       font-weight: ${fontWeight};
+      letter-spacing: ${letterSpacing};
       ${lineClampStyles};
       ${wordBreakStyles};
       ${overflowWrapStyles};
@@ -28,7 +30,6 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${textDecorationStyles};
       ${numberStyles};
       line-height: ${variant === 'title' ? 1.2 : 1.5};
-      letter-spacing: var(--font-${features.variant}-letter-spacing-${features.size}-${features.weight})px;
 
 
       // todo-@jamie: [PROD-12758] 완료되면 반드시 삭제!!!

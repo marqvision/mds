@@ -52,6 +52,17 @@ export const resolveFontWeight = (features: Pick<InnerTypographyStyleProps, 'var
   }
   return `var(--font-${features.variant}-${features.weight || defaultWeight})`;
 };
+export const resolveLetterSpacing = (features: Pick<InnerTypographyStyleProps, 'variant' | 'size' | 'weight'>) => {
+  let defaultWeight = 'regular';
+  if (features.variant === 'title') {
+    if (features.size === '2xl' || features.size === 'xl') {
+      defaultWeight = 'medium';
+    } else {
+      defaultWeight = 'semibold';
+    }
+  }
+  return `var(--font-${features.variant}-letter-spacing-${features.size}-${features.weight || defaultWeight})px`;
+};
 
 // todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 export const resolveFontFamily = (features: InnerTypographyStyleProps) => {

@@ -1,6 +1,6 @@
 import { isValidElement, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
-import { Provider, useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import clsx from 'clsx';
 import { keyframes } from '@emotion/react';
 import { MDSDimmed } from '../Dimmed';
@@ -108,17 +108,15 @@ const Wrapper = (props: MDSPanelProps) => {
   const contentWidth = isDimmed ? width || '540px' : 'auto';
 
   const wrapperElement = (
-    <Provider>
-      <StyledWrapper
-        className={clsx('mds-panel', {
-          isIn: isDimmed && isOpen,
-          isOut: isDimmed && !isOpen,
-        })}
-        style={{ width: contentWidth }}
-      >
-        {children}
-      </StyledWrapper>
-    </Provider>
+    <StyledWrapper
+      className={clsx('mds-panel', {
+        isIn: isDimmed && isOpen,
+        isOut: isDimmed && !isOpen,
+      })}
+      style={{ width: contentWidth }}
+    >
+      {children}
+    </StyledWrapper>
   );
 
   if (isDimmed)

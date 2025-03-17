@@ -67,6 +67,7 @@ export type Props = {
     | ReactElement[];
   onClose?: () => void;
   onVisibleChange?: (isOpen: boolean) => void;
+  blockAutoClose?: boolean;
 } & (ClickPropsDimmed | ClickPropsNoDimmed);
 
 export type StyleProps = {

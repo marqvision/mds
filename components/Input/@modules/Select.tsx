@@ -6,9 +6,8 @@ import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { MDSChip } from '../../Chip';
 import { theme } from '../@constants';
-import { MDSTypography2 } from '../../Typography2';
+import { MDSTypography2, MDSTypographyProps2, getTypographyProps } from '../../Typography2';
 import { flattenDropdown } from '../@utils';
-import { getTypographyProps } from '../../Typography2/@utils';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
 const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>``;
@@ -72,7 +71,7 @@ export const Select = <T,>(props: Props<T>) => {
 
   const isWithChip = !!custom?.withChip || false;
   const isError = status === 'error';
-  const variant = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', '')))?.variant;
+  const v2FontStyle = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', '')));
 
   const flatList = flattenDropdown(list);
 
@@ -131,12 +130,7 @@ export const Select = <T,>(props: Props<T>) => {
         );
       })
     ) : (
-      <Placeholder
-        variant={variant as 'body'}
-        size="m"
-        weight={variant === 'body' ? 'regular' : 'medium'}
-        color="color/content/placeholder/normal"
-      >
+      <Placeholder {...(v2FontStyle as MDSTypographyProps2)} color="color/content/placeholder/normal">
         {placeholder || '\u00A0'}
       </Placeholder>
     );
@@ -181,12 +175,7 @@ export const Select = <T,>(props: Props<T>) => {
               {label ? (
                 ReactHtmlParser(label)
               ) : (
-                <Placeholder
-                  variant={variant as 'body'}
-                  size={variant === 'body' ? 'm' : 's'}
-                  weight={variant === 'body' ? 'regular' : 'medium'}
-                  color="color/content/placeholder/normal"
-                >
+                <Placeholder {...(v2FontStyle as MDSTypographyProps2)} color="color/content/placeholder/normal">
                   {placeholder || '\u00A0'}
                 </Placeholder>
               )}

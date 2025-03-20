@@ -24,6 +24,7 @@ const StyledInput = styled.input<{ customSize: Size; typographySize: ReturnType<
   &[type=number] {
     -moz-appearance: textfield;
   }
+
   &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;

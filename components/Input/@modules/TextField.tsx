@@ -240,7 +240,7 @@ export const TextField = (props: Props) => {
             {...inputProps}
             as={isMultiline ? 'textarea' : 'input'}
             customSize={size}
-            title={value}
+            title={isMultiline ? undefined : value}
             disabled={isDisabled}
             readOnly={isReadOnly}
             placeholder={placeholder}

@@ -345,6 +345,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
     hasDim = false,
     trigger = 'click',
     delay = 300,
+    blockAutoClose,
     onClose,
     onVisibleChange,
   } = props;
@@ -432,7 +433,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
   });
 
   useEffect(() => {
-    if (!hasDim && trigger === 'click') {
+    if (!hasDim && trigger === 'click' && !blockAutoClose) {
       const dimmed = anchorRef.current?.closest('.mds-dimmed');
 
       const handleBodyClick = (e: Event) => {
@@ -453,7 +454,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
         document.body.removeEventListener('click', handleBodyClick, { capture: true });
       };
     }
-  }, [hasDim, trigger, isOpen, handleClosePopover]);
+  }, [hasDim, trigger, isOpen, handleClosePopover, blockAutoClose]);
 
   return (
     <>

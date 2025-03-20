@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
 import { theme } from '../@constants';
-import { resolveFontWeight, getTypographyProps } from '../../Typography2/@utils';
+import { getTypographyProps } from '../../Typography2/@utils';
 import { MDSTypography2 } from '../../Typography2';
 import { AddButton } from './AddButton';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
@@ -110,7 +110,7 @@ export const TextField = (props: Props) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsShowDelete(!!e.target.value);
-    lastValueRef.current = value;
+    lastValueRef.current = formatRef.current ? formatRef.current(value) : value;
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
@@ -158,10 +158,11 @@ export const TextField = (props: Props) => {
 
     if (isInit && input && !isDebouncing) {
       if (value !== lastValueRef.current) {
-        input.value = formatRef.current ? formatRef.current(value) : value;
-        lastValueRef.current = value;
-        setMirrorText(value);
-        setIsShowDelete(!!value);
+        const formattedValue = formatRef.current ? formatRef.current(value) : value;
+        input.value = formattedValue;
+        lastValueRef.current = formattedValue;
+        setMirrorText(formattedValue);
+        setIsShowDelete(!!formattedValue);
       }
     }
   }, [value, isDebouncing, isInit]);

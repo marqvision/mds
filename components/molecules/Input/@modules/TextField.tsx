@@ -275,11 +275,9 @@ export const TextField = (props: Props) => {
           variant="border"
           size={theme.size[size].iconSize}
           onClick={(e) => {
-            if (!(isDisabled || isReadOnly)) {
-              handleDelete(e);
-            }
+            handleDelete(e);
           }}
-          className={isShowDelete || focused ? 'show' : undefined}
+          className={isShowDelete ? 'show' : undefined}
           onMouseEnter={() => (preventResizeRef.current = true)}
           onMouseLeave={() => (preventResizeRef.current = false)}
           // blur 되는 즉시 onClick 이벤트 호출이 되지 않는 문제 해결을 위함

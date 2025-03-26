@@ -70,6 +70,7 @@ export const TextField = (props: Props) => {
   const [isInit, setIsInit] = useState(false);
   const [mirrorText, setMirrorText] = useState<string>('');
   const [height, setHeight] = useState<number | string>();
+  const [focused, setFocused] = useState(false);
 
   const lastValueRef = useRef('');
   const debounceRef = useRef<number>();
@@ -90,7 +91,7 @@ export const TextField = (props: Props) => {
   const py = parseFloat(theme.size[size].paddingY) * 2 + 2;
 
   const typographySize = theme.size[size].typographySize;
-  const isShowDelete = _isShowDelete && !isReadOnly && !isDisabled;
+  const isShowDelete = _isShowDelete && !isReadOnly && !isDisabled && focused;
 
   const Prefix = prefix ? (
     isValidElement(prefix) ? (
@@ -129,6 +130,12 @@ export const TextField = (props: Props) => {
     if (!preventResizeRef.current) {
       onBlur?.(e.target.value);
     }
+    setFocused(false);
+  };
+
+  const handleFocus = () => {
+    onFocus();
+    setFocused(true);
   };
 
   const handleDelete = (e: MouseEvent) => {
@@ -250,7 +257,7 @@ export const TextField = (props: Props) => {
             placeholder={placeholder}
             onChange={handleChange}
             onBlur={handleBlur}
-            onFocus={onFocus}
+            onFocus={handleFocus}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
                 handleEnter();
@@ -267,10 +274,16 @@ export const TextField = (props: Props) => {
           color={isDisabled || isReadOnly ? 'color/content/neutral/default/disabled' : undefined}
           variant="border"
           size={theme.size[size].iconSize}
-          onClick={handleDelete}
-          className={isShowDelete ? 'show' : undefined}
+          onClick={(e) => {
+            if (!(isDisabled || isReadOnly)) {
+              handleDelete(e);
+            }
+          }}
+          className={isShowDelete || focused ? 'show' : undefined}
           onMouseEnter={() => (preventResizeRef.current = true)}
           onMouseLeave={() => (preventResizeRef.current = false)}
+          // blur 되는 즉시 onClick 이벤트 호출이 되지 않는 문제 해결을 위함
+          onMouseDown={(e) => e.preventDefault()}
         />
       </StyledOutline>
       {add && (

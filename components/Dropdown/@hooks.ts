@@ -57,7 +57,13 @@ export const useInitDropdown = <T, SortT>(
 ) => {
   const { value, list, indeterminate: _indeterminate, onSelect, closeRef } = props;
 
-  const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>([]);
+  const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>(() => {
+    if (value !== undefined) {
+      return Array.isArray(value) ? value.map((v) => ({ label: v, value: v })) : [{ label: value, value }];
+    }
+
+    return [];
+  });
   const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>([]);
 
   const lastValueRef = useRef<T>();
@@ -224,38 +230,42 @@ export const useInitDropdown = <T, SortT>(
   };
 
   useEffect(() => {
-    if (hasList) {
-      const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
-      const lastValue = (
-        Array.isArray(lastValueRef.current) ? lastValueRef.current : lastValueRef.current ? [lastValueRef.current] : []
-      ) as ValueType<T>[];
-
-      const isSomeDiff = values.some((v) => !lastValue.includes(v)) || lastValue.some((v) => !values.includes(v));
-      const isSomeAdded = lastValue.every((v) => values.includes(v)) && values.length > lastValue.length;
-
-      if (isSomeDiff) {
-        if (isSomeAdded) {
-          const addedItems = values
-            .filter((v) => !lastValue.includes(v))
-            .map((v) => ({
-              label: flatItems.find((item) => item.value === v)?.label || v,
-              value: v,
-            })) as SelectedType<ValueType<T>>[];
-          setSelectedValues((ps) => [...ps, ...addedItems]);
-        } else {
-          setSelectedValues(
-            values.map((v) => ({
-              label: flatItems.find((item) => item.value === v)?.label || v,
-              value: v,
-            })) as SelectedType<ValueType<T>>[]
-          );
-          setTimeout(() => {
-            closeRef.current?.();
-          }, 0);
-        }
-        lastValueRef.current = value;
-      }
+    if (!hasList) {
+      return;
     }
+
+    const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
+    const lastValue = (
+      Array.isArray(lastValueRef.current) ? lastValueRef.current : lastValueRef.current ? [lastValueRef.current] : []
+    ) as ValueType<T>[];
+
+    const isSomeDiff = values.some((v) => !lastValue.includes(v)) || lastValue.some((v) => !values.includes(v));
+    const isSomeAdded = lastValue.every((v) => values.includes(v)) && values.length > lastValue.length;
+
+    if (!isSomeDiff) {
+      return;
+    }
+
+    if (isSomeAdded) {
+      const addedItems = values
+        .filter((v) => !lastValue.includes(v))
+        .map((v) => ({
+          label: flatItems.find((item) => item.value === v)?.label || v,
+          value: v,
+        })) as SelectedType<ValueType<T>>[];
+      setSelectedValues((ps) => [...ps, ...addedItems]);
+    } else {
+      setSelectedValues(
+        values.map((v) => ({
+          label: flatItems.find((item) => item.value === v)?.label || v,
+          value: v,
+        })) as SelectedType<ValueType<T>>[]
+      );
+      setTimeout(() => {
+        closeRef.current?.();
+      }, 0);
+    }
+    lastValueRef.current = value;
     // intentional missing deps [flatItems, selectedValue]
   }, [JSON.stringify(value), hasList, isMultiple]);
 

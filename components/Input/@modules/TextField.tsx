@@ -1,12 +1,11 @@
-import { ChangeEvent, MouseEvent, isValidElement, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, isValidElement, MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { CommonProps, Size, TextFieldProps } from '../@types';
 import { MDSIcon } from '../../Icon';
+import { getTypographyProps, MDSTypography2 } from '../../Typography2';
 import { theme } from '../@constants';
-import { resolveFontWeight, getTypographyProps } from '../../Typography2/@utils';
-import { MDSTypography2 } from '../../Typography2';
-import { AddButton } from './AddButton';
+import { CommonProps, Size, TextFieldProps } from '../@types';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
+import { AddButton } from './AddButton';
 
 const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
   display: grid;
@@ -15,18 +14,21 @@ const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
   width: 100%;
 `;
 
-const StyledInput = styled.input<{ customSize: Size }>`
+const StyledInput = styled.input<{ customSize: Size; typographySize: ReturnType<typeof getTypographyProps>['size'] }>`
   width: 100%;
   height: 100%;
   font-size: ${({ customSize }) => theme.size[customSize].fontSize};
   word-break: break-word;
+  font-weight: ${`var(--font-body-regular)`};
+  letter-spacing: ${({ typographySize }) => `var(--font-body-letter-spacing-${typographySize}-regular)`};
   &[type=number] {
     -moz-appearance: textfield;
   }
   &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  },
+  }
+,
 `;
 
 const StyledPrefix = styled(MDSTypography2)`
@@ -37,7 +39,6 @@ const StyledPrefix = styled(MDSTypography2)`
 const StyledMirror = styled.div<{ isMultiline: boolean }>`
   position: absolute;
   visibility: hidden;
-  word-break: break-word;
   white-space: ${({ isMultiline }) => (isMultiline ? 'pre-wrap' : 'pre')};
 `;
 
@@ -86,13 +87,13 @@ export const TextField = (props: Props) => {
   const toFitMultiline = custom?.multiline?.expandToFit;
   const py = parseFloat(theme.size[size].paddingY) * 2 + 2;
 
-  const variant = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', '')))?.variant;
+  const typographySize = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', ''))).size;
 
   const Prefix = prefix ? (
     isValidElement(prefix) ? (
       prefix
     ) : (
-      <StyledPrefix variant={variant} color="color/content/neutral/secondary/normal">
+      <StyledPrefix size={typographySize} color="color/content/neutral/secondary/normal">
         {prefix}
       </StyledPrefix>
     )
@@ -102,7 +103,7 @@ export const TextField = (props: Props) => {
     isValidElement(suffix) ? (
       suffix
     ) : (
-      <StyledPrefix variant={variant} color="color/content/neutral/secondary/normal">
+      <StyledPrefix size={typographySize} color="color/content/neutral/secondary/normal">
         {suffix}
       </StyledPrefix>
     )
@@ -110,7 +111,7 @@ export const TextField = (props: Props) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsShowDelete(!!e.target.value);
-    lastValueRef.current = value;
+    lastValueRef.current = formatRef.current ? formatRef.current(value) : value;
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
@@ -158,10 +159,11 @@ export const TextField = (props: Props) => {
 
     if (isInit && input && !isDebouncing) {
       if (value !== lastValueRef.current) {
-        input.value = formatRef.current ? formatRef.current(value) : value;
-        lastValueRef.current = value;
-        setMirrorText(value);
-        setIsShowDelete(!!value);
+        const formattedValue = formatRef.current ? formatRef.current(value) : value;
+        input.value = formattedValue;
+        lastValueRef.current = formattedValue;
+        setMirrorText(formattedValue);
+        setIsShowDelete(!!formattedValue);
       }
     }
   }, [value, isDebouncing, isInit]);
@@ -230,9 +232,11 @@ export const TextField = (props: Props) => {
         <StyledMirror
           ref={mirrorRef}
           isMultiline={isMultiline}
-          style={{ fontSize: theme.size[size].fontSize, maxWidth: isMultiline ? mirrorMaxWidth : undefined }}
+          style={{ maxWidth: isMultiline ? mirrorMaxWidth : undefined }}
         >
-          {mirrorText.split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
+          <MDSTypography2 size={typographySize} wordBreak="break-word">
+            {mirrorText.split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
+          </MDSTypography2>
         </StyledMirror>
         {isInit && (
           <StyledInput
@@ -240,7 +244,8 @@ export const TextField = (props: Props) => {
             {...inputProps}
             as={isMultiline ? 'textarea' : 'input'}
             customSize={size}
-            title={value}
+            typographySize={typographySize}
+            title={isMultiline ? undefined : value}
             disabled={isDisabled}
             readOnly={isReadOnly}
             placeholder={placeholder}

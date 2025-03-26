@@ -142,7 +142,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     if (item.isDisabled) {
       return;
     }
-    if (!isMultiple && item.value) {
+    if (!isMultiple && item.value !== undefined) {
       onChange(
         [
           {
@@ -271,8 +271,8 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
                 !isMultiple && isSelected
                   ? 'color/content/primary/default/normal'
                   : item.isDisabled
-                    ? 'color/content/neutral/default/disabled'
-                    : undefined
+                  ? 'color/content/neutral/default/disabled'
+                  : undefined
               }
               style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
             >

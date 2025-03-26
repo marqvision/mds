@@ -14,6 +14,7 @@ type SubLabel = {
   includeSearch?: boolean;
 };
 
+// todo-@blue-poolyum: 타입 추론 정상화
 export type DropdownItem<T> = {
   label: string | ReactElement;
   subLabel?: string | number | SubLabel;

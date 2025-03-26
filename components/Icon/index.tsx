@@ -52,6 +52,7 @@ export const MDSIcon = {
   HourglassDelay: createIcon(Symbols.HourglassDelay),
   View: createIcon(Symbols.View),
   Cards: createIcon(Symbols.Cards),
+  CardsStar: createIcon(Symbols.CardsStar),
   EyesVisibility: createIcon(Symbols.EyesVisibility),
   Trash: createIcon(Symbols.Trash),
   Star: createIcon(Symbols.Star),

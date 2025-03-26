@@ -27,6 +27,7 @@ export type IconVariant = {
   HourglassDelay: VariantSet['OutlineFill'];
   View: VariantSet['OutlineFill'];
   Cards: VariantSet['OutlineFill'];
+  CardsStar: VariantSet['OutlineFill'];
   EyesVisibility: 'on' | 'off';
   Trash: VariantSet['OutlineFill'];
   Star: VariantSet['OutlineFill'];

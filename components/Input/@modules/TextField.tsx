@@ -40,6 +40,7 @@ const StyledPrefix = styled(MDSTypography2)`
 const StyledMirror = styled.div<{ isMultiline: boolean }>`
   position: absolute;
   visibility: hidden;
+  overflow: hidden;
   white-space: ${({ isMultiline }) => (isMultiline ? 'pre-wrap' : 'pre')};
 `;
 
@@ -213,7 +214,7 @@ export const TextField = (props: Props) => {
   const isOverflowed =
     toFitMultiline && parseFloat(`${toFitMultiline.maxHeight}`) < (mirrorRef.current?.clientHeight || 0) + py;
 
-  const mirrorMaxWidth = inputRef.current?.clientWidth;
+  const mirrorMaxWidth = custom?.expandToFit?.maxWidth || inputRef.current?.clientWidth;
 
   return (
     <StyledLabel size={size} isError={isError}>
@@ -230,11 +231,7 @@ export const TextField = (props: Props) => {
         }}
       >
         {Prefix}
-        <StyledMirror
-          ref={mirrorRef}
-          isMultiline={isMultiline}
-          style={{ maxWidth: isMultiline ? mirrorMaxWidth : undefined }}
-        >
+        <StyledMirror ref={mirrorRef} isMultiline={isMultiline} style={{ maxWidth: mirrorMaxWidth }}>
           <MDSTypography2 size={typographySize} wordBreak="break-word">
             {mirrorText.split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
           </MDSTypography2>

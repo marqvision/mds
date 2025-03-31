@@ -86,7 +86,7 @@ export const getLayoutStyle = (type?: 'fit' | number, isCenter?: boolean) => {
   }
 
   if (type === 'fit') {
-    additionalStyle = 'flex: 1;';
+    additionalStyle += 'flex: 1;';
   }
 
   return `display: flex; ${additionalStyle}`;

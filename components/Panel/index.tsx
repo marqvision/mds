@@ -2,7 +2,6 @@ import { isValidElement, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { useAtom, useAtomValue } from 'jotai';
 import { keyframes } from '@emotion/react';
-import clsx from 'clsx';
 import { MDSDimmed } from '../Dimmed';
 import { MDSIcon } from '../Icon';
 import { MDSTypography2 } from '../Typography2';
@@ -36,8 +35,8 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   height: 100%;
   background: ${({ theme }) => theme.color.bg.fill.neutral.default.normal};
-  animation: ${({ isOpen, direction }: { isOpen: boolean; direction: PanelDirection }) =>
-      isOpen ? animations[direction].in : animations[direction].out}
+  animation: ${({ isOpen, direction, isDimmed }: { isOpen: boolean; direction: PanelDirection; isDimmed: boolean }) =>
+      isDimmed ? (isOpen ? animations[direction].in : animations[direction].out) : undefined}
     ${transition} forwards;
 `;
 
@@ -109,10 +108,8 @@ const Wrapper = (props: MDSPanelProps) => {
     <StyledWrapper
       isOpen={isOpen}
       direction={direction}
-      className={clsx('mds-panel', {
-        isIn: isDimmed && isOpen,
-        isOut: isDimmed && !isOpen,
-      })}
+      isDimmed={isDimmed}
+      className="mds-panel"
       style={{ width: contentWidth }}
     >
       {children}

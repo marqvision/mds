@@ -5,9 +5,13 @@ import { CSSProperties, ReactNode } from 'react';
  * - `isDimmed true` default: 540px
  * - `isDimmed false` default: 50%
  * */
+
+export type PanelDirection = 'top' | 'left' | 'bottom' | 'right';
+
 export type MDSPanelProps = {
   width?: number | string;
   isOpen: boolean;
+  direction?: PanelDirection;
   children: ReactNode | ReactNode[];
   style?: CSSProperties;
 } & (DimmedPanelProps | UnDimmedPanelProps);

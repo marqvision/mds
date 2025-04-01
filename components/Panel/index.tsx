@@ -1,45 +1,53 @@
 import { isValidElement, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { useAtom, useAtomValue } from 'jotai';
-import clsx from 'clsx';
 import { keyframes } from '@emotion/react';
 import { MDSDimmed } from '../Dimmed';
 import { MDSIcon } from '../Icon';
 import { MDSTypography2 } from '../Typography2';
-import { MDSPanelActionProps, MDSPanelBodyProps, MDSPanelHeaderProps, MDSPanelProps } from './@type';
+import { MDSPanelActionProps, MDSPanelBodyProps, MDSPanelHeaderProps, MDSPanelProps, PanelDirection } from './@type';
 import { panelAtom } from './@atom';
 
 // todo-@matthew 추후 공통 transition 으로 변경
 const transition = '300ms ease';
 
-const slideIn = keyframes`
-  from {
-    transform: translateX(50px);
-  }
-  to {
-    transform: translateX(0);
-  }
-`;
-
-const slideOut = keyframes`
-  to {
-    transform: translateX(50px);
-  }
-  from {
-    transform: translateX(0);
-  }
-`;
+const animations = {
+  right: {
+    in: keyframes`from { transform: translateX(50px); } to { transform: translateX(0); }`,
+    out: keyframes`from { transform: translateX(0); } to { transform: translateX(50px); }`,
+  },
+  left: {
+    in: keyframes`from { transform: translateX(-50px); } to { transform: translateX(0); }`,
+    out: keyframes`from { transform: translateX(0); } to { transform: translateX(-50px); }`,
+  },
+  bottom: {
+    in: keyframes`from { transform: translateY(50px); } to { transform: translateY(0); }`,
+    out: keyframes`from { transform: translateY(0); } to { transform: translateY(50px); }`,
+  },
+  top: {
+    in: keyframes`from { transform: translateY(-50px); } to { transform: translateY(0); }`,
+    out: keyframes`from { transform: translateY(0); } to { transform: translateY(-50px); }`,
+  },
+};
 
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
   background: ${({ theme }) => theme.color.bg.fill.neutral.default.normal};
-  &.isIn {
-    animation: ${slideIn} ${transition} forwards;
-  }
-  &.isOut {
-    animation: ${slideOut} ${transition} forwards;
+  animation: ${({ isOpen, direction, isDimmed }: { isOpen: boolean; direction: PanelDirection; isDimmed: boolean }) =>
+      isDimmed ? (isOpen ? animations[direction].in : animations[direction].out) : undefined}
+    ${transition} forwards;
+`;
+
+const StyledSplitPanel = styled.div`
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: flex-basis ${transition};
+  border-radius: 16px 16px 0 0;
+  & > div {
+    height: 100%;
+    overflow: auto;
   }
 `;
 
@@ -83,17 +91,6 @@ const StyledActions = styled.div`
   box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
 `;
 
-const StyledSplitPanel = styled.div`
-  overflow: hidden;
-  flex-shrink: 0;
-  transition: flex-basis ${transition};
-  border-radius: 16px 16px 0 0;
-  & > div {
-    height: 100%;
-    overflow: auto;
-  }
-`;
-
 /**
  * @param props.isDimmed (default: `true`)
  * - `true`: dimmed 위에 패널이 그려짐
@@ -102,17 +99,17 @@ const StyledSplitPanel = styled.div`
  * - `isDimmed: true`: default: 540px
  * - `isDimmed: false`: default: 50%
  */
-const Wrapper = (props: MDSPanelProps) => {
-  const { isDimmed = true, isOpen = false, style, children, width, onClose } = props;
 
+const Wrapper = (props: MDSPanelProps) => {
+  const { style, width, onClose, children, isOpen = false, isDimmed = true, direction = 'right' } = props;
   const contentWidth = isDimmed ? width || '540px' : 'auto';
 
   const wrapperElement = (
     <StyledWrapper
-      className={clsx('mds-panel', {
-        isIn: isDimmed && isOpen,
-        isOut: isDimmed && !isOpen,
-      })}
+      isOpen={isOpen}
+      direction={direction}
+      isDimmed={isDimmed}
+      className="mds-panel"
       style={{ width: contentWidth }}
     >
       {children}

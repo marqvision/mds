@@ -172,3 +172,41 @@ export const SplitPanel: StoryObj<typeof MDSPanel.Wrapper> = {
     );
   },
 };
+
+export const PanelDirection: StoryObj<typeof MDSPanel.Wrapper> = {
+  parameters: {
+    controls: {
+      expanded: true,
+    },
+  },
+  args: {
+    width: '100%',
+    direction: 'right',
+  },
+  argTypes: {
+    direction: {
+      options: ['left', 'top', 'bottom', 'right'],
+      control: 'radio',
+    },
+  },
+  render: function Render(_) {
+    const [{ isOpen, width, direction }, setArgs] = useArgs();
+
+    const handleClose = () => {
+      setArgs({ isOpen: false });
+    };
+
+    return (
+      <MDSPanel.Wrapper isOpen={isOpen} width={width} direction={direction}>
+        <MDSPanel.Header onClose={handleClose}>Title</MDSPanel.Header>
+        <MDSPanel.Content style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {[...Array(5)].map((_, index) => (
+            <MDSTypography2 key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
+              ReactElement {index}
+            </MDSTypography2>
+          ))}
+        </MDSPanel.Content>
+      </MDSPanel.Wrapper>
+    );
+  },
+};

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Canvas, Title } from '@storybook/blocks';
-import { DimmedPanel, SplitPanel } from './index.stories';
+import { DimmedPanel, PanelDirection, SplitPanel } from './index.stories';
 
 export const Doc = () => {
   useEffect(() => {
@@ -25,6 +25,10 @@ export const Doc = () => {
       <h3 id="WithoutHeader">Space split style</h3>
       <p>영역을 차지하는 Panel 형태로 사용합니다</p>
       <Canvas of={SplitPanel} story={{ inline: false, height: '700px' }} />
+      <hr />
+      <h3 id="PanelWithDirection">Panel direction</h3>
+      <p>패널 등장 방향을 변경합니다</p>
+      <Canvas of={PanelDirection} story={{ inline: false, height: '700px' }} />
     </div>
   );
 };

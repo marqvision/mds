@@ -174,12 +174,14 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     }
   };
 
-  const handleChange = (value: SelectedType<T>[], checked: boolean, forceClose?: boolean) => {
+  const handleChange = (values: SelectedType<T>[], checked: boolean, forceClose?: boolean) => {
     if (props.is1DepthSingle && checked) {
-      const prevGroupValue = selectedValue.filter((v) => allChildValue.includes(v.value));
-      onChange([...prevGroupValue, ...value], checked, forceClose);
+      const prevGroupValue = selectedValue.filter(
+        (v) => allChildValue.includes(v.value) && values.every((v2) => v2.value !== v.value)
+      );
+      onChange([...prevGroupValue, ...values], checked, forceClose);
     } else {
-      onChange(value, checked, forceClose);
+      onChange(values, checked, forceClose);
     }
   };
 

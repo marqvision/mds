@@ -127,13 +127,11 @@ export const MDSDimmed = (props: Props) => {
 
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown, { capture: true });
-    } else {
-      document.removeEventListener('keydown', handleKeyDown);
-    }
 
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown, { capture: true });
+      };
+    }
   }, [isOpen]);
 
   useEffect(() => {

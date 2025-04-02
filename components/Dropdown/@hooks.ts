@@ -66,7 +66,7 @@ export const useInitDropdown = <T, SortT>(
   });
   const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>([]);
 
-  const lastValueRef = useRef<T>();
+  const lastValueRef = useRef<T | undefined>(value as T);
 
   const isMultiple = Array.isArray(value);
   const stickyItem = props.modules?.find(

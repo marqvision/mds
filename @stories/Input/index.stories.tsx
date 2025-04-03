@@ -163,7 +163,12 @@ export const Search: Story = {
     custom: {
       flatLeft: true,
       add: {
-        onSubmit: () => {},
+        onSubmit: (value) => {
+          alert(`Submit keyword: ${value}`);
+        },
+      },
+      onEnter: (value) => {
+        alert(`Search keyword: ${value}`);
       },
     },
   },

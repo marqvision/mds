@@ -1,6 +1,6 @@
 import React from 'react';
 import { useArgs } from '@storybook/preview-api';
-import { MDSCheckbox } from '../components/Checkbox';
+import { MDSCheckbox } from '../components/atoms/Checkbox';
 import { MDSThemeValue } from '../foundation';
 import { MDSTypography2 } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';

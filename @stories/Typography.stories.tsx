@@ -1,4 +1,4 @@
-import { MDSTypography } from '../components/Typography';
+import { MDSTypography } from '../components/atoms/Typography';
 import { MDSTHEME_COLORS } from './@helper';
 import type { Meta, StoryObj } from '@storybook/react';
 

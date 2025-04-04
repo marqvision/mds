@@ -1,5 +1,5 @@
 import { useArgs } from '@storybook/preview-api';
-import { MDSDimmed } from '../components/Dimmed';
+import { MDSDimmed } from '../components/organisms/Dimmed';
 import { MDSTypography2 } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 

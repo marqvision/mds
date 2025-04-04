@@ -467,7 +467,8 @@ const Dropdown = <T, SortT>(
                     ? 'color/content/primary/default/disabled'
                     : 'color/content/primary/default/normal'
                 }
-                style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                whiteSpace="pre-wrap"
+                wordBreak="break-word"
               >
                 {stickyBottom.label}
               </MDSTypography2>

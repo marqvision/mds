@@ -138,7 +138,7 @@ const Item = <T extends string | number>({
       <SelectContainerItemContentStyles>
         <SelectContainerTitleStyles>
           {title.icon}
-          <MDSTypography2 variant="body" size="m" weight="medium" color={title.color}>
+          <MDSTypography2 variant="title" size="s" weight="semibold" color={title.color}>
             {title.label}
           </MDSTypography2>
           {title.tag}

@@ -80,6 +80,7 @@ export const MDSDimmed = (props: Props) => {
     if (_isOpen) {
       if (!isOpen) {
         setMountNode(document.body);
+        setIsOpen(true);
       }
       if (ref.current) {
         clearTimeout(ref.current);
@@ -92,12 +93,6 @@ export const MDSDimmed = (props: Props) => {
       }, transition);
     }
   }, [_isOpen, isOpen]);
-
-  useEffect(() => {
-    if (mountNode) {
-      setIsOpen(true);
-    }
-  }, [mountNode]);
 
   useEffect(() => {
     const scrollbarWidth = window.innerWidth - window.document.body.offsetWidth;

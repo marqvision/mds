@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../@system';
+import { resolveColor } from '../../../utils';
 import { Props, StyledProps } from './@types';
 import { theme } from './@constants';
 

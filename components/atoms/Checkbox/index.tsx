@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../@system';
+import { resolveColor } from '../../../utils';
 import { Props, StyledWrapperProps } from './@types';
 import { Checked, Indeterminate, UnChecked } from './Icons';
 import { theme as CheckboxTheme } from './@constants';

@@ -1,4 +1,4 @@
-import type { MDSThemeColorPath } from '../../../foundation';
+import type { MDSThemeColorPath } from '../../../types';
 
 type VariantSet = {
   Default: 'outline' | 'border' | 'fill';

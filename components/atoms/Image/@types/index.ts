@@ -1,6 +1,6 @@
 import React from 'react';
 import * as CSS from 'csstype';
-import { MDSThemeColorPath } from '../../../../foundation';
+import { MDSThemeColorPath } from '../../../../types';
 import { CustomProps } from './custom';
 
 type IconSize = 'x-small' | 'small' | 'medium' | 'large';

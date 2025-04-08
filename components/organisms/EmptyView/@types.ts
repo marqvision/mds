@@ -1,5 +1,5 @@
-import React from 'react';
-import { MDSThemeColorPath } from '../../../foundation';
+import { MDSThemeColorPath } from "../../../types";
+
 
 export type StyledWrapperProps = {
   backgroundColor?: MDSThemeColorPath;

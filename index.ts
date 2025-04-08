@@ -1,3 +1,2 @@
 export * from './components';
-export * from './foundation';
-export * from './@system';
+export * as _MDSBase from './foundation';

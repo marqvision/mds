@@ -1,6 +1,6 @@
 import React, { isValidElement } from 'react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../@system';
+import { resolveColor } from '../../../utils';
 import { MDSTypography2 } from '../../atoms/Typography2';
 import { Divider } from './@components/Divider';
 import { Icon } from './@components/Icon';

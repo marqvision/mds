@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../@system';
 import { MDSTypography2 } from '../../atoms/Typography2';
+import { resolveColor } from '../../../utils';
 import { EmptyViewProps, StyledWrapperProps } from './@types';
 
 const Wrapper = styled.div<StyledWrapperProps>`
@@ -8,8 +8,9 @@ const Wrapper = styled.div<StyledWrapperProps>`
   min-height: ${({ height }) => height};
   display: grid;
   grid-template-rows: 1fr auto 2fr;
-  background-color: ${({ backgroundColor }) => backgroundColor ? resolveColor(backgroundColor) : ''};
-  &:before, &:after {
+  background-color: ${({ backgroundColor }) => (backgroundColor ? resolveColor(backgroundColor) : '')};
+  &:before,
+  &:after {
     content: '';
   }
 `;

@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { MDSThemeColorPath } from '../../../foundation';
+import { MDSThemeColorPath } from '../../../types';
 
 type Variant = 'line' | 'dot';
 type Orientation = 'horizontal' | 'vertical';

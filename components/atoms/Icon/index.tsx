@@ -1,5 +1,5 @@
 import { ReactNode, SVGAttributes } from 'react';
-import { resolveColor } from '../../../@system';
+import { resolveColor } from '../../../utils';
 import { Features, IconVariant } from './@types';
 import * as Arrows from './set/Arrows';
 import * as Symbols from './set/Symbols';

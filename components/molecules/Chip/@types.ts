@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSThemeColorPath } from '../../../foundation';
+import { MDSThemeColorPath } from '../../../types';
 import { MDSTypographyProps2 } from '../../atoms/Typography2';
 import { token } from './@constants';
 

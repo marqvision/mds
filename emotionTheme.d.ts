@@ -1,5 +1,5 @@
 import '@emotion/react';
-import type { MDSTheme } from './foundation';
+import { MDSTheme } from './types';
 
 declare module '@emotion/react' {
   export interface Theme extends MDSTheme {}

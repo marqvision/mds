@@ -1,11 +1,10 @@
-import { MDSTheme, MDSThemeValue } from '../foundation';
-import { Path } from './types';
+import { MDSThemeValue } from '../foundation';
+import { MDSTheme, Path } from '../types';
 
 export const resolveColor = (color: Path<MDSTheme>) => {
   const tokens = color.split('/') || [];
-
-  // @ts-ignore
-  let currentColorObject: Record<string, string> = MDSThemeValue;
+  
+  let currentColorObject: Record<string, object> = MDSThemeValue;
 
   let result = '';
   for (let i = 0; i < tokens.length; i++) {
@@ -14,7 +13,7 @@ export const resolveColor = (color: Path<MDSTheme>) => {
     if (typeof value === 'string') {
       result = value;
     } else {
-      currentColorObject = value;
+      currentColorObject = value as Record<string, object>;
     }
   }
 

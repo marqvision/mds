@@ -1,5 +1,5 @@
 import { CSSProperties, ElementType } from 'react';
-import type { MDSThemeColorPath } from '../../../foundation';
+import type { MDSThemeColorPath } from '../../../types';
 
 export type Variant = 'title' | 'body';
 export type Size = '2xl' | 'xl' | 'l' | 'm' | 's' | 'xs';

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../@system';
+import { resolveColor } from '../../../utils';
 import { MDSIcon } from '../Icon';
 import { MDSTypography2 } from '../Typography2';
 import { BORDER_RADIUS, THEME } from './@constants';

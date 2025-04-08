@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSThemeColorPath } from '../../../foundation';
+import { MDSThemeColorPath } from '../../../types';
 
 type Color = 'blue' | 'white' | 'bluegray';
 type Size = 'small' | 'medium';

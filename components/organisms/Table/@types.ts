@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, TdHTMLAttributes } from 'react';
-import { MDSThemeColorPath } from '../../../foundation';
+import { MDSThemeColorPath } from '../../../types';
 
 // Table
 export type StyledTableProps = {

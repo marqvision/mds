@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../../@system';
+import { resolveColor } from '../../../../utils';
 import { theme as ChipTheme } from '../@constants';
 import { DividerProps } from '../@types';
 

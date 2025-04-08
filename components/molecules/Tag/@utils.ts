@@ -1,5 +1,5 @@
-import { MDSThemeColorPath } from '../../../foundation';
-import { resolveColor } from '../../../@system';
+import { MDSThemeColorPath } from '../../../types';
+import { resolveColor } from '../../../utils/resolvers';
 
 const isColorPath = (color: string): color is MDSThemeColorPath => {
   return color.startsWith('color/');

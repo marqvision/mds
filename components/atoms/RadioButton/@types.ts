@@ -1,4 +1,4 @@
-import { MDSThemeColorPath } from '../../../foundation';
+import { MDSThemeColorPath } from '../../../types';
 
 type Color = 'blue' | 'bluegray';
 

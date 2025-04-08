@@ -1,5 +1,5 @@
 import { ElementType } from 'react';
-import type { MDSThemeColorPath } from '../../../foundation';
+import type { MDSThemeColorPath } from '../../../types';
 
 export type Features<T extends ElementType = 'span'> = {
   /**

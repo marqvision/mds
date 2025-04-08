@@ -1,6 +1,6 @@
 import { ElementType } from 'react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../@system/resolvers';
+import { resolveColor } from '../../../utils/resolvers';
 import { resolveFontFamily, resolveFontSize, resolveFontWeight, resolveLetterSpacing, resolveLineClamp, resolveTagName } from './@utils';
 import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
 

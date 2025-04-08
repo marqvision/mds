@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../@system';
+import { resolveColor } from '../../../utils';
 import { theme as RadioButtonTheme } from './@constants';
 import { Props, StyledWrapperProps } from './@types';
 import { Selected, Unselected } from './Icons';

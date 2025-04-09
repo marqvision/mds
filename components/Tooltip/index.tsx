@@ -5,8 +5,10 @@ import { MDSPopover } from '../Popover';
 import { MDSThemeValue } from '../../foundation';
 import { MDSTypography2 } from '../Typography2';
 import { MDSIcon } from '../Icon';
-import { MDSTooltipProps } from './@types';
+import { TooltipProps } from './@types';
 import { Theme } from './@constants';
+
+export type MDSTooltipProps = TooltipProps;
 
 const StyledChildren = styled.div<{ positionStyle: string }>`
   flex-shrink: 0;
@@ -39,7 +41,7 @@ const StyledIcon = styled(MDSIcon.Help)`
   align-self: center;
 `;
 
-export const MDSTooltip = (props: MDSTooltipProps) => {
+export const MDSTooltip = (props: TooltipProps) => {
   const { children, title, size = 'medium', position = 'top-center', width, style, anchorStyle } = props;
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);

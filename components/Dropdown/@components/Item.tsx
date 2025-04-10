@@ -256,7 +256,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
           {!isMultiple && isSelected && (
             <MDSIcon.Check
               variant="outline"
-              size={16}
+              size={24}
               color="color/content/primary/default/normal"
               style={{ flexShrink: 0 }}
             />
@@ -268,13 +268,13 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
             <MDSTypography2
               variant="body"
               size="m"
-              weight="regular"
+              weight={!isMultiple && isSelected ? 'medium' : 'regular'}
               color={
                 !isMultiple && isSelected
                   ? 'color/content/primary/default/normal'
                   : item.isDisabled
-                    ? 'color/content/neutral/default/disabled'
-                    : undefined
+                  ? 'color/content/neutral/default/disabled'
+                  : undefined
               }
               whiteSpace="pre-wrap"
               wordBreak="break-word"

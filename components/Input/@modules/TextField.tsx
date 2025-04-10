@@ -90,7 +90,7 @@ export const TextField = (props: Props) => {
   const py = parseFloat(theme.size[size].paddingY) * 2 + 2;
 
   const typographySize = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', ''))).size;
-  const isShowDelete = _isShowDelete && !isReadOnly;
+  const isShowDelete = _isShowDelete && !isReadOnly && !isDisabled;
 
   const Prefix = prefix ? (
     isValidElement(prefix) ? (
@@ -267,7 +267,7 @@ export const TextField = (props: Props) => {
           color={isDisabled || isReadOnly ? 'color/content/neutral/default/disabled' : undefined}
           variant="border"
           size={theme.size[size].iconSize}
-          onClick={isDisabled ? undefined : handleDelete}
+          onClick={handleDelete}
           className={isShowDelete ? 'show' : undefined}
           onMouseEnter={() => (preventResizeRef.current = true)}
           onMouseLeave={() => (preventResizeRef.current = false)}

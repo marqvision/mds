@@ -1,15 +1,16 @@
 import { useState, MouseEvent, useEffect, cloneElement, useRef } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 import { foldedItemIndexAtom } from '../@atoms';
 import { DropdownItem, SelectedType } from '../@types';
 import { MDSTypography2 } from '../../../atoms/Typography2';
 import { MDSCheckbox } from '../../../atoms/Checkbox';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTag } from '../../Tag';
-import { MDSThemeValue } from '../../../../foundation';
 import { getValueFromList } from '../@utils';
 import { MDSTooltip } from '../../Tooltip';
+import { MDSTheme } from '../../../../types';
 import { HighLightLabel } from './HighlightLabel';
 
 type Props<T> = {
@@ -90,12 +91,10 @@ const StyledDivider = styled(MDSTypography2)`
   padding: 6px 12px;
 `;
 
-const BACKGROUND_COLOR = [
-  MDSThemeValue._raw_color.white,
-  MDSThemeValue._raw_color.bluegray50,
-  MDSThemeValue._raw_color.bluegray100,
-  MDSThemeValue._raw_color.bluegray150,
-];
+const getBackgroundColor = (_raw_color: MDSTheme['_raw_color'], value: number) => {
+  const BACKGROUND_COLOR = [_raw_color.white, _raw_color.bluegray50, _raw_color.bluegray100, _raw_color.bluegray150];
+  return BACKGROUND_COLOR[value];
+};
 
 export const ItemInnerComponent = <T,>(props: Props<T>) => {
   const {
@@ -109,6 +108,8 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     onChange,
     onClose,
   } = props;
+
+  const { _raw_color } = useTheme();
 
   const [foldedIndex, setFoldedIndex] = useAtom(foldedItemIndexAtom);
 
@@ -241,7 +242,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     <>
       <StyledWrap
         isDisabled={item.isDisabled}
-        bgColor={BACKGROUND_COLOR[Math.min(depth, 2)]}
+        bgColor={getBackgroundColor(_raw_color, Math.min(depth, 2))}
         onClick={handleClick}
         style={{ paddingLeft: depth * 32 + 12 }}
       >
@@ -273,8 +274,8 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
                 !isMultiple && isSelected
                   ? 'color/content/primary/default/normal'
                   : item.isDisabled
-                    ? 'color/content/neutral/default/disabled'
-                    : undefined
+                  ? 'color/content/neutral/default/disabled'
+                  : undefined
               }
               whiteSpace="pre-wrap"
               wordBreak="break-word"

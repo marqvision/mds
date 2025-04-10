@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography2 } from '../components/atoms/Typography2';

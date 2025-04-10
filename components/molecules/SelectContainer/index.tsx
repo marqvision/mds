@@ -59,8 +59,8 @@ const CheckedIconWrapperStyles = styled.div`
 `;
 
 const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
-  ${({ disabled, isSelected, isVariantCenter, orientation, itemSizing }) => {
-    const containerStyle = getCorrectContainerStyle(disabled, isSelected);
+  ${({ disabled, isSelected, isVariantCenter, orientation, itemSizing, theme }) => {
+    const containerStyle = getCorrectContainerStyle(theme.color, disabled, isSelected);
     const layoutStyle = getLayoutStyle(itemSizing, isVariantCenter);
     const sizeStyle = getSizeStyle(itemSizing, orientation);
 

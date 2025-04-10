@@ -1,11 +1,11 @@
 import { cloneElement, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { Provider, useSetAtom } from 'jotai';
 import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 import { MDSPopover } from '../Popover';
 import { MDSTypography2 } from '../../atoms/Typography2';
 import { MDSCheckbox } from '../../atoms/Checkbox';
 import { MDSIcon } from '../../atoms/Icon';
-import { MDSThemeValue } from '../../../foundation';
 import { MDSLoadingIndicator } from '../../organisms/LoadingIndicator';
 import { Item } from './@components/Item';
 import { useDropdown, useInitDropdown } from './@hooks';
@@ -135,6 +135,8 @@ const Dropdown = <T, SortT>(
     onMount,
     onUnmount,
   } = props;
+
+  const { _raw_color} = useTheme();
 
   const stickyBottom = modules?.find((v) => typeof v === 'object' && v.type === 'bottom-button') as
     | BottomButtonModule<T>
@@ -487,7 +489,7 @@ const Dropdown = <T, SortT>(
                 style: {
                   position: 'sticky',
                   bottom: 0,
-                  borderTop: `1px solid ${MDSThemeValue._raw_color.bluegray150}`,
+                  borderTop: `1px solid ${_raw_color.bluegray150}`,
                 },
               }}
               indeterminate={indeterminate}

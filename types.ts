@@ -1,4 +1,5 @@
-import { MDSThemeValue } from "./foundation";
+import { _MDSThemeValue } from "./foundation";
+
 
 export type PathImpl<T, Key extends keyof T> = Key extends string
   ? T[Key] extends Record<string, any>
@@ -20,5 +21,5 @@ export type PathValue<T, P extends Path<T>> = P extends `${infer Key}/${infer Re
   ? T[P]
   : never;
 
-export type MDSTheme = typeof MDSThemeValue;
+export type MDSTheme = typeof _MDSThemeValue;
 export type MDSThemeColorPath = Path<Pick<MDSTheme, 'color'>>;

@@ -1,4 +1,4 @@
-import { MDSThemeValue } from '../foundation';
+import { _MDSThemeValue } from "../foundation";
 
 function extractKeys(obj: Record<string, any>, path = '') {
   let keys: string[] = [];
@@ -14,4 +14,4 @@ function extractKeys(obj: Record<string, any>, path = '') {
   }
   return keys;
 }
-export const MDSTHEME_COLORS = extractKeys({ color: MDSThemeValue.color });
+export const MDSTHEME_COLORS = extractKeys({ color: _MDSThemeValue.color });

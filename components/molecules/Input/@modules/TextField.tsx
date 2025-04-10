@@ -66,7 +66,7 @@ export const TextField = (props: Props) => {
   } = props;
 
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
-  const [isShowDelete, setIsShowDelete] = useState(false);
+  const [_isShowDelete, setIsShowDelete] = useState(false);
   const [isInit, setIsInit] = useState(false);
   const [mirrorText, setMirrorText] = useState<string>('');
   const [height, setHeight] = useState<number | string>();
@@ -90,6 +90,7 @@ export const TextField = (props: Props) => {
   const py = parseFloat(theme.size[size].paddingY) * 2 + 2;
 
   const typographySize = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', ''))).size;
+  const isShowDelete = _isShowDelete && !isReadOnly && !isDisabled;
 
   const Prefix = prefix ? (
     isValidElement(prefix) ? (
@@ -266,7 +267,7 @@ export const TextField = (props: Props) => {
           color={isDisabled || isReadOnly ? 'color/content/neutral/default/disabled' : undefined}
           variant="border"
           size={theme.size[size].iconSize}
-          onClick={!(isDisabled || isReadOnly) ? handleDelete : undefined}
+          onClick={handleDelete}
           className={isShowDelete ? 'show' : undefined}
           onMouseEnter={() => (preventResizeRef.current = true)}
           onMouseLeave={() => (preventResizeRef.current = false)}

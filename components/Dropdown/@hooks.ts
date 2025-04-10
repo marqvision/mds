@@ -59,7 +59,9 @@ export const useInitDropdown = <T, SortT>(
 
   const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>(() => {
     if (value !== undefined) {
-      return Array.isArray(value) ? value.map((v) => ({ label: v, value: v })) : [{ label: value, value }];
+      return Array.isArray(value)
+        ? value.map((v) => ({ label: list.find((item) => item.value === v)?.label || v, value: v }))
+        : [{ label: value, value }];
     }
 
     return [];

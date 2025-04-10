@@ -1,9 +1,11 @@
 import { CSSProperties, ElementType } from 'react';
-import type { MDSThemeColorPath } from '../../../types';
+import type { MDSTheme, MDSThemeColorPath } from '../../../types';
 
-export type Variant = 'title' | 'body';
-export type Size = '2xl' | 'xl' | 'l' | 'm' | 's' | 'xs';
-export type Weight = 'semibold' | 'medium' | 'regular';
+export type Variant = keyof MDSTheme['comp']['typography'];
+export type TitleSize = keyof MDSTheme['comp']['typography'][Extract<Variant, 'title'>]['size'];
+export type BodySize = keyof MDSTheme['comp']['typography'][Extract<Variant, 'body'>]['size'];
+export type TitleWeight = keyof MDSTheme['comp']['typography'][Extract<Variant, 'title'>]['weight'];
+export type BodyWeight = keyof MDSTheme['comp']['typography'][Extract<Variant, 'body'>]['weight'];
 export type Char = 'letter' | 'number';
 
 type BaseFeatures<T extends ElementType = 'p'> = {
@@ -62,45 +64,45 @@ type NewTypographyStyle =
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'letter'>;
-      size?: Extract<Size, '2xl' | 'xl' | 'l'>;
+      size?: Extract<TitleSize, '2xl' | 'xl' | 'l'>;
       /**
        * 타이포그래피의 굵기. - variant와 size에 따라 사용 가능한 값이 다릅니다
        * - title+2xl, title+xl, title+l: semibold, medium
        * - body의 모든 size: medium, regular
        */
-      weight?: Extract<Weight, 'semibold' | 'medium'>;
+      weight?: Extract<TitleWeight, 'semibold' | 'medium'>;
     }
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'letter'>;
-      size?: Extract<Size, 'm' | 's'>;
-      weight?: Extract<Weight, 'semibold'>;
+      size?: Extract<TitleSize, 'm' | 's'>;
+      weight?: Extract<TitleWeight, 'semibold'>;
     }
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'number'>;
-      size?: Extract<Size, 'xl' | 'l'>;
-      weight?: Extract<Weight, 'semibold' | 'medium'>;
+      size?: Extract<TitleSize, 'xl' | 'l'>;
+      weight?: Extract<TitleWeight, 'semibold' | 'medium'>;
     }
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'number'>;
-      size?: Extract<Size, 'm' | 's'>;
-      weight?: Extract<Weight, 'semibold'>;
+      size?: Extract<TitleSize, 'm' | 's'>;
+      weight?: Extract<TitleWeight, 'semibold'>;
     }
   | {
       variant?: Extract<Variant, 'body'>;
       char?: Char;
-      size?: Extract<Size, 'l' | 'm' | 's' | 'xs'>;
-      weight?: Extract<Weight, 'medium' | 'regular'>;
+      size?: Extract<BodySize, 'l' | 'm' | 's' | 'xs'>;
+      weight?: Extract<BodyWeight, 'medium' | 'regular'>;
     };
 
 // 내부적으로 사용되는 타이포그래피 스타일 속성
 export type InnerTypographyStyleProps<T extends ElementType = 'p'> = {
   variant: Variant;
   char: Char;
-  size: Size;
-  weight?: Weight | 'bold' | 'light'; // todo-@jamie: [PROD-12758] bold, light: 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
+  size: TitleSize | BodySize;
+  weight?: TitleWeight | BodyWeight | 'bold' | 'light'; // todo-@jamie: [PROD-12758] bold, light: 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 } & BaseFeatures<T>;
 
 // 최종 + 외부 노출을 위한 Props 타입

@@ -1,15 +1,20 @@
 import { ElementType } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../../utils/resolvers';
-import { resolveFontFamily, resolveFontSize, resolveFontWeight, resolveLetterSpacing, resolveLineClamp, resolveTagName } from './@utils';
+import {
+  resolveFontFamily,
+  resolveFontSize,
+  resolveFontWeightLetterSpacing,
+  resolveLineClamp,
+  resolveTagName,
+} from './@utils';
 import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
-    const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration, char, overflowWrap } = features;
-    const fontSize = resolveFontSize(features);
-    const fontWeight = resolveFontWeight(features);
-    const letterSpacing = resolveLetterSpacing(features);
+    const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration, char, overflowWrap, theme } = features;
+    const fontSize = resolveFontSize(theme, features);
+    const { fontWeight, letterSpacing } = resolveFontWeightLetterSpacing(theme, features);
     const fontColor = color === 'inherit' ? 'inherit' : resolveColor(color!);
     const lineClampStyles = lineClamp !== undefined ? resolveLineClamp(lineClamp) : '';
     const wordBreakStyles = wordBreak ? `word-break: ${wordBreak};` : '';
@@ -19,7 +24,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const numberStyles = char === 'number' ? 'font-variant-numeric: tabular-nums;' : '';
 
     return `
-      font-size: ${fontSize};
+      font-size: ${fontSize}px;
       color: ${fontColor};
       font-weight: ${fontWeight};
       letter-spacing: ${letterSpacing};

@@ -28,7 +28,7 @@ export const FilterChip = (props: Props) => {
       color="bluegray"
       isDisabled={isDisabled}
       tags={
-        isSelected ? (
+        isSelected && !isDisabled ? (
           <>
             <MDSTag size="small" variant="tint" color="bluegray">
               {selectedLabel[0]}

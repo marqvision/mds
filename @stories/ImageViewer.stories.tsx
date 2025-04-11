@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSImageViewer> = {
   component: MDSImageViewer,
-  title: '2. Components/ImageViewer',
+  title: '2. Components/organisms/ImageViewer',
   parameters: {
     docs: {
       story: {

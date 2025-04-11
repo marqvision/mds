@@ -1,7 +1,7 @@
 import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement, MutableRefObject } from 'react';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
-import { MDSLoadingIndicator } from '../../organisms/LoadingIndicator';
+import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { Props, StyleProps, Coordinates } from './@type';
 import { findScrollOffset } from './@utils';
 

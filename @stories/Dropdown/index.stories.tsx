@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDropdown> = {
   component: MDSDropdown,
-  title: '2. Components/Dropdown',
+  title: '2. Components/molecules/Dropdown',
   args: {
     value: '',
   },

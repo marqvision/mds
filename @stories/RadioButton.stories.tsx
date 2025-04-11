@@ -5,7 +5,7 @@ import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSRadioButton> = {
   component: MDSRadioButton,
-  title: '2. Components/Radio button',
+  title: '2. Components/atoms/Radio button',
   args: {
     value: 'test',
   },

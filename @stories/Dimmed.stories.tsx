@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDimmed> = {
   component: MDSDimmed,
-  title: '2. Components/Dimmed',
+  title: '2. Components/organisms/Dimmed',
   parameters: {
     docs: {
       story: {

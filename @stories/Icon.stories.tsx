@@ -5,7 +5,7 @@ import { MDSIcon, MDSIconProps, MDSTypography2 } from '../components';
 import { MDSTHEME_COLORS } from './@helper';
 
 const meta: Meta<typeof MDSIcon.ArrowLeft> = {
-  title: '2. Components/Icon',
+  title: '2. Components/atoms/Icon',
   parameters: {
     layout: 'center',
   },

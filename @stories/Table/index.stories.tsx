@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { MDSCheckbox, MDSChip, MDSTable, MDSTypography2 } from '../../components';
 
 const meta: Meta<typeof MDSTable> = {
-  title: '2. Components/Table',
+  title: '2. Components/organisms/Table',
   tags: ['autodocs'],
 };
 export default meta;

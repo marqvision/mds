@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSLoadingIndicator> = {
   component: MDSLoadingIndicator,
-  title: '2. Components/LoadingIndicator',
+  title: '2. Components/molecules/LoadingIndicator',
   tags: ['autodocs'],
   decorators: [
     (Story) => (

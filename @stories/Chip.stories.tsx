@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSChip> = {
   component: MDSChip,
-  title: '2. Components/Chip',
+  title: '2. Components/molecules/Chip',
   parameters: {
     docs: {
       story: {

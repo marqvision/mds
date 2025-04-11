@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSCheckbox> = {
   component: MDSCheckbox,
-  title: '2. Components/Checkbox',
+  title: '2. Components/atoms/Checkbox',
   args: {
     value: false,
   },

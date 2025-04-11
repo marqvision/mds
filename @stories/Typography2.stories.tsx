@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSTypography2> = {
   component: MDSTypography2,
-  title: '2. Components/Typography2',
+  title: '2. Components/atoms/Typography2',
   parameters: {
     layout: 'center',
   },

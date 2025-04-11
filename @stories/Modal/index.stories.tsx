@@ -4,7 +4,7 @@ import { MDSIcon, MDSModal, MDSTypography2 } from '../../components';
 import { Doc } from './Doc';
 
 const meta: Meta<typeof MDSModal.Wrapper> = {
-  title: '2. Components/Modal',
+  title: '2. Components/organisms/Modal',
   tags: ['autodocs'],
   parameters: {
     docs: {

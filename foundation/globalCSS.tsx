@@ -5,9 +5,6 @@ import './statics/fonts/index.css';
 const FONT_STYLE_VALUES = {
   EN: {
     title: `
-      --font-title-semibold: 640;
-      --font-title-medium: 540;
-
       --font-title-letter-spacing-2xl-semibold: -0.55px;
       --font-title-letter-spacing-2xl-medium: -0.48px;
       --font-title-letter-spacing-xl-semibold: -0.4px;
@@ -18,9 +15,6 @@ const FONT_STYLE_VALUES = {
       --font-title-letter-spacing-m-medium: -0.175px;
     `,
     body: `
-      --font-body-medium: 540;
-      --font-body-regular: 420;
-
       --font-body-letter-spacing-l-medium: -0.28px;
       --font-body-letter-spacing-l-regular: -0.24px;
       --font-body-letter-spacing-m-medium: -0.21px;
@@ -33,9 +27,6 @@ const FONT_STYLE_VALUES = {
   },
   KO: {
     title: `
-      --font-title-semibold: 640;
-      --font-title-medium: 540;
-
       --font-title-letter-spacing-xl-semibold: 0px;
       --font-title-letter-spacing-xl-medium: 0px;
       --font-title-letter-spacing-l-semibold: 0px;
@@ -45,12 +36,8 @@ const FONT_STYLE_VALUES = {
       --font-title-letter-spacing-s-semibold: 0px;
       --font-title-letter-spacing-s-medium: 0px;
       --font-title-letter-spacing-s-regular: 0px;
-      
     `,
     body: `
-      --font-body-medium: 540;
-      --font-body-regular: 420;
-
       --font-body-letter-spacing-l-medium: 0px;
       --font-body-letter-spacing-l-regular: 0px;
       --font-body-letter-spacing-m-medium: 0px;
@@ -73,6 +60,11 @@ export const MDSFontCSS = ({
     styles={css`
       // 기본 폰트 설정
       :root {
+        --font-title-semibold: 640;
+        --font-title-medium: 540;
+        --font-body-medium: 540;
+        --font-body-regular: 420;
+
         ${FONT_STYLE_VALUES.EN.title}
         ${FONT_STYLE_VALUES.EN.body}
       }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useArgs } from '@storybook/preview-api';
-import { MDSCheckbox } from '../components/Checkbox';
-import { MDSThemeValue } from '../foundation';
+import { useTheme } from '@emotion/react';
+import { MDSCheckbox } from '../components/atoms/Checkbox';
 import { MDSTypography2 } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -27,6 +27,7 @@ export default meta;
 type Story = StoryObj<typeof MDSCheckbox>;
 
 const Wrapper = ({ children }: React.PropsWithChildren) => {
+  const { _raw_color } = useTheme();
   return (
     <div
       style={{
@@ -34,7 +35,7 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
         display: 'flex',
         flexDirection: 'column',
         gap: '24px',
-        backgroundColor: MDSThemeValue._raw_color.bluegray500,
+        backgroundColor: _raw_color.bluegray500,
       }}
     >
       {children}

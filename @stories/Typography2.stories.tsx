@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { MDSTypography2 } from '../components/Typography2';
+import { MDSTypography2 } from '../components/atoms/Typography2';
 import { MDSCheckbox } from '../components';
 import { MDSTHEME_COLORS } from './@helper';
 import type { Meta, StoryObj } from '@storybook/react';

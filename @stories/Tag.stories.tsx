@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSTag> = {
   component: MDSTag,
-  title: '2. Components/Tag',
+  title: '2. Components/molecules/Tag',
   parameters: {
     docs: {
       story: {

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { LoadingSpinnerProps } from '../@types';
-import { MDSLoadingIndicator } from '../../../organisms/LoadingIndicator';
+import { MDSLoadingIndicator } from '../../LoadingIndicator';
 
 export const LoadingSpinner = styled(MDSLoadingIndicator)<LoadingSpinnerProps>`
   ${({ isCenter }) => `

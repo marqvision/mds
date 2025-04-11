@@ -6,7 +6,7 @@ import { LABEL_MAP } from './@constants';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSSelectContainer.Wrapper> = {
-  title: '2. Components/Select container',
+  title: '2. Components/molecules/Select container',
   tags: ['autodocs'],
   parameters: {
     docs: {

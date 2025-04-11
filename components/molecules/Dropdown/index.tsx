@@ -6,7 +6,7 @@ import { MDSPopover } from '../Popover';
 import { MDSTypography2 } from '../../atoms/Typography2';
 import { MDSCheckbox } from '../../atoms/Checkbox';
 import { MDSIcon } from '../../atoms/Icon';
-import { MDSLoadingIndicator } from '../../organisms/LoadingIndicator';
+import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { Item } from './@components/Item';
 import { useDropdown, useInitDropdown } from './@hooks';
 import {

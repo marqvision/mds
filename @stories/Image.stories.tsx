@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSImage> = {
   component: MDSImage,
-  title: '2. Components/Image',
+  title: '2. Components/atoms/Image',
   parameters: {
     layout: 'center',
   },

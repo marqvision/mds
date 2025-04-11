@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDivider> = {
   component: MDSDivider,
-  title: '2. Components/Divider',
+  title: '2. Components/atoms/Divider',
   parameters: {
     layout: 'center',
   },

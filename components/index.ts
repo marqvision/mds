@@ -14,7 +14,7 @@ export * from './molecules/Popover';
 export * from './molecules/Input';
 export * from './atoms/Image';
 export * from './molecules/Dropdown';
-export * from './organisms/LoadingIndicator';
+export * from './molecules/LoadingIndicator';
 export * from './organisms/Panel';
 export * from './molecules/Tooltip';
 export * from './organisms/EmptyView';

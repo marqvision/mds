@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSInput> = {
   component: MDSInput,
-  title: '2. Components/Input',
+  title: '2. Components/molecules/Input',
   args: {
     value: '',
   },

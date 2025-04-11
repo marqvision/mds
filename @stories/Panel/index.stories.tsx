@@ -4,7 +4,7 @@ import { MDSChip, MDSModal, MDSPanel, MDSTypography2 } from '../../components';
 import { Doc } from './Doc';
 
 const meta: Meta<typeof MDSPanel.Wrapper> = {
-  title: '2. Components/Panel',
+  title: '2. Components/organisms/Panel',
   tags: ['autodocs'],
   parameters: {
     docs: {

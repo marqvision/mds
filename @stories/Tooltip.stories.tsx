@@ -7,7 +7,7 @@ const LONG_TEXT =
 
 const meta: Meta<typeof MDSTooltip> = {
   component: MDSTooltip,
-  title: '2. Components/Tooltip',
+  title: '2. Components/molecules/Tooltip',
   parameters: {
     docs: {
       story: {

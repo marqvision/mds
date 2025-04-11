@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSEmptyView> = {
   component: MDSEmptyView,
-  title: '2. Components/EmptyView',
+  title: '2. Components/organisms/EmptyView',
   parameters: {
     layout: 'center',
   },

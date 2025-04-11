@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSPopover> = {
   component: MDSPopover,
-  title: '2. Components/Popover',
+  title: '2. Components/molecules/Popover',
   args: {
     anchor: <button>클릭</button>,
   },

@@ -1,5 +1,24 @@
 import React from 'react';
 import { MDSThemeProvider } from '../foundation';
+import { Global, css } from '@emotion/react';
+
+const globalStyles = css`
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+  }
+  *::-webkit-scrollbar-thumb {
+    visibility: hidden;
+    opacity: 0;
+    background-color: #919eab;
+    border-radius: 4px;
+  }
+  *:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+    opacity: 1;
+  }
+`;
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -26,6 +45,7 @@ const preview = {
 export const decorators = [
   (Story) => (
     <MDSThemeProvider>
+      <Global styles={globalStyles} />
       <Story />
     </MDSThemeProvider>
   ),

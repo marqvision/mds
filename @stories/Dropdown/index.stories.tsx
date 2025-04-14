@@ -61,7 +61,7 @@ export const DropdownSingle: Story = {
     ],
   },
   render: function Render(props) {
-    const [value, setValue] = useState<number>();
+    const [value, setValue] = useState<number | undefined>(undefined);
     const allList = [
       {
         label: 'Value1',
@@ -90,54 +90,52 @@ export const DropdownSingle: Story = {
       { label: 'Value5', value: 5 },
     ];
 
-    const text =
-      '{\n' +
-      "  type: 'bottom-button',\n" +
-      "  label: 'Sticky bottom button',\n" +
-      '  icon: icon,\n' +
-      '  isDisabled?: boolean,\n' +
-      '  // onClick 이후 해당 드롭다운이 닫힐지 닫히지 않을지 (default: false) \n' +
-      '  preventClose: false,\n' +
-      '  onClick: () => {\n' +
-      "    alert('clicked');\n" +
-      '  }\n' +
-      '}';
+    const sample = `
+      <MDSDropdown label="Label" value={value} onChange={setValue} list={allList} modules={['sort', 'search']} />
+    `;
 
-    const dropItemType =
-      '{\n' +
-      '  value: T;\n' +
-      '  label: string | ReactElement;\n' +
-      '  subLabel?: string | SubLabel;\n' +
-      '  isDisabled?: boolean;\n' +
-      '  icon?: ReactElement;\n' +
-      '  imgUrl?: string;\n' +
-      '  rightSection?: ReactElement;\n' +
-      '  style?: CSSProperties;\n' +
-      '  onClick?: () => void;\n' +
-      '  children?: DropdownItem<T>[]\n' +
-      '}\n';
+    const text = `
+      {
+        type: 'bottom-button',
+        label: 'Sticky bottom button',
+        icon: icon,
+        isDisabled?: boolean,
+        // onClick 이후 해당 드롭다운이 닫힐지 닫히지 않을지 (default: false) 
+        preventClose: false,
+        onClick: () => {
+          alert('clicked');
+        }
+      }
+    `;
+
+    const dropItemType = `
+      {
+        value: T;
+        label: string | ReactElement;
+        subLabel?: string | SubLabel;
+        isDisabled?: boolean;
+        icon?: ReactElement;
+        imgUrl?: string;
+        rightSection?: ReactElement;
+        style?: CSSProperties;
+        onClick?: () => void;
+        children?: DropdownItem<T>[]
+      }
+      - value가 없고(undefined) onClick이 없고 children이 없으면 label로 표현됨
+    `;
 
     return (
       <Wrapper>
         <MDSTypography2>Single select (sort, search)</MDSTypography2>
-        <MDSTypography2 as="code" variant="T14" style={{ backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}>
-          &lt;MDSDropdown label="Label" value=&#123;value&#125; onChange=&#123;setValue&#125; list=&#123;allList&#125;
-          modules=['sort', 'search'] /&gt;
+        <MDSTypography2 as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
+          {sample}
         </MDSTypography2>
-        <MDSTypography2 variant="T14">DropdownItem Type</MDSTypography2>
-        <MDSTypography2
-          variant="T14"
-          as="code"
-          style={{ whiteSpace: 'pre', backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}
-        >
-          {dropItemType}- value가 없고(undefined) onClick이 없고 children이 없으면 label로 표현됨
+        <MDSTypography2>DropdownItem Type</MDSTypography2>
+        <MDSTypography2 as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
+          {dropItemType}
         </MDSTypography2>
-        <MDSTypography2 variant="T14">Sticky bottom button</MDSTypography2>
-        <MDSTypography2
-          as="code"
-          variant="T14"
-          style={{ whiteSpace: 'pre', backgroundColor: '#ddd', padding: '8px', borderRadius: '4px' }}
-        >
+        <MDSTypography2>Sticky bottom button</MDSTypography2>
+        <MDSTypography2 as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
           {text}
         </MDSTypography2>
         <MDSDropdown {...props} label="Label" value={value} onChange={setValue} list={allList} onSelect={undefined} />
@@ -166,16 +164,24 @@ export const DropdownMulti: Story = {
       setIndeterminate([4, 5]);
     };
 
+    const text = `
+      <MDSDropdown
+        label="Label"
+        value={list}
+        onChange={setList}
+        list={allList}
+        modules={['sort', 'search']}
+      />
+    `;
+
     return (
       <Wrapper>
         <MDSTypography2>Multi select (search, sort)</MDSTypography2>
         <MDSTypography2
-          variant="T14"
           as="code"
-          style={{ backgroundColor: '#ddd', padding: '8px', borderRadius: '4px', fontWeight: 400 }}
+          style={{ backgroundColor: '#ddd', whiteSpace: 'pre', borderRadius: '4px', fontWeight: 400 }}
         >
-          &lt;MDSDropdown label="Label" value=&#123;list&#125; onChange=&#123;setList&#125; list=&#123;allList&#125;
-          modules=['sort', 'search'] /&gt;
+          {text}
         </MDSTypography2>
         <MDSTypography2>indeterminate: {indeterminate.join(', ')}</MDSTypography2>
         <MDSDropdown
@@ -184,7 +190,7 @@ export const DropdownMulti: Story = {
           value={list}
           onChange={(value, indeterminate) => {
             setList(value);
-            setIndeterminate(indeterminate);
+            setIndeterminate(indeterminate || []);
           }}
           list={allList}
           indeterminate={indeterminate}
@@ -226,16 +232,24 @@ export const Dropdown1DepthSingle: Story = {
       },
     ];
 
+    const text = `
+      <MDSDropdown
+        label="Label"
+        value={list}
+        onChange={setList}
+        list={allList}
+        modules={['search', '1-depth-single']}
+      />
+    `;
+
     return (
       <Wrapper>
         <MDSTypography2>Multi + Single</MDSTypography2>
         <MDSTypography2
-          variant="T14"
           as="code"
-          style={{ backgroundColor: '#ddd', padding: '8px', borderRadius: '4px', fontWeight: 400 }}
+          style={{ backgroundColor: '#ddd', borderRadius: '4px', fontWeight: 400, whiteSpace: 'pre' }}
         >
-          &lt;MDSDropdown label="Label" value=&#123;list&#125; onChange=&#123;setList&#125; list=&#123;allList&#125;
-          modules=['search', '1-depth-single'] /&gt;
+          {text}
         </MDSTypography2>
         <MDSDropdown {...props} label="Value" value={list} onChange={setList} list={allList} onSelect={undefined} />
       </Wrapper>
@@ -305,27 +319,29 @@ export const DropdownMultiInfinite: Story = {
       }, 1000);
     };
 
+    const code = `
+      <MDSDropdown
+          label="Value"
+          value={list}
+          onChange={setList}
+          list={allList}
+          modules={[
+            {
+              type: 'infinite',
+              total: 1234,
+              isLoading,
+              hasNextPage: true,
+              onScrollBottom: handleMutate,
+            }
+          ]}
+        />
+    `;
+
     return (
       <Wrapper>
         <MDSTypography2>Infinite dropdown</MDSTypography2>
-        <MDSTypography2
-          variant="T14"
-          as="code"
-          style={{ backgroundColor: '#ddd', padding: '8px', borderRadius: '4px', fontWeight: 400 }}
-        >
-          &lt;MDSDropdown
-          <br /> &nbsp;&nbsp;label="Label"
-          <br /> &nbsp;&nbsp;value=&#123;list&#125;
-          <br /> &nbsp;&nbsp;onChange=&#123;setList&#125;
-          <br /> &nbsp;&nbsp;list=&#123;allList&#125; <br />
-          &nbsp;&nbsp;modules=[
-          <br /> &nbsp;&nbsp;&nbsp;&nbsp;'sort', <br />
-          &nbsp;&nbsp;&nbsp;&nbsp;'search', <br />
-          &nbsp;&nbsp;&nbsp;&nbsp;&#123; type: 'infinite', total: 1234, isLoading, onScrollBottom: handleMutate, &#125;
-          <br />
-          &nbsp;&nbsp;]
-          <br />
-          /&gt;
+        <MDSTypography2 as="code" style={{ backgroundColor: '#ddd', borderRadius: '4px', whiteSpace: 'pre' }}>
+          {code}
         </MDSTypography2>
         <MDSDropdown
           {...props}
@@ -334,11 +350,12 @@ export const DropdownMultiInfinite: Story = {
           onChange={setList}
           list={allList}
           modules={[
-            ...props.modules,
+            ...(props.modules || []),
             {
               type: 'infinite',
               total: 1234,
               isLoading,
+              hasNextPage: true,
               onScrollBottom: handleMutate,
             },
           ]}
@@ -349,11 +366,7 @@ export const DropdownMultiInfinite: Story = {
   },
 };
 
-const ele = (
-  <MDSTypography2 variant="T14" color="color/content/critical/default/normal">
-    Log out
-  </MDSTypography2>
-);
+const ele = <MDSTypography2 color="color/content/critical/default/normal">Log out</MDSTypography2>;
 
 export const DropdownMenu: Story = {
   args: {},
@@ -369,21 +382,30 @@ export const DropdownMenu: Story = {
       },
     ];
 
+    const code = `
+      const list = [
+        { label: 'Log in', onClick: () => { /* login */ } },
+        { label: (
+            <MDSTypography2  color="color/content/critical/default/normal">Log out</MDSTypography2>
+          ), 
+          onClick: () => {/* log out */}
+        }
+      ];
+
+      <MDSDropdown
+        list={list}
+        renderAnchor={() => <MDSChip variant="border" color="blue" size="medium">커스텀 버튼</MDSChip>}
+      />
+    `;
+
     return (
       <Wrapper>
         <MDSTypography2>메뉴 형태로 사용</MDSTypography2>
         <MDSTypography2
-          variant="T14"
           as="code"
-          style={{ backgroundColor: '#ddd', padding: '8px', borderRadius: '4px', fontWeight: 400 }}
+          style={{ backgroundColor: '#ddd', whiteSpace: 'pre', borderRadius: '4px', fontWeight: 400 }}
         >
-          const list = [<br /> &#123; label: 'Log in', onClick: () =&gt; &#123; /* login */ &#125; &#125;, <br />
-          &#123; label: ( &lt;MDSTypography2 variant="T14" color="color/content/critical/default/normal"&gt; Log out
-          &lt;/MDSTypography2&gt; ), onClick: () = &#123;/* log out */&#125; &#125; ];
-          <br />
-          <br />
-          &lt;MDSDropdown list=&lt;list&gt; renderAnchor= &lt;() =&gt; ( &lt;MDSChip variant="border" color="blue"
-          size="medium"&gt; 커스텀 버튼 &lt;/MDSChip&gt; )&gt; /&gt;
+          {code}
         </MDSTypography2>
         <div>
           <MDSDropdown

@@ -356,7 +356,7 @@ export const Item = <T,>(props: Props<T>) => {
       },
       {
         rootMargin: '100px 0px',
-        root: ref.current?.closest('.mds-popover')?.children[0],
+        root: ref.current?.closest('.mds-dropdown-scroll'),
       }
     );
 
@@ -372,9 +372,7 @@ export const Item = <T,>(props: Props<T>) => {
     const observer = new ResizeObserver((entries) => {
       const entry = entries.at(-1);
       if (!entry) return;
-      if (entry.contentRect.height > height) {
-        setHeight(entry.contentRect.height);
-      }
+      setHeight(entry.contentRect.height);
       if (entry.contentRect.width > width) {
         setWidth(entry.contentRect.width);
       }

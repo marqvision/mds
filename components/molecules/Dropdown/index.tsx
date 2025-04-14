@@ -29,6 +29,20 @@ import { getAllListIndex } from './@utils';
 
 export type MDSDropdownItem<T> = DropdownItem<T>;
 
+const StyledDropdownWrap = styled.div`
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledScrollSection = styled.div`
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+`;
+
 const StyledStickyTrigger = styled.div`
   height: 1px;
   flex: 0 0 1px;
@@ -37,17 +51,16 @@ const StyledStickyTrigger = styled.div`
 `;
 
 const StyledSticky = styled.div<{ isScrollTop: boolean }>`
-  position: sticky;
-  top: 0;
   padding: 8px;
   transition: 0.3s ease box-shadow;
   box-shadow: ${({ isScrollTop }) => (isScrollTop ? '0 1px 8px 0 #0000001f, 1px 2px 0 #0000000a;' : 'none')};
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: relative;
+  z-index: 10;
 `;
 
 const StyledStickyBottom = styled.button<{ isDisabled?: boolean }>`
@@ -389,8 +402,7 @@ const Dropdown = <T, SortT>(
   }, [hasSearchValue, hasCustomSearch, onSearching]);
 
   return (
-    <div ref={scrollOffsetRef}>
-      <StyledStickyTrigger ref={stickyTrigger} />
+    <StyledDropdownWrap>
       {isShowStickyHeader && (
         <StyledSticky isScrollTop={isScrollTop}>
           {hasSearch && (
@@ -441,28 +453,31 @@ const Dropdown = <T, SortT>(
           Search more than {customSearch?.minLength || DEFAULT_MIN_SEARCH_LETTERS} letters
         </MDSTypography2>
       )}
-      {!isSearchTooShort &&
-        list.map((v, index) => (
-          <Item<ValueType<T>>
-            key={`dropItem_0_${v.value ?? `${v.label}_${index}`}`}
-            parentIndex={`${index}`}
-            item={v}
-            indeterminate={indeterminate}
-            search={search}
-            isMultiple={isMultiple}
-            selectedValue={selectedValues}
-            is1DepthSingle={is1DepthSingle}
-            isInfiniteAll={isInfiniteAll}
-            onChange={onChange}
-            onClose={onClose}
-          />
-        ))}
-      {(infinite?.isLoading || isLoading) && (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '48px' }}>
-          <MDSLoadingIndicator size={24} strokeWidth={2} />
-        </div>
-      )}
-      {infinite && <div ref={infiniteRef} style={{ height: '1px' }} />}
+      <StyledScrollSection ref={scrollOffsetRef} className="mds-dropdown-scroll">
+        <StyledStickyTrigger ref={stickyTrigger} />
+        {!isSearchTooShort &&
+          list.map((v, index) => (
+            <Item<ValueType<T>>
+              key={`dropItem_0_${v.value ?? `${v.label}_${index}`}`}
+              parentIndex={`${index}`}
+              item={v}
+              indeterminate={indeterminate}
+              search={search}
+              isMultiple={isMultiple}
+              selectedValue={selectedValues}
+              is1DepthSingle={is1DepthSingle}
+              isInfiniteAll={isInfiniteAll}
+              onChange={onChange}
+              onClose={onClose}
+            />
+          ))}
+        {(infinite?.isLoading || isLoading) && (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '48px' }}>
+            <MDSLoadingIndicator size={24} strokeWidth={2} />
+          </div>
+        )}
+        {infinite && <div ref={infiniteRef} style={{ height: '1px' }} />}
+      </StyledScrollSection>
       {stickyBottom && (
         <>
           {stickyBottom.onClick ? (
@@ -512,7 +527,7 @@ const Dropdown = <T, SortT>(
           )}
         </>
       )}
-    </div>
+    </StyledDropdownWrap>
   );
 };
 
@@ -568,7 +583,9 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
       position={position}
       style={{
         ...props.style,
-        overflowX: 'hidden',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       {({ close, isOpen }) => {

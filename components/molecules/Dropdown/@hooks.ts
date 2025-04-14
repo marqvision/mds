@@ -66,6 +66,7 @@ export const useInitDropdown = <T, SortT>(
 
     return [];
   });
+  const [isCustomSearching, setIsCustomSearching] = useState(false);
   const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>([]);
 
   const lastValueRef = useRef<T | undefined>(value as T);
@@ -105,6 +106,7 @@ export const useInitDropdown = <T, SortT>(
   const labels = (() => {
     const isAllSelected =
       isMultiple &&
+      !isCustomSearching &&
       value.length !== 0 &&
       (value.length === selectableValue.length || (value.length === 1 && value[0] === -1));
 
@@ -297,6 +299,7 @@ export const useInitDropdown = <T, SortT>(
       change: handleChange,
       clear: handleClear,
       close: handleClose,
+      setIsCustomSearching,
     },
   };
 };

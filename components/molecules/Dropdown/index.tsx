@@ -118,6 +118,7 @@ const Dropdown = <T, SortT>(
     onMount: () => void;
     onUnmount: () => void;
     onClear: () => void;
+    onSearching: (isSearching: boolean) => void;
   }
 ) => {
   const {
@@ -134,13 +135,15 @@ const Dropdown = <T, SortT>(
     onClose,
     onMount,
     onUnmount,
+    onSearching,
   } = props;
 
-  const { _raw_color} = useTheme();
+  const { _raw_color } = useTheme();
 
   const stickyBottom = modules?.find((v) => typeof v === 'object' && v.type === 'bottom-button') as
     | BottomButtonModule<T>
     | undefined;
+  const hasCustomSearch = modules?.some((v) => typeof v === 'object' && v.type === 'search');
 
   const {
     search,
@@ -152,7 +155,7 @@ const Dropdown = <T, SortT>(
     value,
     list: _list,
     hasSort: modules?.includes('sort'),
-    hasCustomSearch: modules?.some((v) => typeof v === 'object' && v.type === 'search'),
+    hasCustomSearch,
     stickyItem:
       stickyBottom?.value !== undefined
         ? {
@@ -188,16 +191,15 @@ const Dropdown = <T, SortT>(
     (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-        ? 'indeterminate'
-        : false;
+      ? 'indeterminate'
+      : false;
   const isEmpty = list.length === 0 && !infinite?.isLoading && !isLoading;
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;
   const selectedCount = (isInfiniteAll ? allCount : selectedValues.length).toLocaleString();
+  const hasSearchValue = !!search.trim().length;
   const isSearchTooShort =
-    !!customSearch &&
-    search.trim().length !== 0 &&
-    search.trim().length < (customSearch.minLength || DEFAULT_MIN_SEARCH_LETTERS);
+    !!customSearch && hasSearchValue && search.trim().length < (customSearch.minLength || DEFAULT_MIN_SEARCH_LETTERS);
   const searchedCount = isSearchTooShort ? 0 : infinite?.total || searchedValues.length;
 
   const countLabel = (() => {
@@ -379,6 +381,12 @@ const Dropdown = <T, SortT>(
     }
     // intentionally omitting list
   }, [getAllListIndex, isFoldAll]);
+
+  useEffect(() => {
+    if (hasCustomSearch) {
+      onSearching(hasSearchValue);
+    }
+  }, [hasSearchValue, hasCustomSearch, onSearching]);
 
   return (
     <div ref={scrollOffsetRef}>
@@ -579,6 +587,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
               onClose={close}
               onMount={handleMount}
               onUnmount={handleUnmount}
+              onSearching={handler.setIsCustomSearching}
             />
           </Provider>
         );

@@ -1,7 +1,6 @@
 import { useState, MouseEvent, useEffect, cloneElement, useRef } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
-import { useTheme } from '@emotion/react';
 import { foldedItemIndexAtom } from '../@atoms';
 import { DropdownItem, SelectedType } from '../@types';
 import { MDSTypography2 } from '../../../atoms/Typography2';
@@ -10,7 +9,6 @@ import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTag } from '../../Tag';
 import { getValueFromList } from '../@utils';
 import { MDSTooltip } from '../../Tooltip';
-import { MDSTheme } from '../../../../types';
 import { HighLightLabel } from './HighlightLabel';
 
 type Props<T> = {
@@ -27,7 +25,7 @@ type Props<T> = {
   onClose: () => void;
 };
 
-const StyledWrap = styled.label<{ bgColor: string; isDisabled?: boolean }>`
+const StyledWrap = styled.label<{ colorDepth: 'default' | 'secondary' | 'tertiary'; isDisabled?: boolean }>`
   min-height: 48px;
   padding: 12px;
   display: flex;
@@ -35,10 +33,11 @@ const StyledWrap = styled.label<{ bgColor: string; isDisabled?: boolean }>`
   align-items: center;
   gap: 12px;
   cursor: ${({ isDisabled }) => (isDisabled ? undefined : 'pointer')};
-  background-color: ${({ bgColor }) => bgColor};
+  background-color: ${({ theme, colorDepth }) => theme.color.bg.surface.neutral[colorDepth].normal};
   transition: background-color 225ms ease;
   &:hover {
-    background-color: ${({ theme, isDisabled }) => (!isDisabled ? theme._raw_color.blue50 : undefined)};
+    background-color: ${({ theme, isDisabled, colorDepth }) =>
+      !isDisabled ? theme.color.bg.surface.neutral[colorDepth].hover : undefined};
   }
 `;
 
@@ -70,13 +69,20 @@ const StyledExpandIcon = styled.button<{ disabled?: boolean }>`
   padding: 0;
   background: transparent;
   cursor: ${({ disabled }) => (disabled ? undefined : 'pointer')};
-  transition: background-color 225ms ease;
+  transition: background-color 225ms ease, outline-color 225ms ease;
+  outline: 4px solid transparent;
   display: flex;
   align-items: center;
-  border-radius: 4px;
-  &:hover {
-    background-color: ${({ theme, disabled }) => (!disabled ? theme.color.content.inverse.default.hover : undefined)};
-  }
+  border-radius: 8px;
+  ${({ theme, disabled }) =>
+    disabled
+      ? undefined
+      : {
+          '&:hover': {
+            outlineColor: theme._raw_color.blackAlpha5,
+            backgroundColor: theme._raw_color.blackAlpha5,
+          },
+        }}
 `;
 
 const StyledImg = styled.img`
@@ -91,10 +97,7 @@ const StyledDivider = styled(MDSTypography2)`
   padding: 6px 12px;
 `;
 
-const getBackgroundColor = (_raw_color: MDSTheme['_raw_color'], value: number) => {
-  const BACKGROUND_COLOR = [_raw_color.white, _raw_color.bluegray50, _raw_color.bluegray100, _raw_color.bluegray150];
-  return BACKGROUND_COLOR[value];
-};
+const COLOR_DEPTH = ['default', 'secondary', 'tertiary'] as const;
 
 export const ItemInnerComponent = <T,>(props: Props<T>) => {
   const {
@@ -108,8 +111,6 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     onChange,
     onClose,
   } = props;
-
-  const { _raw_color } = useTheme();
 
   const [foldedIndex, setFoldedIndex] = useAtom(foldedItemIndexAtom);
 
@@ -242,9 +243,9 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
     <>
       <StyledWrap
         isDisabled={item.isDisabled}
-        bgColor={getBackgroundColor(_raw_color, Math.min(depth, 2))}
+        colorDepth={COLOR_DEPTH[Math.min(depth, 2)]}
         onClick={handleClick}
-        style={{ paddingLeft: depth * 32 + 12 }}
+        style={{ paddingLeft: depth * 36 + 12 }}
       >
         <StyledLabel>
           {isMultiple && (

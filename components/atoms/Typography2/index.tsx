@@ -1,9 +1,8 @@
 import { ElementType } from 'react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../utils/resolvers';
+import { resolveColor, resolveFontSize } from '../../../utils';
 import {
   resolveFontFamily,
-  resolveFontSize,
   resolveFontWeightLetterSpacing,
   resolveLineClamp,
   resolveTagName,

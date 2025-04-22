@@ -1,6 +1,5 @@
 import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
-import { resolveFontSize, resolveFontWeight as resolveFontWeightStyles } from '../../atoms/Typography/@utils';
 import { MDSTypography2 } from '../../atoms/Typography2';
 import { theme } from './@constants';
 import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
@@ -8,15 +7,6 @@ import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps 
 const Wrapper = styled.td<StyledTableCellProps>`
   padding: 0;
   box-sizing: content-box;
-  ${() => {
-    const fontSize = resolveFontSize('T14');
-    const fontWeightStyles = resolveFontWeightStyles('regular');
-
-    return `
-      font-size: ${fontSize};
-      ${fontWeightStyles};
-    `;
-  }}
   ${({ onClick }) => onClick && 'cursor: pointer;'}
   ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
   ${({ maxWidth }) => maxWidth && `width: ${maxWidth};`}

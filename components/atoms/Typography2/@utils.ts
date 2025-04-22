@@ -23,15 +23,6 @@ export const resolveTagName = (
   return 'p';
 };
 
-export const resolveFontSize = (theme: MDSTheme, features: InnerTypographyStyleProps) => {
-  if (features.variant === 'title') {
-    const size = features.size as TitleSize;
-    return theme.comp.typography.title.size[size];
-  } else if (features.variant === 'body') {
-    const size = features.size as BodySize;
-    return theme.comp.typography.body.size[size];
-  }
-};
 export const resolveFontWeightLetterSpacing = (
   theme: MDSTheme,
   features: Pick<InnerTypographyStyleProps, 'variant' | 'weight' | 'size'>

@@ -1,5 +1,4 @@
 export * from './atoms/Icon';
-export * from './atoms/Typography';
 export * from './atoms/Typography2';
 export * from './molecules/SelectContainer';
 export * from './organisms/Modal';

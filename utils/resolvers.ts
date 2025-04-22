@@ -1,7 +1,11 @@
 import { _MDSThemeValue } from '../foundation';
 import { MDSTheme, Path } from '../types';
+import { BodySize, InnerTypographyStyleProps, TitleSize } from '../components';
 
-// todo-@jamie: [PROD-13664] ThemeProvider의 값을 사용하도록 수정해야함
+/**
+* @deprecated
+* todo-@jamie: [PROD-13664] ThemeProvider의 값을 사용하도록 수정해야함
+**/
 export const resolveColor = (color: Path<MDSTheme>) => {
   const tokens = color.split('/') || [];
   
@@ -27,4 +31,17 @@ export const resolveColor = (color: Path<MDSTheme>) => {
   }
 
   return result;
+};
+
+/**
+ * Typography props 로 실제 폰트 사이즈를 반환합니다.
+ */
+export const resolveFontSize = (theme: MDSTheme, features: InnerTypographyStyleProps) => {
+  if (features.variant === 'title') {
+    const size = features.size as TitleSize;
+    return theme.comp.typography.title.size[size];
+  } else if (features.variant === 'body') {
+    const size = features.size as BodySize;
+    return theme.comp.typography.body.size[size];
+  }
 };

@@ -57,15 +57,6 @@ export const useInitDropdown = <T, SortT>(
 ) => {
   const { value, list, indeterminate: _indeterminate, onSelect, closeRef } = props;
 
-  const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>(() => {
-    if (value !== undefined) {
-      return Array.isArray(value)
-        ? value.map((v) => ({ label: list.find((item) => item.value === v)?.label || v, value: v }))
-        : [{ label: value, value }];
-    }
-
-    return [];
-  });
   const [isCustomSearching, setIsCustomSearching] = useState(false);
   const [indeterminate, setIndeterminate] = useState<ValueType<T>[]>([]);
 
@@ -98,6 +89,17 @@ export const useInitDropdown = <T, SortT>(
         ]
       : []),
   ];
+
+  const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>(() => {
+    if (value !== undefined) {
+      return Array.isArray(value)
+        ? value.map((v) => ({ label: flatItems.find((item) => item.value === v)?.label || v, value: v }))
+        : [{ label: value, value }];
+    }
+
+    return [];
+  });
+
   const hasList = list.length > 0;
   const is1DepthSingle = props.modules?.includes('1-depth-single');
 
@@ -122,8 +124,13 @@ export const useInitDropdown = <T, SortT>(
     );
   })();
 
-  const returnObj = (
-    Array.isArray(value) ? list.filter((v) => value.includes(v.value)) : list.find((v) => v.value === value)
+  const selectedItems = (
+    Array.isArray(value)
+      ? value.map((v) => ({
+          label: flatItems.find((item) => item.value === v)?.label || v,
+          value: v,
+        }))
+      : flatItems.find((v) => v.value === value) || { label: value, value }
   ) as ObjType<T>;
 
   const handleClose = () => {
@@ -294,7 +301,7 @@ export const useInitDropdown = <T, SortT>(
     selectableValue,
     indeterminate,
     labels,
-    returnObj,
+    selectedItems,
     handler: {
       change: handleChange,
       clear: handleClear,

@@ -108,7 +108,7 @@ export type Props<T, SortT = unknown> = {
   isFoldAll?: boolean;
   onChange?: (value: InferType<T>, indeterminate?: InferType<T>) => void;
   onSelect?: (value: ValueType<T>[], selectedValues: ValueType<T>[], isSelected: boolean) => ValueType<T>[];
-  renderAnchor?: (value: T | undefined, returnObj: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
+  renderAnchor?: (value: T | undefined, selectedItems: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
   style?: CSSProperties;
   position?: PopoverPosition;
 };

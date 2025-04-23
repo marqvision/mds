@@ -451,7 +451,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
 
   const closeRef = useRef<() => void>();
 
-  const { selectedValues, selectableValue, indeterminate, labels, returnObj, handler } = useInitDropdown<T, SortT>({
+  const { selectedValues, selectableValue, indeterminate, labels, selectedItems, handler } = useInitDropdown<T, SortT>({
     ...restProps,
     closeRef,
   });
@@ -462,7 +462,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
   const ref = useRef<EventTarget & Element>(null);
 
   const anchor = renderAnchor ? (
-    renderAnchor(value, returnObj, list)
+    renderAnchor(value, selectedItems, list)
   ) : (
     <FilterChip
       label={props.label || ''}

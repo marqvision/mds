@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { PropsWithChildren } from 'react';
 import { useState } from '@storybook/preview-api';
 import { MDSChip, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../components';
 import { StatusList } from './@constants';
+import { Wrapper } from './@components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDropdown> = {
@@ -18,23 +18,7 @@ const meta: Meta<typeof MDSDropdown> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof MDSDropdown>;
-
-const Wrapper = ({ children }: PropsWithChildren) => {
-  return (
-    <div
-      style={{
-        padding: '24px',
-        display: 'flex',
-        gap: '12px',
-        flexDirection: 'column',
-        height: '100vh',
-      }}
-    >
-      {children}
-    </div>
-  );
-};
+export type Story = StoryObj<typeof MDSDropdown>;
 
 const tag = (
   <MDSTag variant="tint" color="yellow" size="medium">
@@ -50,7 +34,7 @@ export const DropdownSingle: Story = {
       'sort',
       'search',
       {
-        type: 'bottom-button',
+        type: 'sticky-bottom',
         label: 'Sticky bottom button',
         icon: icon,
         preventClose: true,
@@ -96,7 +80,7 @@ export const DropdownSingle: Story = {
 
     const text = `
       {
-        type: 'bottom-button',
+        type: 'sticky-bottom',
         label: 'Sticky bottom button',
         icon: icon,
         isDisabled?: boolean,
@@ -560,7 +544,7 @@ export const SubLabel: Story = {
           modules={[
             'search',
             {
-              type: 'bottom-button',
+              type: 'sticky-bottom',
               label: [...Array(1)].map(() => 'LONG_TEXT').join(','),
               icon,
               onClick: () => {

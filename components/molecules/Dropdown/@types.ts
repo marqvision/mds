@@ -30,7 +30,14 @@ export type InferType<T> = T extends (infer U)[] ? U[] : T;
 export type ValueType<T> = T extends (infer U)[] ? U : T;
 export type ObjType<T> = T extends (infer U)[] ? DropdownItem<ValueType<U>>[] : DropdownItem<ValueType<T>>;
 
-export type ModuleType = 'search' | 'sort' | 'infinite' | 'bottom-button' | 'custom-sub-label' | 'on-select';
+export type ModuleType =
+  | 'search'
+  | 'sort'
+  | 'infinite'
+  | 'sticky-bottom'
+  | 'sticky-top'
+  | 'custom-sub-label'
+  | 'on-select';
 
 /**
  * @property [minLength] default `2`
@@ -60,19 +67,32 @@ export type InfiniteModule = {
   hasNextPage?: boolean;
 };
 
-export type BottomButtonModule<T> = {
-  type: 'bottom-button';
+export type StickyBottomModule<T> = {
+  type: 'sticky-bottom';
+} & (StickyBottomElementType | StickyBottomItemType<T>);
+
+export type StickyBottomElementType = {
+  element: ReactElement;
+};
+
+export type StickyBottomItemType<T> = {
   icon?: ReactElement;
   label: string;
   rightSection?: ReactElement;
   isDisabled?: boolean;
   // onClick 이후 해당 드롭다운이 닫힐지 닫히지 않을지 (default: false)
   preventClose?: boolean;
+  element?: never;
 } & ({ onClick: () => void; value?: undefined } | { value: ValueType<T>; onClick?: undefined });
+
+export type StickyTopModule = {
+  type: 'sticky-top';
+  element: ReactElement;
+};
 
 export type CustomModule<T> = {
   type: ModuleType;
-} & (SearchModule | SortModule<T> | InfiniteModule | BottomButtonModule<T>);
+} & (SearchModule | SortModule<T> | InfiniteModule | StickyBottomModule<T> | StickyTopModule);
 
 export type Module<T> = 'search' | 'sort' | '1-depth-single' | 'hide-select-all' | CustomModule<T>;
 

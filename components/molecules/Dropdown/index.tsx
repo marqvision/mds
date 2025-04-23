@@ -1,7 +1,6 @@
-import { cloneElement, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { Provider, useSetAtom } from 'jotai';
 import styled from '@emotion/styled';
-import { useTheme } from '@emotion/react';
 import { MDSPopover } from '../Popover';
 import { MDSTypography } from '../../atoms/Typography';
 import { MDSCheckbox } from '../../atoms/Checkbox';
@@ -10,7 +9,6 @@ import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { Item } from './@components/Item';
 import { useDropdown, useInitDropdown } from './@hooks';
 import {
-  BottomButtonModule,
   DropdownItem,
   InferType,
   InfiniteModule,
@@ -19,6 +17,8 @@ import {
   SelectedType,
   SortModule,
   SortType,
+  StickyBottomModule,
+  StickyTopModule,
   ValueType,
 } from './@types';
 import { FilterChip } from './@components/FilterChip';
@@ -26,6 +26,7 @@ import { Search } from './@components/Search';
 import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constants';
 import { foldedItemIndexAtom } from './@atoms';
 import { getAllListIndex } from './@utils';
+import { StickyBottom } from './@components/StickyBottom';
 
 export type MDSDropdownItem<T> = DropdownItem<T>;
 
@@ -51,32 +52,19 @@ const StyledStickyTrigger = styled.div`
 `;
 
 const StyledSticky = styled.div<{ isScrollTop: boolean }>`
-  padding: 8px;
   transition: 0.3s ease box-shadow;
   box-shadow: ${({ isScrollTop }) => (isScrollTop ? '0 1px 8px 0 #0000001f, 1px 2px 0 #0000000a;' : 'none')};
   border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
   background-color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
   position: relative;
   z-index: 10;
 `;
 
-const StyledStickyBottom = styled.button<{ isDisabled?: boolean }>`
-  position: sticky;
-  bottom: 0;
-  width: 100%;
-  border: none;
-  border-top: 1px solid ${({ theme }) => theme._raw_color.bluegray150};
-  text-align: left;
-  padding: 11px 16px 12px;
-  min-height: 48px;
+const StyledStickyContent = styled.div`
+  padding: 8px;
   display: flex;
-  align-items: center;
-  gap: 4px;
-  cursor: ${({ isDisabled }) => (isDisabled ? 'default' : 'pointer')};
-  background-color: white;
+  flex-direction: column;
+  gap: 12px;
 `;
 
 const StyledAction = styled.div`
@@ -116,11 +104,6 @@ const StyledSort = styled.button`
   }
 `;
 
-const StyledStickyRightSection = styled.div`
-  margin-left: auto;
-  flex-shrink: 0;
-`;
-
 const Dropdown = <T, SortT>(
   props: Omit<Props<T, SortT>, 'renderAnchor' | 'onChange' | 'indeterminate'> & {
     indeterminate: ValueType<T>[];
@@ -151,10 +134,11 @@ const Dropdown = <T, SortT>(
     onSearching,
   } = props;
 
-  const { _raw_color } = useTheme();
-
-  const stickyBottom = modules?.find((v) => typeof v === 'object' && v.type === 'bottom-button') as
-    | BottomButtonModule<T>
+  const stickyBottom = modules?.find(
+    (v) => typeof v === 'object' && v.type === 'sticky-bottom'
+  ) as StickyBottomModule<T>;
+  const stickyTopElement = modules?.find((v) => typeof v === 'object' && v.type === 'sticky-top') as
+    | StickyTopModule
     | undefined;
   const hasCustomSearch = modules?.some((v) => typeof v === 'object' && v.type === 'search');
 
@@ -169,13 +153,15 @@ const Dropdown = <T, SortT>(
     list: _list,
     hasSort: modules?.includes('sort'),
     hasCustomSearch,
-    stickyItem:
-      stickyBottom?.value !== undefined
-        ? {
-            label: stickyBottom.label,
-            value: stickyBottom.value,
-          }
-        : undefined,
+    stickyItem: (() => {
+      if (!stickyBottom || stickyBottom.element || stickyBottom.value === undefined) {
+        return undefined;
+      }
+      return {
+        label: stickyBottom.label,
+        value: stickyBottom.value,
+      };
+    })(),
   });
 
   const [isScrollTop, setIsScrollTop] = useState(false);
@@ -255,28 +241,6 @@ const Dropdown = <T, SortT>(
     />
   );
 
-  const stickyBottomIcon = stickyBottom?.icon
-    ? cloneElement(stickyBottom.icon, {
-        size: stickyBottom.icon.props.size || 16,
-        color: stickyBottom.isDisabled
-          ? 'color/content/primary/default/disabled'
-          : 'color/content/primary/default/normal',
-        style: { flexShrink: 0 },
-      })
-    : undefined;
-
-  const stickyBottomRightSection = stickyBottom?.rightSection
-    ? cloneElement(stickyBottom.rightSection, {
-        onClick: (event: MouseEvent) => {
-          event.stopPropagation();
-          stickyBottom.rightSection?.props.onClick?.();
-          if (!stickyBottom?.preventClose) {
-            onClose();
-          }
-        },
-      })
-    : undefined;
-
   const handleChangeSearch = (s: string) => {
     if (customSearch) {
       const minLength = customSearch.minLength || DEFAULT_MIN_SEARCH_LETTERS;
@@ -301,16 +265,6 @@ const Dropdown = <T, SortT>(
     handler.search(s);
   };
 
-  const handleClickStickyBottom = () => {
-    if (stickyBottom?.isDisabled) {
-      return;
-    }
-    stickyBottom?.onClick?.();
-    if (!stickyBottom?.preventClose) {
-      onClose();
-    }
-  };
-
   const handleSelectAll = () => {
     if (infinite) {
       onChange(
@@ -329,6 +283,16 @@ const Dropdown = <T, SortT>(
     } else {
       onChange(selectableValues, !isSelectedAll);
     }
+  };
+
+  const itemProps = {
+    indeterminate: indeterminate,
+    isMultiple: isMultiple,
+    selectedValue: selectedValues,
+    is1DepthSingle: is1DepthSingle,
+    isInfiniteAll: isInfiniteAll,
+    onChange: onChange,
+    onClose: onClose,
   };
 
   useEffect(() => {
@@ -405,30 +369,33 @@ const Dropdown = <T, SortT>(
     <StyledDropdownWrap>
       {isShowStickyHeader && (
         <StyledSticky isScrollTop={isScrollTop}>
-          {hasSearch && (
-            <Search
-              placeholder={customSearch?.placeholder}
-              prefix={customSearch?.prefix}
-              onChange={handleChangeSearch}
-            />
-          )}
-          {(isMultiple || hasSort) && !hideSelectAllAndCount && (
-            <StyledAction>
-              <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
-                {!hideSelectAll && isMultiple && (
-                  <MDSCheckbox
-                    isDisabled={selectableValues.length === 0 || isSearchTooShort}
-                    value={isSelectedAll}
-                    onChange={handleSelectAll}
-                  />
-                )}
-                <MDSTypography variant="body" size="m" weight="medium">
-                  {countLabel}
-                </MDSTypography>
-              </StyledSelectAll>
-              {hasSort && sortEle}
-            </StyledAction>
-          )}
+          <StyledStickyContent>
+            {hasSearch && (
+              <Search
+                placeholder={customSearch?.placeholder}
+                prefix={customSearch?.prefix}
+                onChange={handleChangeSearch}
+              />
+            )}
+            {(isMultiple || hasSort) && !hideSelectAllAndCount && (
+              <StyledAction>
+                <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
+                  {!hideSelectAll && isMultiple && (
+                    <MDSCheckbox
+                      isDisabled={selectableValues.length === 0 || isSearchTooShort}
+                      value={isSelectedAll}
+                      onChange={handleSelectAll}
+                    />
+                  )}
+                  <MDSTypography variant="body" size="m" weight="medium">
+                    {countLabel}
+                  </MDSTypography>
+                </StyledSelectAll>
+                {hasSort && sortEle}
+              </StyledAction>
+            )}
+          </StyledStickyContent>
+          {stickyTopElement?.element}
         </StyledSticky>
       )}
       {isEmpty && (
@@ -461,14 +428,8 @@ const Dropdown = <T, SortT>(
               key={`dropItem_0_${v.value ?? `${v.label}_${index}`}`}
               parentIndex={`${index}`}
               item={v}
-              indeterminate={indeterminate}
               search={search}
-              isMultiple={isMultiple}
-              selectedValue={selectedValues}
-              is1DepthSingle={is1DepthSingle}
-              isInfiniteAll={isInfiniteAll}
-              onChange={onChange}
-              onClose={onClose}
+              {...itemProps}
             />
           ))}
         {(infinite?.isLoading || isLoading) && (
@@ -478,55 +439,7 @@ const Dropdown = <T, SortT>(
         )}
         {infinite && <div ref={infiniteRef} style={{ height: '1px' }} />}
       </StyledScrollSection>
-      {stickyBottom && (
-        <>
-          {stickyBottom.onClick ? (
-            <StyledStickyBottom isDisabled={stickyBottom.isDisabled} onClick={handleClickStickyBottom}>
-              {stickyBottomIcon}
-              <MDSTypography
-                variant="body"
-                size="m"
-                weight="medium"
-                color={
-                  stickyBottom.isDisabled
-                    ? 'color/content/primary/default/disabled'
-                    : 'color/content/primary/default/normal'
-                }
-                whiteSpace="pre-wrap"
-                wordBreak="break-word"
-              >
-                {stickyBottom.label}
-              </MDSTypography>
-              {stickyBottomRightSection && (
-                <StyledStickyRightSection>{stickyBottomRightSection}</StyledStickyRightSection>
-              )}
-            </StyledStickyBottom>
-          ) : (
-            <Item<ValueType<T>>
-              item={{
-                label: stickyBottom.label,
-                value: stickyBottom.value,
-                rightSection: stickyBottom.rightSection,
-                isDisabled: stickyBottom.isDisabled,
-                icon: stickyBottom.icon,
-                style: {
-                  position: 'sticky',
-                  bottom: 0,
-                  borderTop: `1px solid ${_raw_color.bluegray150}`,
-                },
-              }}
-              indeterminate={indeterminate}
-              search={''}
-              isMultiple={isMultiple}
-              selectedValue={selectedValues}
-              is1DepthSingle={is1DepthSingle}
-              isInfiniteAll={isInfiniteAll}
-              onChange={onChange}
-              onClose={onClose}
-            />
-          )}
-        </>
-      )}
+      {stickyBottom && <StickyBottom item={stickyBottom} {...itemProps} />}
     </StyledDropdownWrap>
   );
 };

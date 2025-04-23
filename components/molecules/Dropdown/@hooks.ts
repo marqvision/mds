@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, MutableRefObject } from 'react';
 import {
-  BottomButtonModule,
+  StickyBottomItemType,
   DropdownItem,
   InferType,
   ObjType,
@@ -73,8 +73,8 @@ export const useInitDropdown = <T, SortT>(
 
   const isMultiple = Array.isArray(value);
   const stickyItem = props.modules?.find(
-    (v) => typeof v === 'object' && v.type === 'bottom-button' && v.value !== undefined
-  ) as BottomButtonModule<T> | undefined;
+    (v) => typeof v === 'object' && v.type === 'sticky-bottom' && !v.element && v.value !== undefined
+  ) as StickyBottomItemType<T> | undefined;
 
   const flatItems = [
     ...flattenDropdown(list),

@@ -1,6 +1,6 @@
 import { _MDSThemeValue } from '../foundation';
 import { MDSTheme, Path } from '../types';
-import { BodySize, MDSTypographyProps2, TitleSize } from '../components';
+import { BodySize, MDSTypographyProps, TitleSize } from '../components';
 
 /**
  * @deprecated
@@ -38,7 +38,7 @@ export const resolveColor = (color: Path<MDSTheme>) => {
  */
 export const resolveFontSize = (
   theme: MDSTheme,
-  features: Pick<MDSTypographyProps2, 'variant' | 'size'>
+  features: Pick<MDSTypographyProps, 'variant' | 'size'>
 ) => {
   if (features.variant === 'title') {
     const size = features.size as TitleSize;

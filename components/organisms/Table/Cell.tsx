@@ -1,6 +1,6 @@
 import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
-import { MDSTypography2 } from '../../atoms/Typography2';
+import { MDSTypography } from '../../atoms/Typography';
 import { theme } from './@constants';
 import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
 
@@ -67,7 +67,7 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
   return (
     <Wrapper ref={ref} valign={valign} {...restProps}>
       <CellBox cellSize={cellSize} align={align}>
-        <MDSTypography2
+        <MDSTypography
           as={typeof children !== 'string' && typeof children !== 'number' ? 'div' : undefined}
           variant="body"
           size="m"
@@ -75,7 +75,7 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
           weight={weight}
         >
           {children}
-        </MDSTypography2>
+        </MDSTypography>
       </CellBox>
     </Wrapper>
   );

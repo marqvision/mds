@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { InputStatus, Size } from '../@types';
 import { MDSIcon } from '../../../atoms/Icon';
-import { MDSTypography2 } from '../../../atoms/Typography2';
-import { getTypographyProps } from '../../../atoms/Typography2/@utils';
+import { MDSTypography } from '../../../atoms/Typography';
+import { getTypographyProps } from '../../../atoms/Typography/@utils';
 
 type Props = {
   label?: string;
@@ -81,9 +81,9 @@ export const Guide = (props: Props) => {
     <StyledWrap customSize={size}>
       {Icon}
       {/* @ts-expect-error - variant=title/body에 따라 사용 가능한 size가 상이해서 에러 발생함. 추후 수정 필요 */}
-      <MDSTypography2 variant={typographyProps.variant} size={typographyProps.size} weight="medium" color={fontColor}>
+      <MDSTypography variant={typographyProps.variant} size={typographyProps.size} weight="medium" color={fontColor}>
         {label}
-      </MDSTypography2>
+      </MDSTypography>
     </StyledWrap>
   );
 };

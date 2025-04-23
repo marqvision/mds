@@ -1,6 +1,6 @@
 import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
-import { MDSTypography2 } from '../../atoms/Typography2';
+import { MDSTypography } from '../../atoms/Typography';
 import { MDSIcon } from '../../atoms/Icon';
 import { getCorrectContainerStyle, getLayoutStyle, getSizeStyle } from './@utils';
 import {
@@ -138,9 +138,9 @@ const Item = <T extends string | number>({
       <SelectContainerItemContentStyles>
         <SelectContainerTitleStyles>
           {title.icon}
-          <MDSTypography2 variant="title" size="s" weight="semibold" color={title.color}>
+          <MDSTypography variant="title" size="s" weight="semibold" color={title.color}>
             {title.label}
-          </MDSTypography2>
+          </MDSTypography>
           {title.tag}
         </SelectContainerTitleStyles>
         {content}

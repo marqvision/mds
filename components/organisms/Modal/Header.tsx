@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../atoms/Icon';
-import { MDSTypography2 } from '../../atoms/Typography2';
+import { MDSTypography } from '../../atoms/Typography';
 import { Context } from './index';
 import { ModalHeaderProps, StyledModalHeaderProps } from './@types';
 
@@ -44,9 +44,9 @@ export const Header = (props: ModalHeaderProps) => {
     <Wrapper isBorderBottom={isBorderBottom} isScrollTop={isScrollTop}>
       <Title>
         {icon}
-        <MDSTypography2 variant="title" size="xl" weight="semibold" as={titleTag}>
+        <MDSTypography variant="title" size="xl" weight="semibold" as={titleTag}>
           {children}
-        </MDSTypography2>
+        </MDSTypography>
       </Title>
 
       <RightSide>

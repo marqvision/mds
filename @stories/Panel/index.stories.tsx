@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useArgs, useState, useEffect } from '@storybook/preview-api';
-import { MDSChip, MDSModal, MDSPanel, MDSTypography2 } from '../../components';
+import { MDSChip, MDSModal, MDSPanel, MDSTypography } from '../../components';
 import { Doc } from './Doc';
 
 const meta: Meta<typeof MDSPanel.Wrapper> = {
@@ -50,15 +50,15 @@ export const DimmedPanel: StoryObj<typeof MDSPanel.Wrapper> = {
           <MDSPanel.Header onClose={handleClose}>Title</MDSPanel.Header>
           <MDSPanel.Content style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {[...Array(20)].map((_, index) => (
-              <MDSTypography2 key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
+              <MDSTypography key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
                 ReactElement {index}
-              </MDSTypography2>
+              </MDSTypography>
             ))}
           </MDSPanel.Content>
           <MDSPanel.Action justifyContent="space-between">
-            <MDSTypography2 weight="medium" onClick={handleClose} style={{ cursor: 'pointer' }}>
+            <MDSTypography weight="medium" onClick={handleClose} style={{ cursor: 'pointer' }}>
               Close
-            </MDSTypography2>
+            </MDSTypography>
             <MDSChip variant="fill" size="large" color="blue" onClick={() => setIsOpen2(true)}>
               Open 2depth panel
             </MDSChip>
@@ -68,15 +68,15 @@ export const DimmedPanel: StoryObj<typeof MDSPanel.Wrapper> = {
           <MDSPanel.Header onClose={handleClose2}>Title</MDSPanel.Header>
           <MDSPanel.Content style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {[...Array(20)].map((_, index) => (
-              <MDSTypography2 key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
+              <MDSTypography key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
                 ReactElement {index}
-              </MDSTypography2>
+              </MDSTypography>
             ))}
           </MDSPanel.Content>
           <MDSPanel.Action justifyContent="space-between">
-            <MDSTypography2 weight="medium" onClick={handleClose2} style={{ cursor: 'pointer' }}>
+            <MDSTypography weight="medium" onClick={handleClose2} style={{ cursor: 'pointer' }}>
               Close
-            </MDSTypography2>
+            </MDSTypography>
             <MDSChip variant="fill" size="large" color="blue" onClick={() => setIsModal(true)}>
               Open modal
             </MDSChip>
@@ -86,19 +86,19 @@ export const DimmedPanel: StoryObj<typeof MDSPanel.Wrapper> = {
           <MDSModal.Header onClose={() => setIsModal(false)}>Modal</MDSModal.Header>
           <MDSModal.Content>
             {[...Array(10)].map((_, index) => (
-              <MDSTypography2 key={index}>
+              <MDSTypography key={index}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
                 dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet,
                 consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </MDSTypography2>
+              </MDSTypography>
             ))}
           </MDSModal.Content>
           <MDSModal.Action justifyContent="space-between">
-            <MDSTypography2 weight="medium" onClick={() => setIsModal(false)} style={{ cursor: 'pointer' }}>
+            <MDSTypography weight="medium" onClick={() => setIsModal(false)} style={{ cursor: 'pointer' }}>
               Close
-            </MDSTypography2>
+            </MDSTypography>
             <MDSChip variant="fill" size="large" color="blue" onClick={() => alert('no event')}>
               Action
             </MDSChip>
@@ -137,7 +137,7 @@ export const SplitPanel: StoryObj<typeof MDSPanel.Wrapper> = {
     return (
       <div style={{ display: 'flex', height: '100vh', paddingTop: '20px' }}>
         <div style={{ flex: 'auto', backgroundColor: '#FFF', borderRadius: '16px 16px 0 0', padding: '16px' }}>
-          <MDSTypography2>
+          <MDSTypography>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
@@ -146,7 +146,7 @@ export const SplitPanel: StoryObj<typeof MDSPanel.Wrapper> = {
             amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
             ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
             magna aliqua.
-          </MDSTypography2>
+          </MDSTypography>
           <br />
           <button onClick={() => setArgs({ isOpen: !isOpen })}>Toggle</button>
         </div>
@@ -154,15 +154,15 @@ export const SplitPanel: StoryObj<typeof MDSPanel.Wrapper> = {
           <MDSPanel.Header onClose={handleClose}>Title</MDSPanel.Header>
           <MDSPanel.Content style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {[...Array(20)].map((_, index) => (
-              <MDSTypography2 key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
+              <MDSTypography key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
                 ReactElement {index}
-              </MDSTypography2>
+              </MDSTypography>
             ))}
           </MDSPanel.Content>
           <MDSPanel.Action justifyContent="space-between">
-            <MDSTypography2 weight="medium" onClick={handleClose} style={{ cursor: 'pointer' }}>
+            <MDSTypography weight="medium" onClick={handleClose} style={{ cursor: 'pointer' }}>
               Close
-            </MDSTypography2>
+            </MDSTypography>
             <MDSChip variant="fill" size="large" color="blue" onClick={() => alert('no action')}>
               Action
             </MDSChip>
@@ -201,9 +201,9 @@ export const PanelDirection: StoryObj<typeof MDSPanel.Wrapper> = {
         <MDSPanel.Header onClose={handleClose}>Title</MDSPanel.Header>
         <MDSPanel.Content style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {[...Array(5)].map((_, index) => (
-            <MDSTypography2 key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
+            <MDSTypography key={index} style={{ border: '1px solid #eee', padding: '16px' }}>
               ReactElement {index}
-            </MDSTypography2>
+            </MDSTypography>
           ))}
         </MDSPanel.Content>
       </MDSPanel.Wrapper>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSDivider, MDSTypography2 } from '../components';
+import { MDSDivider, MDSTypography } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDivider> = {
@@ -32,7 +32,7 @@ export const Horizontal: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography2>수평 형태로 출력합니다. (기본형)</MDSTypography2>
+      <MDSTypography>수평 형태로 출력합니다. (기본형)</MDSTypography>
       <MDSDivider {...props} />
     </Wrapper>
   ),
@@ -45,7 +45,7 @@ export const Vertical: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography2>수직 형태로 출력합니다.</MDSTypography2>
+      <MDSTypography>수직 형태로 출력합니다.</MDSTypography>
       <MDSDivider {...props} />
     </Wrapper>
   ),
@@ -57,7 +57,7 @@ export const Weak: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography2>연한 색상으로 출력합니다.</MDSTypography2>
+      <MDSTypography>연한 색상으로 출력합니다.</MDSTypography>
       <MDSDivider {...props} />
     </Wrapper>
   ),
@@ -69,7 +69,7 @@ export const Strong: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography2>진한 색상으로 출력합니다.</MDSTypography2>
+      <MDSTypography>진한 색상으로 출력합니다.</MDSTypography>
       <MDSDivider {...props} />
     </Wrapper>
   ),
@@ -84,7 +84,7 @@ export const Thickness: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>두께(dot 의 경우 크기)를 조절할 수 있습니다.</MDSTypography2>
+        <MDSTypography>두께(dot 의 경우 크기)를 조절할 수 있습니다.</MDSTypography>
         <MDSDivider variant="line" length={length} intensity={intensity} {...restProps} />
         <MDSDivider variant="dot" {...restProps} />
       </Wrapper>
@@ -99,7 +99,7 @@ export const Length: Story = {
   },
   render: (props) => (
     <Wrapper>
-      <MDSTypography2>line 의 길이를 조절할 수 있습니다.</MDSTypography2>
+      <MDSTypography>line 의 길이를 조절할 수 있습니다.</MDSTypography>
       <MDSDivider {...props} />
       <MDSDivider variant="line" orientation="vertical" {...props} />
     </Wrapper>
@@ -115,7 +115,7 @@ export const CustomColor: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>divider 기본 지정 컬러 외 다른 컬러를 적용할 수 있습니다.</MDSTypography2>
+        <MDSTypography>divider 기본 지정 컬러 외 다른 컬러를 적용할 수 있습니다.</MDSTypography>
         <MDSDivider variant="line" length={length} {...restProps} />
         <MDSDivider variant="dot" thickness={5} {...restProps} />
       </Wrapper>

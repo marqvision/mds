@@ -3,7 +3,7 @@ import { Provider, useSetAtom } from 'jotai';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import { MDSPopover } from '../Popover';
-import { MDSTypography2 } from '../../atoms/Typography2';
+import { MDSTypography } from '../../atoms/Typography';
 import { MDSCheckbox } from '../../atoms/Checkbox';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
@@ -422,9 +422,9 @@ const Dropdown = <T, SortT>(
                     onChange={handleSelectAll}
                   />
                 )}
-                <MDSTypography2 variant="body" size="m" weight="medium">
+                <MDSTypography variant="body" size="m" weight="medium">
                   {countLabel}
-                </MDSTypography2>
+                </MDSTypography>
               </StyledSelectAll>
               {hasSort && sortEle}
             </StyledAction>
@@ -432,7 +432,7 @@ const Dropdown = <T, SortT>(
         </StyledSticky>
       )}
       {isEmpty && (
-        <MDSTypography2
+        <MDSTypography
           variant="body"
           size="m"
           weight="regular"
@@ -440,10 +440,10 @@ const Dropdown = <T, SortT>(
           style={{ height: '48px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
         >
           No results
-        </MDSTypography2>
+        </MDSTypography>
       )}
       {isSearchTooShort && (
-        <MDSTypography2
+        <MDSTypography
           variant="body"
           size="m"
           weight="regular"
@@ -451,7 +451,7 @@ const Dropdown = <T, SortT>(
           style={{ height: '48px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
         >
           Search more than {customSearch?.minLength || DEFAULT_MIN_SEARCH_LETTERS} letters
-        </MDSTypography2>
+        </MDSTypography>
       )}
       <StyledScrollSection ref={scrollOffsetRef} className="mds-dropdown-scroll">
         <StyledStickyTrigger ref={stickyTrigger} />
@@ -483,7 +483,7 @@ const Dropdown = <T, SortT>(
           {stickyBottom.onClick ? (
             <StyledStickyBottom isDisabled={stickyBottom.isDisabled} onClick={handleClickStickyBottom}>
               {stickyBottomIcon}
-              <MDSTypography2
+              <MDSTypography
                 variant="body"
                 size="m"
                 weight="medium"
@@ -496,7 +496,7 @@ const Dropdown = <T, SortT>(
                 wordBreak="break-word"
               >
                 {stickyBottom.label}
-              </MDSTypography2>
+              </MDSTypography>
               {stickyBottomRightSection && (
                 <StyledStickyRightSection>{stickyBottomRightSection}</StyledStickyRightSection>
               )}

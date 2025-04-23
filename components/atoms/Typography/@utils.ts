@@ -4,15 +4,15 @@ import {
   BodySize,
   BodyWeight,
   InnerTypographyStyleProps,
-  MDSTypographyProps2,
+  MDSTypographyProps,
   TitleSize,
   TitleWeight,
   Variant,
 } from './@types';
 
 export const resolveTagName = (
-  variant: MDSTypographyProps2['variant'],
-  size: MDSTypographyProps2['size'],
+  variant: MDSTypographyProps['variant'],
+  size: MDSTypographyProps['size'],
   as?: ElementType
 ): ElementType => {
   if (as) return as;
@@ -55,17 +55,7 @@ export const resolveLineClamp = (lineClamp: InnerTypographyStyleProps['lineClamp
   }
 };
 
-//#region 
-// todo-@jamie: [PROD-12758]  예전 폰트 하위 호환성을 유지 - 완료되면 반드시 삭제!!!
-// @deprecated
-export const resolveFontFamily = (features: InnerTypographyStyleProps) => {
-  if (features.weight === 'bold' || features.weight === 'semibold') return '"Visuelt-Bold", "Pretendard Variable"';
-  else if (features.weight === 'medium') return '"Visuelt-Medium", "Pretendard Variable"';
-  else if (features.weight === 'regular') return '"Visuelt-Regular", "Pretendard Variable"';
-  else if (features.weight === 'light') return '"Visuelt-Light", "Pretendard Variable"';
-  else return '"Visuelt-Regular", "Pretendard Variable"';
-};
-
+//#region
 // todo-@jamie: [PROD-12758] 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
 // @deprecated
 export const getTypographyProps = (

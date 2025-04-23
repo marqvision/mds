@@ -3,7 +3,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
 import { foldedItemIndexAtom } from '../@atoms';
 import { DropdownItem, SelectedType } from '../@types';
-import { MDSTypography2 } from '../../../atoms/Typography2';
+import { MDSTypography } from '../../../atoms/Typography';
 import { MDSCheckbox } from '../../../atoms/Checkbox';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTag } from '../../Tag';
@@ -92,7 +92,7 @@ const StyledImg = styled.img`
   border-radius: 4px;
 `;
 
-const StyledDivider = styled(MDSTypography2)`
+const StyledDivider = styled(MDSTypography)`
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.tertiary.normal};
   padding: 6px 12px;
 `;
@@ -206,7 +206,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
   })();
 
   const subLabelEl = subLabel && (
-    <MDSTypography2
+    <MDSTypography
       variant="body"
       size="s"
       weight="regular"
@@ -220,7 +220,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
       {subLabel.position === 'bracket' && '('}
       {subLabel.includeSearch ? <HighLightLabel searchText={search} label={`${subLabel.label}`} /> : subLabel.label}
       {subLabel.position === 'bracket' && ')'}
-    </MDSTypography2>
+    </MDSTypography>
   );
 
   if (item.value === undefined && !item.onClick && !item.children) {
@@ -267,7 +267,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
           {iconEle}
           <StyledLabelWrap>
             {subLabel?.position === 'top' && subLabelEl}
-            <MDSTypography2
+            <MDSTypography
               variant="body"
               size="m"
               weight={!isMultiple && isSelected ? 'medium' : 'regular'}
@@ -288,7 +288,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
                 </MDSTooltip>
               )}
               {subLabel?.position === 'bracket' && subLabelEl}
-            </MDSTypography2>
+            </MDSTypography>
             {subLabel?.position === 'bottom' && subLabelEl}
           </StyledLabelWrap>
         </StyledLabel>

@@ -4,7 +4,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { keyframes } from '@emotion/react';
 import { MDSDimmed } from '../Dimmed';
 import { MDSIcon } from '../../atoms/Icon';
-import { MDSTypography2 } from '../../atoms/Typography2';
+import { MDSTypography } from '../../atoms/Typography';
 import { MDSPanelActionProps, MDSPanelBodyProps, MDSPanelHeaderProps, MDSPanelProps, PanelDirection } from './@type';
 import { panelAtom } from './@atom';
 
@@ -152,9 +152,9 @@ const Header = forwardRef<HTMLDivElement, MDSPanelHeaderProps>((props: MDSPanelH
     <StyledHeader ref={ref} style={{ ...style }}>
       <div style={{ flex: 'auto' }}>
         {!isElement ? (
-          <MDSTypography2 variant="title" size="xl" weight="semibold">
+          <MDSTypography variant="title" size="xl" weight="semibold">
             {children}
-          </MDSTypography2>
+          </MDSTypography>
         ) : (
           children
         )}

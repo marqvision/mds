@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MDSPopover, MDSTypography2 } from '../../components';
+import { MDSPopover, MDSTypography } from '../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSPopover> = {
@@ -41,7 +41,7 @@ export const Preview: Story = {
     return (
       <Wrapper>
         <MDSPopover {...props}>
-          <MDSTypography2>팝업</MDSTypography2>
+          <MDSTypography>팝업</MDSTypography>
         </MDSPopover>
       </Wrapper>
     );
@@ -55,14 +55,14 @@ export const Hover: Story = {
         <div>
           <div style={{ display: 'flex', gap: 0 }}>
             <MDSPopover anchor={<button style={{ width: '200px' }}>마우스 호버</button>} hasDim={false} trigger="hover">
-              <MDSTypography2>팝업</MDSTypography2>
+              <MDSTypography>팝업</MDSTypography>
             </MDSPopover>
             <MDSPopover
               anchor={<button style={{ width: '200px' }}>마우스 호버2</button>}
               hasDim={false}
               trigger="hover"
             >
-              <MDSTypography2>팝업2</MDSTypography2>
+              <MDSTypography>팝업2</MDSTypography>
             </MDSPopover>
           </div>
           <div style={{ display: 'flex', gap: 0 }}>
@@ -71,14 +71,14 @@ export const Hover: Story = {
               hasDim={false}
               trigger="hover"
             >
-              <MDSTypography2>팝업3</MDSTypography2>
+              <MDSTypography>팝업3</MDSTypography>
             </MDSPopover>
             <MDSPopover
               anchor={<button style={{ width: '200px' }}>마우스 호버4</button>}
               hasDim={false}
               trigger="hover"
             >
-              <MDSTypography2>팝업4</MDSTypography2>
+              <MDSTypography>팝업4</MDSTypography>
             </MDSPopover>
           </div>
         </div>
@@ -119,7 +119,7 @@ export const CustomEvent: Story = {
         >
           {({ close }) => (
             <>
-              <MDSTypography2>팝업 {data}</MDSTypography2>
+              <MDSTypography>팝업 {data}</MDSTypography>
               <button onClick={close}>닫기</button>
             </>
           )}

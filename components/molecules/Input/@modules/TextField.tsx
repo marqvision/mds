@@ -1,7 +1,7 @@
 import { ChangeEvent, isValidElement, MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../../atoms/Icon';
-import { getTypographyProps, MDSTypography2 } from '../../../atoms/Typography2';
+import { getTypographyProps, MDSTypography } from '../../../atoms/Typography';
 import { theme } from '../@constants';
 import { CommonProps, Size, TextFieldProps } from '../@types';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
@@ -32,7 +32,7 @@ const StyledInput = styled.input<{ customSize: Size; typographySize: ReturnType<
 ,
 `;
 
-const StyledPrefix = styled(MDSTypography2)`
+const StyledPrefix = styled(MDSTypography)`
   cursor: default;
   flex: 0 0 auto;
 `;
@@ -233,9 +233,9 @@ export const TextField = (props: Props) => {
       >
         {Prefix}
         <StyledMirror ref={mirrorRef} isMultiline={isMultiline} style={{ maxWidth: mirrorMaxWidth }}>
-          <MDSTypography2 size={typographySize} wordBreak="break-word">
+          <MDSTypography size={typographySize} wordBreak="break-word">
             {mirrorText.split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
-          </MDSTypography2>
+          </MDSTypography>
         </StyledMirror>
         {isInit && (
           <StyledInput

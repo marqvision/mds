@@ -6,7 +6,7 @@ import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSChip } from '../../Chip';
 import { theme } from '../@constants';
-import { MDSTypography2, MDSTypographyProps2, getTypographyProps } from '../../../atoms/Typography2';
+import { MDSTypography, MDSTypographyProps, getTypographyProps } from '../../../atoms/Typography';
 import { flattenDropdown } from '../@utils';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
@@ -41,7 +41,7 @@ const StyledButton = styled.button<{ customSize: Size }>`
   cursor: pointer;
 `;
 
-const Placeholder = styled(MDSTypography2)`
+const Placeholder = styled(MDSTypography)`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: pre-wrap;
@@ -130,7 +130,7 @@ export const Select = <T,>(props: Props<T>) => {
         );
       })
     ) : (
-      <Placeholder {...(v2FontStyle as MDSTypographyProps2)} color="color/content/placeholder/normal">
+      <Placeholder {...(v2FontStyle as MDSTypographyProps)} color="color/content/placeholder/normal">
         {placeholder || '\u00A0'}
       </Placeholder>
     );
@@ -175,7 +175,7 @@ export const Select = <T,>(props: Props<T>) => {
               {label ? (
                 ReactHtmlParser(label)
               ) : (
-                <Placeholder {...(v2FontStyle as MDSTypographyProps2)} color="color/content/placeholder/normal">
+                <Placeholder {...(v2FontStyle as MDSTypographyProps)} color="color/content/placeholder/normal">
                   {placeholder || '\u00A0'}
                 </Placeholder>
               )}

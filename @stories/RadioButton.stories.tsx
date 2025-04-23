@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useArgs } from '@storybook/preview-api';
-import { MDSRadioButton, MDSTypography2 } from '../components';
+import { MDSRadioButton, MDSTypography } from '../components';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSRadioButton> = {
@@ -63,11 +63,11 @@ export const RadioButtonGroup: StoryFn = () => {
 
   return (
     <Wrapper>
-      <MDSTypography2>
+      <MDSTypography>
         selectedValue 를 하나의 state 로 바라보게 함으로써 동일 그룹으로 취급할 수 있습니다.
         <br />
         selectedValue 와 value 값이 동일하면 selected(checked) 상태로 변경됩니다.
-      </MDSTypography2>
+      </MDSTypography>
       <MDSRadioButton selectedValue={selectedValue} value="test" onChange={handleChange} />
       <MDSRadioButton selectedValue={selectedValue} value="test2" onChange={handleChange} />
     </Wrapper>
@@ -88,11 +88,11 @@ export const Color: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>
+        <MDSTypography>
           선택된 상태의 색상을 변경할 수 있습니다.
           <br />
           색상을 지정하지 않았을 시 기본값 blue 로 설정됩니다.
-        </MDSTypography2>
+        </MDSTypography>
         <MDSRadioButton {...props} selectedValue={selectedValue} value={value} onChange={handleChange} />
         <MDSRadioButton
           {...props}
@@ -121,11 +121,11 @@ export const Disabled: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>
+        <MDSTypography>
           선택됨 + 비활성화 상태의 색상을 변경할 수 있습니다.
           <br />
           색상을 지정하지 않았을 시 기본값 blue 로 설정됩니다.
-        </MDSTypography2>
+        </MDSTypography>
         <MDSRadioButton {...props} selectedValue={selectedValue} value={value} onChange={handleChange} />
         <MDSRadioButton
           {...props}
@@ -153,11 +153,11 @@ export const UnSelected: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>
+        <MDSTypography>
           선택되지 않았을때에는 색상 구분이 없습니다.
           <br />
           비활성화 상태에도 동일합니다.
-        </MDSTypography2>
+        </MDSTypography>
         <MDSRadioButton {...props} selectedValue={selectedValue} value={value} onChange={handleChange} />
         <MDSRadioButton
           {...props}

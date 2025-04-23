@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { PropsWithChildren } from 'react';
 import { useState } from '@storybook/preview-api';
-import { MDSChip, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography2 } from '../../components';
+import { MDSChip, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../components';
 import { StatusList } from './@constants';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -126,18 +126,18 @@ export const DropdownSingle: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>Single select (sort, search)</MDSTypography2>
-        <MDSTypography2 as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
+        <MDSTypography>Single select (sort, search)</MDSTypography>
+        <MDSTypography as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
           {sample}
-        </MDSTypography2>
-        <MDSTypography2>DropdownItem Type</MDSTypography2>
-        <MDSTypography2 as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
+        </MDSTypography>
+        <MDSTypography>DropdownItem Type</MDSTypography>
+        <MDSTypography as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
           {dropItemType}
-        </MDSTypography2>
-        <MDSTypography2>Sticky bottom button</MDSTypography2>
-        <MDSTypography2 as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
+        </MDSTypography>
+        <MDSTypography>Sticky bottom button</MDSTypography>
+        <MDSTypography as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
           {text}
-        </MDSTypography2>
+        </MDSTypography>
         <MDSDropdown {...props} label="Label" value={value} onChange={setValue} list={allList} onSelect={undefined} />
       </Wrapper>
     );
@@ -176,14 +176,14 @@ export const DropdownMulti: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>Multi select (search, sort)</MDSTypography2>
-        <MDSTypography2
+        <MDSTypography>Multi select (search, sort)</MDSTypography>
+        <MDSTypography
           as="code"
           style={{ backgroundColor: '#ddd', whiteSpace: 'pre', borderRadius: '4px', fontWeight: 400 }}
         >
           {text}
-        </MDSTypography2>
-        <MDSTypography2>indeterminate: {indeterminate.join(', ')}</MDSTypography2>
+        </MDSTypography>
+        <MDSTypography>indeterminate: {indeterminate.join(', ')}</MDSTypography>
         <MDSDropdown
           {...props}
           label="Value"
@@ -244,13 +244,13 @@ export const Dropdown1DepthSingle: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>Multi + Single</MDSTypography2>
-        <MDSTypography2
+        <MDSTypography>Multi + Single</MDSTypography>
+        <MDSTypography
           as="code"
           style={{ backgroundColor: '#ddd', borderRadius: '4px', fontWeight: 400, whiteSpace: 'pre' }}
         >
           {text}
-        </MDSTypography2>
+        </MDSTypography>
         <MDSDropdown {...props} label="Value" value={list} onChange={setList} list={allList} onSelect={undefined} />
       </Wrapper>
     );
@@ -267,7 +267,7 @@ export const DropdownMulti2Depth: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>2depth multi dropdown</MDSTypography2>
+        <MDSTypography>2depth multi dropdown</MDSTypography>
         <MDSDropdown
           {...props}
           label="Value"
@@ -339,10 +339,10 @@ export const DropdownMultiInfinite: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>Infinite dropdown</MDSTypography2>
-        <MDSTypography2 as="code" style={{ backgroundColor: '#ddd', borderRadius: '4px', whiteSpace: 'pre' }}>
+        <MDSTypography>Infinite dropdown</MDSTypography>
+        <MDSTypography as="code" style={{ backgroundColor: '#ddd', borderRadius: '4px', whiteSpace: 'pre' }}>
           {code}
-        </MDSTypography2>
+        </MDSTypography>
         <MDSDropdown
           {...props}
           label="Value"
@@ -366,7 +366,7 @@ export const DropdownMultiInfinite: Story = {
   },
 };
 
-const ele = <MDSTypography2 color="color/content/critical/default/normal">Log out</MDSTypography2>;
+const ele = <MDSTypography color="color/content/critical/default/normal">Log out</MDSTypography>;
 
 export const DropdownMenu: Story = {
   args: {},
@@ -386,7 +386,7 @@ export const DropdownMenu: Story = {
       const list = [
         { label: 'Log in', onClick: () => { /* login */ } },
         { label: (
-            <MDSTypography2  color="color/content/critical/default/normal">Log out</MDSTypography2>
+            <MDSTypography  color="color/content/critical/default/normal">Log out</MDSTypography>
           ), 
           onClick: () => {/* log out */}
         }
@@ -400,13 +400,13 @@ export const DropdownMenu: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>메뉴 형태로 사용</MDSTypography2>
-        <MDSTypography2
+        <MDSTypography>메뉴 형태로 사용</MDSTypography>
+        <MDSTypography
           as="code"
           style={{ backgroundColor: '#ddd', whiteSpace: 'pre', borderRadius: '4px', fontWeight: 400 }}
         >
           {code}
-        </MDSTypography2>
+        </MDSTypography>
         <div>
           <MDSDropdown
             list={list}
@@ -509,7 +509,7 @@ export const OnSelect: Story = {
 
     return (
       <Wrapper>
-        <MDSTypography2>Limit: 3적용 / Value1 선택한 경우 Group disabled</MDSTypography2>
+        <MDSTypography>Limit: 3적용 / Value1 선택한 경우 Group disabled</MDSTypography>
         <MDSDropdown
           label="OnSelectTest"
           value={list}

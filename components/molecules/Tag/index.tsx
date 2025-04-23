@@ -1,6 +1,6 @@
 import React, { cloneElement } from 'react';
 import styled from '@emotion/styled';
-import { MDSTypography2 } from '../../atoms/Typography2';
+import { MDSTypography } from '../../atoms/Typography';
 import { theme as TagTheme } from './@constants';
 import { IconProps, StyledTagProps, TagProps } from './@types';
 import { getColor } from './@utils';
@@ -131,7 +131,7 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
     >
       {startIcon && <Icon size={size} icon={startIcon} />}
 
-      <MDSTypography2
+      <MDSTypography
         variant='body'
         weight='medium'
         size={TagTheme.size[size].size}
@@ -139,7 +139,7 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
         overflowWrap="normal"
       >
         {label}
-      </MDSTypography2>
+      </MDSTypography>
 
       {icon && <Icon size={size} icon={icon} />}
 

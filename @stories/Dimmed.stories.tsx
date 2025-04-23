@@ -1,6 +1,6 @@
 import { useArgs } from '@storybook/preview-api';
 import { MDSDimmed } from '../components/organisms/Dimmed';
-import { MDSTypography2 } from '../components';
+import { MDSTypography } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDimmed> = {
@@ -57,9 +57,9 @@ export const Modal: Story = {
 
     return (
       <>
-        <MDSTypography2 style={{ cursor: 'pointer' }} onClick={handleOpen}>
+        <MDSTypography style={{ cursor: 'pointer' }} onClick={handleOpen}>
           열기
-        </MDSTypography2>
+        </MDSTypography>
         <MDSDimmed isOpen={isOpen} onClose={handleClose}>
           <div
             style={{ width: '420px', height: '200px', backgroundColor: 'white', borderRadius: '8px', padding: '16px' }}

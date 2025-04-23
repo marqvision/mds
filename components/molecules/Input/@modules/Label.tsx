@@ -1,7 +1,7 @@
 import { LabelType, Size } from '../@types';
-import { MDSTypography2 } from '../../../atoms/Typography2';
+import { MDSTypography } from '../../../atoms/Typography';
 import { theme } from '../@constants';
-import { getTypographyProps } from '../../../atoms/Typography2/@utils';
+import { getTypographyProps } from '../../../atoms/Typography/@utils';
 
 type Props = {
   label: LabelType;
@@ -18,21 +18,21 @@ export const Label = (props: Props) => {
   const subColor = isDisabled ? 'color/content/neutral/secondary/disabled' : 'color/content/neutral/secondary/normal';
 
   return typeof label === 'string' ? (
-    <MDSTypography2 variant={variant} weight="medium" color={color}>
+    <MDSTypography variant={variant} weight="medium" color={color}>
       {label}
-    </MDSTypography2>
+    </MDSTypography>
   ) : (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
       {(label.main || label.sub) && (
         <div>
-          <MDSTypography2 variant={variant} weight="medium" color={color}>
+          <MDSTypography variant={variant} weight="medium" color={color}>
             {label.main}{' '}
             {label.sub && (
-              <MDSTypography2 as="span" variant={variant} color={subColor}>
+              <MDSTypography as="span" variant={variant} color={subColor}>
                 ({label.sub})
-              </MDSTypography2>
+              </MDSTypography>
             )}
-          </MDSTypography2>
+          </MDSTypography>
         </div>
       )}
       {label.right}

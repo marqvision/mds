@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import clsx from 'clsx';
 import { useTheme } from '@emotion/react';
 import { MDSPopover } from '../Popover';
-import { MDSTypography2 } from '../../atoms/Typography2';
+import { MDSTypography } from '../../atoms/Typography';
 import { MDSIcon } from '../../atoms/Icon';
 import { TooltipProps } from './@types';
 import { Theme } from './@constants';
@@ -77,14 +77,14 @@ export const MDSTooltip = (props: TooltipProps) => {
       {isValidElement(title) ? (
         title
       ) : (
-        <MDSTypography2
+        <MDSTypography
           variant={Theme.size[size].variant}
           size={Theme.size[size].size}
           weight={Theme.size[size].weight}
           color="color/content/on_default_color"
         >
           {title}
-        </MDSTypography2>
+        </MDSTypography>
       )}
     </MDSPopover>
   );

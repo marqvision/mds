@@ -1,6 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { MDSTypography2 } from '../../atoms/Typography2';
+import { MDSTypography } from '../../atoms/Typography';
 import { DEFAULT_SIZE, theme } from './@constants';
 import { LoadingIndicatorProps } from './@types';
 
@@ -82,7 +82,7 @@ const BackgroundCircle = styled.circle<{
   stroke: ${({ backgroundColor }) => (backgroundColor ? theme.color.backgroundColor : '')};
 `;
 
-const Label = styled(MDSTypography2)<{ customColor: string }>`
+const Label = styled(MDSTypography)<{ customColor: string }>`
   position: absolute;
   top: 50%;
   left: 50%;

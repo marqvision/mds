@@ -106,6 +106,6 @@ export type InnerTypographyStyleProps<T extends ElementType = 'p'> = {
 } & BaseFeatures<T>;
 
 // 최종 + 외부 노출을 위한 Props 타입
-export type MDSTypographyProps2<T extends ElementType = 'p'> = BaseFeatures<T> &
+export type MDSTypographyProps<T extends ElementType = 'p'> = BaseFeatures<T> &
   NewTypographyStyle &
   React.ComponentPropsWithoutRef<T>;

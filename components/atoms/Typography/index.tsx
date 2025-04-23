@@ -7,7 +7,7 @@ import {
   resolveLineClamp,
   resolveTagName,
 } from './@utils';
-import { MDSTypographyProps2, InnerTypographyStyleProps } from './@types';
+import { MDSTypographyProps, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
@@ -49,7 +49,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   }}
 `;
 
-export const MDSTypography2 = <T extends ElementType = 'p'>({
+export const MDSTypography = <T extends ElementType = 'p'>({
   variant = 'body',
   color = 'color/content/neutral/default/normal',
   lineClamp,
@@ -58,7 +58,7 @@ export const MDSTypography2 = <T extends ElementType = 'p'>({
   as,
   wordBreak,
   ...props
-}: MDSTypographyProps2<T>) => {
+}: MDSTypographyProps<T>) => {
   const tagName = resolveTagName(variant, size, as);
 
   return (
@@ -77,5 +77,10 @@ export const MDSTypography2 = <T extends ElementType = 'p'>({
 };
 
 export * from './@types';
-
 export { getTypographyProps } from './@utils';
+
+/**
+ * @deprecated
+ * 숫자 2가 제거된 MDSTypography 를 사용하세요.
+ */
+export const MDSTypography2 = MDSTypography;

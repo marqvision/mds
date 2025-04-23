@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { MDSTypography2 } from '../components/atoms/Typography2';
+import { MDSTypography } from '../components/atoms/Typography';
 import { MDSCheckbox } from '../components';
 import { MDSTHEME_COLORS } from './@helper';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof MDSTypography2> = {
-  component: MDSTypography2,
-  title: '2. Components/atoms/Typography2',
+const meta: Meta<typeof MDSTypography> = {
+  component: MDSTypography,
+  title: '2. Components/atoms/Typography',
   parameters: {
     layout: 'center',
   },
@@ -79,12 +79,12 @@ const meta: Meta<typeof MDSTypography2> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof MDSTypography2>;
+type Story = StoryObj<typeof MDSTypography>;
 
 export const Primary: Story = {
   render: (props) => {
     return (
-      <MDSTypography2 {...props}>
+      <MDSTypography {...props}>
         아크메드라비는 2017년부터 가장 핫한 트렌드를 시장에 선보이고 있는 젊은 스트리트 패션 브랜드입니다. 아이코닉한
         '베이비페이스 프린트'로 폭발적인 인기와 인지도를 얻으며 아시아 최고의 스트리트 스타일 브랜드로 급부상했습니다.
         현재 중국, 호주, 베트남, 말레이시아 등에서 30개 이상의 매장을 운영하고 있으며, 지속적으로 아시아 이외의 지역에도
@@ -94,7 +94,7 @@ export const Primary: Story = {
         디지털 시대의 브랜드 보호에 있어 가장 큰 위험 요소는 온라인 위조상품 판매자들의 수법이 빠르게 진화하고 있다는
         점입니다. 아크메드라비는 온라인 비즈니스를 효과적으로 보호하기 위해서는 이러한 진화하는 방식에 한발 앞서
         대응하고, 그에 따라 브랜드 보호 대책을 강화해야 한다는 사실을 알고 있습니다.`,
-      </MDSTypography2>
+      </MDSTypography>
     );
   },
 };
@@ -110,14 +110,14 @@ export const LineClamp: Story = {
   render: ({ lineClamp }) => {
     return (
       <div>
-        <MDSTypography2 variant="title" size="2xl" lineClamp={lineClamp}>
+        <MDSTypography variant="title" size="2xl" lineClamp={lineClamp}>
           아이코닉한 '베이비페이스 프린트'로 폭발적인 인기와 인지도를 얻으며 아시아 최고의 스트리트 스타일 브랜드로
           급부상했습니다. 현재 중국, 호주, 베트남, 말레이시아 등에서 30개 이상의 매장을 운영하고 있으며, 지속적으로
           아시아 이외의 지역에도 추가 매장을 오픈할 계획입니다.
-        </MDSTypography2>
-        <MDSTypography2 color="color/content/primary/default/normal" weight="semibold" lineClamp={lineClamp}>
+        </MDSTypography>
+        <MDSTypography color="color/content/primary/default/normal" weight="semibold" lineClamp={lineClamp}>
           아크메드라비는 2017년부터 가장 핫한 트렌드를 시장에 선보이고 있는 젊은 스트리트 패션 브랜드입니다.
-        </MDSTypography2>
+        </MDSTypography>
       </div>
     );
   },
@@ -134,14 +134,14 @@ export const WorkBreak: Story = {
   render: ({ wordBreak }) => {
     return (
       <div style={{ width: 250, height: 400, border: '1px solid black' }}>
-        <MDSTypography2 variant="body" wordBreak={wordBreak}>
+        <MDSTypography variant="body" wordBreak={wordBreak}>
           아이코닉한 '베이비페이스 프린트'로 폭발적인 인기와 인지도를 얻으며 아시아 최고의 스트리트 스타일 브랜드로
           급부상했습니다. 현재 중국, 호주, 베트남, 말레이시아 등에서 30개 이상의 매장을 운영하고 있으며, 지속적으로
           아시아 이외의 지역에도 추가 매장을 오픈할 계획입니다. Honorificabilitudinitatibus
           califragilisticexpialidocious
           Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
           グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
-        </MDSTypography2>
+        </MDSTypography>
       </div>
     );
   },
@@ -158,11 +158,11 @@ export const TextDecoration: Story = {
   render: ({ textDecoration }) => {
     return (
       <div style={{ width: 250, height: 400, border: '1px solid black' }}>
-        <MDSTypography2 variant="body" textDecoration={textDecoration}>
+        <MDSTypography variant="body" textDecoration={textDecoration}>
           califragilisticexpialidocious
           Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
           グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
-        </MDSTypography2>
+        </MDSTypography>
       </div>
     );
   },
@@ -172,18 +172,18 @@ export const CustomizeTagName: Story = {
   render: () => {
     return (
       <div>
-        <MDSTypography2>`variant`와 `size` prop에 따라 태그가 자동으로 결정됩니다.</MDSTypography2>
-        <MDSTypography2 variant="title" size="2xl">
+        <MDSTypography>`variant`와 `size` prop에 따라 태그가 자동으로 결정됩니다.</MDSTypography>
+        <MDSTypography variant="title" size="2xl">
           `variant: title`, `size: 2xl` 이면 h1 요소로 렌더링됩니다.
-        </MDSTypography2>
-        <MDSTypography2 variant="title" size="xl">
+        </MDSTypography>
+        <MDSTypography variant="title" size="xl">
           `variant: title`, `size: xl` 이면 h2 요소로 렌더링됩니다.
-        </MDSTypography2>
-        <MDSTypography2>나머지는 모두 `p` 요소로 렌더링됩니다.</MDSTypography2>
-        <MDSTypography2 as="a" href="https://marqvision.com">
+        </MDSTypography>
+        <MDSTypography>나머지는 모두 `p` 요소로 렌더링됩니다.</MDSTypography>
+        <MDSTypography as="a" href="https://marqvision.com">
           `as` prop에 a 태그를 넣으면 a 요소로 렌더링되며 a 요소의 모든 속성, 예를 들어 `href` 속성을 사용할 수
           있습니다. 이 요소를 클릭하면 marqvision.com으로 이동합니다.
-        </MDSTypography2>
+        </MDSTypography>
       </div>
     );
   },
@@ -246,9 +246,9 @@ export const Showcase: Story = {
         </ToggleLanguageBox>
         <Container>
           <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color} __useNewFont>
+            <MDSTypography variant="title" size="2xl" weight="medium" color={color} __useNewFont>
               Title (English) - {isKor ? 'Pretendard' : 'Inter'}
-            </MDSTypography2>
+            </MDSTypography>
             <Table cellPadding={12}>
               <thead>
                 <tr>
@@ -262,12 +262,12 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="2xl" weight="semibold" color={color} __useNewFont>
+                      <MDSTypography variant="title" size="2xl" weight="semibold" color={color} __useNewFont>
                         MARQVISION 24 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="2xl" weight="medium" color={color} __useNewFont>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="2xl" weight="medium" color={color} __useNewFont>
                         MARQVISION 24 Medium 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>2xl (=24px)</td>
@@ -275,12 +275,12 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="xl" weight="semibold" color={color} __useNewFont>
+                      <MDSTypography variant="title" size="xl" weight="semibold" color={color} __useNewFont>
                         MARQVISION 20 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="xl" weight="medium" color={color} __useNewFont>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="xl" weight="medium" color={color} __useNewFont>
                         MARQVISION 20 Medium 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
 
@@ -289,12 +289,12 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="l" weight="semibold" color={color} __useNewFont>
+                      <MDSTypography variant="title" size="l" weight="semibold" color={color} __useNewFont>
                         MARQVISION 18 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="l" weight="medium" color={color} __useNewFont>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="l" weight="medium" color={color} __useNewFont>
                         MARQVISION 18 Medium 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>l (=18px)</td>
@@ -302,9 +302,9 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="m" weight="semibold" color={color} __useNewFont>
+                      <MDSTypography variant="title" size="m" weight="semibold" color={color} __useNewFont>
                         MARQVISION 16 Semibold 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>m (=16px)</td>
@@ -313,9 +313,9 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="s" weight="semibold" color={color} __useNewFont>
+                      <MDSTypography variant="title" size="s" weight="semibold" color={color} __useNewFont>
                         MARQVISION 14 Semibold 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>s (=14px)</td>
@@ -326,9 +326,9 @@ export const Showcase: Story = {
 
           <div>
             <div>
-              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              <MDSTypography variant="title" size="2xl" weight="medium" color={color}>
                 Body (English) - {isKor ? 'Pretendard' : 'Inter'}
-              </MDSTypography2>
+              </MDSTypography>
               <Table cellPadding={12}>
                 <thead>
                   <tr>
@@ -341,12 +341,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="l" weight="medium" color={color} __useNewFont>
+                        <MDSTypography variant="body" size="l" weight="medium" color={color} __useNewFont>
                           MARQVISION 16 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="l" weight="regular" color={color} __useNewFont>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="l" weight="regular" color={color} __useNewFont>
                           MARQVISION 16 Regular 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -355,12 +355,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="m" weight="medium" color={color} __useNewFont>
+                        <MDSTypography variant="body" size="m" weight="medium" color={color} __useNewFont>
                           MARQVISION 14 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="m" weight="regular" color={color} __useNewFont>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="m" weight="regular" color={color} __useNewFont>
                           MARQVISION 14 Regular 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
                     <td>xl (=20px)</td>
@@ -368,12 +368,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="s" weight="medium" color={color} __useNewFont>
+                        <MDSTypography variant="body" size="s" weight="medium" color={color} __useNewFont>
                           MARQVISION 13 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="s" weight="regular" color={color} __useNewFont>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="s" weight="regular" color={color} __useNewFont>
                           MARQVISION 13 Regular 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -382,12 +382,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="xs" weight="medium" color={color} __useNewFont>
+                        <MDSTypography variant="body" size="xs" weight="medium" color={color} __useNewFont>
                           MARQVISION 12 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="xs" weight="regular" color={color} __useNewFont>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="xs" weight="regular" color={color} __useNewFont>
                           MARQVISION 12 Regular 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -399,9 +399,9 @@ export const Showcase: Story = {
           </div>
 
           <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+            <MDSTypography variant="title" size="2xl" weight="medium" color={color}>
               Title (Korean) - Pretendard
-            </MDSTypography2>
+            </MDSTypography>
             <Table cellPadding={12}>
               <thead>
                 <tr>
@@ -415,12 +415,12 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="2xl" weight="semibold" color={color}>
+                      <MDSTypography variant="title" size="2xl" weight="semibold" color={color}>
                         마크비전 24 세미볼드 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="2xl" weight="medium" color={color}>
                         마크비전 24 미디움 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>2xl (=24px)</td>
@@ -428,12 +428,12 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="xl" weight="semibold" color={color}>
+                      <MDSTypography variant="title" size="xl" weight="semibold" color={color}>
                         마크비전 20 세미볼드 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="xl" weight="medium" color={color}>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="xl" weight="medium" color={color}>
                         마크비전 20 미디움 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>xl (=20px)</td>
@@ -441,12 +441,12 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="l" weight="semibold" color={color}>
+                      <MDSTypography variant="title" size="l" weight="semibold" color={color}>
                         마크비전 18 세미볼드 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="l" weight="medium" color={color}>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="l" weight="medium" color={color}>
                         마크비전 18 미디움 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>l (=18px)</td>
@@ -454,9 +454,9 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="m" weight="semibold" color={color}>
+                      <MDSTypography variant="title" size="m" weight="semibold" color={color}>
                         마크비전 16 세미볼드 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>m (=16px)</td>
@@ -465,9 +465,9 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="s" weight="semibold" color={color}>
+                      <MDSTypography variant="title" size="s" weight="semibold" color={color}>
                         마크비전 14 세미볼드 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>s (=14px)</td>
@@ -478,9 +478,9 @@ export const Showcase: Story = {
 
           <div>
             <div>
-              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              <MDSTypography variant="title" size="2xl" weight="medium" color={color}>
                 Body (Korean) - Pretendard
-              </MDSTypography2>
+              </MDSTypography>
               <Table cellPadding={12}>
                 <thead>
                   <tr>
@@ -493,12 +493,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="l" weight="medium" color={color}>
+                        <MDSTypography variant="body" size="l" weight="medium" color={color}>
                           마크비전 16 미디움 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="l" weight="regular" color={color}>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="l" weight="regular" color={color}>
                           마크비전 16 레귤러 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -507,12 +507,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="m" weight="medium" color={color}>
+                        <MDSTypography variant="body" size="m" weight="medium" color={color}>
                           마크비전 14 미디움 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="m" weight="regular" color={color}>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="m" weight="regular" color={color}>
                           마크비전 14 레귤러 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
                     <td>xl (=20px)</td>
@@ -520,12 +520,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="s" weight="medium" color={color}>
+                        <MDSTypography variant="body" size="s" weight="medium" color={color}>
                           마크비전 13 미디움 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="s" weight="regular" color={color}>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="s" weight="regular" color={color}>
                           마크비전 13 레귤러 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -534,12 +534,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="xs" weight="medium" color={color}>
+                        <MDSTypography variant="body" size="xs" weight="medium" color={color}>
                           마크비전 12 미디움 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="xs" weight="regular" color={color}>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="xs" weight="regular" color={color}>
                           마크비전 12 레귤러 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -551,9 +551,9 @@ export const Showcase: Story = {
           </div>
 
           <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+            <MDSTypography variant="title" size="2xl" weight="medium" color={color}>
               Title (English-Number) - {isKor ? 'Pretendard' : 'Inter'}
-            </MDSTypography2>
+            </MDSTypography>
             <Table cellPadding={12}>
               <thead>
                 <tr>
@@ -566,7 +566,7 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2
+                      <MDSTypography
                         variant="title"
                         size="xl"
                         weight="semibold"
@@ -575,8 +575,8 @@ export const Showcase: Story = {
                         __useNewFont
                       >
                         MARQVISION 20 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2
+                      </MDSTypography>
+                      <MDSTypography
                         variant="title"
                         size="xl"
                         weight="medium"
@@ -585,7 +585,7 @@ export const Showcase: Story = {
                         __useNewFont
                       >
                         MARQVISION 20 Medium 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>xl (=20px)</td>
@@ -593,7 +593,7 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2
+                      <MDSTypography
                         variant="title"
                         size="l"
                         weight="semibold"
@@ -602,10 +602,10 @@ export const Showcase: Story = {
                         __useNewFont
                       >
                         MARQVISION 18 Semibold 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="l" weight="medium" char="number" color={color} __useNewFont>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="l" weight="medium" char="number" color={color} __useNewFont>
                         MARQVISION 18 Medium 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>l (=18px)</td>
@@ -613,7 +613,7 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2
+                      <MDSTypography
                         variant="title"
                         size="m"
                         weight="semibold"
@@ -622,7 +622,7 @@ export const Showcase: Story = {
                         __useNewFont
                       >
                         MARQVISION 16 Semibold 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>m (=16px)</td>
@@ -631,7 +631,7 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2
+                      <MDSTypography
                         variant="title"
                         size="s"
                         weight="semibold"
@@ -640,7 +640,7 @@ export const Showcase: Story = {
                         __useNewFont
                       >
                         MARQVISION 14 Semibold 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>s (=14px)</td>
@@ -651,9 +651,9 @@ export const Showcase: Story = {
 
           <div>
             <div>
-              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              <MDSTypography variant="title" size="2xl" weight="medium" color={color}>
                 Body (English-Number) - {isKor ? 'Pretendard' : 'Inter'}
-              </MDSTypography2>
+              </MDSTypography>
               <Table cellPadding={12}>
                 <thead>
                   <tr>
@@ -666,7 +666,7 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2
+                        <MDSTypography
                           variant="body"
                           size="l"
                           weight="medium"
@@ -675,8 +675,8 @@ export const Showcase: Story = {
                           __useNewFont
                         >
                           MARQVISION 16 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2
+                        </MDSTypography>
+                        <MDSTypography
                           variant="body"
                           size="l"
                           weight="regular"
@@ -685,7 +685,7 @@ export const Showcase: Story = {
                           __useNewFont
                         >
                           MARQVISION 16 Regular 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -694,7 +694,7 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2
+                        <MDSTypography
                           variant="body"
                           size="m"
                           weight="medium"
@@ -703,8 +703,8 @@ export const Showcase: Story = {
                           __useNewFont
                         >
                           MARQVISION 14 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2
+                        </MDSTypography>
+                        <MDSTypography
                           variant="body"
                           size="m"
                           weight="regular"
@@ -713,7 +713,7 @@ export const Showcase: Story = {
                           __useNewFont
                         >
                           MARQVISION 14 Regular 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
                     <td>xl (=20px)</td>
@@ -721,7 +721,7 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2
+                        <MDSTypography
                           variant="body"
                           size="s"
                           weight="medium"
@@ -730,8 +730,8 @@ export const Showcase: Story = {
                           __useNewFont
                         >
                           MARQVISION 13 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2
+                        </MDSTypography>
+                        <MDSTypography
                           variant="body"
                           size="s"
                           weight="regular"
@@ -740,7 +740,7 @@ export const Showcase: Story = {
                           __useNewFont
                         >
                           MARQVISION 13 Regular 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -749,7 +749,7 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2
+                        <MDSTypography
                           variant="body"
                           size="xs"
                           weight="medium"
@@ -758,8 +758,8 @@ export const Showcase: Story = {
                           __useNewFont
                         >
                           MARQVISION 12 Medium 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2
+                        </MDSTypography>
+                        <MDSTypography
                           variant="body"
                           size="xs"
                           weight="regular"
@@ -768,7 +768,7 @@ export const Showcase: Story = {
                           __useNewFont
                         >
                           MARQVISION 12 Regular 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -780,9 +780,9 @@ export const Showcase: Story = {
           </div>
 
           <div>
-            <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+            <MDSTypography variant="title" size="2xl" weight="medium" color={color}>
               Title (Korean-Number) - Pretendard
-            </MDSTypography2>
+            </MDSTypography>
             <Table cellPadding={12}>
               <thead>
                 <tr>
@@ -796,12 +796,12 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="xl" weight="semibold" char="number" color={color}>
+                      <MDSTypography variant="title" size="xl" weight="semibold" char="number" color={color}>
                         마크비전 20 세미볼드 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="xl" weight="medium" char="number" color={color}>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="xl" weight="medium" char="number" color={color}>
                         마크비전 20 미디움 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>xl (=20px)</td>
@@ -809,12 +809,12 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="l" weight="semibold" char="number" color={color}>
+                      <MDSTypography variant="title" size="l" weight="semibold" char="number" color={color}>
                         마크비전 18 세미볼드 1234567890
-                      </MDSTypography2>
-                      <MDSTypography2 variant="title" size="l" weight="medium" char="number" color={color}>
+                      </MDSTypography>
+                      <MDSTypography variant="title" size="l" weight="medium" char="number" color={color}>
                         마크비전 18 미디움 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>l (=18px)</td>
@@ -822,9 +822,9 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="m" weight="semibold" char="number" color={color}>
+                      <MDSTypography variant="title" size="m" weight="semibold" char="number" color={color}>
                         마크비전 16 세미볼드 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>m (=16px)</td>
@@ -833,9 +833,9 @@ export const Showcase: Story = {
                 <tr>
                   <td>
                     <div>
-                      <MDSTypography2 variant="title" size="s" weight="semibold" char="number" color={color}>
+                      <MDSTypography variant="title" size="s" weight="semibold" char="number" color={color}>
                         마크비전 14 세미볼드 1234567890
-                      </MDSTypography2>
+                      </MDSTypography>
                     </div>
                   </td>
                   <td>s (=14px)</td>
@@ -846,9 +846,9 @@ export const Showcase: Story = {
 
           <div>
             <div>
-              <MDSTypography2 variant="title" size="2xl" weight="medium" color={color}>
+              <MDSTypography variant="title" size="2xl" weight="medium" color={color}>
                 Body (Korean-Number) - Pretendard
-              </MDSTypography2>
+              </MDSTypography>
               <Table cellPadding={12}>
                 <thead>
                   <tr>
@@ -861,12 +861,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="l" weight="medium" char="number" color={color}>
+                        <MDSTypography variant="body" size="l" weight="medium" char="number" color={color}>
                           마크비전 16 미디움 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="l" weight="regular" char="number" color={color}>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="l" weight="regular" char="number" color={color}>
                           마크비전 16 레귤러 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -875,12 +875,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="m" weight="medium" char="number" color={color}>
+                        <MDSTypography variant="body" size="m" weight="medium" char="number" color={color}>
                           마크비전 14 미디움 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="m" weight="regular" char="number" color={color}>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="m" weight="regular" char="number" color={color}>
                           마크비전 14 레귤러 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
                     <td>xl (=20px)</td>
@@ -888,12 +888,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="s" weight="medium" char="number" color={color}>
+                        <MDSTypography variant="body" size="s" weight="medium" char="number" color={color}>
                           마크비전 13 미디움 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="s" weight="regular" char="number" color={color}>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="s" weight="regular" char="number" color={color}>
                           마크비전 13 레귤러 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 
@@ -902,12 +902,12 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography2 variant="body" size="xs" weight="medium" char="number" color={color}>
+                        <MDSTypography variant="body" size="xs" weight="medium" char="number" color={color}>
                           마크비전 12 미디움 1234567890
-                        </MDSTypography2>
-                        <MDSTypography2 variant="body" size="xs" weight="regular" char="number" color={color}>
+                        </MDSTypography>
+                        <MDSTypography variant="body" size="xs" weight="regular" char="number" color={color}>
                           마크비전 12 레귤러 1234567890
-                        </MDSTypography2>
+                        </MDSTypography>
                       </div>
                     </td>
 

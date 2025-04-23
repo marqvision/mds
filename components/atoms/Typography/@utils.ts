@@ -4,15 +4,15 @@ import {
   BodySize,
   BodyWeight,
   InnerTypographyStyleProps,
-  MDSTypographyProps2,
+  MDSTypographyProps,
   TitleSize,
   TitleWeight,
   Variant,
 } from './@types';
 
 export const resolveTagName = (
-  variant: MDSTypographyProps2['variant'],
-  size: MDSTypographyProps2['size'],
+  variant: MDSTypographyProps['variant'],
+  size: MDSTypographyProps['size'],
   as?: ElementType
 ): ElementType => {
   if (as) return as;

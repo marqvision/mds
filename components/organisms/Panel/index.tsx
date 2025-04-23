@@ -1,4 +1,4 @@
-import { isValidElement, useEffect, useRef } from 'react';
+import { forwardRef, isValidElement, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { useAtom, useAtomValue } from 'jotai';
 import { keyframes } from '@emotion/react';
@@ -100,12 +100,13 @@ const StyledActions = styled.div`
  * - `isDimmed: false`: default: 50%
  */
 
-const Wrapper = (props: MDSPanelProps) => {
+const Wrapper = forwardRef<HTMLDivElement, MDSPanelProps>((props: MDSPanelProps, ref) => {
   const { style, width, onClose, children, isOpen = false, isDimmed = true, direction = 'right' } = props;
   const contentWidth = isDimmed ? width || '540px' : 'auto';
 
   const wrapperElement = (
     <StyledWrapper
+      ref={ref}
       isOpen={isOpen}
       direction={direction}
       isDimmed={isDimmed}
@@ -128,6 +129,7 @@ const Wrapper = (props: MDSPanelProps) => {
 
   return (
     <StyledSplitPanel
+      ref={ref}
       style={{
         flexBasis: isOpen ? outerBoxWidth : 0,
         marginLeft: isOpen ? '4px' : 0,
@@ -137,15 +139,17 @@ const Wrapper = (props: MDSPanelProps) => {
       <div style={{ width: innerBoxWidth }}>{wrapperElement}</div>
     </StyledSplitPanel>
   );
-};
+});
 
-const Header = (props: MDSPanelHeaderProps) => {
+Wrapper.displayName = 'MDSPanel.Wrapper';
+
+const Header = forwardRef<HTMLDivElement, MDSPanelHeaderProps>((props: MDSPanelHeaderProps, ref) => {
   const { children, onClose, style } = props;
 
   const isElement = isValidElement(children);
 
   return (
-    <StyledHeader style={{ ...style }}>
+    <StyledHeader ref={ref} style={{ ...style }}>
       <div style={{ flex: 'auto' }}>
         {!isElement ? (
           <MDSTypography2 variant="title" size="xl" weight="semibold">
@@ -162,9 +166,11 @@ const Header = (props: MDSPanelHeaderProps) => {
       )}
     </StyledHeader>
   );
-};
+});
 
-const Content = (props: MDSPanelBodyProps) => {
+Header.displayName = 'MDSPanel.Header';
+
+const Content = forwardRef<HTMLDivElement, MDSPanelBodyProps>((props: MDSPanelBodyProps, ref) => {
   const { children, style } = props;
 
   const [, setAtom] = useAtom(panelAtom);
@@ -189,26 +195,31 @@ const Content = (props: MDSPanelBodyProps) => {
   }, [setAtom]);
 
   return (
-    <StyledBody>
+    <StyledBody ref={ref}>
       <div style={{ ...style }}>{children}</div>
       <StyledObserver ref={observerRef}></StyledObserver>
     </StyledBody>
   );
-};
+});
 
-const Action = (props: MDSPanelActionProps) => {
+Content.displayName = 'MDSPanel.Content';
+
+const Action = forwardRef<HTMLDivElement, MDSPanelActionProps>((props: MDSPanelActionProps, ref) => {
   const { children, justifyContent = 'flex-end', persistentShadow = false, style } = props;
 
   const atom = useAtomValue(panelAtom);
 
   return (
     <StyledActions
+      ref={ref}
       style={{ justifyContent, boxShadow: !persistentShadow && atom.isScrollBottom ? 'none' : undefined, ...style }}
     >
       {children}
     </StyledActions>
   );
-};
+});
+
+Action.displayName = 'MDSPanel.Action';
 
 export const MDSPanel = {
   Wrapper,

@@ -3,7 +3,7 @@ import { MDSTheme } from '../types';
 import { RAW_COLORS, COLOR_TOKENS } from './colors';
 import { MDSFontCSS, MDSResetCSS } from './globalCSS';
 
-// 
+//
 /**
  * @inner 직접 import하지 마세요! 대신 MDSThemeProvider를 사용하세요. (MDS v1 호환성을 위해 export로 public facing 합니다)
  */
@@ -47,6 +47,41 @@ export const _MDSThemeValue = {
           m: 14,
           s: 13,
           xs: 12,
+        },
+      },
+    },
+    chart: {
+      heatmap: {
+        color: {
+          bg: {
+            header: COLOR_TOKENS.bg.surface.neutral.secondary.normal,
+            body: {
+              level: {
+                1: RAW_COLORS.orange400,
+                2: RAW_COLORS.yellow300,
+                3: RAW_COLORS.yellow200,
+                4: RAW_COLORS.green300,
+                5: RAW_COLORS.green400,
+              },
+              neutral: {
+                default: COLOR_TOKENS.bg.surface.neutral.default.normal,
+                hover: RAW_COLORS.blackAlpha10,
+              },
+            },
+          },
+          border: {
+            vertical: {
+              default: RAW_COLORS.bluegray150,
+            },
+            horizontal: {
+              header: RAW_COLORS.bluegray150,
+              body: RAW_COLORS.bluegray100,
+            },
+          },
+          content: {
+            header: COLOR_TOKENS.content.neutral.secondary.normal,
+            body: COLOR_TOKENS.content.neutral.default.normal,
+          },
         },
       },
     },

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTheme } from '@emotion/react';
-import { MDSCheckbox, MDSDropdown, MDSInput, MDSTypography2 } from '../../components';
+import { MDSCheckbox, MDSDropdown, MDSInput, MDSTypography } from '../../components';
 import { FolioCommonEnumsApplicationStepEnum, StatusList } from './@constants';
 import { Story } from './index.stories';
 import { Wrapper } from './@components';
@@ -43,7 +43,7 @@ const InnerElement = (props: typeof MDSDropdown.arguments) => {
             }}
           >
             <MDSCheckbox value={checked} onChange={setChecked} />
-            <MDSTypography2 color="color/content/critical/default/normal">커스텀 체크박스</MDSTypography2>
+            <MDSTypography color="color/content/critical/default/normal">커스텀 체크박스</MDSTypography>
           </label>
         ),
       },
@@ -65,7 +65,7 @@ const InnerElement = (props: typeof MDSDropdown.arguments) => {
 
   return (
     <Wrapper>
-      <MDSTypography2>with sticky top and sticky bottom element</MDSTypography2>
+      <MDSTypography>with sticky top and sticky bottom element</MDSTypography>
       <div>
         isChecked:{' '}
         <span style={{ backgroundColor: '#eee', padding: '2px 4px', borderRadius: '4px' }}>
@@ -97,7 +97,7 @@ const InnerElement = (props: typeof MDSDropdown.arguments) => {
                 }}
               >
                 <MDSCheckbox value={checked} onChange={setChecked} />
-                <MDSTypography2 color="color/content/critical/default/normal">커스텀 체크박스</MDSTypography2>
+                <MDSTypography color="color/content/critical/default/normal">커스텀 체크박스</MDSTypography>
               </label>
             ),
           },
@@ -117,12 +117,12 @@ const InnerElement = (props: typeof MDSDropdown.arguments) => {
         ]}
         onSelect={undefined}
       />
-      <MDSTypography2
+      <MDSTypography
         as="code"
         style={{ backgroundColor: '#ddd', whiteSpace: 'pre', borderRadius: '4px', fontWeight: 400 }}
       >
         {description}
-      </MDSTypography2>
+      </MDSTypography>
     </Wrapper>
   );
 };

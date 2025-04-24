@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MDSDropdown, MDSTypography2 } from '../../components';
+import { MDSDropdown, MDSTypography } from '../../components';
 import { Story } from './index.stories';
 import { Wrapper } from './@components';
 import type { Meta } from '@storybook/react';
@@ -31,9 +31,9 @@ const InnerElement = (props: typeof MDSDropdown.arguments) => {
     {
       label: (
         <div style={{ backgroundColor: 'lightblue', padding: '12px 16px' }}>
-          <MDSTypography2 weight="medium" color="color/content/critical/default/normal">
+          <MDSTypography weight="medium" color="color/content/critical/default/normal">
             undefined with element label
-          </MDSTypography2>
+          </MDSTypography>
         </div>
       ),
       value: undefined,
@@ -42,8 +42,8 @@ const InnerElement = (props: typeof MDSDropdown.arguments) => {
 
   return (
     <Wrapper>
-      <MDSTypography2>Processing for various values</MDSTypography2>
-      <MDSTypography2>-1 is always used as a whole selection</MDSTypography2>
+      <MDSTypography>Processing for various values</MDSTypography>
+      <MDSTypography>-1 is always used as a whole selection</MDSTypography>
       <div style={{ display: 'flex', gap: '12px' }}>
         <MDSDropdown
           {...props}

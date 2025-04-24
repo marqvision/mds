@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useEffect, cloneElement, useRef } from 'react';
+import { useState, MouseEvent, useEffect, cloneElement, useRef, isValidElement } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
 import { foldedItemIndexAtom } from '../@atoms';
@@ -224,6 +224,10 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
   );
 
   if (item.value === undefined && !item.onClick && !item.children) {
+    if (isValidElement(item.label)) {
+      return item.label;
+    }
+
     return (
       <StyledDivider
         variant="body"

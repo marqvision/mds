@@ -90,11 +90,15 @@ export const useInitDropdown = <T, SortT>(
       : []),
   ];
 
+  const findLabel = (v: ValueType<T>): SelectedType<ValueType<T>> => ({
+    label: flatItems.find((item) => item.value === v)?.label || `${v}`,
+    value: v,
+  });
+  const values = (isMultiple ? value : value !== undefined ? [value] : []) as ValueType<T>[];
+
   const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>(() => {
     if (value !== undefined) {
-      return Array.isArray(value)
-        ? value.map((v) => ({ label: flatItems.find((item) => item.value === v)?.label || v, value: v }))
-        : [{ label: value, value }];
+      return values.map(findLabel);
     }
 
     return [];
@@ -102,8 +106,6 @@ export const useInitDropdown = <T, SortT>(
 
   const hasList = list.length > 0;
   const is1DepthSingle = props.modules?.includes('1-depth-single');
-
-  const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
 
   const labels = (() => {
     const isAllSelected =

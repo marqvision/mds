@@ -1,6 +1,7 @@
 import { forwardRef, Ref } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
+import { resolveColor } from '../../../utils';
 import { theme } from './@constants';
 import { BorderProps, StyledTableCellProps, TableCellInnerProps, TableCellProps } from './@types';
 
@@ -88,7 +89,7 @@ const resolveBorderStyles = (props?: BorderProps) => {
   const borderStyles = {
     width: (props !== true && props.width) || 1,
     style: (props !== true && props.style) || 'solid',
-    color: theme.cell.color.vertical.borderColor,
+    color: (props !== true && props.color && resolveColor(props.color)) || theme.cell.color.vertical.borderColor,
   };
 
   return `

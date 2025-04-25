@@ -30,15 +30,23 @@ export const resolveFontWeightLetterSpacing = (
   if (features.variant === 'title') {
     const defaultWeight = features.size === '2xl' || features.size === 'xl' ? 'medium' : 'semibold';
     const weight = (features.weight || defaultWeight) as TitleWeight;
+    const size = (features.size as TitleSize) || 'm';
+
     return {
       fontWeight: theme.comp.typography.title.weight[weight].fontWeight,
-      letterSpacing: theme.comp.typography.title.weight[weight].letterSpacing,
+      letterSpacing:
+        theme.comp.typography.title.weight[weight].letterSpacing[size] ||
+        theme.comp.typography.title.weight[weight].letterSpacing['m'],
     };
   } else {
     const weight = (features.weight || 'regular') as BodyWeight;
+    const size = (features.size as BodySize) || 'm';
+
     return {
       fontWeight: theme.comp.typography.body.weight[weight].fontWeight,
-      letterSpacing: theme.comp.typography.body.weight[weight].letterSpacing,
+      letterSpacing:
+        theme.comp.typography.body.weight[weight].letterSpacing[size] ||
+        theme.comp.typography.body.weight[weight].letterSpacing['m'],
     };
   }
 };

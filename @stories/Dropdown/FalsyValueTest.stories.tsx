@@ -44,6 +44,12 @@ const InnerElement = (props: typeof MDSDropdown.arguments) => {
     <Wrapper>
       <MDSTypography>Processing for various values</MDSTypography>
       <MDSTypography>-1 is always used as a whole selection</MDSTypography>
+      <MDSTypography>
+        In single selection case,{' '}
+        <span style={{ backgroundColor: '#eee', padding: '2px 4px', borderRadius: '4px' }}>null</span> is selectable,
+        but it is not displayed as selected in filterChip. Because it&apos;s used to represent &quot;All&quot;
+        selection.
+      </MDSTypography>
       <div style={{ display: 'flex', gap: '12px' }}>
         <MDSDropdown
           {...props}

@@ -118,6 +118,14 @@ export const useInitDropdown = <T, SortT>(
       return ['All'];
     }
 
+    /*
+      in single selection case,
+      null is selectable, but it is not displayed as selected in filterChip
+     */
+    if (!isMultiple && value === null) {
+      return [];
+    }
+
     return values.flatMap(
       (v) =>
         selectedValues.find((v1) => v1.value === v)?.label ||

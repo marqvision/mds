@@ -34,9 +34,7 @@ export const resolveFontWeightLetterSpacing = (
 
     return {
       fontWeight: theme.comp.typography.title.weight[weight].fontWeight,
-      letterSpacing:
-        theme.comp.typography.title.weight[weight].letterSpacing[size] ||
-        theme.comp.typography.title.weight[weight].letterSpacing['m'],
+      letterSpacing: theme.comp.typography.title.weight[weight].letterSpacing[size],
     };
   } else {
     const weight = (features.weight || 'regular') as BodyWeight;
@@ -44,9 +42,7 @@ export const resolveFontWeightLetterSpacing = (
 
     return {
       fontWeight: theme.comp.typography.body.weight[weight].fontWeight,
-      letterSpacing:
-        theme.comp.typography.body.weight[weight].letterSpacing[size] ||
-        theme.comp.typography.body.weight[weight].letterSpacing['m'],
+      letterSpacing: theme.comp.typography.body.weight[weight].letterSpacing[size],
     };
   }
 };

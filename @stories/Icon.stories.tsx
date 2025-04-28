@@ -71,7 +71,7 @@ export const Variants = (props: MDSIconProps) => {
       <MDSIcon.ChartCirclePie {...props} variant="fill_2_1_1" />
       <MDSIcon.CommentAdd {...props} variant="left" />
       <MDSIcon.CommentAdd {...props} variant="right" />
-      <MDSIcon.Home {...props} />
+      <MDSIcon.Language {...props} />
     </>
   );
 };
@@ -141,6 +141,9 @@ const IconVariant = {
   Siren: VariantSet['OutlineFill'],
   Shopping: VariantSet['OutlineFill'],
   Chat: VariantSet['OutlineFill'],
+  Sellers: VariantSet['OutlineFill'],
+  Performance: VariantSet['OutlineFill'],
+  Home: VariantSet['OutlineFill'],
 
   // Editor
   Circle: [...VariantSet['OutlineFill'], 'outline_small', 'fill_small'],

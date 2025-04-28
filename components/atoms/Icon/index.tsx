@@ -137,7 +137,6 @@ export const MDSIcon = {
   ChartTable: createIcon(Symbols.ChartTable),
   ChartNumber: createIcon(Symbols.ChartNumber),
   AutoMagic: createIcon(Symbols.AutoMagic),
-  ChartLeaderBoard: createIcon(Symbols.ChartLeaderBoard),
   ChartMonitoring: createIcon(Symbols.ChartMonitoring),
   CompareImage: createIcon(Symbols.CompareImage),
   ProtectionWarning: createIcon(Symbols.ProtectionWarning),
@@ -189,6 +188,7 @@ export const MDSIcon = {
   Rocket: createIcon(Symbols.Rocket),
   SocialMedia: createIcon(Symbols.SocialMedia),
   Translate: createIcon(Symbols.Translate),
+  Performance: createIcon(Symbols.Performance),
 
   // editor
   Bold: createIcon(Editor.Bold),

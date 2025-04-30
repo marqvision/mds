@@ -50,10 +50,8 @@ const FONT_STYLE_VALUES = {
   },
 };
 export const MDSFontCSS = ({
-  useNewFont,
   isDisplayTypographyDebug,
 }: {
-  useNewFont?: boolean;
   isDisplayTypographyDebug?: boolean;
 }) => (
   <Global
@@ -81,13 +79,13 @@ export const MDSFontCSS = ({
        * 그래서 html[lang=]을 이용해서 영어폰트도 Pretendard로 리셋시켜버린다.
        */
       html[lang='ko'] {
-        font-family: 'Pretendard Variable !important';
+        font-family: "Pretendard Variable", "Noto Sans SC" !important;
         letter-spacing: 0;
         ${FONT_STYLE_VALUES.KO.title}
         ${FONT_STYLE_VALUES.KO.body}
       }
       html[lang='en'] {
-        font-family: ${useNewFont ? '"Inter", Pretendard Variable !important' : 'Visuelt-Regular'};
+        font-family: "Inter", "Pretendard Variable", "Noto Sans SC" !important;
         ${FONT_STYLE_VALUES.EN.title}
         ${FONT_STYLE_VALUES.EN.body}
       }
@@ -96,27 +94,28 @@ export const MDSFontCSS = ({
       html[lang='ko'] input,
       html[lang='ko'] textarea,
       html[lang='ko'] select,
-      html[lang='ko'] svg {
-        font-family: 'Pretendard Variable !important';
+      html[lang='ko'] svg,
+      html[lang='ko'] text,
+      html[lang='ko'] tspan {
+        font-family: "Pretendard Variable", "Noto Sans SC" !important;
       }
       html[lang='en'] button,
       html[lang='en'] input,
       html[lang='en'] textarea,
       html[lang='en'] select,
-      html[lang='en'] svg {
-        font-family: ${useNewFont ? '"Inter", Pretendard Variable !important' : 'Visuelt-Regular'};
+      html[lang='en'] svg,
+      html[lang='en'] text,
+      html[lang='en'] tspan {
+        font-family: "Inter", "Pretendard Variable", "Noto Sans SC" !important;
       }
 
-      ${useNewFont
-        ? `
-        html[lang='en'] *[data-typography-new-font] {
-          font-family: "Inter", "Pretendard Variable" !important;
-        }
-        html[lang='ko'] *[data-typography-new-font] {
-          font-family: "Pretendard Variable" !important;
-        }
-        `
-        : ''}
+      html[lang='en'] *[data-typography-new-font] {
+        font-family: "Inter", "Pretendard Variable", "Noto Sans SC" !important;
+      }
+
+      html[lang='ko'] *[data-typography-new-font] {
+        font-family: "Pretendard Variable", "Noto Sans SC" !important;
+      }
 
       ${isDisplayTypographyDebug
         ? `

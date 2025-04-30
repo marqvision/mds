@@ -82,8 +82,9 @@ export const _MDSThemeValue = {
                 1: RAW_COLORS.orange400,
                 2: RAW_COLORS.yellow300,
                 3: RAW_COLORS.yellow200,
-                4: RAW_COLORS.green300,
-                5: RAW_COLORS.green400,
+                4: RAW_COLORS.green200,
+                5: RAW_COLORS.green300,
+                6: RAW_COLORS.green400,
               },
               neutral: {
                 default: COLOR_TOKENS.bg.surface.neutral.default.normal,
@@ -112,13 +113,11 @@ export const _MDSThemeValue = {
 
 type MDSThemeProviderProps = {
   children: React.ReactNode;
-  disableNewFont?: boolean;
   disableResetCSS?: boolean;
   overrideTheme?: Partial<MDSTheme>;
 };
 export const MDSThemeProvider = ({
   children,
-  disableNewFont,
   disableResetCSS,
   overrideTheme,
 }: MDSThemeProviderProps) => {
@@ -126,7 +125,7 @@ export const MDSThemeProvider = ({
   return (
     <ThemeProvider theme={theme}>
       {!disableResetCSS && <MDSResetCSS />}
-      <MDSFontCSS useNewFont={!disableNewFont} />
+      <MDSFontCSS />
       {children}
     </ThemeProvider>
   );

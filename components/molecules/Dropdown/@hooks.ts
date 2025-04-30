@@ -255,9 +255,13 @@ export const useInitDropdown = <T, SortT>(
       return;
     }
 
-    const values = (isMultiple ? value : value ? [value] : []) as ValueType<T>[];
+    const values = (isMultiple ? value : value !== undefined ? [value] : []) as ValueType<T>[];
     const lastValue = (
-      Array.isArray(lastValueRef.current) ? lastValueRef.current : lastValueRef.current ? [lastValueRef.current] : []
+      Array.isArray(lastValueRef.current)
+        ? lastValueRef.current
+        : lastValueRef.current !== undefined
+        ? [lastValueRef.current]
+        : []
     ) as ValueType<T>[];
 
     const isSomeDiff = values.some((v) => !lastValue.includes(v)) || lastValue.some((v) => !values.includes(v));

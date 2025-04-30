@@ -113,13 +113,11 @@ export const _MDSThemeValue = {
 
 type MDSThemeProviderProps = {
   children: React.ReactNode;
-  disableNewFont?: boolean;
   disableResetCSS?: boolean;
   overrideTheme?: Partial<MDSTheme>;
 };
 export const MDSThemeProvider = ({
   children,
-  disableNewFont,
   disableResetCSS,
   overrideTheme,
 }: MDSThemeProviderProps) => {
@@ -127,7 +125,7 @@ export const MDSThemeProvider = ({
   return (
     <ThemeProvider theme={theme}>
       {!disableResetCSS && <MDSResetCSS />}
-      <MDSFontCSS useNewFont={!disableNewFont} />
+      <MDSFontCSS />
       {children}
     </ThemeProvider>
   );

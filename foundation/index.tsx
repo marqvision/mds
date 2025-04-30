@@ -82,8 +82,9 @@ export const _MDSThemeValue = {
                 1: RAW_COLORS.orange400,
                 2: RAW_COLORS.yellow300,
                 3: RAW_COLORS.yellow200,
-                4: RAW_COLORS.green300,
-                5: RAW_COLORS.green400,
+                4: RAW_COLORS.green200,
+                5: RAW_COLORS.green300,
+                6: RAW_COLORS.green400,
               },
               neutral: {
                 default: COLOR_TOKENS.bg.surface.neutral.default.normal,

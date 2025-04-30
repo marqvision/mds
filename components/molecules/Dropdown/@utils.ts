@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { DropdownItem, SelectedType, SortType } from './@types';
 
 export const flattenDropdown = <T>(items: DropdownItem<T>[]): DropdownItem<T>[] => {
@@ -138,3 +139,6 @@ export const getAllListIndex = <T>(list: DropdownItem<T>[]) => {
 
   return arr;
 };
+
+export const getLabelFromList = (value: unknown, list: { label: string | ReactElement; value?: unknown }[]) =>
+  list.find((v) => v.value === value)?.label || `${value}`;

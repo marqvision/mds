@@ -9,7 +9,7 @@ import {
   SortType,
   ValueType,
 } from './@types';
-import { flattenDropdown, getFilteredList, getValueFromList } from './@utils';
+import { flattenDropdown, getFilteredList, getLabelFromList, getValueFromList } from './@utils';
 
 export const useDropdown = <T>({
   value,
@@ -89,20 +89,14 @@ export const useInitDropdown = <T, SortT>(
         ]
       : []),
   ];
-
-  const findLabel = (v: ValueType<T>): SelectedType<ValueType<T>> => ({
-    label: flatItems.find((item) => item.value === v)?.label || `${v}`,
-    value: v,
-  });
   const values = (isMultiple ? value : value !== undefined ? [value] : []) as ValueType<T>[];
 
-  const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>(() => {
-    if (value !== undefined) {
-      return values.map(findLabel);
-    }
-
-    return [];
-  });
+  const [selectedValues, setSelectedValues] = useState<SelectedType<ValueType<T>>[]>(
+    values.map((v) => ({
+      label: getLabelFromList(v, flatItems),
+      value: v,
+    }))
+  );
 
   const hasList = list.length > 0;
   const is1DepthSingle = props.modules?.includes('1-depth-single');
@@ -137,10 +131,10 @@ export const useInitDropdown = <T, SortT>(
   const selectedItems = (
     Array.isArray(value)
       ? value.map((v) => ({
-          label: flatItems.find((item) => item.value === v)?.label || v,
+          label: getLabelFromList(v, flatItems),
           value: v,
         }))
-      : flatItems.find((v) => v.value === value) || { label: value, value }
+      : { label: getLabelFromList(value, flatItems), value }
   ) as ObjType<T>;
 
   const handleClose = () => {
@@ -268,6 +262,16 @@ export const useInitDropdown = <T, SortT>(
     const isSomeAdded = lastValue.every((v) => values.includes(v)) && values.length > lastValue.length;
 
     if (!isSomeDiff) {
+      setSelectedValues((ps) =>
+        ps.map((v) =>
+          `${v.value}` === `${v.label}`
+            ? {
+                label: getLabelFromList(v.value, flatItems),
+                value: v.value,
+              }
+            : v
+        )
+      );
       return;
     }
 
@@ -275,14 +279,14 @@ export const useInitDropdown = <T, SortT>(
       const addedItems = values
         .filter((v) => !lastValue.includes(v))
         .map((v) => ({
-          label: flatItems.find((item) => item.value === v)?.label || v,
+          label: getLabelFromList(v, flatItems),
           value: v,
         })) as SelectedType<ValueType<T>>[];
       setSelectedValues((ps) => [...ps, ...addedItems]);
     } else {
       setSelectedValues(
         values.map((v) => ({
-          label: flatItems.find((item) => item.value === v)?.label || v,
+          label: getLabelFromList(v, flatItems),
           value: v,
         })) as SelectedType<ValueType<T>>[]
       );

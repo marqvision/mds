@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { MDSCheckbox, MDSChip, MDSTable, MDSTypography } from '../../components';
+import { MDSCheckbox, MDSButton, MDSTable, MDSTypography } from '../../components';
 
 const meta: Meta<typeof MDSTable> = {
   title: '2. Components/organisms/Table',
@@ -141,9 +141,9 @@ export const CellSize: StoryObj<typeof MDSTable> = {
           <MDSTable.Cell cellSize="small" colSpan={3}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <MDSCheckbox value={true} onChange={() => {}} />
-              <MDSChip variant="fill" size="medium" color="blue">
+              <MDSButton variant="fill" size="medium" color="blue">
                 Enforce
-              </MDSChip>
+              </MDSButton>
             </div>
           </MDSTable.Cell>
         </MDSTable.Row>

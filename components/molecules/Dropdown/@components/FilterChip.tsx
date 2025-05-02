@@ -1,6 +1,6 @@
 import { MouseEvent, ReactElement } from 'react';
 import styled from '@emotion/styled';
-import { MDSChip } from '../../Chip';
+import { MDSButton } from '../../Button';
 import { MDSTag } from '../../Tag';
 import { MDSIcon } from '../../../atoms/Icon';
 
@@ -12,7 +12,7 @@ type Props = {
   onClick?: (e: MouseEvent) => void;
 };
 
-const StyledWrap = styled(MDSChip)`
+const StyledWrap = styled(MDSButton)`
   align-self: flex-start;
 `;
 

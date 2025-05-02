@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import ReactHtmlParser from 'html-react-parser';
 import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../../atoms/Icon';
-import { MDSChip } from '../../Chip';
+import { MDSButton } from '../../Button';
 import { theme } from '../@constants';
 import { MDSTypography, MDSTypographyProps, getTypographyProps } from '../../../atoms/Typography';
 import { flattenDropdown } from '../@utils';
@@ -107,7 +107,7 @@ export const Select = <T,>(props: Props<T>) => {
           return custom.withChip(v);
         }
         return (
-          <MDSChip
+          <MDSButton
             key={v}
             size={theme.size[size].chipSize}
             color="bluegray"
@@ -126,7 +126,7 @@ export const Select = <T,>(props: Props<T>) => {
             }
           >
             {getLabelFromList(v)}
-          </MDSChip>
+          </MDSButton>
         );
       })
     ) : (

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Story } from '@storybook/blocks';
-import { MDSChip, MDSIcon, MDSTag, MDSTypography } from '../components';
+import { MDSButton, MDSIcon, MDSTag, MDSTypography } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof MDSChip> = {
-  component: MDSChip,
+const meta: Meta<typeof MDSButton> = {
+  component: MDSButton,
   title: '2. Components/molecules/Chip',
   parameters: {
     docs: {
@@ -36,7 +36,7 @@ const meta: Meta<typeof MDSChip> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof MDSChip>;
+type Story = StoryObj<typeof MDSButton>;
 
 const Wrapper = ({ children }: React.PropsWithChildren) => {
   return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>{children}</div>;
@@ -44,12 +44,12 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
 
 export const Preview: Story = {
   args: {
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
       <MDSTypography>기본형 width 값을 전달하지 않으면 hug 로 적용되어 내용에 맞게 사이즈가 조절됩니다.</MDSTypography>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -57,12 +57,12 @@ export const Preview: Story = {
 export const WidthFill: Story = {
   args: {
     width: 'fill',
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
       <MDSTypography>width: fill 지정 시 width: 100% 스타일이 지정됩니다.</MDSTypography>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -70,12 +70,12 @@ export const WidthFill: Story = {
 export const WidthFixed: Story = {
   args: {
     width: '300px',
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
       <MDSTypography>width: hug 또는 fill 이외의 값 지정 시 입력한 width 사이즈가 지정됩니다.</MDSTypography>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -83,11 +83,11 @@ export const WidthFixed: Story = {
 export const VariantFill: Story = {
   args: {
     variant: 'fill',
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -95,11 +95,11 @@ export const VariantFill: Story = {
 export const VariantTint: Story = {
   args: {
     variant: 'tint',
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -107,11 +107,11 @@ export const VariantTint: Story = {
 export const VariantBorder: Story = {
   args: {
     variant: 'border',
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -119,12 +119,12 @@ export const VariantBorder: Story = {
 export const StartIcon: Story = {
   args: {
     startIcon: <MDSIcon.Image variant="fill" />,
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
       <MDSTypography>label 의 앞에 아이콘을 추가합니다.</MDSTypography>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -132,12 +132,12 @@ export const StartIcon: Story = {
 export const EndIcon: Story = {
   args: {
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
       <MDSTypography>label 의 뒤에 아이콘을 추가합니다.</MDSTypography>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -146,12 +146,12 @@ export const ColoredIcon: Story = {
   args: {
     variant: 'border',
     startIcon: <MDSIcon.ExcelSheet color="color/content/success/default/normal" />,
-    children: 'Chip',
+    children: 'Button',
   },
   render: (args) => (
     <Wrapper>
       <MDSTypography>color 가 지정된 아이콘을 전달할 경우 아이콘의 컬러를 우선 적용합니다.</MDSTypography>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -161,7 +161,7 @@ export const Clickable: Story = {
     startIcon: <MDSIcon.Image variant="fill" />,
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
     onClick: () => {},
-    children: 'Clickable Chip',
+    children: 'Clickable Button',
   },
   render: (args) => (
     <Wrapper>
@@ -173,7 +173,7 @@ export const Clickable: Story = {
         로딩 상태에는 onClick 이벤트가 무시됩니다.
       </MDSTypography>
 
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -184,7 +184,7 @@ export const Loading: Story = {
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
     onClick: () => {},
     isLoading: true,
-    children: 'Loading Chip',
+    children: 'Loading Button',
   },
   render: (args) => (
     <Wrapper>
@@ -193,7 +193,7 @@ export const Loading: Story = {
         <br />
         onClick 이벤트 및 hover 효과가 사라집니다.
       </MDSTypography>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
@@ -204,7 +204,7 @@ export const LoadingHideLabel: Story = {
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
     onClick: () => {},
     isLoading: 'hideLabel',
-    children: 'Loading Chip',
+    children: 'Loading Button',
   },
   render: (args) => (
     <Wrapper>
@@ -213,12 +213,12 @@ export const LoadingHideLabel: Story = {
         <br />
         onClick 이벤트 및 hover 효과가 사라집니다.
       </MDSTypography>
-      <MDSChip {...args}>{args.children}</MDSChip>
+      <MDSButton {...args}>{args.children}</MDSButton>
     </Wrapper>
   ),
 };
 
-export const ChipWithTags: Story = {
+export const ButtonWithTags: Story = {
   args: {
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
     children: 'Filter',
@@ -228,11 +228,11 @@ export const ChipWithTags: Story = {
       <MDSTypography>
         tags: 단일 태그 또는 태그들의 배열 형태로 전달합니다.
         <br />
-        label 과 endIcon 사이에 위치되며, Chip 에서 설정한 gap 사이즈가 Tag 사이의 gap 으로 적용됩니다.
+        label 과 endIcon 사이에 위치되며, Button 에서 설정한 gap 사이즈가 Tag 사이의 gap 으로 적용됩니다.
         <br />
-        Tag 의 size, color 등의 스타일은 전적으로 사용처에서 결정하며, Chip 에서는 어떠한 값도 전달하지 않습니다.
+        Tag 의 size, color 등의 스타일은 전적으로 사용처에서 결정하며, Button 에서는 어떠한 값도 전달하지 않습니다.
       </MDSTypography>
-      <MDSChip
+      <MDSButton
         {...args}
         tags={
           <MDSTag size="small" variant="tint" color="bluegray">
@@ -241,8 +241,8 @@ export const ChipWithTags: Story = {
         }
       >
         {args.children}
-      </MDSChip>
-      <MDSChip
+      </MDSButton>
+      <MDSButton
         {...args}
         tags={[
           <MDSTag key="tagLabel1" size="small" variant="tint" color="bluegray">
@@ -254,8 +254,8 @@ export const ChipWithTags: Story = {
         ]}
       >
         {args.children}
-      </MDSChip>
-      <MDSChip
+      </MDSButton>
+      <MDSButton
         startIcon={<MDSIcon.Check variant="outline" />}
         size="medium"
         color="blue"
@@ -270,31 +270,31 @@ export const ChipWithTags: Story = {
         ]}
       >
         Reviewing
-      </MDSChip>
+      </MDSButton>
     </Wrapper>
   ),
 };
 
-export const Chips: Story = {
+export const Buttons: Story = {
   args: {
     color: 'bluegray',
     variant: 'fill',
     size: 'medium',
-    children: 'Chip',
+    children: 'Button',
   },
   render: ({ children, ...args }) => (
     <Wrapper>
-      <MDSTypography>flat 속성으로 Chip 을 연결해서 배치할 수 있습니다.</MDSTypography>
+      <MDSTypography>flat 속성으로 Button 을 연결해서 배치할 수 있습니다.</MDSTypography>
       <MDSTypography>flat `right` 또는 `both` 설정 시 오른쪽에 divider 가 나타납니다.</MDSTypography>
       <MDSTypography>기본적으로 inline-flex 이기 때문에 사용 시 div 로 한 번 감싸주기만 하면 됩니다.</MDSTypography>
       <div>
-        <MDSChip {...args} startIcon={<MDSIcon.Calendar />} flat="right" onClick={() => {}}>
+        <MDSButton {...args} startIcon={<MDSIcon.Calendar />} flat="right" onClick={() => {}}>
           Filter
-        </MDSChip>
-        <MDSChip {...args} flat="both" onClick={() => {}}>
+        </MDSButton>
+        <MDSButton {...args} flat="both" onClick={() => {}}>
           세개도 되지롱
-        </MDSChip>
-        <MDSChip
+        </MDSButton>
+        <MDSButton
           {...args}
           flat="left"
           onClick={() => {}}

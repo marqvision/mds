@@ -1,4 +1,4 @@
-import { ChipTheme } from './@types';
+import { Theme } from './@types';
 
 export const token = {
   pddng: {
@@ -45,7 +45,7 @@ export const token = {
   },
 } as const;
 
-export const theme: ChipTheme = {
+export const theme: Theme = {
   color: {
     bluegray: {
       fill: {

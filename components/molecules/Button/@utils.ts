@@ -1,7 +1,7 @@
 import { theme as ChipTheme } from './@constants';
-import { ChipSize, Flat } from './@types';
+import { Size, Flat } from './@types';
 
-export const getBorderRadius = (size: ChipSize, flat?: Flat) => {
+export const getBorderRadius = (size: Size, flat?: Flat) => {
   const radius = ChipTheme.size[size].radius;
 
   const isFlatLeft = flat === 'left' || flat === 'both';

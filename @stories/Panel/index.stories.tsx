@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useArgs, useState, useEffect } from '@storybook/preview-api';
-import { MDSChip, MDSModal, MDSPanel, MDSTypography } from '../../components';
+import { MDSButton, MDSModal, MDSPanel, MDSTypography } from '../../components';
 import { Doc } from './Doc';
 
 const meta: Meta<typeof MDSPanel.Wrapper> = {
@@ -59,9 +59,9 @@ export const DimmedPanel: StoryObj<typeof MDSPanel.Wrapper> = {
             <MDSTypography weight="medium" onClick={handleClose} style={{ cursor: 'pointer' }}>
               Close
             </MDSTypography>
-            <MDSChip variant="fill" size="large" color="blue" onClick={() => setIsOpen2(true)}>
+            <MDSButton variant="fill" size="large" color="blue" onClick={() => setIsOpen2(true)}>
               Open 2depth panel
-            </MDSChip>
+            </MDSButton>
           </MDSPanel.Action>
         </MDSPanel.Wrapper>
         <MDSPanel.Wrapper width={300} onClose={handleClose2} isOpen={isOpen2}>
@@ -77,9 +77,9 @@ export const DimmedPanel: StoryObj<typeof MDSPanel.Wrapper> = {
             <MDSTypography weight="medium" onClick={handleClose2} style={{ cursor: 'pointer' }}>
               Close
             </MDSTypography>
-            <MDSChip variant="fill" size="large" color="blue" onClick={() => setIsModal(true)}>
+            <MDSButton variant="fill" size="large" color="blue" onClick={() => setIsModal(true)}>
               Open modal
-            </MDSChip>
+            </MDSButton>
           </MDSPanel.Action>
         </MDSPanel.Wrapper>
         <MDSModal.Wrapper isOpen={isModal} onClose={() => setIsModal(false)}>
@@ -99,9 +99,9 @@ export const DimmedPanel: StoryObj<typeof MDSPanel.Wrapper> = {
             <MDSTypography weight="medium" onClick={() => setIsModal(false)} style={{ cursor: 'pointer' }}>
               Close
             </MDSTypography>
-            <MDSChip variant="fill" size="large" color="blue" onClick={() => alert('no event')}>
+            <MDSButton variant="fill" size="large" color="blue" onClick={() => alert('no event')}>
               Action
-            </MDSChip>
+            </MDSButton>
           </MDSModal.Action>
         </MDSModal.Wrapper>
       </>
@@ -163,9 +163,9 @@ export const SplitPanel: StoryObj<typeof MDSPanel.Wrapper> = {
             <MDSTypography weight="medium" onClick={handleClose} style={{ cursor: 'pointer' }}>
               Close
             </MDSTypography>
-            <MDSChip variant="fill" size="large" color="blue" onClick={() => alert('no action')}>
+            <MDSButton variant="fill" size="large" color="blue" onClick={() => alert('no action')}>
               Action
-            </MDSChip>
+            </MDSButton>
           </MDSPanel.Action>
         </MDSPanel.Wrapper>
       </div>

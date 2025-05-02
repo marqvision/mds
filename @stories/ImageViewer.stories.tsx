@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSChip, MDSIcon, MDSImage, MDSImageViewer, MDSTypography } from '../components';
+import { MDSButton, MDSIcon, MDSImage, MDSImageViewer, MDSTypography } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSImageViewer> = {
@@ -170,7 +170,7 @@ export const CustomButton: Story = {
         <MDSImageViewer
           image="https://picsum.photos/400"
           renderAnchor={({ open }) => (
-            <MDSChip
+            <MDSButton
               variant="border"
               size="medium"
               color="bluegray"
@@ -178,7 +178,7 @@ export const CustomButton: Story = {
               startIcon={<MDSIcon.Image variant="fill" />}
             >
               Image
-            </MDSChip>
+            </MDSButton>
           )}
         />
         <MDSTypography as="code" variant="body" size="m" style={CodeStyle}>

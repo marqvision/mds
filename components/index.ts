@@ -7,7 +7,7 @@ export * from './organisms/Table';
 export * from './atoms/Divider';
 export * from './atoms/Checkbox';
 export * from './molecules/Tag';
-export * from './molecules/Chip';
+export * from './molecules/Button';
 export * from './atoms/RadioButton';
 export * from './molecules/Popover';
 export * from './molecules/Input';

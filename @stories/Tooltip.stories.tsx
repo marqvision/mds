@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSChip, MDSIcon, MDSTooltip, MDSTypography } from '../components';
+import { MDSButton, MDSIcon, MDSTooltip, MDSTypography } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const LONG_TEXT =
@@ -64,32 +64,32 @@ export const Preview: Story = {
       <div style={{ height: '300px' }}></div>
       <div>
         <MDSTooltip {...args}>
-          <MDSChip variant="fill" color="yellow" size="medium">
+          <MDSButton variant="fill" color="yellow" size="medium">
             Default
-          </MDSChip>
+          </MDSButton>
         </MDSTooltip>
       </div>
       <MDSTypography style={{ marginTop: '20px' }}>Layout test</MDSTypography>
       <div style={{ display: 'flex', gap: '16px', width: '80%' }}>
         <MDSTooltip {...args} title={`${LONG_TEXT} ${LONG_TEXT} ${LONG_TEXT}`}>
-          <MDSChip variant="fill" color="yellow" size="medium">
+          <MDSButton variant="fill" color="yellow" size="medium">
             Long text
-          </MDSChip>
+          </MDSButton>
         </MDSTooltip>
         <MDSTooltip position="right-center" title={LONG_TEXT} anchorStyle={{ flex: 1 }}>
-          <MDSChip variant="fill" color="green" size="medium" width="fill">
+          <MDSButton variant="fill" color="green" size="medium" width="fill">
             Anchor right center
-          </MDSChip>
+          </MDSButton>
         </MDSTooltip>
         <MDSTooltip position="left-bottom" title={LONG_TEXT}>
-          <MDSChip variant="fill" color="green" size="large">
+          <MDSButton variant="fill" color="green" size="large">
             Anchor left bottom
-          </MDSChip>
+          </MDSButton>
         </MDSTooltip>
         <MDSTooltip title={LONG_TEXT} size="small">
-          <MDSChip variant="fill" color="red" size="small">
+          <MDSButton variant="fill" color="red" size="small">
             Small size
-          </MDSChip>
+          </MDSButton>
         </MDSTooltip>
       </div>
     </Wrapper>

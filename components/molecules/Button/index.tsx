@@ -4,14 +4,14 @@ import { resolveColor } from '../../../utils';
 import { MDSTypography } from '../../atoms/Typography';
 import { Divider } from './@components/Divider';
 import { Icon } from './@components/Icon';
-import { theme as ChipTheme } from './@constants';
-import { ChipProps, StyledChipProps } from './@types';
+import { theme as ButtonTheme } from './@constants';
+import { ButtonProps, StyledButtonProps } from './@types';
 import { getBorderRadius } from './@utils';
 import { LoadingSpinner } from './@components/LoadingSpinner';
 
-export type MDSChipProps = ChipProps;
+export type MDSButtonProps = ButtonProps;
 
-const Chip = styled.button<StyledChipProps>`
+const Button = styled.button<StyledButtonProps>`
   position: relative;
   vertical-align: middle;
   justify-content: center;
@@ -41,15 +41,15 @@ const Chip = styled.button<StyledChipProps>`
 
   ${({ size, flat }) => {
     return `
-      gap: ${ChipTheme.size[size].gap};
-      padding: ${ChipTheme.size[size].padding};
-      min-height: ${ChipTheme.size[size].minHeight};
+      gap: ${ButtonTheme.size[size].gap};
+      padding: ${ButtonTheme.size[size].padding};
+      min-height: ${ButtonTheme.size[size].minHeight};
       border-radius: ${getBorderRadius(size, flat)};
     `;
   }}
 
   ${({ size, flat }) => {
-    const chipSpacing = ChipTheme.size[size].flatPadding;
+    const chipSpacing = ButtonTheme.size[size].flatPadding;
 
     return `
       ${
@@ -74,19 +74,19 @@ const Chip = styled.button<StyledChipProps>`
 
   ${({ variant, color, isDisabled, isCompleted, isClickable }) => {
     if (isDisabled) {
-      const backgroundColor = ChipTheme.color[color][variant].disabled.backgroundColor;
+      const backgroundColor = ButtonTheme.color[color][variant].disabled.backgroundColor;
 
       return `
-        color: ${resolveColor(ChipTheme.color[color][variant].disabled.color)};
+        color: ${resolveColor(ButtonTheme.color[color][variant].disabled.color)};
         background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
-        border-color: ${resolveColor(ChipTheme.color[color][variant].disabled.borderColor)};
+        border-color: ${resolveColor(ButtonTheme.color[color][variant].disabled.borderColor)};
       `;
     }
 
     if (isCompleted) {
-      const labelColor = ChipTheme.color[color][variant].completed?.color;
-      const backgroundColor = ChipTheme.color[color][variant].completed?.backgroundColor;
-      const borderColor = ChipTheme.color[color][variant].completed?.borderColor;
+      const labelColor = ButtonTheme.color[color][variant].completed?.color;
+      const backgroundColor = ButtonTheme.color[color][variant].completed?.backgroundColor;
+      const borderColor = ButtonTheme.color[color][variant].completed?.borderColor;
 
       return `
         ${labelColor ? `color: ${resolveColor(labelColor)};` : ''}
@@ -95,22 +95,22 @@ const Chip = styled.button<StyledChipProps>`
       `;
     }
 
-    const backgroundColor = ChipTheme.color[color][variant].normal.backgroundColor;
-    const hoverBackgroundColor = ChipTheme.color[color][variant].hover.backgroundColor;
+    const backgroundColor = ButtonTheme.color[color][variant].normal.backgroundColor;
+    const hoverBackgroundColor = ButtonTheme.color[color][variant].hover.backgroundColor;
 
     return `
-        color: ${resolveColor(ChipTheme.color[color][variant].normal.color)};
+        color: ${resolveColor(ButtonTheme.color[color][variant].normal.color)};
         background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
-        border-color: ${resolveColor(ChipTheme.color[color][variant].normal.borderColor)};
+        border-color: ${resolveColor(ButtonTheme.color[color][variant].normal.borderColor)};
       
       ${
         isClickable
           ? `
             cursor: pointer;
             &:hover {
-              color: ${resolveColor(ChipTheme.color[color][variant].hover.color)};
+              color: ${resolveColor(ButtonTheme.color[color][variant].hover.color)};
               ${hoverBackgroundColor ? `background-color: ${resolveColor(hoverBackgroundColor)};` : ''}
-              border-color: ${resolveColor(ChipTheme.color[color][variant].hover.borderColor)};
+              border-color: ${resolveColor(ButtonTheme.color[color][variant].hover.borderColor)};
             }
           `
           : ''
@@ -119,7 +119,7 @@ const Chip = styled.button<StyledChipProps>`
   }}
 `;
 
-export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
+export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
   const {
     children: label,
     size,
@@ -153,7 +153,7 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
     : undefined;
 
   return (
-    <Chip
+    <Button
       size={size}
       variant={variant}
       color={color}
@@ -168,10 +168,10 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       flat={flat}
       {...restProps}
     >
-      {isLoading === 'hideLabel' && <LoadingSpinner size={ChipTheme.size[size].spinnerSize} color="inherit" isCenter />}
+      {isLoading === 'hideLabel' && <LoadingSpinner size={ButtonTheme.size[size].spinnerSize} color="inherit" isCenter />}
 
       {isLoading === true ? (
-        <LoadingSpinner size={ChipTheme.size[size].spinnerSize} color="inherit" />
+        <LoadingSpinner size={ButtonTheme.size[size].spinnerSize} color="inherit" />
       ) : (
         startIcon && <Icon size={size} icon={startIcon} />
       )}
@@ -181,9 +181,9 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
         : label && (
             // @ts-expect-error - variant=title/body에 따라 사용 가능한 size가 상이해서 에러 발생함. 추후 수정 필요
             <MDSTypography
-              variant={ChipTheme.size[size].label}
-              weight={ChipTheme.size[size].weight}
-              size={ChipTheme.size[size].size}
+              variant={ButtonTheme.size[size].label}
+              weight={ButtonTheme.size[size].weight}
+              size={ButtonTheme.size[size].size}
               color="inherit"
               lineClamp={1}
               wordBreak="break-all"
@@ -197,6 +197,18 @@ export const MDSChip = (props: React.PropsWithChildren<ChipProps>) => {
       {endIcon && <Icon size={size} icon={endIcon} />}
 
       {isDividerVisible && <Divider variant={variant} color={color} size={size} />}
-    </Chip>
+    </Button>
   );
 };
+
+/**
+ * @deprecated
+ * MDSButton 을 사용하세요.
+ */
+export const MDSChip = MDSButton;
+
+/**
+ * @deprecated
+ * MDSButtonProps 를 사용하세요.
+ */
+export type MDSChipProps = ButtonProps;

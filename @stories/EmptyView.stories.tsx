@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSChip, MDSEmptyView } from '../components';
+import { MDSButton, MDSEmptyView } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSEmptyView> = {
@@ -22,7 +22,7 @@ export const Preview: Story = {
   args: {
     title: 'No listings',
     description: 'There is no listings on the list.',
-    children: <MDSChip variant="fill" size="medium" color="blue">Action</MDSChip>
+    children: <MDSButton variant="fill" size="medium" color="blue">Action</MDSButton>
   },
   render: (props) => (
     <Wrapper>
@@ -34,7 +34,7 @@ export const Preview: Story = {
 export const WithoutDescription: Story = {
   args: {
     title: 'No listings',
-    children: <MDSChip variant="fill" size="medium" color="blue">Action</MDSChip>
+    children: <MDSButton variant="fill" size="medium" color="blue">Action</MDSButton>
   },
   render: (props) => (
     <Wrapper>

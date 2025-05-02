@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState } from '@storybook/preview-api';
-import { MDSChip, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../components';
+import { MDSButton, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../components';
 import { StatusList } from './@constants';
 import { Wrapper } from './@components';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -395,9 +395,9 @@ export const DropdownMenu: Story = {
           <MDSDropdown
             list={list}
             renderAnchor={() => (
-              <MDSChip variant="border" color="blue" size="medium">
+              <MDSButton variant="border" color="blue" size="medium">
                 커스텀 버튼
-              </MDSChip>
+              </MDSButton>
             )}
             onSelect={undefined}
           />

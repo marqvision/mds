@@ -1,4 +1,4 @@
-import { MDSChip, MDSLoadingIndicator } from '../components';
+import { MDSButton, MDSLoadingIndicator } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSLoadingIndicator> = {
@@ -47,18 +47,18 @@ export const ChipLoading: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <MDSChip variant="tint" size="small" color="green" isLoading>
+        <MDSButton variant="tint" size="small" color="green" isLoading>
           Loading
-        </MDSChip>
-        <MDSChip variant="fill" size="medium" color="blue" isLoading>
+        </MDSButton>
+        <MDSButton variant="fill" size="medium" color="blue" isLoading>
           Loading
-        </MDSChip>
-        <MDSChip variant="border" size="large" color="red" isLoading="hideLabel">
+        </MDSButton>
+        <MDSButton variant="border" size="large" color="red" isLoading="hideLabel">
           Loading
-        </MDSChip>
-        <MDSChip variant="tint" size="large" color="purple" isLoading="hideLabel">
+        </MDSButton>
+        <MDSButton variant="tint" size="large" color="purple" isLoading="hideLabel">
           Loading
-        </MDSChip>
+        </MDSButton>
       </div>
     );
   },

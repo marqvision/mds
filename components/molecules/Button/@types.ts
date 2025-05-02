@@ -1,7 +1,4 @@
 import React from 'react';
-import { MDSThemeColorPath } from '../../../types';
-import { MDSTypographyProps } from '../../atoms/Typography';
-import { token } from './@constants';
 
 export type Variant = 'fill' | 'tint' | 'border';
 export type Color = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'teal' | 'purple' | 'white';
@@ -11,29 +8,10 @@ export type Flat = 'left' | 'right' | 'both';
 type Width = 'fill' | 'hug' | string;
 type LoadingStatus = 'hideLabel' | boolean;
 
-type Token = typeof token;
-type ColorTheme = {
-  color: MDSThemeColorPath;
-  backgroundColor?: MDSThemeColorPath;
-  borderColor: MDSThemeColorPath;
-};
-export type Theme = {
-  color: Record<Color, Record<Variant, Record<Status, ColorTheme> & Partial<{ completed: ColorTheme }>>>;
-  size: Record<
-    Size,
-    {
-      label: MDSTypographyProps['variant'];
-      size: MDSTypographyProps['size'];
-      weight: MDSTypographyProps['weight'];
-      icon: number;
-      padding: `${Token['pddng']['v'][keyof Token['pddng']['v']]} ${Token['pddng']['h'][keyof Token['pddng']['v']]}`; //h key type 고의로 v 로 지정함 (v 와 한 쌍으로 된 h 값 사용)
-      gap: Token['gap'][keyof Token['gap']];
-      flatPadding: Token['gap'][keyof Token['gap']];
-      radius: Token['radius'][keyof Token['radius']];
-      minHeight: Token['minSize'][keyof Token['minSize']];
-      spinnerSize: number;
-    }
-  >;
+export type ColorTheme = {
+  color: string;
+  backgroundColor?: string;
+  borderColor: string;
 };
 
 export type StyledButtonProps = {

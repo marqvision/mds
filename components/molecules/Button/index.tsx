@@ -1,118 +1,89 @@
 import React, { isValidElement } from 'react';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../utils';
 import { MDSTypography } from '../../atoms/Typography';
 import { Divider } from './@components/Divider';
 import { Icon } from './@components/Icon';
-import { theme as ButtonTheme } from './@constants';
-import { ButtonProps, StyledButtonProps } from './@types';
-import { getBorderRadius } from './@utils';
 import { LoadingSpinner } from './@components/LoadingSpinner';
+import { ButtonProps, StyledButtonProps } from './@types';
+import { getBorderRadius, resolveFlatStyles } from './@utils';
+import { getColor, getSize } from './@utils/styles';
 
 export type MDSButtonProps = ButtonProps;
 
 const Button = styled.button<StyledButtonProps>`
-  position: relative;
-  vertical-align: middle;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-  border-width: 1px;
-  border-style: solid;
-  user-select: none;
-  background-clip: padding-box;
+  ${({ theme, ...props }) => {
+    const sizeStyle = getSize(theme)[props.size];
+    const colorStyle = getColor(theme)[props.color][props.variant];
 
-  & i,
-  & svg {
-    flex-shrink: 0;
-  }
+    const displayStyle = props.width === 'fill' ? 'flex' : 'inline-flex';
+    const widthStyle = props.width === 'hug' ? 'auto' : props.width === 'fill' ? '100%' : props.width;
+    const borderRadiusStyle = getBorderRadius(theme, props);
+    const minHeightStyle = sizeStyle.minHeight;
+    const gapStyle = sizeStyle.gap;
+    const defaultPadding = sizeStyle.padding;
+    const { paddingLeft, paddingRight, borderLeft, borderRight, marginRight } = resolveFlatStyles(theme, props);
 
-  ${({ isLoading }) =>
-    isLoading === 'hideLabel'
-      ? `& *:not([role=loading-indicator], [role=loading-indicator] *, hr) { opacity: 0; }`
-      : ''}
-
-  ${({ width }) => {
-    return `
-      display: ${width === 'fill' ? 'flex' : 'inline-flex'};
-      ${width !== 'hug' ? `width: ${width !== 'fill' ? width : '100%'};` : ''}
-    `;
-  }}
-
-  ${({ size, flat }) => {
-    return `
-      gap: ${ButtonTheme.size[size].gap};
-      padding: ${ButtonTheme.size[size].padding};
-      min-height: ${ButtonTheme.size[size].minHeight};
-      border-radius: ${getBorderRadius(size, flat)};
-    `;
-  }}
-
-  ${({ size, flat }) => {
-    const chipSpacing = ButtonTheme.size[size].flatPadding;
+    const color = props.isDisabled
+      ? colorStyle.disabled.color
+      : props.isCompleted
+        ? colorStyle.completed?.color
+        : colorStyle.normal.color;
+    const backgroundColor = props.isDisabled
+      ? colorStyle.disabled.backgroundColor
+      : props.isCompleted
+        ? colorStyle.completed?.backgroundColor
+        : colorStyle.normal.backgroundColor;
+    const borderColor = props.isDisabled
+      ? colorStyle.disabled.borderColor
+      : props.isCompleted
+        ? colorStyle.completed?.borderColor
+        : colorStyle.normal.borderColor;
 
     return `
-      ${
-        flat === 'left' || flat === 'both'
-          ? `
-        padding-left: ${chipSpacing};
-        border-left: none;
-      `
-          : ''
+      position: relative;
+      vertical-align: middle;
+      justify-content: center;
+      align-items: center;
+      border-width: 1px;
+      border-style: solid;
+      user-select: none;
+      background-clip: padding-box;
+
+      & i,
+      & svg {
+        flex-shrink: 0;
       }
-      ${
-        flat === 'right' || flat === 'both'
-          ? `
-        padding-right: ${chipSpacing};
-        border-right: none;
-        margin-right: 1px;
-      `
-          : ''
-      }
-    `;
-  }}
-
-  ${({ variant, color, isDisabled, isCompleted, isClickable }) => {
-    if (isDisabled) {
-      const backgroundColor = ButtonTheme.color[color][variant].disabled.backgroundColor;
-
-      return `
-        color: ${resolveColor(ButtonTheme.color[color][variant].disabled.color)};
-        background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
-        border-color: ${resolveColor(ButtonTheme.color[color][variant].disabled.borderColor)};
-      `;
-    }
-
-    if (isCompleted) {
-      const labelColor = ButtonTheme.color[color][variant].completed?.color;
-      const backgroundColor = ButtonTheme.color[color][variant].completed?.backgroundColor;
-      const borderColor = ButtonTheme.color[color][variant].completed?.borderColor;
-
-      return `
-        ${labelColor ? `color: ${resolveColor(labelColor)};` : ''}
-        background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
-        ${borderColor ? `border-color: ${resolveColor(borderColor)};` : ''}
-      `;
-    }
-
-    const backgroundColor = ButtonTheme.color[color][variant].normal.backgroundColor;
-    const hoverBackgroundColor = ButtonTheme.color[color][variant].hover.backgroundColor;
-
-    return `
-        color: ${resolveColor(ButtonTheme.color[color][variant].normal.color)};
-        background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
-        border-color: ${resolveColor(ButtonTheme.color[color][variant].normal.borderColor)};
       
+      display: ${displayStyle};
+      width: ${widthStyle};
+      border-radius: ${borderRadiusStyle};
+      min-height: ${minHeightStyle};
+      gap: ${gapStyle};
+      padding: ${defaultPadding};
+      color: ${color || 'inherit'};
+      background-color: ${backgroundColor || 'transparent'};
+      border-color: ${borderColor || 'transparent'};
+      
+      /* flat 적용 시 스타일 */
+      padding-left: ${paddingLeft || ''};
+      padding-right: ${paddingRight || ''};
+      border-left: ${borderLeft || ''};
+      border-right: ${borderRight || ''};
+      margin-right: ${marginRight || ''};
+      
+      /* clickable 상태 시 스타일 */
+      cursor: ${props.isClickable ? 'pointer' : ''};
+      &:hover {
+        color: ${props.isClickable ? colorStyle.hover.color : ''};
+        background-color: ${props.isClickable ? colorStyle.hover.backgroundColor : ''};
+        border-color: ${props.isClickable ? colorStyle.hover.borderColor : ''};
+      }
+      
+      /* isLoading === hideLabel 시 */
       ${
-        isClickable
-          ? `
-            cursor: pointer;
-            &:hover {
-              color: ${resolveColor(ButtonTheme.color[color][variant].hover.color)};
-              ${hoverBackgroundColor ? `background-color: ${resolveColor(hoverBackgroundColor)};` : ''}
-              border-color: ${resolveColor(ButtonTheme.color[color][variant].hover.borderColor)};
-            }
-          `
+        props.isLoading === 'hideLabel'
+          ? `& *:not([role=loading-indicator], [role=loading-indicator] *, hr) { opacity: 0; }`
           : ''
       }
     `;
@@ -136,6 +107,9 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
     flat,
     ...restProps
   } = props;
+
+  const theme = useTheme();
+  const sizeStyle = getSize(theme)[props.size];
 
   if (isCompleted && (color !== 'bluegray' || !(variant === 'tint' || variant === 'border'))) {
     console.warn('[WARN] MDSChip: isCompleted 는 bluegray + tint, bluegray + border 조합에서만 사용할 수 있습니다.');
@@ -168,10 +142,10 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
       flat={flat}
       {...restProps}
     >
-      {isLoading === 'hideLabel' && <LoadingSpinner size={ButtonTheme.size[size].spinnerSize} color="inherit" isCenter />}
+      {isLoading === 'hideLabel' && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
 
       {isLoading === true ? (
-        <LoadingSpinner size={ButtonTheme.size[size].spinnerSize} color="inherit" />
+        <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" />
       ) : (
         startIcon && <Icon size={size} icon={startIcon} />
       )}
@@ -181,9 +155,9 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
         : label && (
             // @ts-expect-error - variant=title/body에 따라 사용 가능한 size가 상이해서 에러 발생함. 추후 수정 필요
             <MDSTypography
-              variant={ButtonTheme.size[size].label}
-              weight={ButtonTheme.size[size].weight}
-              size={ButtonTheme.size[size].size}
+              variant={sizeStyle.label}
+              weight={sizeStyle.weight}
+              size={sizeStyle.size}
               color="inherit"
               lineClamp={1}
               wordBreak="break-all"

@@ -1,6 +1,9 @@
 import { ThemeProvider } from '@emotion/react';
 import { MDSTheme } from '../types';
 import { RAW_COLORS, COLOR_TOKENS } from './colors';
+import { BUTTON_THEME } from './components/button';
+import { CHART_THEME } from './components/chart';
+import { TYPOGRAPHY_THEME } from './components/typography';
 import { MDSFontCSS, MDSResetCSS } from './globalCSS';
 
 //
@@ -11,103 +14,9 @@ export const _MDSThemeValue = {
   color: COLOR_TOKENS,
   _raw_color: RAW_COLORS,
   comp: {
-    typography: {
-      title: {
-        weight: {
-          semibold: {
-            fontWeight: 'var(--font-title-semibold)',
-            letterSpacing: {
-              '2xl': 'var(--font-title-letter-spacing-2xl-semibold)',
-              xl: 'var(--font-title-letter-spacing-xl-semibold)',
-              l: 'var(--font-title-letter-spacing-l-semibold)',
-              m: 'var(--font-title-letter-spacing-m-semibold)',
-              s: 'var(--font-title-letter-spacing-s-semibold)',
-            },
-          },
-          medium: {
-            fontWeight: 'var(--font-title-medium)',
-            letterSpacing: {
-              '2xl': 'var(--font-title-letter-spacing-2xl-medium)',
-              xl: 'var(--font-title-letter-spacing-xl-medium)',
-              l: 'var(--font-title-letter-spacing-l-medium)',
-              m: 'var(--font-title-letter-spacing-m-medium)',
-              s: 'var(--font-title-letter-spacing-s-medium)',
-            },
-          },
-        },
-        size: {
-          '2xl': 24,
-          xl: 20,
-          l: 18,
-          m: 16,
-          s: 14,
-        },
-      },
-      body: {
-        weight: {
-          medium: {
-            fontWeight: 'var(--font-body-medium)',
-            letterSpacing: {
-              l: 'var(--font-body-letter-spacing-l-medium)',
-              m: 'var(--font-body-letter-spacing-m-medium)',
-              s: 'var(--font-body-letter-spacing-s-medium)',
-              xs: 'var(--font-body-letter-spacing-xs-medium)',
-            },
-          },
-          regular: {
-            fontWeight: 'var(--font-body-regular)',
-            letterSpacing: {
-              l: 'var(--font-body-letter-spacing-l-regular)',
-              m: 'var(--font-body-letter-spacing-m-regular)',
-              s: 'var(--font-body-letter-spacing-s-regular)',
-              xs: 'var(--font-body-letter-spacing-xs-regular)',
-            },
-          },
-        },
-        size: {
-          l: 16,
-          m: 14,
-          s: 13,
-          xs: 12,
-        },
-      },
-    },
-    chart: {
-      heatmap: {
-        color: {
-          bg: {
-            header: COLOR_TOKENS.bg.surface.neutral.secondary.normal,
-            body: {
-              level: {
-                1: RAW_COLORS.orange400,
-                2: RAW_COLORS.yellow300,
-                3: RAW_COLORS.yellow200,
-                4: RAW_COLORS.green200,
-                5: RAW_COLORS.green300,
-                6: RAW_COLORS.green400,
-              },
-              neutral: {
-                default: COLOR_TOKENS.bg.surface.neutral.default.normal,
-                hover: RAW_COLORS.blackAlpha10,
-              },
-            },
-          },
-          border: {
-            vertical: {
-              default: RAW_COLORS.bluegray150,
-            },
-            horizontal: {
-              header: RAW_COLORS.bluegray150,
-              body: RAW_COLORS.bluegray100,
-            },
-          },
-          content: {
-            header: COLOR_TOKENS.content.neutral.secondary.normal,
-            body: COLOR_TOKENS.content.neutral.default.normal,
-          },
-        },
-      },
-    },
+    typography: TYPOGRAPHY_THEME,
+    chart: CHART_THEME,
+    button: BUTTON_THEME,
   },
 };
 

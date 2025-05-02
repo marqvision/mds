@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../../utils';
-import { theme as ChipTheme } from '../@constants';
 import { DividerProps } from '../@types';
+import { getColor, getSize } from '../@utils/styles';
 
 export const Divider = styled.hr<DividerProps>`
   position: absolute;
@@ -11,15 +10,17 @@ export const Divider = styled.hr<DividerProps>`
   border-style: solid;
   border-width: 1px 0;
 
-  ${({ size, variant, color }) => {
-    const paddingTop = ChipTheme.size[size].padding.split(' ')[0];
-    const backgroundColor = ChipTheme.color[color][variant].normal.backgroundColor;
+  ${({ size, variant, color, theme }) => {
+    const sizeStyle = getSize(theme)[size];
+    const colorStyle = getColor(theme)[color][variant];
+    
+    const paddingTop = sizeStyle.padding.split(' ')[0];
 
     return `
-      min-height: ${ChipTheme.size[size].minHeight};
-      color: ${resolveColor(ChipTheme.color[color][variant].normal.color)};
-      background-color: ${backgroundColor ? resolveColor(backgroundColor) : 'transparent'};
-      border-color: ${resolveColor(ChipTheme.color[color][variant].normal.borderColor)};
+      min-height: ${sizeStyle.minHeight};
+      color: ${colorStyle.normal.color};
+      background-color: ${colorStyle.normal.backgroundColor || 'transparent'};
+      border-color: ${colorStyle.normal.borderColor};
       &:after {
         content: '';
         position: absolute;

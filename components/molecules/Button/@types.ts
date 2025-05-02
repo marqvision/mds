@@ -23,6 +23,7 @@ export type StyledButtonProps = {
   isDisabled?: boolean;
   isCompleted?: boolean;
   isClickable: boolean;
+  isIconButton?: boolean;
   flat?: Flat;
 };
 
@@ -41,7 +42,7 @@ export type DividerProps = {
   color: Color;
 };
 
-export type ButtonProps = {
+type CommonProps = {
   /**
    * Button 의 종류.
    **/
@@ -55,20 +56,6 @@ export type ButtonProps = {
    **/
   color: Color;
   /**
-   * Button 의 가로 사이즈.
-   * @hug 내용에 맞춤 `default`
-   * @fill 부모의 전체 영역을 차지
-   * @string 자유로운 사이즈 지정
-   **/
-  width?: Width;
-  /**
-   * 로딩 스피너 출력 및 클릭 이벤트 방지.
-   * @true startIcon 영역에 아이콘 대신 스피너 출력 `default`
-   * @false 스피너 출력 안 함
-   * @hiddLabel label 및 icon 을 숨기고 Button 중앙에 스피너 출력
-   **/
-  isLoading?: LoadingStatus;
-  /**
    * Button 버튼에 disabled 상태 부여.
    **/
   isDisabled?: boolean;
@@ -77,6 +64,28 @@ export type ButtonProps = {
    * bluegray + tint, bluegray + border 에서만 사용
    **/
   isCompleted?: boolean;
+  /**
+   * Button 에 부여 할 클릭 이벤트.
+   * 이 속성 존재 시 Button 은 div 가 아닌 button 으로 출력되며,
+   * hover 및 cursor: pointer 효과가 적용됩니다.
+   **/
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * Button 의 좌측, 우측 또는 양측의 borderRadius 제거.
+   * Button 을 여러 개 연결되어 보이도록 나열할 때 사용하며,
+   * Button 끼리의 구분을 위해 플랫하게 변경된 우측에는 항상 divider 를 출력합니다.
+   **/
+  flat?: Flat;
+};
+
+type CompositeButtonProps = {
+  /**
+   * Button 의 가로 사이즈.
+   * @hug 내용에 맞춤 `default`
+   * @fill 부모의 전체 영역을 차지
+   * @string 자유로운 사이즈 지정
+   **/
+  width?: Width;
   /**
    * Button 의 label 좌측에 아이콘 출력.
    * 사이즈는 Button 의 size 에 의해 결정되며,
@@ -90,12 +99,6 @@ export type ButtonProps = {
    **/
   endIcon?: React.ReactElement;
   /**
-   * Button 에 부여 할 클릭 이벤트.
-   * 이 속성 존재 시 Button 은 div 가 아닌 button 으로 출력되며,
-   * hover 및 cursor: pointer 효과가 적용됩니다.
-   **/
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  /**
    * Button 내부에 추가할 태그 개별 요소 또는 요소의 배열.
    * label 과 endIcon 사이에 위치되며,
    * Button 에서 설정한 gap 사이즈가 Tag 사이의 gap 으로 적용됩니다.
@@ -104,9 +107,35 @@ export type ButtonProps = {
    **/
   tags?: React.ReactElement | React.ReactElement[];
   /**
-   * Button 의 좌측, 우측 또는 양측의 borderRadius 제거.
-   * Button 을 여러 개 연결되어 보이도록 나열할 때 사용하며,
-   * Button 끼리의 구분을 위해 플랫하게 변경된 우측에는 항상 divider 를 출력합니다.
+   * Button 의 label.
+   * ReactNode 형태로 전달되며, string, number, JSX.Element 모두 가능.
    **/
-  flat?: Flat;
+  children: React.ReactNode;
+  /**
+   * 로딩 스피너 출력 및 클릭 이벤트 방지.
+   * @true startIcon 영역에 아이콘 대신 스피너 출력 `default`
+   * @false 스피너 출력 안 함
+   * @hiddLabel label 및 icon 을 숨기고 Button 중앙에 스피너 출력
+   **/
+  isLoading?: LoadingStatus;
+
+  icon?: never;
 };
+
+type IconButtonProps = {
+  /**
+   * Button 의 아이콘.
+   * 사이즈는 Button 의 size 에 의해 결정되며,
+   * 색상은 아이콘에 부여된 color 속성을 우선 적용 후 속성을 부여하지 않았다면 Button 의 color 에 의해 결정됩니다.
+   **/
+  icon: React.ReactElement;
+  isLoading?: boolean;
+
+  width?: never;
+  startIcon?: never;
+  endIcon?: never;
+  tags?: never;
+  children?: never;
+}
+
+export type ButtonProps = CommonProps & (CompositeButtonProps | IconButtonProps);

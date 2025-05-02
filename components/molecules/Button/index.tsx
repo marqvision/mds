@@ -21,7 +21,7 @@ const Button = styled.button<StyledButtonProps>`
     const borderRadiusStyle = getBorderRadius(theme, props);
     const minHeightStyle = sizeStyle.minHeight;
     const gapStyle = sizeStyle.gap;
-    const defaultPadding = sizeStyle.padding;
+    const defaultPadding = props.isIconButton && !props.flat ? sizeStyle.iconPadding : sizeStyle.padding;
     const { paddingLeft, paddingRight, borderLeft, borderRight, marginRight } = resolveFlatStyles(theme, props);
 
     const color = props.isDisabled
@@ -105,6 +105,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
     onClick,
     tags,
     flat,
+    icon,
     ...restProps
   } = props;
 
@@ -125,6 +126,33 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
         onClick(event);
       }
     : undefined;
+
+  if (icon) {
+    return (
+      <Button
+        isIconButton
+        size={size}
+        variant={variant}
+        color={color}
+        width={width}
+        as={onClick ? 'button' : 'div'}
+        isLoading={isLoading ? 'hideLabel' : undefined}
+        isClickable={!isLoading && !!onClick}
+        onClick={handleClick}
+        disabled={isDisabled || isCompleted}
+        isDisabled={isDisabled}
+        isCompleted={isCompleted}
+        flat={flat}
+        {...restProps}
+      >
+        {isLoading && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
+
+        {icon && <Icon size={size} icon={icon} />}
+
+        {isDividerVisible && <Divider variant={variant} color={color} size={size} />}
+      </Button>
+    );
+  }
 
   return (
     <Button

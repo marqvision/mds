@@ -447,6 +447,7 @@ export const getSize = (theme: MDSTheme): Record<
     weight: MDSTypographyProps['weight'];
     icon: number;
     padding: string;
+    iconPadding: string;
     gap: string;
     flatPadding: string;
     radius: string;
@@ -461,6 +462,7 @@ export const getSize = (theme: MDSTheme): Record<
       weight: 'medium',
       icon: theme.comp.button.iconSize.sm,
       padding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.sm}`,
+      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.s}`,
       gap: theme.comp.button.gap.sm,
       flatPadding: theme.comp.button.gap['sm-both'],
       radius: theme.comp.button.radius.sm,
@@ -473,6 +475,7 @@ export const getSize = (theme: MDSTheme): Record<
       weight: 'medium',
       icon: theme.comp.button.iconSize.md,
       padding: `${theme.comp.button.pddng.v.md} ${theme.comp.button.pddng.h.md}`,
+      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.m}`,
       gap: theme.comp.button.gap.md,
       flatPadding: theme.comp.button.gap['md-both'],
       radius: theme.comp.button.radius.md,
@@ -485,6 +488,7 @@ export const getSize = (theme: MDSTheme): Record<
       weight: 'medium',
       icon: theme.comp.button.iconSize.lg,
       padding: `${theme.comp.button.pddng.v.lg} ${theme.comp.button.pddng.h.lg}`,
+      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.l}`,
       gap: theme.comp.button.gap.lg,
       flatPadding: theme.comp.button.gap['lg-both'],
       radius: theme.comp.button.radius.lg,
@@ -497,6 +501,7 @@ export const getSize = (theme: MDSTheme): Record<
       weight: 'medium',
       icon: theme.comp.button.iconSize.xl,
       padding: `${theme.comp.button.pddng.v.xl} ${theme.comp.button.pddng.h.xl}`,
+      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.xl}`,
       gap: theme.comp.button.gap.xl,
       flatPadding: theme.comp.button.gap['xl-both'],
       radius: theme.comp.button.radius.xl,

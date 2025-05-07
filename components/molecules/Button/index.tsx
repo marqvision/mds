@@ -127,24 +127,25 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
       }
     : undefined;
 
+  const commonProps: StyledButtonProps & React.ComponentProps<'button'> & { as: React.ElementType } = {
+    size,
+    variant,
+    color,
+    width,
+    as: onClick ? 'button' : 'div',
+    isLoading: isLoading ? 'hideLabel' : undefined,
+    isClickable: !isLoading && !!onClick,
+    onClick: handleClick,
+    disabled: isDisabled || isCompleted,
+    isDisabled,
+    isCompleted,
+    flat,
+    ...restProps,
+  };
+
   if (icon) {
     return (
-      <Button
-        isIconButton
-        size={size}
-        variant={variant}
-        color={color}
-        width={width}
-        as={onClick ? 'button' : 'div'}
-        isLoading={isLoading ? 'hideLabel' : undefined}
-        isClickable={!isLoading && !!onClick}
-        onClick={handleClick}
-        disabled={isDisabled || isCompleted}
-        isDisabled={isDisabled}
-        isCompleted={isCompleted}
-        flat={flat}
-        {...restProps}
-      >
+      <Button isIconButton {...commonProps}>
         {isLoading && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
 
         {icon && <Icon size={size} icon={icon} />}
@@ -155,21 +156,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
   }
 
   return (
-    <Button
-      size={size}
-      variant={variant}
-      color={color}
-      width={width}
-      as={onClick ? 'button' : 'div'}
-      isLoading={isLoading}
-      isClickable={!isLoading && !!onClick}
-      onClick={handleClick}
-      disabled={isDisabled || isCompleted}
-      isDisabled={isDisabled}
-      isCompleted={isCompleted}
-      flat={flat}
-      {...restProps}
-    >
+    <Button {...commonProps}>
       {isLoading === 'hideLabel' && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
 
       {isLoading === true ? (

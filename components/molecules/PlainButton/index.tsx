@@ -96,48 +96,34 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
       }
     : undefined;
 
+  const commonProps: StyledPlainButtonProps & React.ComponentProps<'button'> & { as: React.ElementType } = {
+    size,
+    color,
+    as: onClick ? 'button' : 'div',
+    isClickable: !!onClick,
+    onClick: handleClick,
+    disabled: isDisabled || isCompleted,
+    isDisabled,
+    isCompleted,
+    ...restProps,
+  };
+
   if (icon) {
     return (
-      <PlainButton
-        isIconButton
-        size={size}
-        color={color}
-        as={onClick ? 'button' : 'div'}
-        isClickable={!!onClick}
-        onClick={handleClick}
-        disabled={isDisabled || isCompleted}
-        isDisabled={isDisabled}
-        isCompleted={isCompleted}
-        {...restProps}
-      >
+      <PlainButton isIconButton {...commonProps}>
         <Icon size={size} icon={icon} />
       </PlainButton>
     );
   }
 
   return (
-    <PlainButton
-      size={size}
-      color={color}
-      as={onClick ? 'button' : 'div'}
-      isClickable={!!onClick}
-      onClick={handleClick}
-      disabled={isDisabled || isCompleted}
-      isDisabled={isDisabled}
-      isCompleted={isCompleted}
-      {...restProps}
-    >
+    <PlainButton {...commonProps}>
       {startIcon && <Icon size={size} icon={startIcon} />}
 
       {isValidElement(label)
         ? label
         : label && (
-            <MDSTypography
-              variant="body"
-              weight="medium"
-              size={sizeStyle.size}
-              color="inherit"
-            >
+            <MDSTypography variant="body" weight="medium" size={sizeStyle.size} color="inherit">
               {label}
             </MDSTypography>
           )}

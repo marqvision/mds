@@ -1,7 +1,7 @@
 import { ChangeEvent, isValidElement, MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../../atoms/Icon';
-import { getTypographyProps, MDSTypography } from '../../../atoms/Typography';
+import { MDSTypography, MDSTypographyProps } from '../../../atoms/Typography';
 import { theme } from '../@constants';
 import { CommonProps, Size, TextFieldProps } from '../@types';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
@@ -14,7 +14,7 @@ const StyledLabel = styled(StyledBaseLabel)<{ size: Size; isError?: boolean }>`
   width: 100%;
 `;
 
-const StyledInput = styled.input<{ customSize: Size; typographySize: ReturnType<typeof getTypographyProps>['size'] }>`
+const StyledInput = styled.input<{ customSize: Size; typographySize: MDSTypographyProps['size'] }>`
   width: 100%;
   height: 100%;
   font-size: ${({ customSize }) => theme.size[customSize].fontSize};
@@ -89,7 +89,7 @@ export const TextField = (props: Props) => {
   const toFitMultiline = custom?.multiline?.expandToFit;
   const py = parseFloat(theme.size[size].paddingY) * 2 + 2;
 
-  const typographySize = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', ''))).size;
+  const typographySize = theme.size[size].typographySize;
   const isShowDelete = _isShowDelete && !isReadOnly && !isDisabled;
 
   const Prefix = prefix ? (

@@ -1,7 +1,7 @@
 import { CSSProperties, InputHTMLAttributes, ReactElement, MouseEvent } from 'react';
 import { MDSDropdownItem } from '../Dropdown';
 
-export type Size = 'small' | 'medium' | 'large' | 'extra-large';
+export type Size = 'small' | 'medium' | 'large';
 
 export type Props<T> = (TextFieldProps | SelectProps<T>) & CommonProps;
 

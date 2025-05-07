@@ -6,7 +6,7 @@ import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSButton } from '../../Button';
 import { theme } from '../@constants';
-import { MDSTypography, MDSTypographyProps, getTypographyProps } from '../../../atoms/Typography';
+import { MDSTypography } from '../../../atoms/Typography';
 import { flattenDropdown } from '../@utils';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
@@ -71,7 +71,6 @@ export const Select = <T,>(props: Props<T>) => {
 
   const isWithChip = !!custom?.withChip || false;
   const isError = status === 'error';
-  const v2FontStyle = getTypographyProps(parseInt(theme.size[size].fontSize.replace('px', '')));
 
   const flatList = flattenDropdown(list);
 
@@ -119,7 +118,7 @@ export const Select = <T,>(props: Props<T>) => {
                 className={clsx(onChange ? 'show' : undefined, 'mds-delete-icon')}
                 variant="fill"
                 disabled={isDisabled}
-                size={size === 'extra-large' ? 20 : 16}
+                size={16}
                 color={isDisabled ? 'color/content/neutral/default/disabled' : undefined}
                 onClick={(e) => handleDelete(e, v)}
               />
@@ -130,7 +129,7 @@ export const Select = <T,>(props: Props<T>) => {
         );
       })
     ) : (
-      <Placeholder {...(v2FontStyle as MDSTypographyProps)} color="color/content/placeholder/normal">
+      <Placeholder size={theme.size[size].typographySize} color="color/content/placeholder/normal">
         {placeholder || '\u00A0'}
       </Placeholder>
     );
@@ -175,7 +174,7 @@ export const Select = <T,>(props: Props<T>) => {
               {label ? (
                 ReactHtmlParser(label)
               ) : (
-                <Placeholder {...(v2FontStyle as MDSTypographyProps)} color="color/content/placeholder/normal">
+                <Placeholder size={theme.size[size].typographySize} color="color/content/placeholder/normal">
                   {placeholder || '\u00A0'}
                 </Placeholder>
               )}

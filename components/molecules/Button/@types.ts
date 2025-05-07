@@ -2,7 +2,7 @@ import React from 'react';
 
 export type Variant = 'fill' | 'tint' | 'border';
 export type Color = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'teal' | 'purple' | 'white';
-export type Size = 'small' | 'medium' | 'large' | 'extra-large';
+export type Size = 'small' | 'medium' | 'large';
 export type Status = 'normal' | 'hover' | 'disabled';
 export type Flat = 'left' | 'right' | 'both';
 type Width = 'fill' | 'hug' | string;

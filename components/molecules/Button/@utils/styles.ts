@@ -1,5 +1,5 @@
 import { MDSTheme } from '../../../../types';
-import { MDSTypographyProps } from '../../../atoms/Typography';
+import { BodySize } from '../../../atoms/Typography';
 import { Color, ColorTheme, Size, Status, Variant } from '../@types';
 
 export const getColor = (theme: MDSTheme): Record<Color, Record<Variant, Record<Status, ColorTheme> & Partial<{ completed: ColorTheme }>>> => {
@@ -442,9 +442,7 @@ export const getColor = (theme: MDSTheme): Record<Color, Record<Variant, Record<
 export const getSize = (theme: MDSTheme): Record<
   Size,
   {
-    label: MDSTypographyProps['variant'];
-    size: MDSTypographyProps['size'];
-    weight: MDSTypographyProps['weight'];
+    size: BodySize;
     icon: number;
     padding: string;
     iconPadding: string;
@@ -457,9 +455,7 @@ export const getSize = (theme: MDSTheme): Record<
 > => {
   return {
     small: {
-      label: 'body',
       size: 's',
-      weight: 'medium',
       icon: theme.comp.button.iconSize.sm,
       padding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.sm}`,
       iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.s}`,
@@ -470,9 +466,7 @@ export const getSize = (theme: MDSTheme): Record<
       spinnerSize: 16,
     },
     medium: {
-      label: 'body',
       size: 'm',
-      weight: 'medium',
       icon: theme.comp.button.iconSize.md,
       padding: `${theme.comp.button.pddng.v.md} ${theme.comp.button.pddng.h.md}`,
       iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.m}`,
@@ -483,9 +477,7 @@ export const getSize = (theme: MDSTheme): Record<
       spinnerSize: 16,
     },
     large: {
-      label: 'body',
       size: 'l',
-      weight: 'medium',
       icon: theme.comp.button.iconSize.lg,
       padding: `${theme.comp.button.pddng.v.lg} ${theme.comp.button.pddng.h.lg}`,
       iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.l}`,
@@ -494,19 +486,6 @@ export const getSize = (theme: MDSTheme): Record<
       radius: theme.comp.button.radius.lg,
       minHeight: theme.comp.button.minSize.lg,
       spinnerSize: 20,
-    },
-    'extra-large': {
-      label: 'title',
-      size: 'xl',
-      weight: 'medium',
-      icon: theme.comp.button.iconSize.xl,
-      padding: `${theme.comp.button.pddng.v.xl} ${theme.comp.button.pddng.h.xl}`,
-      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.xl}`,
-      gap: theme.comp.button.gap.xl,
-      flatPadding: theme.comp.button.gap['xl-both'],
-      radius: theme.comp.button.radius.xl,
-      minHeight: theme.comp.button.minSize.xl,
-      spinnerSize: 24,
     },
   };
 };

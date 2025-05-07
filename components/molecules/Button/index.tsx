@@ -181,10 +181,9 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
       {isValidElement(label)
         ? label
         : label && (
-            // @ts-expect-error - variant=title/body에 따라 사용 가능한 size가 상이해서 에러 발생함. 추후 수정 필요
             <MDSTypography
-              variant={sizeStyle.label}
-              weight={sizeStyle.weight}
+              variant="body"
+              weight="medium"
               size={sizeStyle.size}
               color="inherit"
               lineClamp={1}

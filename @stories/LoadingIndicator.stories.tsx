@@ -36,11 +36,11 @@ export const IndicatorColor: Story = {
   },
 };
 
-export const ChipLoading: Story = {
+export const ButtonLoading: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'MDSChip 내 Loading indicator 가 적용됩니다.',
+        story: 'MDSButton 내 Loading indicator 가 적용됩니다.',
       },
     },
   },

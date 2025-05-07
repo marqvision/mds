@@ -378,7 +378,7 @@ export const DropdownMenu: Story = {
 
       <MDSDropdown
         list={list}
-        renderAnchor={() => <MDSChip variant="border" color="blue" size="medium">커스텀 버튼</MDSChip>}
+        renderAnchor={() => <MDSButton variant="border" color="blue" size="medium">커스텀 버튼</MDSButton>}
       />
     `;
 

@@ -114,7 +114,7 @@ export const useInitDropdown = <T, SortT>(
 
     /*
       in single selection case,
-      null is selectable, but it is not displayed as selected in filterChip
+      null is selectable, but it is not displayed as selected in filter button
      */
     if (!isMultiple && value === null) {
       return [];

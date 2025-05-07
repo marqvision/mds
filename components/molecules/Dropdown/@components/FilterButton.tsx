@@ -16,7 +16,7 @@ const StyledWrap = styled(MDSButton)`
   align-self: flex-start;
 `;
 
-export const FilterChip = (props: Props) => {
+export const FilterButton = (props: Props) => {
   const { label, selectedLabel, isLoading, isDisabled, onClick } = props;
 
   const isSelected = selectedLabel.length > 0;

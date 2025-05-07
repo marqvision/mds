@@ -15,9 +15,9 @@ export const getBorderRadius = (theme: MDSTheme, { size, flat }: StyledButtonPro
 };
 
 export const resolveFlatStyles = (theme: MDSTheme, { size, flat }: StyledButtonProps) => {
-  const chipSpacing = getSize(theme)[size].flatPadding;
-  const paddingLeft = flat === 'left' || flat === 'both' ? chipSpacing : undefined;
-  const paddingRight = flat === 'right' || flat === 'both' ? chipSpacing : undefined;
+  const buttonSpacing = getSize(theme)[size].flatPadding;
+  const paddingLeft = flat === 'left' || flat === 'both' ? buttonSpacing : undefined;
+  const paddingRight = flat === 'right' || flat === 'both' ? buttonSpacing : undefined;
   const borderLeft = flat === 'left' || flat === 'both' ? 'none' : undefined;
   const borderRight = flat === 'right' || flat === 'both' ? 'none' : undefined;
   const marginRight = flat === 'right' || flat === 'both' ? '1px' : undefined;

@@ -186,7 +186,7 @@ export const CustomButton: Story = {
             <MDSImageViewer
               image="https://picsum.photos/400"
               renderAnchor={({ open }) => (
-                <MDSChip
+                <MDSButton
                   variant="border"
                   size="medium"
                   color="bluegray"
@@ -194,7 +194,7 @@ export const CustomButton: Story = {
                   startIcon={<MDSIcon.Image variant="fill" />}
                 >
                   Image
-                </MDSChip>
+                </MDSButton>
               )}
             />
         `}

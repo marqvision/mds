@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSButton> = {
   component: MDSButton,
-  title: '2. Components/molecules/Chip',
+  title: '2. Components/molecules/Button',
   parameters: {
     docs: {
       story: {

@@ -21,7 +21,7 @@ import {
   StickyTopModule,
   ValueType,
 } from './@types';
-import { FilterChip } from './@components/FilterChip';
+import { FilterButton } from './@components/FilterButton';
 import { Search } from './@components/Search';
 import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constants';
 import { foldedItemIndexAtom } from './@atoms';
@@ -464,7 +464,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
   const anchor = renderAnchor ? (
     renderAnchor(value, selectedItems, list)
   ) : (
-    <FilterChip
+    <FilterButton
       label={props.label || ''}
       selectedLabel={labels}
       isLoading={!isOpen && isLoading}

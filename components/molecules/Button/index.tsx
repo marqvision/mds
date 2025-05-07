@@ -113,7 +113,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
   const sizeStyle = getSize(theme)[props.size];
 
   if (isCompleted && (color !== 'bluegray' || !(variant === 'tint' || variant === 'border'))) {
-    console.warn('[WARN] MDSChip: isCompleted 는 bluegray + tint, bluegray + border 조합에서만 사용할 수 있습니다.');
+    console.warn('[WARN] MDSButton: isCompleted 는 bluegray + tint, bluegray + border 조합에서만 사용할 수 있습니다.');
     return <></>;
   }
 

@@ -8,6 +8,7 @@ export * from './atoms/Divider';
 export * from './atoms/Checkbox';
 export * from './molecules/Tag';
 export * from './molecules/Button';
+export * from './molecules/PlainButton';
 export * from './atoms/RadioButton';
 export * from './molecules/Popover';
 export * from './molecules/Input';

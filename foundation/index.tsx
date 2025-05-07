@@ -3,6 +3,7 @@ import { MDSTheme } from '../types';
 import { RAW_COLORS, COLOR_TOKENS } from './colors';
 import { BUTTON_THEME } from './components/button';
 import { CHART_THEME } from './components/chart';
+import { PLAIN_BUTTON_THEME } from './components/plainButton';
 import { TYPOGRAPHY_THEME } from './components/typography';
 import { MDSFontCSS, MDSResetCSS } from './globalCSS';
 
@@ -17,6 +18,7 @@ export const _MDSThemeValue = {
     typography: TYPOGRAPHY_THEME,
     chart: CHART_THEME,
     button: BUTTON_THEME,
+    plainButton: PLAIN_BUTTON_THEME,
   },
 };
 

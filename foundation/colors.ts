@@ -284,6 +284,9 @@ export const COLOR_TOKENS = {
           hover: RAW_COLORS.whiteAlpha20,
         },
       },
+      target: {
+        default: RAW_COLORS.blackAlpha5,
+      },
     },
     surface: {
       neutral: {

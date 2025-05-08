@@ -473,6 +473,7 @@ export const IconButton: Story = {
           onClick={() => {}}
         />{' '}
         <MDSButton
+          isLoading
           variant="fill"
           size="medium"
           color="blue"

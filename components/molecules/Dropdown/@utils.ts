@@ -141,4 +141,4 @@ export const getAllListIndex = <T>(list: DropdownItem<T>[]) => {
 };
 
 export const getLabelFromList = (value: unknown, list: { label: string | ReactElement; value?: unknown }[]) =>
-  list.find((v) => v.value === value)?.label || `${value}`;
+  list.find((v) => v.value === value)?.label || (value ? `${value}` : '');

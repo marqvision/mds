@@ -451,6 +451,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
 
   const closeRef = useRef<() => void>();
   const openFnRef = useRef<() => void | undefined>();
+  const closeFnRef = useRef<() => void | undefined>();
 
   const { selectedValues, selectableValue, indeterminate, labels, selectedItems, handler } = useInitDropdown<T, SortT>({
     ...restProps,
@@ -485,11 +486,16 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
 
   const handleUnmount = useCallback(() => {
     setIsOpen(false);
+    closeFnRef.current?.();
   }, []);
 
   useEffect(() => {
     openFnRef.current = props.onOpen;
   }, [props.onOpen]);
+
+  useEffect(() => {
+    closeFnRef.current = props.onClose;
+  }, [props.onClose]);
 
   return (
     <MDSPopover

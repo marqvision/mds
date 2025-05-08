@@ -112,6 +112,7 @@ export type Props<T, SortT = unknown> = {
   style?: CSSProperties;
   position?: PopoverPosition;
   onOpen?: () => void;
+  onClose?: () => void;
 };
 
 export type SelectedType<T> = {

@@ -93,9 +93,9 @@ const Button = styled.button<StyledButtonProps>`
 export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
   const {
     children: label,
-    size,
-    color,
-    variant,
+    size = 'medium',
+    color = 'blue',
+    variant = 'fill',
     width = 'hug',
     startIcon,
     endIcon,
@@ -110,7 +110,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
   } = props;
 
   const theme = useTheme();
-  const sizeStyle = getSize(theme)[props.size];
+  const sizeStyle = getSize(theme)[size];
 
   if (isCompleted && (color !== 'bluegray' || !(variant === 'tint' || variant === 'border'))) {
     console.warn('[WARN] MDSButton: isCompleted 는 bluegray + tint, bluegray + border 조합에서만 사용할 수 있습니다.');

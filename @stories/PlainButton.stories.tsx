@@ -15,8 +15,6 @@ const meta: Meta<typeof MDSPlainButton> = {
   },
   tags: ['autodocs'],
   args: {
-    color: 'blue',
-    size: 'medium',
     onClick: undefined,
   },
   argTypes: {
@@ -39,6 +37,11 @@ export const Preview: Story = {
   },
   render: (args) => (
     <Wrapper>
+      <MDSTypography>
+        size 기본값 medium
+        <br />
+        color 기본값 blue
+      </MDSTypography>
       <MDSPlainButton
         size={args.size}
         color={args.color}

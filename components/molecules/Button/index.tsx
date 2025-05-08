@@ -133,7 +133,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
     color,
     width,
     as: onClick ? 'button' : 'div',
-    isLoading: isLoading ? 'hideLabel' : undefined,
+    isLoading: (isLoading && icon) || isLoading === 'hideLabel' ? 'hideLabel' : isLoading,
     isClickable: !isLoading && !!onClick,
     onClick: handleClick,
     disabled: isDisabled || isCompleted,

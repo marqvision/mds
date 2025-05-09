@@ -19,3 +19,4 @@ export * from './organisms/Panel';
 export * from './molecules/Tooltip';
 export * from './organisms/EmptyView';
 export * from './organisms/ImageViewer';
+export * from './organisms/LNB';

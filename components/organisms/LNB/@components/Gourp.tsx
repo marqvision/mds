@@ -1,0 +1,78 @@
+import { useState } from 'react';
+import styled from '@emotion/styled';
+import { GroupProps } from '../@types';
+import { NavItem } from './NavItem';
+
+const CollapseWrapper = styled.div<{ isOpen: boolean }>`
+  ${({ isOpen }) => {
+    const gridTemplateRows = isOpen ? '1fr' : '0fr';
+
+    return `
+      display: grid;
+      grid-template-rows: ${gridTemplateRows};
+      overflow: hidden;
+      transition: 0.25s;
+    `;
+  }}
+`;
+const CollapseInner = styled.div`
+  overflow: hidden;
+`;
+const SubNavWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 8px 8px 36px;
+`;
+
+export const Group = (props: GroupProps) => {
+  const { items, ...restProps } = props;
+
+  const selected = props.path === props.value;
+  const defaultSubOpen = selected || items?.some(({ path }) => path === props.value) || false;
+
+  const [isSubOpen, setIsSubOpen] = useState<boolean>(defaultSubOpen);
+
+  // 하위 메뉴가 없을 경우
+  if (!items || !items.length) {
+    return <NavItem type="group" selected={selected} {...restProps} />;
+  }
+
+  // 하위 메뉴가 있을 경우
+  const isSubVisible = props.isOpen && isSubOpen;
+  const mainItemPath = props.isOpen ? props.path : items[0].path;
+
+  const toggleSubOpen = () => {
+    setIsSubOpen((prev) => !prev);
+  };
+
+  const mainItemProps = {
+    ...restProps,
+    isSubOpen,
+    selected: props.isOpen ? selected : defaultSubOpen,
+    path: mainItemPath,
+    onClick: toggleSubOpen,
+  };
+
+  const subItemProps = {
+    isOpen: props.isOpen,
+    value: props.value,
+    LinkComponent: props.LinkComponent,
+  };
+
+  return (
+    <div>
+      <NavItem type="group" {...mainItemProps} />
+      <CollapseWrapper isOpen={isSubVisible}>
+        <CollapseInner>
+          <SubNavWrapper>
+            {items.map(({ key, ...item }) => {
+              const selected = item.path === props.value;
+              return <NavItem key={key} type="sub" selected={selected} {...subItemProps} {...item} />;
+            })}
+          </SubNavWrapper>
+        </CollapseInner>
+      </CollapseWrapper>
+    </div>
+  );
+};

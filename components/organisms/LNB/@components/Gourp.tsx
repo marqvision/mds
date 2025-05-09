@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { GroupProps } from '../@types';
+import { GroupMainItem } from './GroupMainItem';
 import { NavItem } from './NavItem';
 
 const CollapseWrapper = styled.div<{ isOpen: boolean }>`
@@ -35,7 +36,11 @@ export const Group = (props: GroupProps) => {
 
   // 하위 메뉴가 없을 경우
   if (!items || !items.length) {
-    return <NavItem type="group" selected={selected} {...restProps} />;
+    return (
+      <GroupMainItem {...restProps}>
+        <NavItem type="group" selected={selected} {...restProps} />
+      </GroupMainItem>
+    );
   }
 
   // 하위 메뉴가 있을 경우
@@ -62,7 +67,10 @@ export const Group = (props: GroupProps) => {
 
   return (
     <div>
-      <NavItem type="group" {...mainItemProps} />
+      <GroupMainItem {...mainItemProps} items={items}>
+        <NavItem type="group" {...mainItemProps} />
+      </GroupMainItem>
+
       <CollapseWrapper isOpen={isSubVisible}>
         <CollapseInner>
           <SubNavWrapper>

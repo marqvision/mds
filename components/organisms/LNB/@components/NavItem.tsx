@@ -32,28 +32,29 @@ const Wrapper = styled.div<{ to?: string; isOpen: boolean; type: ItemType; selec
   }}
 `;
 
-const Label = styled(MDSTypography)<{ isOpen: boolean }>`
-  ${({ isOpen }) => {
-    const opacity = isOpen ? 1 : 0;
-    return `
+const Label = styled(MDSTypography)<{ isVisible: boolean }>`
+  ${({ isVisible }) => {
+  const opacity = isVisible ? 1 : 0;
+  return `
       transition: 0.2s;
       opacity: ${opacity};
     `;
-  }}
+}}
 `;
 
 export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
-  const { LinkComponent, path, label, icon, isOpen, isSubOpen } = props;
+  const { LinkComponent, path, label, icon, isSubOpen, type } = props;
 
   const Icon = icon && cloneElement(icon, { size: 20, color: 'currentColor' });
 
   const isFoldVisible = typeof isSubOpen === 'boolean';
   const FoldIcon = isSubOpen ? MDSIcon.ArrowUp : MDSIcon.ArrowDown;
+  const isLabelVisible = props.isOpen || type === 'popover';
 
   return (
     <Wrapper as={path ? LinkComponent : undefined} to={path} {...props}>
       {Icon}
-      <Label color="inherit" weight="medium" whiteSpace="nowrap" isOpen={isOpen}>
+      <Label color="inherit" weight="medium" whiteSpace="nowrap" isVisible={isLabelVisible}>
         {label}
       </Label>
       {isFoldVisible && <FoldIcon variant="outline" size={16} style={{ color: 'currentColor' }} />}

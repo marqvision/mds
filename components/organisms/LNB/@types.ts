@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type ItemType = 'group' | 'sub';
+export type ItemType = 'group' | 'sub' | 'popover';
 
 export type Item<Type extends ItemType> = {
   path?: string;
@@ -32,6 +32,11 @@ export type ItemProps<Type extends ItemType> = {
   onClick?: () => void;
 } & CommonProps &
   Item<Type>;
+
+export type SubNavPopoverProps = {
+  label: string;
+  items?: Item<'sub'>[];
+} & CommonProps;
 
 export type LNBProps = {
   /*

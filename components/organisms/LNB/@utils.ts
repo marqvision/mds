@@ -8,11 +8,10 @@ export const checkIsNested = (list: LNBItem[] | LNBItem[][]): list is LNBItem[][
   return Array.isArray(list[0]);
 };
 
-export const resolveNavItemPadding = ({ isOpen, type }: { isOpen: boolean, type: ItemType }) => {
-  const openedPadding = type === 'group' ? '8.5px 8px' : '5.5px 12px';
-  const closedPadding = '8.5px 9px';
-
-  return isOpen ? openedPadding : closedPadding;
+export const resolveNavItemPadding = ({ isOpen, type }: { isOpen: boolean; type: ItemType }) => {
+  if (type === 'popover') return '5.5px 8px';
+  if (isOpen) return type === 'group' ? '8.5px 8px' : '5.5px 12px';
+  return '8.5px 9px';
 };
 
 export const resolveNavItemColor = ({ theme, selected }: { theme: MDSTheme; selected?: boolean }) => {

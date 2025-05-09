@@ -111,6 +111,8 @@ export type Props<T, SortT = unknown> = {
   renderAnchor?: (value: T | undefined, selectedItems: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
   style?: CSSProperties;
   position?: PopoverPosition;
+  onOpen?: () => void;
+  onClose?: () => void;
 };
 
 export type SelectedType<T> = {

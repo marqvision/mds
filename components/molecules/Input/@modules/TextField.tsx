@@ -91,7 +91,10 @@ export const TextField = (props: Props) => {
   const py = parseFloat(theme.size[size].paddingY) * 2 + 2;
 
   const typographySize = theme.size[size].typographySize;
-  const isShowDelete = _isShowDelete && !isReadOnly && !isDisabled && focused;
+
+  const isUnusable = isDisabled || isReadOnly;
+  const alwaysShowDelete = custom?.alwaysShowDelete;
+  const isShowDelete = !isUnusable && _isShowDelete && (alwaysShowDelete || focused);
 
   const Prefix = prefix ? (
     isValidElement(prefix) ? (

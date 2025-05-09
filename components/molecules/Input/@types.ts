@@ -39,6 +39,7 @@ export type LabelType = string | { main?: string; sub?: string; right?: ReactEle
  * @property {expandOnFocus} [expandOnFocus] focus 됐을 때 focusWidth(px, number) 값으로 width를 변경함.
  * @property {boolean} [flatLeft] 왼쪽 radius 제거
  * @property {boolean} [flatRight] 오론쪽 radius 제거
+ * @property {boolean} [alwaysShowDelete] true: 항상 clear 버튼 표시, falsy: 기본값에 따라 표시 여부 결정
  */
 export type TextFieldCustom = {
   add?: {
@@ -65,6 +66,7 @@ export type TextFieldCustom = {
       maxHeight?: string | number;
     };
   };
+  alwaysShowDelete?: boolean;
 };
 
 /**

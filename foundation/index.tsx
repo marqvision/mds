@@ -9,6 +9,7 @@ import { MDSFontCSS, MDSResetCSS } from './globalCSS';
 import { DIVIDER_THEME } from './components/divider';
 import { DIMMED_THEME } from './components/dimmed';
 import { INPUT_THEME } from './components/input';
+import { LNB_THEME } from './components/lnb';
 
 //
 /**
@@ -25,6 +26,7 @@ export const _MDSThemeValue = {
     divider: DIVIDER_THEME,
     dimmed: DIMMED_THEME,
     input: INPUT_THEME,
+    lnb: LNB_THEME,
   },
 };
 

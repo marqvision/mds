@@ -212,6 +212,10 @@ export const TextField = (props: Props) => {
     // intentionally separating dependencies of toFitMultiline
   }, [hasCustomToFit, toFitMultiline?.defaultHeight, toFitMultiline?.maxHeight, py, size, onResize]);
 
+  useEffect(() => {
+    formatRef.current = format;
+  }, [format]);
+
   const isOverflowed =
     toFitMultiline && parseFloat(`${toFitMultiline.maxHeight}`) < (mirrorRef.current?.clientHeight || 0) + py;
 

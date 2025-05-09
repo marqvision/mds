@@ -45,16 +45,19 @@ export type DividerProps = {
 type CommonProps = {
   /**
    * Button 의 종류.
+   * @default 'fill'
    **/
-  variant: Variant;
+  variant?: Variant;
   /**
    * Button 의 사이즈.
+   * @default 'medium'
    **/
-  size: Size;
+  size?: Size;
   /**
    * Button 의 색상.
+   * @default 'blue'
    **/
-  color: Color;
+  color?: Color;
   /**
    * Button 버튼에 disabled 상태 부여.
    **/

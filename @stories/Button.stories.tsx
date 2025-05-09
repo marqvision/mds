@@ -15,9 +15,6 @@ const meta: Meta<typeof MDSButton> = {
   },
   tags: ['autodocs'],
   args: {
-    variant: 'fill',
-    color: 'bluegray',
-    size: 'medium',
     width: 'hug',
     onClick: undefined,
   },
@@ -48,7 +45,15 @@ export const Preview: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSTypography>기본형 width 값을 전달하지 않으면 hug 로 적용되어 내용에 맞게 사이즈가 조절됩니다.</MDSTypography>
+      <MDSTypography>
+        variant 기본값 fill
+        <br />
+        size 기본값 medium
+        <br />
+        color 기본값 blue
+        <br />
+        width 기본값 hug - 내용에 맞게 사이즈가 조절됩니다.
+      </MDSTypography>
       <MDSButton
         size={args.size}
         variant={args.variant}

@@ -70,8 +70,8 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
 export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>) => {
   const {
     children: label,
-    size,
-    color,
+    size = 'medium',
+    color = 'blue',
     startIcon,
     endIcon,
     isDisabled,
@@ -82,7 +82,7 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
   } = props;
 
   const theme = useTheme();
-  const sizeStyle = getSize(theme)[props.size];
+  const sizeStyle = getSize(theme)[size];
 
   if (isCompleted && color !== 'bluegray') {
     console.warn('[WARN] MDSPlainButton: isCompleted 는 bluegray 색상에만 사용할 수 있습니다.');

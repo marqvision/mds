@@ -39,3 +39,5 @@ export const MDSLNB = (props: LNBProps) => {
     </Wrapper>
   );
 };
+
+export type { LNBProps as MDSLNBProps, LNBItem as MDSLNBItem } from './@types';

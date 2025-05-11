@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Divider } from './@components/Divider';
-import { Group } from './@components/Gourp';
+import { Group } from './@components/Group';
 import { StubLink } from './@components/StubLink';
 import { LNBItem, LNBProps } from './@types';
 import { checkIsNested } from './@utils';

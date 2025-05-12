@@ -7,9 +7,7 @@ import { checkIsNested } from './@utils';
 
 const Wrapper = styled.div<LNBProps>`
   ${({ theme, ...props }) => {
-    const width = props.isOpen ? '223px' : '54px';
-    const paddingRight = props.isOpen ? '11px' : '7px';
-    const paddingLeft = props.isOpen ? '12px' : '8px';
+    const width = props.isOpen ? '234px' : '60px';
 
     return `
       display: flex;
@@ -20,7 +18,7 @@ const Wrapper = styled.div<LNBProps>`
       background-color: ${theme.comp.lnb.color.bg.normal};
       
       width: ${width};
-      padding: 16px ${paddingRight} 16px ${paddingLeft};
+      padding: 12px 11px 12px 12px;
     `;
   }}
 `;

@@ -1,21 +1,18 @@
 import React from 'react';
 import { MDSPopover } from '../../../molecules/Popover';
-import { useDebounce } from '../@hooks/useDebounce';
 import { SubNavPopoverProps } from '../@types';
 import { SubPopoverContent } from './SubPopoverContent';
 
 export const GroupMainItem = (props: SubNavPopoverProps & { children: React.ReactElement }) => {
   const { children, ...restProps } = props;
 
-  const isOpen = useDebounce(props.isOpen);
-
-  if (isOpen) return children;
+  if (props.isOpen) return children;
 
   const isGroupTitle = !!(props.items && props.items.length);
   const position = isGroupTitle ? 'right-bottom' : 'right-center';
   const width = isGroupTitle ? '172px' : 'auto';
   const padding = isGroupTitle ? '0px' : '4px 8px';
-  const marginLeft = isGroupTitle ? '4px' : undefined;
+  const marginLeft = isGroupTitle ? '8px' : undefined;
 
   return (
     <MDSPopover

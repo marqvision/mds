@@ -2,7 +2,6 @@ import { cloneElement } from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
-import { useDebounce } from '../@hooks/useDebounce';
 import { ItemProps, ItemType } from '../@types';
 import { resolveNavItemColor, resolveNavItemPadding } from '../@utils';
 
@@ -20,7 +19,7 @@ const Wrapper = styled.div<{ to?: string; isOpen: boolean; type: ItemType; selec
       text-decoration: none;
       cursor: pointer;
       overflow: hidden;
-      transition: all 0.2s, padding 0.3s ease-in;
+      transition: 0.2s;
       padding: ${padding};
       color: ${color};
       background-color: ${backgroundColor};
@@ -44,9 +43,7 @@ const Label = styled(MDSTypography)<{ isVisible: boolean }>`
 `;
 
 export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
-  const { LinkComponent, label, icon, isSubOpen, type } = props;
-
-  const path = useDebounce(props.path);
+  const { LinkComponent, path, label, icon, isSubOpen, type } = props;
 
   const Icon = icon && cloneElement(icon, { size: 20, color: 'currentColor' });
 

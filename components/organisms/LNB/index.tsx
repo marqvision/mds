@@ -5,7 +5,7 @@ import { StubLink } from './@components/StubLink';
 import { LNBItem, LNBProps } from './@types';
 import { checkIsNested } from './@utils';
 
-const Wrapper = styled.div<LNBProps>`
+const Wrapper = styled.nav<LNBProps>`
   ${({ theme, ...props }) => {
     const width = props.isOpen ? '234px' : '60px';
 

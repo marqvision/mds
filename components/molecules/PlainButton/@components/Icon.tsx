@@ -9,5 +9,5 @@ export const Icon = (props: IconProps) => {
   const size = getSize(theme)[props.size];
   const iconSize = type === 'icon' ? size.singleIconSize : size.coupleIconSize;
   
-  return cloneElement(icon, { size: iconSize, color: icon.props.color || 'currentColor' });
+  return cloneElement(icon, { size: icon.props.size || iconSize, color: icon.props.color || 'currentColor' });
 };

@@ -4,9 +4,10 @@ import { IconProps } from '../@types';
 import { getSize } from '../@utils';
 
 export const Icon = (props: IconProps) => {
-  const { size, icon } = props;
+  const { icon, type } = props;
   const theme = useTheme();
-  const iconSize = getSize(theme)[size].icon;
+  const size = getSize(theme)[props.size];
+  const iconSize = type === 'icon' ? size.singleIconSize : size.coupleIconSize;
   
   return cloneElement(icon, { size: iconSize, color: icon.props.color || 'currentColor' });
 };

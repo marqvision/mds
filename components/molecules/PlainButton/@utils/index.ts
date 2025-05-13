@@ -80,7 +80,8 @@ export const getSize = (theme: MDSTheme): Record<
   Size,
   {
     size: BodySize;
-    icon: number;
+    singleIconSize: number;
+    coupleIconSize: number;
     verticalPadding: string;
     horizontalPadding: string;
     iconPadding: string;
@@ -91,7 +92,8 @@ export const getSize = (theme: MDSTheme): Record<
   return {
     small: {
       size: 's',
-      icon: theme.comp.plainButton.iconSize.sm,
+      singleIconSize: theme.comp.plainButton.singleIconSize.sm,
+      coupleIconSize: theme.comp.plainButton.coupleIconSize.sm,
       verticalPadding: theme.comp.plainButton.pddng.v.s,
       horizontalPadding: theme.comp.plainButton.pddng.h.s,
       iconPadding: theme.comp.plainButton.pddng.icon.s,
@@ -100,7 +102,8 @@ export const getSize = (theme: MDSTheme): Record<
     },
     medium: {
       size: 'm',
-      icon: theme.comp.plainButton.iconSize.md,
+      singleIconSize: theme.comp.plainButton.singleIconSize.md,
+      coupleIconSize: theme.comp.plainButton.coupleIconSize.md,
       verticalPadding: theme.comp.plainButton.pddng.v.m,
       horizontalPadding: theme.comp.plainButton.pddng.h.m,
       iconPadding: theme.comp.plainButton.pddng.icon.m,
@@ -109,7 +112,8 @@ export const getSize = (theme: MDSTheme): Record<
     },
     large: {
       size: 'l',
-      icon: theme.comp.plainButton.iconSize.lg,
+      singleIconSize: theme.comp.plainButton.singleIconSize.lg,
+      coupleIconSize: theme.comp.plainButton.coupleIconSize.lg,
       verticalPadding: theme.comp.plainButton.pddng.v.l,
       horizontalPadding: theme.comp.plainButton.pddng.h.l,
       iconPadding: theme.comp.plainButton.pddng.icon.l,

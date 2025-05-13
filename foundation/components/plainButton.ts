@@ -26,7 +26,12 @@ export const PLAIN_BUTTON_THEME = {
     md: '8px',
     lg: '8px',
   },
-  iconSize: {
+  singleIconSize: {
+    sm: 16,
+    md: 20,
+    lg: 24,
+  },
+  coupleIconSize: {
     sm: 16,
     md: 16,
     lg: 20,

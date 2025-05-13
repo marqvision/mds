@@ -5,11 +5,12 @@ import { MDSTypography } from '../../atoms/Typography';
 import { Divider } from './@components/Divider';
 import { Icon } from './@components/Icon';
 import { LoadingSpinner } from './@components/LoadingSpinner';
-import { ButtonProps, StyledButtonProps } from './@types';
+import { ButtonProps, ButtonType, StyledButtonProps } from './@types';
 import { getBorderRadius, resolveFlatStyles } from './@utils';
 import { getColor, getSize } from './@utils/styles';
 
-export type MDSButtonProps = ButtonProps;
+// 외부에서 사용 시 타입을 좁힐 수 있도록 generic 으로 설정
+export type MDSButtonProps<Type extends ButtonType = 'composite'> = ButtonProps<Type>;
 
 const Button = styled.button<StyledButtonProps>`
   ${({ theme, ...props }) => {
@@ -90,7 +91,7 @@ const Button = styled.button<StyledButtonProps>`
   }}
 `;
 
-export const MDSButton = (props: React.PropsWithChildren<ButtonProps>) => {
+export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'> | ButtonProps<'icon'>>) => {
   const {
     children: label,
     size = 'medium',
@@ -199,4 +200,4 @@ export const MDSChip = MDSButton;
  * @deprecated
  * MDSButtonProps 를 사용하세요.
  */
-export type MDSChipProps = ButtonProps;
+export type MDSChipProps = ButtonProps<'composite'>;

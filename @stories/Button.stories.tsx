@@ -54,17 +54,7 @@ export const Preview: Story = {
         <br />
         width 기본값 hug - 내용에 맞게 사이즈가 조절됩니다.
       </MDSTypography>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -77,17 +67,7 @@ export const WidthFill: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>width: fill 지정 시 width: 100% 스타일이 지정됩니다.</MDSTypography>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -100,17 +80,7 @@ export const WidthFixed: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>width: hug 또는 fill 이외의 값 지정 시 입력한 width 사이즈가 지정됩니다.</MDSTypography>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -122,17 +92,7 @@ export const VariantFill: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -144,17 +104,7 @@ export const VariantTint: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -166,17 +116,7 @@ export const VariantBorder: Story = {
   },
   render: (args) => (
     <Wrapper>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -189,17 +129,7 @@ export const StartIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>label 의 앞에 아이콘을 추가합니다.</MDSTypography>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -212,17 +142,7 @@ export const EndIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>label 의 뒤에 아이콘을 추가합니다.</MDSTypography>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -236,17 +156,7 @@ export const ColoredIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>color 가 지정된 아이콘을 전달할 경우 아이콘의 컬러를 우선 적용합니다.</MDSTypography>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -268,17 +178,7 @@ export const Clickable: Story = {
         로딩 상태에는 onClick 이벤트가 무시됩니다.
       </MDSTypography>
 
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -298,17 +198,7 @@ export const Loading: Story = {
         <br />
         onClick 이벤트 및 hover 효과가 사라집니다.
       </MDSTypography>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -328,17 +218,7 @@ export const LoadingHideLabel: Story = {
         <br />
         onClick 이벤트 및 hover 효과가 사라집니다.
       </MDSTypography>
-      <MDSButton
-        size={args.size}
-        variant={args.variant}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        isLoading={args.isLoading}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
     </Wrapper>
   ),
 };
@@ -347,6 +227,27 @@ export const ButtonWithTags: Story = {
   args: {
     endIcon: <MDSIcon.ArrowDown variant="outline" />,
     children: 'Filter',
+  },
+  argTypes: {
+    tags: {
+      control: 'select',
+      options: {
+        single: (
+          <MDSTag size="small" variant="tint" color="bluegray">
+            Tag
+          </MDSTag>
+        ),
+        bulk: [
+          <MDSTag key="tagLabel1" size="small" variant="tint" color="bluegray">
+            Bracelet
+          </MDSTag>,
+          <MDSTag key="plusCount" size="small" variant="tint" color="bluegray">
+            +3
+          </MDSTag>,
+        ],
+      },
+      defaultValue: 'single',
+    },
   },
   render: (args) => (
     <Wrapper>
@@ -357,35 +258,7 @@ export const ButtonWithTags: Story = {
         <br />
         Tag 의 size, color 등의 스타일은 전적으로 사용처에서 결정하며, Button 에서는 어떠한 값도 전달하지 않습니다.
       </MDSTypography>
-      <MDSButton
-        color={args.color}
-        size={args.size}
-        variant={args.variant}
-        endIcon={args.endIcon}
-        tags={
-          <MDSTag size="small" variant="tint" color="bluegray">
-            Tag
-          </MDSTag>
-        }
-      >
-        {args.children}
-      </MDSButton>
-      <MDSButton
-        color={args.color}
-        size={args.size}
-        variant={args.variant}
-        endIcon={args.endIcon}
-        tags={[
-          <MDSTag key="tagLabel1" size="small" variant="tint" color="bluegray">
-            Bracelet
-          </MDSTag>,
-          <MDSTag key="plusCount" size="small" variant="tint" color="bluegray">
-            +3
-          </MDSTag>,
-        ]}
-      >
-        {args.children}
-      </MDSButton>
+      <MDSButton {...args} />
       <MDSButton
         startIcon={<MDSIcon.Check variant="outline" />}
         size="medium"
@@ -410,7 +283,6 @@ export const Buttons: Story = {
   args: {
     color: 'bluegray',
     variant: 'fill',
-    size: 'medium',
   },
   render: ({ children, ...args }) => (
     <Wrapper>
@@ -420,7 +292,6 @@ export const Buttons: Story = {
       <div>
         <MDSButton
           color={args.color}
-          size={args.size}
           variant={args.variant}
           startIcon={<MDSIcon.Calendar />}
           flat="right"
@@ -428,12 +299,11 @@ export const Buttons: Story = {
         >
           Filter
         </MDSButton>
-        <MDSButton color={args.color} size={args.size} variant={args.variant} flat="both" onClick={() => {}}>
+        <MDSButton color={args.color} variant={args.variant} flat="both" onClick={() => {}}>
           세개도 되지롱
         </MDSButton>
         <MDSButton
           color={args.color}
-          size={args.size}
           variant={args.variant}
           flat="left"
           onClick={() => {}}
@@ -458,7 +328,6 @@ export const IconButton: Story = {
   args: {
     color: 'bluegray',
     variant: 'fill',
-    size: 'medium',
   },
   render: ({ children, ...args }) => (
     <Wrapper>
@@ -496,13 +365,16 @@ export const IconButton: Story = {
         />{' '}
         <MDSButton variant="border" size="large" color="bluegray" icon={<MDSIcon.ZoomIn />} onClick={() => {}} />
       </div>
+      <div>
+        <MDSButton variant="border" size="x-large" color="bluegray" icon={<MDSIcon.OpenNew />} onClick={() => {}} />{' '}
+        <MDSButton variant="tint" size="x-large" color="red" icon={<MDSIcon.Pdf variant="fill" />} onClick={() => {}} />
+      </div>
       <div />
 
       <MDSTypography>flat 속성으로 복합 버튼과 연결이 가능합니다.</MDSTypography>
       <div>
         <MDSButton
           color={args.color}
-          size={args.size}
           variant={args.variant}
           flat="right"
           onClick={() => {}}
@@ -519,7 +391,6 @@ export const IconButton: Story = {
         </MDSButton>
         <MDSButton
           color={args.color}
-          size={args.size}
           variant={args.variant}
           flat="left"
           onClick={() => {}}

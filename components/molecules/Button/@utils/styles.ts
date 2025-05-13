@@ -442,12 +442,12 @@ export const getColor = (theme: MDSTheme): Record<Color, Record<Variant, Record<
 export const getSize = (theme: MDSTheme): Record<
   Size,
   {
-    size: BodySize;
+    size?: BodySize;
     icon: number;
-    padding: string;
+    padding?: string;
     iconPadding: string;
-    gap: string;
-    flatPadding: string;
+    gap?: string;
+    flatPadding?: string;
     radius: string;
     minHeight: string;
     spinnerSize: number;
@@ -486,6 +486,13 @@ export const getSize = (theme: MDSTheme): Record<
       radius: theme.comp.button.radius.lg,
       minHeight: theme.comp.button.minSize.lg,
       spinnerSize: 20,
+    },
+    'x-large': {
+      icon: theme.comp.button.iconSize.xl,
+      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.xl}`,
+      radius: theme.comp.button.radius.xl,
+      minHeight: theme.comp.button.minSize.xl,
+      spinnerSize: 24,
     },
   };
 };

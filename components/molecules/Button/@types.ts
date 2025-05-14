@@ -1,8 +1,11 @@
 import React from 'react';
 
+export type ButtonType = 'composite' | 'icon';
 export type Variant = 'fill' | 'tint' | 'border';
 export type Color = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'teal' | 'purple' | 'white';
-export type Size = 'small' | 'medium' | 'large';
+type CompositeSize = 'small' | 'medium' | 'large';
+type IconSize = 'small' | 'medium' | 'large' | 'x-large';
+export type Size = CompositeSize | IconSize;
 export type Status = 'normal' | 'hover' | 'disabled';
 export type Flat = 'left' | 'right' | 'both';
 type Width = 'fill' | 'hug' | string;
@@ -49,11 +52,6 @@ type CommonProps = {
    **/
   variant?: Variant;
   /**
-   * Button 의 사이즈.
-   * @default 'medium'
-   **/
-  size?: Size;
-  /**
    * Button 의 색상.
    * @default 'blue'
    **/
@@ -81,7 +79,7 @@ type CommonProps = {
   flat?: Flat;
 };
 
-type CompositeButtonProps = {
+export type CompositeButtonProps = {
   /**
    * Button 의 가로 사이즈.
    * @hug 내용에 맞춤 `default`
@@ -89,6 +87,11 @@ type CompositeButtonProps = {
    * @string 자유로운 사이즈 지정
    **/
   width?: Width;
+  /**
+   * Button 의 사이즈.
+   * @default 'medium'
+   **/
+  size?: CompositeSize;
   /**
    * Button 의 label 좌측에 아이콘 출력.
    * 사이즈는 Button 의 size 에 의해 결정되며,
@@ -125,13 +128,18 @@ type CompositeButtonProps = {
   icon?: never;
 };
 
-type IconButtonProps = {
+export type IconButtonProps = {
   /**
    * Button 의 아이콘.
    * 사이즈는 Button 의 size 에 의해 결정되며,
    * 색상은 아이콘에 부여된 color 속성을 우선 적용 후 속성을 부여하지 않았다면 Button 의 color 에 의해 결정됩니다.
    **/
   icon: React.ReactElement;
+  /**
+   * Button 의 사이즈.
+   * @default 'medium'
+   **/
+  size?: IconSize;
   isLoading?: boolean;
 
   width?: never;
@@ -139,6 +147,7 @@ type IconButtonProps = {
   endIcon?: never;
   tags?: never;
   children?: never;
-}
+};
 
-export type ButtonProps = CommonProps & (CompositeButtonProps | IconButtonProps);
+export type ButtonProps<Type extends ButtonType> = CommonProps &
+  (Type extends 'composite' ? CompositeButtonProps : IconButtonProps);

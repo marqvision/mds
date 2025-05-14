@@ -4,10 +4,6 @@ export type Color = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'white';
 export type Size = 'small' | 'medium' | 'large';
 export type Status = 'normal' | 'hover' | 'disabled';
 
-export type ColorTheme = {
-  color: string;
-};
-
 export type StyledPlainButtonProps = {
   size: Size;
   color: Color;
@@ -18,6 +14,7 @@ export type StyledPlainButtonProps = {
 };
 
 export type IconProps = {
+  type: 'standalone' | 'withLabel';
   size: Size;
   icon: React.ReactElement;
 };

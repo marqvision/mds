@@ -6,6 +6,9 @@ import { CHART_THEME } from './components/chart';
 import { PLAIN_BUTTON_THEME } from './components/plainButton';
 import { TYPOGRAPHY_THEME } from './components/typography';
 import { MDSFontCSS, MDSResetCSS } from './globalCSS';
+import { DIVIDER_THEME } from './components/divider';
+import { DIMMED_THEME } from './components/dimmed';
+import { INPUT_THEME } from './components/input';
 
 //
 /**
@@ -19,6 +22,9 @@ export const _MDSThemeValue = {
     chart: CHART_THEME,
     button: BUTTON_THEME,
     plainButton: PLAIN_BUTTON_THEME,
+    divider: DIVIDER_THEME,
+    dimmed: DIMMED_THEME,
+    input: INPUT_THEME,
   },
 };
 

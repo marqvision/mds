@@ -42,15 +42,7 @@ export const Preview: Story = {
         <br />
         color 기본값 blue
       </MDSTypography>
-      <MDSPlainButton
-        size={args.size}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSPlainButton>
+      <MDSPlainButton {...args} />
     </Wrapper>
   ),
 };
@@ -63,15 +55,7 @@ export const StartIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>label 의 앞에 아이콘을 추가합니다.</MDSTypography>
-      <MDSPlainButton
-        size={args.size}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSPlainButton>
+      <MDSPlainButton {...args} />
     </Wrapper>
   ),
 };
@@ -84,15 +68,7 @@ export const EndIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>label 의 뒤에 아이콘을 추가합니다.</MDSTypography>
-      <MDSPlainButton
-        size={args.size}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSPlainButton>
+      <MDSPlainButton {...args} />
     </Wrapper>
   ),
 };
@@ -106,15 +82,7 @@ export const ColoredIcon: Story = {
   render: (args) => (
     <Wrapper>
       <MDSTypography>color 가 지정된 아이콘을 전달할 경우 아이콘의 컬러를 우선 적용합니다.</MDSTypography>
-      <MDSPlainButton
-        size={args.size}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSPlainButton>
+      <MDSPlainButton {...args} />
     </Wrapper>
   ),
 };
@@ -134,15 +102,7 @@ export const Clickable: Story = {
         onClick 이벤트가 있는 경우 button 요소로 출력됨과 동시에 hover 컬러 및 cursor: pointer 스타일이 적용됩니다.
       </MDSTypography>
 
-      <MDSPlainButton
-        size={args.size}
-        color={args.color}
-        startIcon={args.startIcon}
-        endIcon={args.endIcon}
-        onClick={args.onClick}
-      >
-        {args.children}
-      </MDSPlainButton>
+      <MDSPlainButton {...args} />
     </Wrapper>
   ),
 };
@@ -151,8 +111,9 @@ export const IconButton: Story = {
   args: {
     color: 'blue',
     size: 'medium',
+    onClick: () => {},
   },
-  render: ({ children, ...args }) => (
+  render: ({ children, startIcon, endIcon, ...args }) => (
     <Wrapper>
       <MDSTypography>
         icon 속성을 넣으면 아이콘 버튼 스타일로 출력됩니다.
@@ -167,6 +128,9 @@ export const IconButton: Story = {
         <br />
         2. 클릭 가능한 영역 (hover 시 생기는 박스) 사이즈가 복합 버튼과 아이콘 버튼이 서로 다릅니다.
       </MDSTypography>
+      <div>
+        <MDSPlainButton {...args} icon={<MDSIcon.Reset />} />{' '}
+      </div>
       <div>
         <MDSPlainButton size="small" color="blue" icon={<MDSIcon.OpenNew />} onClick={() => {}} />{' '}
         <MDSPlainButton size="small" color="red" icon={<MDSIcon.Pdf variant="fill" />} onClick={() => {}} />

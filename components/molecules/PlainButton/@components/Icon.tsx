@@ -6,8 +6,8 @@ import { getSize } from '../@utils';
 export const Icon = (props: IconProps) => {
   const { icon, type } = props;
   const theme = useTheme();
-  const size = getSize(theme)[props.size];
-  const iconSize = type === 'single' ? size.singleIconSize : size.coupleIconSize;
-  
-  return cloneElement(icon, { size: icon.props.size || iconSize, color: icon.props.color || 'currentColor' });
+  const isIconButton = type === 'standalone';
+  const size = getSize(theme, { ...props, isIconButton });
+
+  return cloneElement(icon, { size: icon.props.size || size.icon, color: icon.props.color || 'currentColor' });
 };

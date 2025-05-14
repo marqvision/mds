@@ -4,23 +4,14 @@ import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { Icon } from './@components/Icon';
 import { PlainButtonProps, StyledPlainButtonProps } from './@types';
-import { getColor, getSize } from './@utils';
+import { resolveColor, getSize } from './@utils';
 
 export type MDSPlainButtonProps = PlainButtonProps;
 
 const PlainButton = styled.button<StyledPlainButtonProps>`
   ${({ theme, ...props }) => {
-    const sizeStyle = getSize(theme)[props.size];
-    const colorStyle = getColor(theme)[props.color];
-
-    const verticalPadding = props.isIconButton ? sizeStyle.iconPadding : sizeStyle.verticalPadding;
-    const horizontalPadding = props.isIconButton ? sizeStyle.iconPadding : sizeStyle.horizontalPadding;
-
-    const color = props.isDisabled
-      ? colorStyle.disabled.color
-      : props.isCompleted
-        ? colorStyle.completed?.color
-        : colorStyle.normal.color;
+    const sizeStyle = getSize(theme, props);
+    const colorStyle = resolveColor(theme, props);
 
     return `
       position: relative;
@@ -39,7 +30,7 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
       }
       
       gap: ${sizeStyle.gap};
-      color: ${color || 'inherit'};
+      color: ${colorStyle.content.normal};
       
       /* clickable 상태 시 스타일 */
       cursor: ${props.isClickable ? 'pointer' : ''};
@@ -48,9 +39,9 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
         position: absolute;
         content: '';
         display: block;
-        width: calc(100% + (${horizontalPadding} * 2));
-        height: calc(100% + (${verticalPadding} * 2));
-        padding: ${verticalPadding} ${horizontalPadding};
+        width: calc(100% + (${sizeStyle.horizontalPadding} * 2));
+        height: calc(100% + (${sizeStyle.verticalPadding} * 2));
+        padding: ${sizeStyle.verticalPadding} ${sizeStyle.horizontalPadding};
         border-radius: ${sizeStyle.radius};
         background: ${props.isClickable ? theme.color.bg.fill.target.default : ''};
         opacity: 0;
@@ -58,7 +49,7 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
       }
       
       &:hover {
-        color: ${props.isClickable ? colorStyle.hover.color : ''};
+        color: ${colorStyle.content.hover};
         &:after {
           opacity: ${props.isClickable ? 1 : ''};
         }
@@ -82,7 +73,6 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
   } = props;
 
   const theme = useTheme();
-  const sizeStyle = getSize(theme)[size];
 
   if (isCompleted && color !== 'bluegray') {
     console.warn('[WARN] MDSPlainButton: isCompleted 는 bluegray 색상에만 사용할 수 있습니다.');
@@ -96,7 +86,8 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
       }
     : undefined;
 
-  const commonProps: StyledPlainButtonProps & React.ComponentProps<'button'> & { as: React.ElementType } = {
+  const commonProps: StyledPlainButtonProps &
+    React.ComponentProps<'button'> & { as: React.ElementType } = {
     size,
     color,
     as: onClick ? 'button' : 'div',
@@ -111,24 +102,26 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
   if (icon) {
     return (
       <PlainButton isIconButton {...commonProps}>
-        <Icon type="single" size={size} icon={icon} />
+        <Icon type="standalone" size={size} icon={icon} />
       </PlainButton>
     );
   }
 
+  const sizeStyle = getSize(theme, commonProps);
+
   return (
     <PlainButton {...commonProps}>
-      {startIcon && <Icon type="couple" size={size} icon={startIcon} />}
+      {startIcon && <Icon type="withLabel" size={size} icon={startIcon} />}
 
       {isValidElement(label)
         ? label
         : label && (
-            <MDSTypography variant="body" weight="medium" size={sizeStyle.size} color="inherit">
+            <MDSTypography variant="body" weight="medium" size={sizeStyle.typography} color="inherit">
               {label}
             </MDSTypography>
           )}
 
-      {endIcon && <Icon type="couple" size={size} icon={endIcon} />}
+      {endIcon && <Icon type="withLabel" size={size} icon={endIcon} />}
     </PlainButton>
   );
 };

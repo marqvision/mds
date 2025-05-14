@@ -1,124 +1,72 @@
 import { MDSTheme } from '../../../../types';
+import { SIZE_ABBREVIATIONS, TOKEN_NAME, TYPOGRAPHY_SIZE } from '../@constants';
+import { StyledPlainButtonProps } from '../@types';
 import { BodySize } from '../../../atoms/Typography';
-import { Color, ColorTheme, Size, Status } from '../@types';
 
-export const getColor = (theme: MDSTheme): Record<Color, Record<Status, ColorTheme> & Partial<{ completed: ColorTheme }>> => {
+export const resolveColor = (
+  theme: MDSTheme,
+  { color, isDisabled, isClickable, isCompleted }: StyledPlainButtonProps
+): {
+  content: {
+    normal: string;
+    hover: string;
+  };
+} => {
+  const colorTokenName = TOKEN_NAME[color];
+  const currentColor = theme.color.content[colorTokenName];
+
+  let normal = currentColor.default.normal;
+  let hover = currentColor.default.normal;
+
+  if (isClickable) {
+    hover = currentColor.default.hover;
+  }
+  if (isDisabled) {
+    normal = currentColor.default.disabled;
+    hover = currentColor.default.disabled;
+  }
+  if (isCompleted) {
+    normal = currentColor.default.completed;
+    hover = currentColor.default.completed;
+  }
+
   return {
-    bluegray: {
-      normal: {
-        color: theme.color.content.neutral.default.normal,
-      },
-      hover: {
-        color: theme.color.content.neutral.default.hover,
-      },
-      disabled: {
-        color: theme.color.content.neutral.default.disabled,
-      },
-      completed: {
-        color: theme.color.content.neutral.default.completed,
-      },
-    },
-    blue: {
-      normal: {
-        color: theme.color.content.primary.default.normal,
-      },
-      hover: {
-        color: theme.color.content.primary.default.hover,
-      },
-      disabled: {
-        color: theme.color.content.primary.default.disabled,
-      },
-    },
-    red: {
-      normal: {
-        color: theme.color.content.critical.default.normal,
-      },
-      hover: {
-        color: theme.color.content.critical.default.hover,
-      },
-      disabled: {
-        color: theme.color.content.critical.default.disabled,
-      },
-    },
-    yellow: {
-      normal: {
-        color: theme.color.content.warning.default.normal,
-      },
-      hover: {
-        color: theme.color.content.warning.default.hover,
-      },
-      disabled: {
-        color: theme.color.content.warning.default.disabled,
-      },
-    },
-    green: {
-      normal: {
-        color: theme.color.content.success.default.normal,
-      },
-      hover: {
-        color: theme.color.content.success.default.hover,
-      },
-      disabled: {
-        color: theme.color.content.success.default.disabled,
-      },
-    },
-    white: {
-      normal: {
-        color: theme.color.content.inverse.default.normal,
-      },
-      hover: {
-        color: theme.color.content.inverse.default.hover,
-      },
-      disabled: {
-        color: theme.color.content.inverse.default.disabled,
-      },
+    content: {
+      normal: normal || 'inherit',
+      hover: hover || 'inherit',
     },
   };
 };
 
-export const getSize = (theme: MDSTheme): Record<
-  Size,
-  {
-    size: BodySize;
-    singleIconSize: number;
-    coupleIconSize: number;
-    verticalPadding: string;
-    horizontalPadding: string;
-    iconPadding: string;
-    radius: string;
-    gap: string;
-  }
-> => {
+export const getSize = (
+  theme: MDSTheme,
+  { isIconButton, size }: Pick<StyledPlainButtonProps, 'size' | 'isIconButton'>
+): {
+  typography: BodySize;
+  radius: string;
+  gap: string;
+  verticalPadding: string;
+  horizontalPadding: string;
+  icon: number;
+} => {
+  const sizeAbbreviation = SIZE_ABBREVIATIONS[size];
+
+  const typography = TYPOGRAPHY_SIZE[size];
+  const radius = theme.comp.plainButton.radius[sizeAbbreviation.twoLetters];
+  const gap = theme.comp.plainButton.gap[sizeAbbreviation.twoLetters];
+
+  const verticalPadding = theme.comp.plainButton.pddng[isIconButton ? 'icon' : 'v'][sizeAbbreviation.oneLetter];
+  const horizontalPadding = theme.comp.plainButton.pddng[isIconButton ? 'icon' : 'h'][sizeAbbreviation.oneLetter];
+
+  const iconSizeType = isIconButton ? 'standaloneIconSize' : 'withLabelIconSize';
+  const icon = theme.comp.plainButton[iconSizeType][sizeAbbreviation.twoLetters];
+
   return {
-    small: {
-      size: 's',
-      singleIconSize: theme.comp.plainButton.singleIconSize.sm,
-      coupleIconSize: theme.comp.plainButton.coupleIconSize.sm,
-      verticalPadding: theme.comp.plainButton.pddng.v.s,
-      horizontalPadding: theme.comp.plainButton.pddng.h.s,
-      iconPadding: theme.comp.plainButton.pddng.icon.s,
-      radius: theme.comp.plainButton.radius.sm,
-      gap: theme.comp.plainButton.gap.sm,
-    },
-    medium: {
-      size: 'm',
-      singleIconSize: theme.comp.plainButton.singleIconSize.md,
-      coupleIconSize: theme.comp.plainButton.coupleIconSize.md,
-      verticalPadding: theme.comp.plainButton.pddng.v.m,
-      horizontalPadding: theme.comp.plainButton.pddng.h.m,
-      iconPadding: theme.comp.plainButton.pddng.icon.m,
-      radius: theme.comp.plainButton.radius.md,
-      gap: theme.comp.plainButton.gap.md,
-    },
-    large: {
-      size: 'l',
-      singleIconSize: theme.comp.plainButton.singleIconSize.lg,
-      coupleIconSize: theme.comp.plainButton.coupleIconSize.lg,
-      verticalPadding: theme.comp.plainButton.pddng.v.l,
-      horizontalPadding: theme.comp.plainButton.pddng.h.l,
-      iconPadding: theme.comp.plainButton.pddng.icon.l,
-      radius: theme.comp.plainButton.radius.lg,
-      gap: theme.comp.plainButton.gap.lg,
-    },
+    typography,
+    radius,
+    gap,
+    verticalPadding,
+    horizontalPadding,
+    icon,
   };
 };

@@ -111,14 +111,14 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
   if (icon) {
     return (
       <PlainButton isIconButton {...commonProps}>
-        <Icon type="icon" size={size} icon={icon} />
+        <Icon type="single" size={size} icon={icon} />
       </PlainButton>
     );
   }
 
   return (
     <PlainButton {...commonProps}>
-      {startIcon && <Icon type="composite" size={size} icon={startIcon} />}
+      {startIcon && <Icon type="couple" size={size} icon={startIcon} />}
 
       {isValidElement(label)
         ? label
@@ -128,7 +128,7 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
             </MDSTypography>
           )}
 
-      {endIcon && <Icon type="composite" size={size} icon={endIcon} />}
+      {endIcon && <Icon type="couple" size={size} icon={endIcon} />}
     </PlainButton>
   );
 };

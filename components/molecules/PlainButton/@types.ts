@@ -18,7 +18,7 @@ export type StyledPlainButtonProps = {
 };
 
 export type IconProps = {
-  type: 'icon' | 'composite';
+  type: 'single' | 'couple';
   size: Size;
   icon: React.ReactElement;
 };

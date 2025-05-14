@@ -21,3 +21,4 @@ export * from './organisms/EmptyView';
 export * from './organisms/ImageViewer';
 export * from './organisms/LNB';
 export * from './atoms/Logo';
+export * from './organisms/GNB';

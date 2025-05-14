@@ -72,6 +72,7 @@ export const MDSIcon = {
   Apps: createIcon(Symbols.Apps),
   Menu: createIcon(Symbols.Menu),
   MenuClose: createIcon(Symbols.MenuClose),
+  MenuOpen: createIcon(Symbols.MenuOpen),
   BoxPackage: createIcon(Symbols.BoxPackage),
   PersonAlert: createIcon(Symbols.PersonAlert),
   Money: createIcon(Symbols.Money),

@@ -104,15 +104,16 @@ const IconWrapper = styled.div`
 const Icon = (props: IconProps) => {
   const { size, icon } = props;
 
+  const ResolvedIcon = cloneElement(icon, {
+    size: icon.props.size || TagTheme.size[size].icon,
+    color: icon.props.color || 'currentColor',
+  });
+
   if (size === 'x-small') {
-    return (
-      <IconWrapper>
-        {cloneElement(icon, { size: TagTheme.size[size].icon, color: icon.props.color || 'currentColor' })}
-      </IconWrapper>
-    );
+    return <IconWrapper>{ResolvedIcon}</IconWrapper>;
   }
 
-  return cloneElement(icon, { size: TagTheme.size[size].icon, color: icon.props.color || 'currentColor' });
+  return ResolvedIcon;
 };
 
 export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
@@ -132,8 +133,8 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
       {startIcon && <Icon size={size} icon={startIcon} />}
 
       <MDSTypography
-        variant='body'
-        weight='medium'
+        variant="body"
+        weight="medium"
         size={TagTheme.size[size].size}
         color="inherit"
         overflowWrap="normal"

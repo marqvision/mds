@@ -8,5 +8,5 @@ export const Icon = (props: IconProps) => {
   const theme = useTheme();
   const iconSize = getSize(theme)[size].icon;
   
-  return cloneElement(icon, { size: iconSize, color: icon.props.color || 'currentColor' });
+  return cloneElement(icon, { size: icon.props.size || iconSize, color: icon.props.color || 'currentColor' });
 };

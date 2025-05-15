@@ -22,4 +22,4 @@ export * from './organisms/ImageViewer';
 export * from './organisms/LNB';
 export * from './atoms/Logo';
 export * from './organisms/GNB';
-export * from './organisms/Header';
+export * from './organisms/PageHeader';

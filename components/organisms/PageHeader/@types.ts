@@ -27,7 +27,7 @@ type LinkBackButtonProps = {
 
 export type ButtonProps = ClickableBackButtonProps | LinkBackButtonProps;
 
-export type HeaderProps = {
+export type PageHeaderProps = {
   /*
    * 페이지 제목
    */

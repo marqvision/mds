@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { MDSTypography } from '../..';
 import { BackButton } from './@components/BackButton';
-import { ButtonProps, HeaderProps } from './@types';
+import { ButtonProps, PageHeaderProps } from './@types';
 
 const Wrapper = styled.div`
   ${({ theme }) => {
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   }}
 `;
 
-const Header = (props: HeaderProps) => {
+const PageHeader = (props: PageHeaderProps) => {
   const { onBack, LinkComponent, backTo, pageTitle, children } = props;
 
   const isBackButtonVisible = !!(onBack || backTo);
@@ -42,5 +42,5 @@ const Header = (props: HeaderProps) => {
   );
 };
 
-export const MDSHeader = Header;
-export type { HeaderProps as MDSHeaderProps } from './@types';
+export const MDSPageHeader = PageHeader;
+export type { PageHeaderProps as MDSPageHeaderProps } from './@types';

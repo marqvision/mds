@@ -13,7 +13,7 @@ const Wrapper = styled.header`
       display: flex;
       align-items: center;
       gap: 16px;
-      border-bottom: 1px solid ${theme.color.comp.divider.color.strong};
+      border-bottom: 1px solid ${theme.comp.divider.color.strong};
     `;
   }}
 `;

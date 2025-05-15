@@ -19,13 +19,17 @@ const Wrapper = styled.div`
 const Header = (props: HeaderProps) => {
   const { onBack, LinkComponent, backTo, pageTitle, children } = props;
 
-  const isBackButtonVisible = !!onBack || !!backTo;
+  const isBackButtonVisible = !!(onBack || backTo);
 
-  const backButtonProps = {
-    onBack,
-    LinkComponent,
-    backTo,
-  } as ButtonProps;
+  const backButtonProps: ButtonProps =
+    backTo && LinkComponent
+      ? {
+          LinkComponent,
+          backTo,
+        }
+      : {
+          onBack,
+        };
 
   return (
     <Wrapper>

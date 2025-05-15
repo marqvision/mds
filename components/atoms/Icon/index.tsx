@@ -1,4 +1,4 @@
-import { ReactNode, SVGAttributes } from 'react';
+import { forwardRef, ReactNode, SVGAttributes } from 'react';
 import { resolveColor } from '../../../utils';
 import { Features, IconVariant } from './@types';
 import * as Arrows from './set/Arrows';
@@ -8,7 +8,7 @@ import * as Editor from './set/Editor';
 export type MDSIconProps<IC = ''> = Features<IC> & SVGAttributes<SVGElement>;
 
 function createIcon<IC = ''>(Icon: (features: Features<IC>) => ReactNode) {
-  const IconComponent = ({ size, color = 'color/content/neutral/default/normal', ...rest }: MDSIconProps<IC>) => {
+  const IconComponent = forwardRef<SVGSVGElement, MDSIconProps<IC>>(({ size, color = 'color/content/neutral/default/normal', ...rest }, ref) => {
     const props = {
       color: resolveColor(color),
       variant: 'variant' in rest ? (rest.variant as Features<keyof IconVariant>['variant']) : undefined,
@@ -17,13 +17,13 @@ function createIcon<IC = ''>(Icon: (features: Features<IC>) => ReactNode) {
     };
 
     return (
-      <svg width={props.width} height={props.height} viewBox="0 0 24 24" color={props.color} {...rest}>
+      <svg width={props.width} height={props.height} viewBox="0 0 24 24" color={props.color} {...rest} ref={ref}>
         {/* todo-@jamie: fix types */}
         {/* @ts-ignore */}
         <Icon variant={props.variant} />
       </svg>
     );
-  };
+  });
   IconComponent.displayName = `MDSIcon.${Icon.name}`;
 
   return IconComponent;

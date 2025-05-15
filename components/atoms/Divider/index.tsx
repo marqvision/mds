@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { forwardRef } from 'react';
 import { resolveColor } from '../../../utils';
 import { Props, StyledProps } from './@types';
 import { theme } from './@constants';
@@ -39,7 +40,7 @@ const Divider = styled.hr<StyledProps>`
   }}
 `;
 
-export const MDSDivider = (props: Props) => {
+export const MDSDivider = forwardRef<HTMLHRElement, Props>((props, ref) => {
   const {
     intensity = 'default',
     orientation = 'horizontal',
@@ -63,6 +64,8 @@ export const MDSDivider = (props: Props) => {
       thickness={stringThickness}
       length={stringLength}
       style={style}
+      ref={ref}
     />
   );
-};
+});
+MDSDivider.displayName = 'MDSDivider';

@@ -1,12 +1,8 @@
-import { ElementType } from 'react';
+import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor, resolveFontSize } from '../../../utils';
-import {
-  resolveFontWeightLetterSpacing,
-  resolveLineClamp,
-  resolveTagName,
-} from './@utils';
-import { MDSTypographyProps, InnerTypographyStyleProps } from './@types';
+import { InnerTypographyStyleProps, MDSTypographyProps } from './@types';
+import { resolveFontWeightLetterSpacing, resolveLineClamp, resolveTagName } from './@utils';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
@@ -37,32 +33,39 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   }}
 `;
 
-export const MDSTypography = <T extends ElementType = 'p'>({
-  variant = 'body',
-  color = 'color/content/neutral/default/normal',
-  lineClamp,
-  size = 'm',
-  char = 'letter',
-  as,
-  wordBreak,
-  ...props
-}: MDSTypographyProps<T>) => {
-  const tagName = resolveTagName(variant, size, as);
+export const MDSTypography = forwardRef<HTMLSpanElement, MDSTypographyProps<any>>(
+  (
+    {
+      variant = 'body',
+      color = 'color/content/neutral/default/normal',
+      lineClamp,
+      size = 'm',
+      char = 'letter',
+      as,
+      wordBreak,
+      ...props
+    },
+    ref
+  ) => {
+    const tagName = resolveTagName(variant, size, as);
 
-  return (
-    <TypographyStyles
-      size={size}
-      variant={variant}
-      char={char}
-      lineClamp={lineClamp}
-      as={tagName}
-      color={color}
-      wordBreak={wordBreak}
-      data-typography-new-font
-      {...props}
-    />
-  );
-};
+    return (
+      <TypographyStyles
+        size={size}
+        variant={variant}
+        char={char}
+        lineClamp={lineClamp}
+        as={tagName}
+        color={color}
+        wordBreak={wordBreak}
+        data-typography-new-font
+        {...props}
+        ref={ref}
+      />
+    );
+  }
+);
+MDSTypography.displayName = 'MDSTypography';
 
 export * from './@types';
 export { getTypographyProps } from './@utils';

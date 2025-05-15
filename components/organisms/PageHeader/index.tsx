@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../..';
 import { BackButton } from './@components/BackButton';
@@ -16,7 +17,7 @@ const Wrapper = styled.div`
   }}
 `;
 
-const PageHeader = (props: PageHeaderProps) => {
+const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>((props, ref) => {
   const { onBack, LinkComponent, backTo, pageTitle, children } = props;
 
   const isBackButtonVisible = !!(onBack || backTo);
@@ -32,7 +33,7 @@ const PageHeader = (props: PageHeaderProps) => {
         };
 
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       {isBackButtonVisible && <BackButton {...backButtonProps} />}
       <MDSTypography variant="title" weight="semibold" size="xl">
         {pageTitle}
@@ -40,7 +41,8 @@ const PageHeader = (props: PageHeaderProps) => {
       {children}
     </Wrapper>
   );
-};
+});
+PageHeader.displayName = 'MDSPageHeader';
 
 export const MDSPageHeader = PageHeader;
 export type { PageHeaderProps as MDSPageHeaderProps } from './@types';

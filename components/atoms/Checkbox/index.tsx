@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../../utils';
 import { Props, StyledWrapperProps } from './@types';
@@ -57,7 +57,7 @@ const Svg = styled.svg<{ isShow: boolean }>`
   transition: 0.3s;
 `;
 
-export const MDSCheckbox = (props: Props) => {
+export const MDSCheckbox = forwardRef<HTMLLabelElement, Props>((props, ref) => {
   const { value, color = 'blue', size = 'medium', onChange, isDisabled = false } = props;
 
   const type = isDisabled ? 'disabled' : 'normal';
@@ -81,6 +81,7 @@ export const MDSCheckbox = (props: Props) => {
       value={value}
       isTranslucent={isTranslucent}
       onClick={stopPropagation}
+      ref={ref}
     >
       <input type="checkbox" checked={!!value} disabled={isDisabled} onChange={handleChange} />
       <Svg
@@ -112,4 +113,5 @@ export const MDSCheckbox = (props: Props) => {
       </Svg>
     </Wrapper>
   );
-};
+});
+MDSCheckbox.displayName = 'MDSCheckbox';

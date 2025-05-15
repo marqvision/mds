@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSDimmed } from '../Dimmed';
 import { MDSIcon } from '../../atoms/Icon';
@@ -42,7 +42,7 @@ const StyledZoomButton = styled.div`
   }
 `;
 
-export const MDSImageViewer = (props: ImageViewerProps) => {
+export const MDSImageViewer = forwardRef<HTMLDivElement, ImageViewerProps>((props, ref) => {
   const { image, renderAnchor } = props;
 
   const timeoutRef = useRef<NodeJS.Timeout>();
@@ -71,7 +71,7 @@ export const MDSImageViewer = (props: ImageViewerProps) => {
 
   return (
     <>
-      <MDSDimmed intensity="strong" padding="0" isOpen={isOpen} onClose={handleClose}>
+      <MDSDimmed intensity="strong" padding="0" isOpen={isOpen} onClose={handleClose} ref={ref}>
         <StyledScrollWrapper onClick={handleClose}>
           <StyledImageWrapper onClick={(event) => event.stopPropagation()}>
             <MDSImage
@@ -102,4 +102,5 @@ export const MDSImageViewer = (props: ImageViewerProps) => {
       })}
     </>
   );
-};
+});
+MDSImageViewer.displayName = 'MDSImageViewer';

@@ -58,7 +58,7 @@ const CellBox = styled.div<TableCellInnerProps>`
   }
 `;
 
-export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCellElement>) => {
+export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>((props, ref) => {
   const { children, isNewHeader, align = 'left', valign = 'middle', cellSize = 'medium', ...restProps } = props;
 
   const color = props.as === 'th' ? 'color/content/neutral/secondary/normal' : undefined;
@@ -80,7 +80,7 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
     </Wrapper>
   );
 });
-TableCell.displayName = 'MDSTableCell';
+TableCell.displayName = 'MDSTable.Cell';
 
 const resolveBorderStyles = (props?: BorderProps) => {
   if (!props) return '';

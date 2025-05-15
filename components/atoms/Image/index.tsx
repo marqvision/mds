@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../../utils';
 import { MDSIcon } from '../Icon';
@@ -102,7 +102,7 @@ const Image = styled.img<StyledImageProps>`
   transition: filter 0.3s;
 `;
 
-export const MDSImage = (props: ImageProps) => {
+export const MDSImage = forwardRef<HTMLDivElement, ImageProps>((props, ref) => {
   const {
     children,
     isLoading,
@@ -167,6 +167,7 @@ export const MDSImage = (props: ImageProps) => {
       borderRadius={borderRadius}
       {...restProps}
       {...wrapperProps}
+      ref={ref}
     >
       <ErrorWrapper isDraggable={isDraggable} fallbackStyle={fallbackStyle} iconSize={_iconSize} isLoaded={isLoaded}>
         {!isError ? (
@@ -202,7 +203,8 @@ export const MDSImage = (props: ImageProps) => {
       {HoverElement && <HoverWrapper {...hoverWrapperProps}>{HoverElement}</HoverWrapper>}
     </Wrapper>
   );
-};
+});
+MDSImage.displayName = 'MDSImage';
 
 const getRadius = (removeData?: RemoveBorderRadius) => {
   const topLeft = (typeof removeData !== 'boolean' && removeData?.topLeft) || removeData === true ? '0' : BORDER_RADIUS;

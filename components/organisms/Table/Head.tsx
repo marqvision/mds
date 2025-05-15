@@ -1,4 +1,4 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { StyledTableHeadProps, TableHeadProps } from './@types';
 import { theme } from './@constants';
@@ -41,17 +41,18 @@ const Wrapper = styled.thead<StyledTableHeadProps>`
       : ''}
 `;
 
-export const TableHead = (props: TableHeadProps) => {
+export const TableHead = forwardRef<HTMLTableSectionElement, TableHeadProps>((props, ref) => {
   const { children, isNewHeader, ...restProps } = props;
 
   const childClone = parseTdToTH(children, { isNewHeader });
 
   return (
-    <Wrapper isNewHeader={isNewHeader} {...restProps}>
+    <Wrapper isNewHeader={isNewHeader} {...restProps} ref={ref}>
       {childClone}
     </Wrapper>
   );
-};
+});
+TableHead.displayName = 'MDSTable.Head';
 
 const parseTdToTH = <Props,>(children: React.ReactElement | React.ReactElement[], props?: Props) =>
   // 자식 요소가 Cell 일 경우 th 요소로 출력

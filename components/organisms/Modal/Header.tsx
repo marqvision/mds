@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { forwardRef, useContext } from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSTypography } from '../../atoms/Typography';
@@ -34,14 +34,14 @@ const Close = styled(MDSIcon.CloseDelete)`
   cursor: pointer;
 `;
 
-export const Header = (props: ModalHeaderProps) => {
+export const Header = forwardRef<HTMLDivElement, ModalHeaderProps>((props, ref) => {
   const { icon, children, isBorderBottom = true, rightSideElement, onClose } = props;
   const { isScrollTop } = useContext(Context);
 
   const titleTag = typeof children === 'string' ? undefined : 'div';
 
   return (
-    <Wrapper isBorderBottom={isBorderBottom} isScrollTop={isScrollTop}>
+    <Wrapper isBorderBottom={isBorderBottom} isScrollTop={isScrollTop} ref={ref}>
       <Title>
         {icon}
         <MDSTypography variant="title" size="xl" weight="semibold" as={titleTag}>
@@ -55,4 +55,5 @@ export const Header = (props: ModalHeaderProps) => {
       </RightSide>
     </Wrapper>
   );
-};
+});
+Header.displayName = 'MDSModal.Header';

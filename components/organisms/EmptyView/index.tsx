@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { resolveColor } from '../../../utils';
@@ -27,7 +28,7 @@ const TextBox = styled.div`
   gap: 8px;
 `;
 
-export const MDSEmptyView = (props: EmptyViewProps) => {
+export const MDSEmptyView = forwardRef<HTMLDivElement, EmptyViewProps>((props, ref) => {
   const { title, description, children, height = '100%' } = props;
 
   return (
@@ -47,4 +48,5 @@ export const MDSEmptyView = (props: EmptyViewProps) => {
       </Content>
     </Wrapper>
   );
-};
+});
+MDSEmptyView.displayName = 'MDSEmptyView';

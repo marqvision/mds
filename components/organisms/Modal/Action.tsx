@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { ModalActionProps } from './@types';
 
@@ -9,7 +10,8 @@ const Wrapper = styled.div<ModalActionProps>`
   ${({ justifyContent = 'flex-end' }) => `justify-content: ${justifyContent};`}
 `;
 
-export const Action = (props: ModalActionProps) => {
+export const Action = forwardRef<HTMLDivElement, ModalActionProps>((props: ModalActionProps) => {
   const { children, justifyContent } = props;
   return <Wrapper justifyContent={justifyContent}>{children}</Wrapper>;
-};
+});
+Action.displayName = 'MDSModal.Action';

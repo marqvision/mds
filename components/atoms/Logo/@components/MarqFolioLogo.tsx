@@ -1,11 +1,12 @@
+import { forwardRef } from 'react';
 import { LogoTypeProps } from '../@types';
 import { Wrapper } from './Wrapper';
 
-export const MarqFolioLogo = (props: LogoTypeProps & Required<Pick<LogoTypeProps, 'size'>>) => {
+export const MarqFolioLogo = forwardRef<SVGSVGElement, LogoTypeProps & Required<Pick<LogoTypeProps, 'size'>>>((props, ref) => {
   const { color, size } = props;
 
   return (
-    <Wrapper size={size} color={color} viewBox="0 0 496 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Wrapper size={size} color={color} viewBox="0 0 496 68" fill="none" xmlns="http://www.w3.org/2000/svg" ref={ref}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -14,4 +15,5 @@ export const MarqFolioLogo = (props: LogoTypeProps & Required<Pick<LogoTypeProps
       />
     </Wrapper>
   );
-};
+});
+MarqFolioLogo.displayName = 'MDSLogo.MarqFolioLogo';

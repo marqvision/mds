@@ -46,4 +46,4 @@ const GNB = (props: GNBProps) => {
 };
 
 export const MDSGNB = GNB;
-export type { GNBProps as MDGGNBProps } from './@types';
+export type { GNBProps as MDSGNBProps } from './@types';

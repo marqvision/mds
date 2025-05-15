@@ -6,8 +6,8 @@ import { Divider } from './@components/Divider';
 import { Icon } from './@components/Icon';
 import { LoadingSpinner } from './@components/LoadingSpinner';
 import { ButtonProps, ButtonType, StyledButtonProps } from './@types';
-import { getBorderRadius, resolveFlatStyles } from './@utils';
-import { getColor, getSize } from './@utils/styles';
+import { resolveBorderRadius, resolveColor, resolveFlatStyles } from './@utils';
+import { getSize } from './@utils/styleSet';
 
 // 외부에서 사용 시 타입을 좁힐 수 있도록 generic 으로 설정
 export type MDSButtonProps<Type extends ButtonType = 'composite'> = ButtonProps<Type>;
@@ -15,31 +15,15 @@ export type MDSButtonProps<Type extends ButtonType = 'composite'> = ButtonProps<
 const Button = styled.button<StyledButtonProps>`
   ${({ theme, ...props }) => {
     const sizeStyle = getSize(theme)[props.size];
-    const colorStyle = getColor(theme)[props.color][props.variant];
+    const colorStyle = resolveColor(theme, props);
 
     const displayStyle = props.width === 'fill' ? 'flex' : 'inline-flex';
     const widthStyle = props.width === 'hug' ? 'auto' : props.width === 'fill' ? '100%' : props.width;
-    const borderRadiusStyle = getBorderRadius(theme, props);
+    const borderRadiusStyle = resolveBorderRadius(theme, props);
     const minHeightStyle = sizeStyle.minHeight;
     const gapStyle = sizeStyle.gap;
     const defaultPadding = props.isIconButton && !props.flat ? sizeStyle.iconPadding : sizeStyle.padding;
     const { paddingLeft, paddingRight, borderLeft, borderRight, marginRight } = resolveFlatStyles(theme, props);
-
-    const color = props.isDisabled
-      ? colorStyle.disabled.color
-      : props.isCompleted
-        ? colorStyle.completed?.color
-        : colorStyle.normal.color;
-    const backgroundColor = props.isDisabled
-      ? colorStyle.disabled.backgroundColor
-      : props.isCompleted
-        ? colorStyle.completed?.backgroundColor
-        : colorStyle.normal.backgroundColor;
-    const borderColor = props.isDisabled
-      ? colorStyle.disabled.borderColor
-      : props.isCompleted
-        ? colorStyle.completed?.borderColor
-        : colorStyle.normal.borderColor;
 
     return `
       position: relative;
@@ -62,9 +46,9 @@ const Button = styled.button<StyledButtonProps>`
       min-height: ${minHeightStyle};
       gap: ${gapStyle};
       padding: ${defaultPadding};
-      color: ${color || 'inherit'};
-      background-color: ${backgroundColor || 'transparent'};
-      border-color: ${borderColor || 'transparent'};
+      color: ${colorStyle.content.normal};
+      background-color: ${colorStyle.background.normal};
+      border-color: ${colorStyle.border.normal};
       
       /* flat 적용 시 스타일 */
       padding-left: ${paddingLeft || ''};
@@ -76,9 +60,9 @@ const Button = styled.button<StyledButtonProps>`
       /* clickable 상태 시 스타일 */
       cursor: ${props.isClickable ? 'pointer' : ''};
       &:hover {
-        color: ${props.isClickable ? colorStyle.hover.color : ''};
-        background-color: ${props.isClickable ? colorStyle.hover.backgroundColor : ''};
-        border-color: ${props.isClickable ? colorStyle.hover.borderColor : ''};
+        color: ${colorStyle.content.hover};
+        background-color: ${colorStyle.background.hover};
+        border-color: ${colorStyle.border.hover};
       }
       
       /* isLoading === hideLabel 시 */

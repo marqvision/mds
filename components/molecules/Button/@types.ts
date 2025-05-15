@@ -11,10 +11,15 @@ export type Flat = 'left' | 'right' | 'both';
 type Width = 'fill' | 'hug' | string;
 type LoadingStatus = 'hideLabel' | boolean;
 
-export type ColorTheme = {
+export type ColorSet = {
   color: string;
   backgroundColor?: string;
   borderColor: string;
+};
+
+export type ResolvedColor = {
+  normal: string;
+  hover: string;
 };
 
 export type StyledButtonProps = {

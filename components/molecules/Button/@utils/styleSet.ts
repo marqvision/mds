@@ -1,8 +1,8 @@
 import { MDSTheme } from '../../../../types';
 import { BodySize } from '../../../atoms/Typography';
-import { Color, ColorTheme, Size, Status, Variant } from '../@types';
+import { Color, ColorSet, Size, Status, Variant } from '../@types';
 
-export const getColor = (theme: MDSTheme): Record<Color, Record<Variant, Record<Status, ColorTheme> & Partial<{ completed: ColorTheme }>>> => {
+export const getColorSet = (theme: MDSTheme): Record<Color, Record<Variant, Record<Status, ColorSet> & Partial<{ completed: ColorSet }>>> => {
   return {
     bluegray: {
       fill: {
@@ -469,7 +469,7 @@ export const getSize = (theme: MDSTheme): Record<
       size: 'm',
       icon: theme.comp.button.iconSize.md,
       padding: `${theme.comp.button.pddng.v.md} ${theme.comp.button.pddng.h.md}`,
-      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.m}`,
+      iconPadding: `${theme.comp.button.pddng.v.md} ${theme.comp.button.pddng.h.icon.m}`,
       gap: theme.comp.button.gap.md,
       flatPadding: theme.comp.button.gap['md-both'],
       radius: theme.comp.button.radius.md,
@@ -480,7 +480,7 @@ export const getSize = (theme: MDSTheme): Record<
       size: 'l',
       icon: theme.comp.button.iconSize.lg,
       padding: `${theme.comp.button.pddng.v.lg} ${theme.comp.button.pddng.h.lg}`,
-      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.l}`,
+      iconPadding: `${theme.comp.button.pddng.v.lg} ${theme.comp.button.pddng.h.icon.l}`,
       gap: theme.comp.button.gap.lg,
       flatPadding: theme.comp.button.gap['lg-both'],
       radius: theme.comp.button.radius.lg,
@@ -489,7 +489,7 @@ export const getSize = (theme: MDSTheme): Record<
     },
     'x-large': {
       icon: theme.comp.button.iconSize.xl,
-      iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.xl}`,
+      iconPadding: `${theme.comp.button.pddng.v.xl} ${theme.comp.button.pddng.h.icon.xl}`,
       radius: theme.comp.button.radius.xl,
       minHeight: theme.comp.button.minSize.xl,
       spinnerSize: 24,

@@ -1,7 +1,7 @@
 import { cloneElement } from 'react';
 import { useTheme } from '@emotion/react';
 import { IconProps } from '../@types';
-import { getSize } from '../@utils/styles';
+import { getSize } from '../@utils/styleSet';
 
 export const Icon = (props: IconProps) => {
   const { size, icon } = props;

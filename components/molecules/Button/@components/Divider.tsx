@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { DividerProps } from '../@types';
-import { getColor, getSize } from '../@utils/styles';
+import { resolveColor } from '../@utils';
+import { getSize } from '../@utils/styleSet';
 
 export const Divider = styled.hr<DividerProps>`
   position: absolute;
@@ -9,18 +10,18 @@ export const Divider = styled.hr<DividerProps>`
   width: 1px;
   border-style: solid;
   border-width: 1px 0;
+  background-clip: padding-box;
 
-  ${({ size, variant, color, theme }) => {
-    const sizeStyle = getSize(theme)[size];
-    const colorStyle = getColor(theme)[color][variant];
-    
-    const paddingTop = sizeStyle.padding.split(' ')[0];
+  ${({ theme, ...props }) => {
+    const sizeStyle = getSize(theme)[props.size];
+    const colorStyle = resolveColor(theme, { ...props, isClickable: false });
+
+    const paddingTop = sizeStyle.padding?.split(' ')[0];
 
     return `
       min-height: ${sizeStyle.minHeight};
-      color: ${colorStyle.normal.color};
-      background-color: ${colorStyle.normal.backgroundColor || 'transparent'};
-      border-color: ${colorStyle.normal.borderColor};
+      background-color: ${colorStyle.background.normal};
+      border-color: ${colorStyle.border.normal};
       &:after {
         content: '';
         position: absolute;
@@ -28,7 +29,7 @@ export const Divider = styled.hr<DividerProps>`
         right: 0;
         width: 1px;
         height: calc(100% - (${paddingTop} * 2));
-        background-color: ${variant === 'fill' ? 'rgb(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.1)'};
+        background-color: ${props.variant === 'fill' ? 'rgb(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.1)'};
       }
     `;
   }}

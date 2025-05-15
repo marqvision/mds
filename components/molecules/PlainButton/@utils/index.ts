@@ -38,7 +38,7 @@ export const resolveColor = (
   };
 };
 
-export const getSize = (
+export const resolveSize = (
   theme: MDSTheme,
   { isIconButton, size }: Pick<StyledPlainButtonProps, 'size' | 'isIconButton'>
 ): {

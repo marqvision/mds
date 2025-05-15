@@ -1,6 +1,7 @@
 import React from 'react';
 import { Story } from '@storybook/blocks';
-import { MDSButton, MDSIcon, MDSTag, MDSTypography } from '../components';
+import { MDSButton, MDSButtonProps } from '../components/molecules/Button';
+import { MDSIcon, MDSTag, MDSTypography } from '../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSButton> = {
@@ -21,6 +22,16 @@ const meta: Meta<typeof MDSButton> = {
   argTypes: {
     color: {
       control: 'select',
+      options: [
+        'bluegray',
+        'blue',
+        'red',
+        'green',
+        'yellow',
+        'purple',
+        'teal',
+        'white',
+      ],
     },
     width: {
       control: 'text',
@@ -28,6 +39,27 @@ const meta: Meta<typeof MDSButton> = {
     isLoading: {
       control: 'select',
       options: [true, false, 'hideLabel'],
+    },
+    variant: {
+      control: 'select',
+      options: ['fill', 'tint', 'border'],
+    },
+    size: {
+      control: 'select',
+      options: ['small', 'medium', 'large', 'x-large'],
+    },
+    flat: {
+      control: 'select',
+      options: [undefined, 'left', 'right', 'both'],
+    },
+    isDisabled: {
+      control: 'boolean',
+    },
+    isCompleted: {
+      control: 'boolean',
+    },
+    children: {
+      control: 'text',
     },
   },
 };
@@ -374,8 +406,7 @@ export const IconButton: Story = {
       <MDSTypography>flat 속성으로 복합 버튼과 연결이 가능합니다.</MDSTypography>
       <div>
         <MDSButton
-          color={args.color}
-          variant={args.variant}
+          {...args as MDSButtonProps<'composite'>}
           flat="right"
           onClick={() => {}}
           tags={[
@@ -390,8 +421,7 @@ export const IconButton: Story = {
           Filter
         </MDSButton>
         <MDSButton
-          color={args.color}
-          variant={args.variant}
+          {...args as MDSButtonProps<'icon'>}
           flat="left"
           onClick={() => {}}
           icon={<MDSIcon.ArrowDown variant="outline" />}

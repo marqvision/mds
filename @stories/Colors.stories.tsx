@@ -425,42 +425,6 @@ export const SystemColorTokens = () => {
     </div>
   );
 };
-export const ComponentColorTokens = () => {
-  return (
-    <Container>
-      <MDSTypography variant="title" size="2xl">
-        Comp
-      </MDSTypography>
-      <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-        <div>
-          <MDSTypography variant="title" size="xl">
-            divider
-          </MDSTypography>
-          <ColorPalette>
-            <Palette title="_" colors={color.comp.divider.color} />
-          </ColorPalette>
-        </div>
-        <div>
-          <MDSTypography variant="title" size="xl">
-            input
-          </MDSTypography>
-          <ColorPalette>
-            <Palette title="bg" colors={color.comp.input.color.bg} />
-            <Palette title="border" colors={color.comp.input.color.border} />
-          </ColorPalette>
-        </div>
-        <div>
-          <MDSTypography variant="title" size="xl">
-            dimmed
-          </MDSTypography>
-          <ColorPalette>
-            <Palette title="_" colors={color.comp.dimmed.color} />
-          </ColorPalette>
-        </div>
-      </div>
-    </Container>
-  );
-};
 
 export const RawColors = () => {
   return (

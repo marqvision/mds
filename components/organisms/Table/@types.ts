@@ -1,5 +1,4 @@
 import React, { HTMLAttributes, TdHTMLAttributes } from 'react';
-import { MDSThemeColorPath } from '../../../types';
 
 // Table
 export type StyledTableProps = {
@@ -64,7 +63,7 @@ export type BorderProps =
   | {
       width?: number;
       style?: 'dashed' | 'dotted' | 'double' | 'groove' | 'hidden' | 'inset' | 'none' | 'outset' | 'ridge' | 'solid';
-      color?: MDSThemeColorPath;
+      color?: string;
     };
 
 type CellSize = 'small' | 'medium';

@@ -562,40 +562,4 @@ export const COLOR_TOKENS = {
       ai: RAW_COLORS.indigo200,
     },
   },
-
-  /**
-   * @deprecated
-   * - todo-@jamie: comp color들은 해당 컴포넌트들 내부로 옮기고 여기서는 제거하기.
-   * - https://bitbucket.org/marqvision/marqvision-web/pull-requests/2574 PR 참고.
-   */
-  comp: {
-    divider: {
-      color: {
-        default: RAW_COLORS.bluegray150,
-        weak: RAW_COLORS.bluegray100,
-        strong: RAW_COLORS.bluegray200,
-        circle: RAW_COLORS.bluegray400,
-      },
-    },
-    input: {
-      color: {
-        bg: {
-          normal: RAW_COLORS.white,
-          disabled: RAW_COLORS.bluegray100,
-        },
-        border: {
-          normal: RAW_COLORS.bluegray200,
-          active: RAW_COLORS.blue700,
-          error: RAW_COLORS.red600,
-          hover: RAW_COLORS.bluegray300,
-          disabled: RAW_COLORS.bluegray200,
-        },
-      },
-    },
-    dimmed: {
-      color: {
-        default: RAW_COLORS.blackAlpha50,
-      },
-    },
-  },
 };

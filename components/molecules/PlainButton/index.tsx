@@ -4,13 +4,13 @@ import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { Icon } from './@components/Icon';
 import { PlainButtonProps, StyledPlainButtonProps } from './@types';
-import { resolveColor, getSize } from './@utils';
+import { resolveColor, resolveSize } from './@utils';
 
 export type MDSPlainButtonProps = PlainButtonProps;
 
 const PlainButton = styled.button<StyledPlainButtonProps>`
   ${({ theme, ...props }) => {
-    const sizeStyle = getSize(theme, props);
+    const sizeStyle = resolveSize(theme, props);
     const colorStyle = resolveColor(theme, props);
 
     return `
@@ -107,7 +107,7 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
     );
   }
 
-  const sizeStyle = getSize(theme, commonProps);
+  const sizeStyle = resolveSize(theme, commonProps);
 
   return (
     <PlainButton {...commonProps}>

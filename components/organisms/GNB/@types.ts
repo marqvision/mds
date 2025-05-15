@@ -16,4 +16,9 @@ export type GNBProps = {
    * GNB 우측 utility 영역에 출력할 요소
    */
   children?: React.ReactNode;
+  /*
+   * 고객사 로고 이미지
+   * 전달하지 않을 경우 MARQ AI 로고가 출력됩니다.
+   */
+  logoUrl?: string;
 };

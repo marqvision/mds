@@ -53,3 +53,17 @@ export const Preview: Story = {
     </Wrapper>
   ),
 };
+
+export const CustomerLogo: Story = {
+  args: {
+    logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/736px-Google_2015_logo.svg.png',
+  },
+  render: (args) => (
+    <Wrapper>
+      <MDSTypography>
+        Logo url prop 에 고객사 로고 url 을 전달하면 고객사 로고가 출력됩니다.
+      </MDSTypography>
+      <MDSGNB {...args} />
+    </Wrapper>
+  ),
+};

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../atoms/Icon';
+import { MDSImage } from '../../atoms/Image';
 import { MDSButton } from '../../molecules/Button';
 import { MDSLogo } from '../../atoms/Logo';
 import { GNBProps } from './@types';
@@ -25,14 +26,18 @@ const UtilityWrapper = styled.div`
 `;
 
 const GNB = (props: GNBProps) => {
-  const { isLNBOpen, onLNBToggle, children } = props;
+  const { isLNBOpen, onLNBToggle, logoUrl, children } = props;
 
   const MenuIcon = isLNBOpen ? MDSIcon.MenuClose : MDSIcon.MenuOpen;
 
   return (
     <Wrapper>
       <MDSButton variant="border" size="medium" color="bluegray" icon={<MenuIcon />} onClick={onLNBToggle} />
-      <MDSLogo logoType="ai" color="black" />
+      {logoUrl ? (
+        <MDSImage src={logoUrl} width="auto" height="20px" iconSize="x-small" />
+        ) : (
+        <MDSLogo logoType="ai" color="black" />
+      )}
       <UtilityWrapper>
         {children}
       </UtilityWrapper>

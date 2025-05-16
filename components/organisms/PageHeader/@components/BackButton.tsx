@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+import { LinkComponentProps } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
 import { ButtonProps } from '../@types';
 
-const Wrapper = styled.button<{ to?: string }>`
+const Wrapper = styled.button<Partial<LinkComponentProps>>`
   ${({ theme }) => {
     return `
       position: relative;

@@ -1,9 +1,10 @@
 import React from 'react';
+import { LinkComponentProps, LinkPath } from '../../../types';
 
 export type ItemType = 'group' | 'sub' | 'popover';
 
 export type Item<Type extends ItemType> = {
-  path?: string;
+  path?: LinkPath;
   key: string;
   label: string;
 
@@ -61,5 +62,5 @@ export type LNBProps = {
    * react-router-dom 의 Link 를 주입하여 사용해야 합니다.
    * LinkComponent 를 주입하지 않으면 기본적으로 a 태그로 렌더링됩니다. (storybook 에서 사용)
    */
-  LinkComponent?: React.ComponentType<{ to: string; children: React.ReactNode }>;
+  LinkComponent?: React.ComponentType<LinkComponentProps>;
 };

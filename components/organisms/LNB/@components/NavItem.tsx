@@ -1,11 +1,12 @@
 import { cloneElement } from 'react';
 import styled from '@emotion/styled';
+import { LinkComponentProps } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
 import { ItemProps, ItemType } from '../@types';
 import { resolveNavItemColor, resolveNavItemPadding } from '../@utils';
 
-const Wrapper = styled.div<{ to?: string; isOpen: boolean; type: ItemType; selected?: boolean }>`
+const Wrapper = styled.div<{ isOpen: boolean; type: ItemType; selected?: boolean } & Partial<LinkComponentProps>>`
   ${({ theme, isOpen, type, selected }) => {
     const padding = resolveNavItemPadding({ isOpen, type });
     const { color, hoverColor, backgroundColor, hoverBackgroundColor } = resolveNavItemColor({ theme, selected });

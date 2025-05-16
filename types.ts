@@ -1,5 +1,11 @@
+import React from 'react';
 import { _MDSThemeValue } from "./foundation";
 
+export type LinkPath = string | Partial<{ pathname: string; search: string; hash: string }>;
+export type LinkComponentProps = {
+  to: LinkPath;
+  children: React.ReactNode;
+} & React.HTMLAttributes<HTMLAnchorElement>;
 
 export type PathImpl<T, Key extends keyof T> = Key extends string
   ? T[Key] extends Record<string, any>

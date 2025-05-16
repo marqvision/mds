@@ -1,4 +1,5 @@
 import React from 'react';
+import { LinkComponentProps, LinkPath } from '../../../types';
 
 type ClickableBackButtonProps = {
   /*
@@ -16,11 +17,11 @@ type LinkBackButtonProps = {
    * react-router-dom 의 Link 를 주입하여 사용해야 합니다.
    * LinkComponent 를 주입하지 않으면 기본적으로 button 태그로 렌더링됩니다.
    */
-  LinkComponent: React.ComponentType<{ to: string; children: React.ReactNode }>;
+  LinkComponent: React.ComponentType<LinkComponentProps>;
   /*
    * 뒤로가기 클릭 시 이동할 경로
    */
-  backTo: string;
+  backTo: LinkPath;
 
   onBack?: never;
 };

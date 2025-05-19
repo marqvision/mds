@@ -1,4 +1,4 @@
-import React, { createContext, forwardRef, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import styled from '@emotion/styled';
 import { MDSDimmed } from '../Dimmed';
 import { Header } from './Header';
@@ -24,7 +24,7 @@ const Modal = styled.div<StyledModalWrapperProps>`
 
 export const Context = createContext<ModalContext>({ isScrollTop: true, onScrollContent: () => null });
 
-const Wrapper = forwardRef<HTMLDivElement, ModalWrapperProps>((props, ref) => {
+const Wrapper = (props: ModalWrapperProps) => {
   const { isOpen, onClose, children, ...restProps } = props;
 
   const [isScrollTop, setIsScrollTop] = useState<boolean>(true);
@@ -34,14 +34,13 @@ const Wrapper = forwardRef<HTMLDivElement, ModalWrapperProps>((props, ref) => {
   };
 
   return (
-    <MDSDimmed isOpen={isOpen} onClose={onClose} ref={ref}>
+    <MDSDimmed isOpen={isOpen} onClose={onClose}>
       <Context.Provider value={{ isScrollTop, onScrollContent: handleScrollContent }}>
         <Modal {...restProps}>{isOpen && children}</Modal>
       </Context.Provider>
     </MDSDimmed>
   );
-});
-Wrapper.displayName = 'MDSModal.Wrapper';
+};
 
 export const MDSModal = {
   Wrapper,

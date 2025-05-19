@@ -46,4 +46,4 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>((props, r
   );
 });
 
-TableRow.displayName = 'MDSTable.Row';
+TableRow.displayName = 'MDSTableRow';

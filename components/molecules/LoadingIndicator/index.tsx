@@ -1,4 +1,3 @@
-import { forwardRef } from 'react';
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
@@ -91,7 +90,7 @@ const Label = styled(MDSTypography)<{ customColor: string }>`
   ${({ customColor }) => `color: ${customColor};`};
 `;
 
-export const MDSLoadingIndicator = forwardRef<HTMLElement, LoadingIndicatorProps>((props, ref) => {
+export const MDSLoadingIndicator = (props: LoadingIndicatorProps) => {
   const {
     isDeterminate,
     size: _size = DEFAULT_SIZE.indeterminate.size,
@@ -123,7 +122,7 @@ export const MDSLoadingIndicator = forwardRef<HTMLElement, LoadingIndicatorProps
   const color = theme.color[_color];
 
   return (
-    <Wrapper size={size} padding={padding} className={className} style={style} role="loading-indicator" ref={ref}>
+    <Wrapper size={size} padding={padding} className={className} style={style} role="loading-indicator">
       <SVG
         viewBox={viewBow}
         strokeLinecap="round"
@@ -151,8 +150,7 @@ export const MDSLoadingIndicator = forwardRef<HTMLElement, LoadingIndicatorProps
       )}
     </Wrapper>
   );
-});
-MDSLoadingIndicator.displayName = 'MDSLoadingIndicator';
+};
 
 const getProgressStroke = (r: number, progress: number) => {
   const dashArray = 2 * Math.PI * r;

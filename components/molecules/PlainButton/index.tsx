@@ -1,4 +1,4 @@
-import React, { forwardRef, isValidElement } from 'react';
+import React, { isValidElement } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
@@ -58,7 +58,7 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
   }}
 `;
 
-export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChildren<PlainButtonProps>>((props, ref) => {
+export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>) => {
   const {
     children: label,
     size = 'medium',
@@ -86,7 +86,8 @@ export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChild
       }
     : undefined;
 
-  const commonProps: StyledPlainButtonProps & React.ComponentProps<'button'> & { as: React.ElementType } = {
+  const commonProps: StyledPlainButtonProps &
+    React.ComponentProps<'button'> & { as: React.ElementType } = {
     size,
     color,
     as: onClick ? 'button' : 'div',
@@ -96,7 +97,6 @@ export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChild
     isDisabled,
     isCompleted,
     ...restProps,
-    ref,
   };
 
   if (icon) {
@@ -124,5 +124,4 @@ export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChild
       {endIcon && <Icon type="withLabel" size={size} icon={endIcon} />}
     </PlainButton>
   );
-});
-MDSPlainButton.displayName = 'MDSPlainButton';
+};

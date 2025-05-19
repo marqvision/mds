@@ -38,4 +38,11 @@ export type PageHeaderProps = {
    * 여러 개의 요소 전달 시 gap 을 자동으로 부여합니다.
    */
   children?: React.ReactNode;
+  /*
+   * padding bottom 설정
+   * @default `false`
+   * `false` 일 경우 하단 여백이 상단 여백과 동일하게 설정됩니다.
+   * `true` 일 경우 하단 여백이 상단 여백보다 더 작게 설정되며, border-bottom 이 사라집니다.
+   */
+  isCompact?: boolean;
 } & ButtonProps;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import { MDSPageHeader } from '../../../components/organisms/PageHeader';
 import { MDSButton, MDSDivider, MDSDropdown, MDSIcon, MDSTypography } from '../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -20,8 +20,8 @@ const meta: Meta<typeof MDSPageHeader> = {
 export default meta;
 type Story = StoryObj<typeof MDSPageHeader>;
 
-const Wrapper = ({ children }: React.PropsWithChildren) => {
-  return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>{children}</div>;
+const Wrapper = ({ style, children }: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>>) => {
+  return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', ...style }}>{children}</div>;
 };
 
 export const Preview: Story = {
@@ -79,6 +79,26 @@ export const WithChildren: Story = {
           <MDSDropdown label="Filter" list={[]} />
         </div>
       </MDSPageHeader>
+    </Wrapper>
+  ),
+};
+
+export const IsCompact: Story = {
+  args: {
+    isCompact: true,
+  },
+  render: (args) => (
+    <Wrapper>
+      <MDSTypography>
+        isCompact 값이 `true` 일 경우
+        <br />
+        1. 하단 여백이 상단 여백보다 더 작게 설정됩니다.
+        <br />
+        2. minHeight 이 줄어듭니다.
+        <br />
+        3. borderBottom 이 사라집니다.
+      </MDSTypography>
+      <MDSPageHeader {...args} />
     </Wrapper>
   ),
 };

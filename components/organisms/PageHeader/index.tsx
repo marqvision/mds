@@ -3,21 +3,22 @@ import { MDSTypography } from '../..';
 import { BackButton } from './@components/BackButton';
 import { ButtonProps, PageHeaderProps } from './@types';
 
-const Wrapper = styled.div`
-  ${({ theme }) => {
+const Wrapper = styled.div<{ isCompact: boolean }>`
+  ${({ theme, isCompact }) => {
     return `
       width: 100%;
-      padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 16px;
-      border-bottom: 1px solid ${theme.color.border.neutral.weak.normal};
+      min-height: ${isCompact ? '48px' : '56px'};
+      padding: ${isCompact ? '12px 16px 4px' : '12px 16px'};
+      ${isCompact ? '' : `border-bottom: 1px solid ${theme.color.border.neutral.weak.normal};`}
     `;
   }}
 `;
 
 const PageHeader = (props: PageHeaderProps) => {
-  const { onBack, LinkComponent, backTo, pageTitle, children } = props;
+  const { onBack, LinkComponent, backTo, pageTitle, isCompact = false, children } = props;
 
   const isBackButtonVisible = !!(onBack || backTo);
 
@@ -32,7 +33,7 @@ const PageHeader = (props: PageHeaderProps) => {
         };
 
   return (
-    <Wrapper>
+    <Wrapper isCompact={isCompact}>
       {isBackButtonVisible && <BackButton {...backButtonProps} />}
       <MDSTypography variant="title" weight="semibold" size="xl">
         {pageTitle}

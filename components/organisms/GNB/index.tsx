@@ -9,7 +9,7 @@ const Wrapper = styled.header`
   ${({ theme }) => {
     return `
       width: 100%;
-      padding: 12px 16px 12px 14px;
+      padding: 10px 16px 9px 14px;
       display: flex;
       align-items: center;
       gap: 16px;

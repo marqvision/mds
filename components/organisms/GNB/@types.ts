@@ -1,4 +1,5 @@
 import React from 'react';
+import { LinkComponentProps } from '../../../types';
 
 export type GNBProps = {
   /*
@@ -16,6 +17,10 @@ export type GNBProps = {
    * GNB 우측 utility 영역에 출력할 요소
    */
   children?: React.ReactNode;
+  /*
+   * react-router-dom 의 LinkComponent 를 주입하면 Logo 클릭 시 `/` 경로로 이동합니다.
+   */
+  LinkComponent?: React.ComponentType<LinkComponentProps>;
   /*
    * 고객사 로고 이미지
    * 전달하지 않을 경우 MARQ AI 로고가 출력됩니다.

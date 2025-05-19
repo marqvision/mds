@@ -26,21 +26,21 @@ const UtilityWrapper = styled.div`
 `;
 
 const GNB = (props: GNBProps) => {
-  const { isLNBOpen, onLNBToggle, logoUrl, children } = props;
+  const { isLNBOpen, onLNBToggle, logoUrl, LinkComponent, children } = props;
 
   const MenuIcon = isLNBOpen ? MDSIcon.MenuClose : MDSIcon.MenuOpen;
+
+  const Logo = logoUrl ? (
+    <MDSImage src={logoUrl} width="auto" height="20px" iconSize="x-small" />
+  ) : (
+    <MDSLogo logoType="ai" color="black" />
+  );
 
   return (
     <Wrapper>
       <MDSButton variant="border" size="medium" color="bluegray" icon={<MenuIcon />} onClick={onLNBToggle} />
-      {logoUrl ? (
-        <MDSImage src={logoUrl} width="auto" height="20px" iconSize="x-small" />
-        ) : (
-        <MDSLogo logoType="ai" color="black" />
-      )}
-      <UtilityWrapper>
-        {children}
-      </UtilityWrapper>
+      {LinkComponent ? <LinkComponent to="/">{Logo}</LinkComponent> : Logo}
+      <UtilityWrapper>{children}</UtilityWrapper>
     </Wrapper>
   );
 };

@@ -7,6 +7,7 @@ export type Item<Type extends ItemType> = {
   path?: LinkPath;
   key: string;
   label: string;
+  shouldCollapse?: boolean;
 
   items?: never;
 } & (Type extends 'group' ? { icon: React.ReactElement } : { icon?: never });
@@ -16,6 +17,7 @@ export type Group = {
   label: string;
   icon: React.ReactElement;
   items: Item<'sub'>[];
+  shouldCollapse?: boolean;
 
   path?: never;
 };
@@ -37,6 +39,7 @@ export type ItemProps<Type extends ItemType> = {
 export type SubNavPopoverProps = {
   label: string;
   items?: Item<'sub'>[];
+  shouldCollapse?: boolean;
 } & CommonProps;
 
 export type LNBProps = {
@@ -46,6 +49,11 @@ export type LNBProps = {
    * `false` 일 경우 LNB 가 접히며 label 이 숨겨집니다.
    */
   isOpen: boolean;
+  /*
+   * LNB 접힘 함수
+   * `shouldCollapse` 값을 가진 LNB Item 클릭 시 실행합니다.
+   */
+  onFold: () => void;
   /*
    * 현재 pathname
    * LNBItem 의 path 와 비교하여 현재 선택된 메뉴를 표시합니다.

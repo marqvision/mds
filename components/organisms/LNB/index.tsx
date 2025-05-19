@@ -1,4 +1,3 @@
-import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { Divider } from './@components/Divider';
 import { Group } from './@components/Group';
@@ -24,20 +23,19 @@ const Wrapper = styled.nav<LNBProps>`
   }}
 `;
 
-export const MDSLNB = forwardRef<HTMLElement, LNBProps>((props, ref) => {
+export const MDSLNB = (props: LNBProps) => {
   const { list: _list, LinkComponent = StubLink, ...restProps } = props;
 
   const list: LNBItem[][] = checkIsNested(_list) ? _list : [_list];
 
   return (
-    <Wrapper {...props} ref={ref}>
+    <Wrapper {...props}>
       {list.flatMap((group, index) => [
         index > 0 && <Divider key={`divider-${index}`} isOpen={props.isOpen} />,
         ...group.map(({ key, ...item }) => <Group key={key} LinkComponent={LinkComponent} {...restProps} {...item} />),
       ])}
     </Wrapper>
   );
-});
-MDSLNB.displayName = 'MDSLNB';
+};
 
 export type { LNBProps as MDSLNBProps, LNBItem as MDSLNBItem } from './@types';

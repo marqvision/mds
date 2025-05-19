@@ -1,4 +1,4 @@
-import { forwardRef, useContext } from 'react';
+import { useContext } from 'react';
 import styled from '@emotion/styled';
 import { Context } from './index';
 import { ModalContentProps } from './@types';
@@ -9,14 +9,13 @@ const Wrapper = styled.div`
   overflow-y: auto;
 `;
 
-export const Content = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) => {
+export const Content = (props: ModalContentProps) => {
   const { children, ...restProps } = props;
   const { onScrollContent } = useContext(Context);
 
   return (
-    <Wrapper onScroll={onScrollContent} {...restProps} ref={ref}>
+    <Wrapper onScroll={onScrollContent} {...restProps}>
       {children}
     </Wrapper>
   );
-});
-Content.displayName = 'MDSModal.Content';
+};

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
@@ -55,7 +55,7 @@ const clearBodyStyle = () => {
   document.body.style.paddingRight = '';
 };
 
-export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, ref) => {
+export const MDSDimmed = (props: Props) => {
   const { isOpen: _isOpen, padding = '20px', intensity = 'default', style, onClose, children } = props;
 
   const closeRef = useRef(onClose);
@@ -64,7 +64,7 @@ export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const timeoutRef = useRef<number>();
+  const ref = useRef<number>();
 
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -82,13 +82,13 @@ export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, ref) => {
         setMountNode(document.body);
         setIsOpen(true);
       }
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = undefined;
+      if (ref.current) {
+        clearTimeout(ref.current);
+        ref.current = undefined;
       }
     } else if (isOpen) {
       setIsOpen(false);
-      timeoutRef.current = window.setTimeout(() => {
+      ref.current = window.setTimeout(() => {
         setMountNode(null);
       }, transition);
     }
@@ -144,12 +144,10 @@ export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, ref) => {
           padding={padding}
           intensity={intensity}
           style={style}
-          ref={ref}
         >
           {(_isOpen || mountNode) && children}
         </Wrapper>,
         mountNode
       )
     : mountNode;
-});
-MDSDimmed.displayName = 'MDSDimmed';
+};

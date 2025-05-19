@@ -1,12 +1,11 @@
-import { forwardRef } from 'react';
 import { SymbolTypeProps } from '../@types';
 import { Wrapper } from './Wrapper';
 
-export const Symbol = forwardRef<SVGSVGElement, SymbolTypeProps & Required<Pick<SymbolTypeProps, 'size'>>>((props, ref) => {
+export const Symbol = (props: SymbolTypeProps & Required<Pick<SymbolTypeProps, 'size'>>) => {
   const { color, size } = props;
 
   return (
-    <Wrapper size={size} color={color} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" ref={ref}>
+    <Wrapper size={size} color={color} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_14529_9471)">
         <path
           fillRule="evenodd"
@@ -22,5 +21,4 @@ export const Symbol = forwardRef<SVGSVGElement, SymbolTypeProps & Required<Pick<
       </defs>
     </Wrapper>
   );
-});
-Symbol.displayName = 'MDSLogo.Symbol';
+};

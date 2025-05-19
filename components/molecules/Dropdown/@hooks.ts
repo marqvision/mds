@@ -33,7 +33,7 @@ export const useDropdown = <T>({
   useEffect(() => {
     setTimeout(() => {
       if (!Array.isArray(value) && !!value) {
-        document.querySelector(`#mds-drop-item-${`${value}`.replaceAll(' ', '\\ ')}`)?.scrollIntoView({
+        document.getElementById(`mds-drop-item-${CSS.escape(`${value}`)}`)?.scrollIntoView({
           block: 'center',
         });
       }

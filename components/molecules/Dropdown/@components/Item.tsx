@@ -25,8 +25,10 @@ type Props<T> = {
   onClose: () => void;
 };
 
+const MIN_ITEM_HEIGHT = 48;
+
 const StyledWrap = styled.label<{ colorDepth: 'default' | 'secondary' | 'tertiary'; isDisabled?: boolean }>`
-  min-height: 48px;
+  min-height: ${MIN_ITEM_HEIGHT}px;
   padding: 12px;
   display: flex;
   justify-content: space-between;
@@ -97,9 +99,36 @@ const StyledDivider = styled(MDSTypography)`
   padding: 6px 12px;
 `;
 
+const StyledBlank = styled.div`
+  min-height: ${MIN_ITEM_HEIGHT}px;
+`;
+
 const COLOR_DEPTH = ['default', 'secondary', 'tertiary'] as const;
 
-export const ItemInnerComponent = <T,>(props: Props<T>) => {
+const BlankComponent = <T,>(props: Props<T>) => {
+  const { item, depth = 0, parentIndex = '' } = props;
+
+  const foldedIndex = useAtomValue(foldedItemIndexAtom);
+  const isFolded = foldedIndex.includes(parentIndex) || item.isDisabled;
+
+  return (
+    <div>
+      <StyledBlank></StyledBlank>
+      {!isFolded &&
+        props.item.children?.map((child, index) => (
+          <BlankComponent
+            key={`dropItem_${depth}_${child.value ?? `${child.label}_${parentIndex}_${index}`}`}
+            {...props}
+            parentIndex={`${parentIndex}_${index}`}
+            item={child}
+            depth={depth + 1}
+          />
+        ))}
+    </div>
+  );
+};
+
+const ItemInnerComponent = <T,>(props: Props<T>) => {
   const {
     item,
     parentIndex = '',
@@ -346,8 +375,7 @@ export const ItemInnerComponent = <T,>(props: Props<T>) => {
 export const Item = <T,>(props: Props<T>) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
-  const [height, setHeight] = useState(48);
-  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState<number>(MIN_ITEM_HEIGHT);
 
   const foldedItemIndex = useAtomValue(foldedItemIndexAtom);
 
@@ -377,33 +405,28 @@ export const Item = <T,>(props: Props<T>) => {
       const entry = entries.at(-1);
       if (!entry) return;
       setHeight(entry.contentRect.height);
-      if (entry.contentRect.width > width) {
-        setWidth(entry.contentRect.width);
-      }
     });
-
     if (ref.current) {
       observer.observe(ref.current);
     }
     return () => {
       observer.disconnect();
     };
-  }, [height, width]);
+  }, []);
 
   const isShow = !props.parentIndex || !foldedItemIndex.includes(props.parentIndex.split('_').slice(0, -1).join('_'));
 
   return (
     <div
       ref={ref}
-      id={props.item.value ? `mds-drop-item-${props.item.value}` : undefined}
+      id={props.item.value ? `mds-drop-item-${CSS.escape(props.item.value)}` : undefined}
       style={{
         ...props.item.style,
-        minHeight: isIntersecting ? 'unset' : height,
-        minWidth: width,
+        minHeight: height,
         display: isShow ? 'block' : 'none',
       }}
     >
-      {isIntersecting && <ItemInnerComponent<T> {...props} />}
+      {isIntersecting ? <ItemInnerComponent<T> {...props} /> : <BlankComponent<T> {...props} />}
     </div>
   );
 };

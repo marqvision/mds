@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { GroupProps } from '../@types';
+import { checkIsMatched } from '../@utils';
 import { GroupMainItem } from './GroupMainItem';
 import { NavItem } from './NavItem';
 
@@ -29,8 +30,8 @@ const SubNavWrapper = styled.div`
 export const Group = (props: GroupProps) => {
   const { items, ...restProps } = props;
 
-  const selected = props.path === props.value;
-  const defaultSubOpen = selected || items?.some(({ path }) => path === props.value) || false;
+  const selected = checkIsMatched(props.path, props.value);
+  const defaultSubOpen = selected || items?.some(({ path }) => checkIsMatched(path, props.value)) || false;
 
   const [isSubOpen, setIsSubOpen] = useState<boolean>(defaultSubOpen);
 
@@ -75,7 +76,7 @@ export const Group = (props: GroupProps) => {
         <CollapseInner>
           <SubNavWrapper>
             {items.map(({ key, ...item }) => {
-              const selected = item.path === props.value;
+              const selected = checkIsMatched(item.path, props.value);
               return <NavItem key={key} type="sub" selected={selected} {...subItemProps} {...item} />;
             })}
           </SubNavWrapper>

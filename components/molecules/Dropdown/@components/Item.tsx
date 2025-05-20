@@ -377,7 +377,7 @@ export const Item = <T,>(props: Props<T>) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [height, setHeight] = useState<number>(MIN_ITEM_HEIGHT);
 
-  const foldedItemIndex = useAtomValue(foldedItemIndexAtom);
+  const [foldedItemIndex] = useAtom(foldedItemIndexAtom);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -413,6 +413,10 @@ export const Item = <T,>(props: Props<T>) => {
       observer.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    setHeight(MIN_ITEM_HEIGHT);
+  }, [foldedItemIndex]);
 
   const isShow = !props.parentIndex || !foldedItemIndex.includes(props.parentIndex.split('_').slice(0, -1).join('_'));
 

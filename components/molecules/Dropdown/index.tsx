@@ -137,9 +137,14 @@ const Dropdown = <T, SortT>(
   const stickyBottom = modules?.find(
     (v) => typeof v === 'object' && v.type === 'sticky-bottom'
   ) as StickyBottomModule<T>;
-  const stickyTopElement = modules?.find((v) => typeof v === 'object' && v.type === 'sticky-top') as
+  const stickyTopModule = modules?.find((v) => typeof v === 'object' && v.type === 'sticky-top') as
     | StickyTopModule
     | undefined;
+  const stickyTopElement = stickyTopModule?.element
+    ? typeof stickyTopModule.element === 'function'
+      ? stickyTopModule.element(onClose)
+      : stickyTopModule?.element
+    : undefined;
   const hasCustomSearch = modules?.some((v) => typeof v === 'object' && v.type === 'search');
 
   const {
@@ -165,11 +170,12 @@ const Dropdown = <T, SortT>(
   });
 
   const [isScrollTop, setIsScrollTop] = useState(false);
+  const [minWidth, setMinWidth] = useState<number>();
   const setFoldedItemIndex = useSetAtom(foldedItemIndexAtom);
 
   const infiniteRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number>();
-  const scrollOffsetRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const stickyTrigger = useRef<HTMLDivElement>(null);
 
   const hasSearch = modules?.some((v) => v === 'search' || (typeof v === 'object' && v.type === 'search'));
@@ -183,7 +189,9 @@ const Dropdown = <T, SortT>(
   const hideSelectAll = is1DepthSingle || (!!infinite?.hideSelectAll && selectedValues.length === 0);
 
   const isMultiple = Array.isArray(value);
-  const isShowStickyHeader = hasSearch || ((hasSort || isMultiple) && !hideSelectAllAndCount);
+  const isShowStaticActionBar = hasSearch || ((hasSort || isMultiple) && !hideSelectAllAndCount);
+  const isShowStickyHeader = isShowStaticActionBar || stickyTopElement;
+
   const isSelectedAll =
     isMultiple &&
     selectedValues.length > 0 &&
@@ -301,7 +309,7 @@ const Dropdown = <T, SortT>(
         setIsScrollTop(!entries.some((v) => v.isIntersecting));
       },
       {
-        root: scrollOffsetRef.current?.parentElement,
+        root: wrapperRef.current,
       }
     );
 
@@ -319,6 +327,28 @@ const Dropdown = <T, SortT>(
     };
     // intentional missing dependencies
   }, []);
+
+  useEffect(() => {
+    const observer = new ResizeObserver(([entries]) => {
+      const newWidth = entries.contentRect.width || 0;
+
+      if (!props.width && newWidth > (minWidth || 0)) {
+        setMinWidth(newWidth);
+      }
+    });
+
+    const offset = wrapperRef.current;
+
+    if (offset) {
+      observer.observe(offset);
+    }
+
+    return () => {
+      if (offset) {
+        observer.unobserve(offset);
+      }
+    };
+  }, [minWidth, props.width]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -366,36 +396,38 @@ const Dropdown = <T, SortT>(
   }, [hasSearchValue, hasCustomSearch, onSearching]);
 
   return (
-    <StyledDropdownWrap>
+    <StyledDropdownWrap ref={wrapperRef} style={{ minWidth }}>
       {isShowStickyHeader && (
         <StyledSticky isScrollTop={isScrollTop}>
-          <StyledStickyContent>
-            {hasSearch && (
-              <Search
-                placeholder={customSearch?.placeholder}
-                prefix={customSearch?.prefix}
-                onChange={handleChangeSearch}
-              />
-            )}
-            {(isMultiple || hasSort) && !hideSelectAllAndCount && (
-              <StyledAction>
-                <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
-                  {!hideSelectAll && isMultiple && (
-                    <MDSCheckbox
-                      isDisabled={selectableValues.length === 0 || isSearchTooShort}
-                      value={isSelectedAll}
-                      onChange={handleSelectAll}
-                    />
-                  )}
-                  <MDSTypography variant="body" size="m" weight="medium">
-                    {countLabel}
-                  </MDSTypography>
-                </StyledSelectAll>
-                {hasSort && sortEle}
-              </StyledAction>
-            )}
-          </StyledStickyContent>
-          {stickyTopElement?.element}
+          {isShowStaticActionBar && (
+            <StyledStickyContent>
+              {hasSearch && (
+                <Search
+                  placeholder={customSearch?.placeholder}
+                  prefix={customSearch?.prefix}
+                  onChange={handleChangeSearch}
+                />
+              )}
+              {(isMultiple || hasSort) && !hideSelectAllAndCount && (
+                <StyledAction>
+                  <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
+                    {!hideSelectAll && isMultiple && (
+                      <MDSCheckbox
+                        isDisabled={selectableValues.length === 0 || isSearchTooShort}
+                        value={isSelectedAll}
+                        onChange={handleSelectAll}
+                      />
+                    )}
+                    <MDSTypography variant="body" size="m" weight="medium">
+                      {countLabel}
+                    </MDSTypography>
+                  </StyledSelectAll>
+                  {hasSort && sortEle}
+                </StyledAction>
+              )}
+            </StyledStickyContent>
+          )}
+          {stickyTopElement}
         </StyledSticky>
       )}
       {isEmpty && (
@@ -420,7 +452,7 @@ const Dropdown = <T, SortT>(
           Search more than {customSearch?.minLength || DEFAULT_MIN_SEARCH_LETTERS} letters
         </MDSTypography>
       )}
-      <StyledScrollSection ref={scrollOffsetRef} className="mds-dropdown-scroll">
+      <StyledScrollSection className="mds-dropdown-scroll">
         <StyledStickyTrigger ref={stickyTrigger} />
         {!isSearchTooShort &&
           list.map((v, index) => (
@@ -519,6 +551,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
           <Provider>
             <Dropdown<T, SortT>
               {...restProps}
+              width={width}
               selectedValues={selectedValues}
               indeterminate={indeterminate}
               selectableValues={selectableValue}

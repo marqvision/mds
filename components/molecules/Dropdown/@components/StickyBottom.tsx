@@ -50,7 +50,9 @@ export const StickyBottom = <T,>({
     const stickyBottom = item;
 
     const stickyBottomElement = (stickyBottom as StickyBottomElementType).element
-      ? (stickyBottom as StickyBottomElementType)
+      ? ((typeof stickyBottom.element === 'function'
+          ? { element: stickyBottom.element(onClose) }
+          : stickyBottom) as StickyBottomElementType)
       : undefined;
     const stickyBottomItem = !stickyBottomElement ? (stickyBottom as StickyBottomItemType<T>) : undefined;
 

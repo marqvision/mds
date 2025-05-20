@@ -11,7 +11,7 @@ const Wrapper = styled.div<{ isCompact: boolean }>`
       align-items: center;
       gap: 16px;
       min-height: ${isCompact ? '48px' : '56px'};
-      padding: ${isCompact ? '12px 16px 4px' : '12px 16px'};
+      padding: ${isCompact ? '12px 16px 3px' : '12px 16px 11px'};
       ${isCompact ? '' : `border-bottom: 1px solid ${theme.color.border.neutral.weak.normal};`}
     `;
   }}

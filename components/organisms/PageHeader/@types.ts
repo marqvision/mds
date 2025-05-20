@@ -32,7 +32,7 @@ export type PageHeaderProps = {
   /*
    * 페이지 제목
    */
-  pageTitle: string;
+  pageTitle: React.ReactNode;
   /*
    * 페이지 제목 우측에 출력할 요소
    * 여러 개의 요소 전달 시 gap 을 자동으로 부여합니다.

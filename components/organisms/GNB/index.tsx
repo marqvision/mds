@@ -14,6 +14,9 @@ const Wrapper = styled.header`
       align-items: center;
       gap: 16px;
       border-bottom: 1px solid ${theme.comp.divider.color.strong};
+      & a {
+        display: flex;
+      }
     `;
   }}
 `;

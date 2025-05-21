@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
-import { Provider, useSetAtom } from 'jotai';
+import { Provider, useAtom } from 'jotai';
 import styled from '@emotion/styled';
 import { MDSPopover } from '../Popover';
 import { MDSTypography } from '../../atoms/Typography';
@@ -171,7 +171,7 @@ const Dropdown = <T, SortT>(
 
   const [isScrollTop, setIsScrollTop] = useState(false);
   const [minWidth, setMinWidth] = useState<number>();
-  const setFoldedItemIndex = useSetAtom(foldedItemIndexAtom);
+  const [foldedItemIndex, setFoldedItemIndex] = useAtom(foldedItemIndexAtom);
 
   const infiniteRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number>();
@@ -303,6 +303,10 @@ const Dropdown = <T, SortT>(
     onClose: onClose,
   };
 
+  const isAllFolded = list.every(
+    (item, index) => !item.children || item.children.length === 0 || foldedItemIndex.includes(`${index}`)
+  );
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -359,7 +363,8 @@ const Dropdown = <T, SortT>(
           infinite.hasNextPage &&
           !debounceRef.current &&
           !isLoading &&
-          !isSearchTooShort
+          !isSearchTooShort &&
+          !isAllFolded
         ) {
           infinite.onScrollBottom();
         }
@@ -372,7 +377,7 @@ const Dropdown = <T, SortT>(
     return () => {
       observer.disconnect();
     };
-  }, [infinite, isLoading, isSearchTooShort]);
+  }, [infinite, isLoading, isSearchTooShort, isAllFolded]);
 
   useEffect(() => {
     onMount();

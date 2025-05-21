@@ -173,7 +173,7 @@ const ItemInnerComponent = <T,>(props: Props<T>) => {
     if (item.isDisabled) {
       return;
     }
-    if (!isMultiple && item.value !== undefined) {
+    if (!isMultiple && item.value !== undefined && !item.children) {
       onChange(
         [
           {

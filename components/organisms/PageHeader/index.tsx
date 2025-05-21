@@ -10,8 +10,8 @@ const Wrapper = styled.div<{ isCompact: boolean }>`
       display: flex;
       align-items: center;
       gap: 16px;
-      min-height: ${isCompact ? '48px' : '56px'};
-      padding: ${isCompact ? '12px 16px 3px' : '12px 16px 11px'};
+      min-height: ${isCompact ? '44px' : '50px'};
+      padding: ${isCompact ? '9px 16px 3px' : '9px 16px 8px'};
       ${isCompact ? '' : `border-bottom: 1px solid ${theme.color.border.neutral.weak.normal};`}
     `;
   }}

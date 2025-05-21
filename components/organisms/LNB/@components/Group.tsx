@@ -70,6 +70,8 @@ export const Group = (props: GroupProps) => {
     LinkComponent: props.LinkComponent,
     onFold: props.onFold,
     shouldCollapse: props.shouldCollapse,
+    onItemClick: props.onItemClick,
+    parentLabel: props.label,
   };
 
   return (

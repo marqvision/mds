@@ -44,7 +44,7 @@ const Label = styled(MDSTypography)<{ isVisible: boolean }>`
 `;
 
 export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
-  const { LinkComponent, path, label, icon, isSubOpen, type, shouldCollapse, onFold, onClick } = props;
+  const { LinkComponent, path, label, icon, isSubOpen, type, shouldCollapse, onFold, onClick, onItemClick, parentLabel } = props;
 
   const Icon = icon && cloneElement(icon, { size: 20, color: 'currentColor' });
 
@@ -52,7 +52,23 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
   const FoldIcon = isSubOpen ? MDSIcon.ArrowUp : MDSIcon.ArrowDown;
   const isLabelVisible = props.isOpen || type === 'popover';
 
-  const handleClick = isFoldVisible ? onClick : shouldCollapse ? onFold : undefined;
+  const handleClick = () => {
+    if (isFoldVisible) {
+      onClick?.();
+    } else if (shouldCollapse) {
+      onFold();
+    }
+
+    const currentItem = {
+      icon,
+      label,
+      path,
+      parentLabel,
+      key: props.key,
+      items: props.items,
+    };
+    onItemClick?.(currentItem);
+  };
 
   return (
     <Wrapper as={path ? LinkComponent : undefined} to={path} {...props} onClick={handleClick}>

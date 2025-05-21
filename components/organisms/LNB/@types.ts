@@ -8,6 +8,7 @@ export type Item<Type extends ItemType> = {
   key: string;
   label: string;
   shouldCollapse?: boolean;
+  parentLabel?: string;
 
   items?: never;
 } & (Type extends 'group' ? { icon: React.ReactElement } : { icon?: never });
@@ -20,11 +21,12 @@ export type Group = {
   shouldCollapse?: boolean;
 
   path?: never;
+  parentLabel?: never;
 };
 
 export type LNBItem = Group | Item<'group'>;
 
-type CommonProps = Required<Omit<LNBProps, 'list'>>;
+type CommonProps = Required<Omit<LNBProps, 'list' | 'onItemClick'>> & Pick<LNBProps, 'onItemClick'>;
 
 export type GroupProps = CommonProps & LNBItem;
 
@@ -71,4 +73,8 @@ export type LNBProps = {
    * LinkComponent 를 주입하지 않으면 기본적으로 a 태그로 렌더링됩니다. (storybook 에서 사용)
    */
   LinkComponent?: React.ComponentType<LinkComponentProps>;
+  /*
+   * 메뉴 아이템 클릭 시 실행되는 함수
+   */
+  onItemClick?: (item: Partial<LNBItem>) => void;
 };

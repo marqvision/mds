@@ -15,7 +15,7 @@ const Content = styled.div`
 `;
 
 export const SubPopoverContent = (props: SubNavPopoverProps) => {
-  const { label, items, isOpen, value, LinkComponent, onFold } = props;
+  const { label, items, isOpen, value, LinkComponent, onFold, onItemClick } = props;
 
   if (!items)
     return (
@@ -42,6 +42,8 @@ export const SubPopoverContent = (props: SubNavPopoverProps) => {
               LinkComponent={LinkComponent}
               selected={selected}
               onFold={onFold}
+              onItemClick={onItemClick}
+              parentLabel={label}
               key={item.key}
             />
           );

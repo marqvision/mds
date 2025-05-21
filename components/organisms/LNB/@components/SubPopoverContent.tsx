@@ -6,6 +6,11 @@ import { NavItem } from './NavItem';
 
 const Title = styled(MDSTypography)`
   padding: 8.5px 16px 4px 16px;
+  ${({ theme }) => {
+    return `
+      color: ${theme.comp.lnb.color.content.light};
+    `;
+  }}
 `;
 
 const Content = styled.div`
@@ -26,7 +31,7 @@ export const SubPopoverContent = (props: SubNavPopoverProps) => {
 
   return (
     <div>
-      <Title size="xs" weight="medium">
+      <Title size="xs" weight="medium" color="inherit">
         {label}
       </Title>
       <Content>

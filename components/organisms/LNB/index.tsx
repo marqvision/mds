@@ -30,7 +30,7 @@ export const MDSLNB = (props: LNBProps) => {
 
   return (
     <Wrapper {...props}>
-      {list.flatMap((group, index) => [
+      {list.filter((group) => group.length).flatMap((group, index) => [
         index > 0 && <Divider key={`divider-${index}`} isOpen={props.isOpen} />,
         ...group.map(({ key, ...item }) => <Group key={key} LinkComponent={LinkComponent} {...restProps} {...item} />),
       ])}

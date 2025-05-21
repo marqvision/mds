@@ -1,11 +1,13 @@
 import React from 'react';
+import { LinkComponentProps, LinkPath } from '../../../types';
 
 export type ItemType = 'group' | 'sub' | 'popover';
 
 export type Item<Type extends ItemType> = {
-  path?: string;
+  path?: LinkPath;
   key: string;
   label: string;
+  shouldCollapse?: boolean;
 
   items?: never;
 } & (Type extends 'group' ? { icon: React.ReactElement } : { icon?: never });
@@ -15,6 +17,7 @@ export type Group = {
   label: string;
   icon: React.ReactElement;
   items: Item<'sub'>[];
+  shouldCollapse?: boolean;
 
   path?: never;
 };
@@ -36,6 +39,7 @@ export type ItemProps<Type extends ItemType> = {
 export type SubNavPopoverProps = {
   label: string;
   items?: Item<'sub'>[];
+  shouldCollapse?: boolean;
 } & CommonProps;
 
 export type LNBProps = {
@@ -45,6 +49,11 @@ export type LNBProps = {
    * `false` 일 경우 LNB 가 접히며 label 이 숨겨집니다.
    */
   isOpen: boolean;
+  /*
+   * LNB 접힘 함수
+   * `shouldCollapse` 값을 가진 LNB Item 클릭 시 실행합니다.
+   */
+  onFold: () => void;
   /*
    * 현재 pathname
    * LNBItem 의 path 와 비교하여 현재 선택된 메뉴를 표시합니다.
@@ -61,5 +70,5 @@ export type LNBProps = {
    * react-router-dom 의 Link 를 주입하여 사용해야 합니다.
    * LinkComponent 를 주입하지 않으면 기본적으로 a 태그로 렌더링됩니다. (storybook 에서 사용)
    */
-  LinkComponent?: React.ComponentType<{ to: string; children: React.ReactNode }>;
+  LinkComponent?: React.ComponentType<LinkComponentProps>;
 };

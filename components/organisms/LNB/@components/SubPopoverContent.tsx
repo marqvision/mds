@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../../atoms/Typography';
 import { SubNavPopoverProps } from '../@types';
+import { checkIsMatched } from '../@utils';
 import { NavItem } from './NavItem';
 
 const Title = styled(MDSTypography)`
@@ -14,7 +15,7 @@ const Content = styled.div`
 `;
 
 export const SubPopoverContent = (props: SubNavPopoverProps) => {
-  const { label, items, isOpen, value, LinkComponent } = props;
+  const { label, items, isOpen, value, LinkComponent, onFold } = props;
 
   if (!items)
     return (
@@ -30,7 +31,7 @@ export const SubPopoverContent = (props: SubNavPopoverProps) => {
       </Title>
       <Content>
         {items.map((item) => {
-          const selected = item.path === value;
+          const selected =  checkIsMatched(item.path, value);
 
           return (
             <NavItem
@@ -40,6 +41,7 @@ export const SubPopoverContent = (props: SubNavPopoverProps) => {
               value={value}
               LinkComponent={LinkComponent}
               selected={selected}
+              onFold={onFold}
               key={item.key}
             />
           );

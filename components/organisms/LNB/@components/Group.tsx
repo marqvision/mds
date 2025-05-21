@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { GroupProps } from '../@types';
+import { checkIsMatched } from '../@utils';
 import { GroupMainItem } from './GroupMainItem';
 import { NavItem } from './NavItem';
 
@@ -29,10 +30,14 @@ const SubNavWrapper = styled.div`
 export const Group = (props: GroupProps) => {
   const { items, ...restProps } = props;
 
-  const selected = props.path === props.value;
-  const defaultSubOpen = selected || items?.some(({ path }) => path === props.value) || false;
+  const selected = useMemo(() => checkIsMatched(props.path, props.value), [props.path, props.value]);
+  const defaultSubOpen = useMemo(() => selected || items?.some(({ path }) => checkIsMatched(path, props.value)) || false, [items, props.value, selected]);
 
-  const [isSubOpen, setIsSubOpen] = useState<boolean>(defaultSubOpen);
+  const [isSubOpen, setIsSubOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsSubOpen(defaultSubOpen);
+  }, [defaultSubOpen]);
 
   // 하위 메뉴가 없을 경우
   if (!items || !items.length) {
@@ -63,6 +68,8 @@ export const Group = (props: GroupProps) => {
     isOpen: props.isOpen,
     value: props.value,
     LinkComponent: props.LinkComponent,
+    onFold: props.onFold,
+    shouldCollapse: props.shouldCollapse,
   };
 
   return (
@@ -75,8 +82,8 @@ export const Group = (props: GroupProps) => {
         <CollapseInner>
           <SubNavWrapper>
             {items.map(({ key, ...item }) => {
-              const selected = item.path === props.value;
-              return <NavItem key={key} type="sub" selected={selected} {...subItemProps} {...item} />;
+              const selected = checkIsMatched(item.path, props.value);
+              return <NavItem key={key} type="sub" selected={selected} {...item} {...subItemProps} />;
             })}
           </SubNavWrapper>
         </CollapseInner>

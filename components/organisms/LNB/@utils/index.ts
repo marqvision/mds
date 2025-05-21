@@ -1,5 +1,5 @@
-import { MDSTheme } from '../../../types';
-import { ItemType, LNBItem } from './@types';
+import { MDSTheme } from '../../../../types';
+import { ItemType, LNBItem } from '../@types';
 
 export const checkIsNested = (list: LNBItem[] | LNBItem[][]): list is LNBItem[][] => {
   // divider 를 구분자로 출력하기 위해 list 가 2차원 배열일 필요가 있음
@@ -22,3 +22,5 @@ export const resolveNavItemColor = ({ theme, selected }: { theme: MDSTheme; sele
 
   return { color, hoverColor, backgroundColor, hoverBackgroundColor };
 };
+
+export { checkIsMatched } from './matchPath';

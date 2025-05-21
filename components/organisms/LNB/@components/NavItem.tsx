@@ -1,11 +1,12 @@
 import { cloneElement } from 'react';
 import styled from '@emotion/styled';
+import { LinkComponentProps } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
 import { ItemProps, ItemType } from '../@types';
 import { resolveNavItemColor, resolveNavItemPadding } from '../@utils';
 
-const Wrapper = styled.div<{ to?: string; isOpen: boolean; type: ItemType; selected?: boolean }>`
+const Wrapper = styled.div<{ isOpen: boolean; type: ItemType; selected?: boolean } & Partial<LinkComponentProps>>`
   ${({ theme, isOpen, type, selected }) => {
     const padding = resolveNavItemPadding({ isOpen, type });
     const { color, hoverColor, backgroundColor, hoverBackgroundColor } = resolveNavItemColor({ theme, selected });
@@ -24,7 +25,7 @@ const Wrapper = styled.div<{ to?: string; isOpen: boolean; type: ItemType; selec
       color: ${color};
       background-color: ${backgroundColor};
       
-      &:hover {
+      &:hover, &:active, &:visited {
         color: ${hoverColor};
         background-color: ${hoverBackgroundColor};
       }
@@ -43,7 +44,7 @@ const Label = styled(MDSTypography)<{ isVisible: boolean }>`
 `;
 
 export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
-  const { LinkComponent, path, label, icon, isSubOpen, type } = props;
+  const { LinkComponent, path, label, icon, isSubOpen, type, shouldCollapse, onFold, onClick } = props;
 
   const Icon = icon && cloneElement(icon, { size: 20, color: 'currentColor' });
 
@@ -51,8 +52,10 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
   const FoldIcon = isSubOpen ? MDSIcon.ArrowUp : MDSIcon.ArrowDown;
   const isLabelVisible = props.isOpen || type === 'popover';
 
+  const handleClick = isFoldVisible ? onClick : shouldCollapse ? onFold : undefined;
+
   return (
-    <Wrapper as={path ? LinkComponent : undefined} to={path} {...props}>
+    <Wrapper as={path ? LinkComponent : undefined} to={path} {...props} onClick={handleClick}>
       {Icon}
       <Label color="inherit" weight="medium" whiteSpace="nowrap" isVisible={isLabelVisible}>
         {label}

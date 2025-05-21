@@ -426,7 +426,7 @@ export const Item = <T,>(props: Props<T>) => {
       id={props.item.value ? `mds-drop-item-${CSS.escape(props.item.value)}` : undefined}
       style={{
         ...props.item.style,
-        minHeight: height,
+        minHeight: isIntersecting ? 'unset' : height,
         display: isShow ? 'block' : 'none',
       }}
     >

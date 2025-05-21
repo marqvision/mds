@@ -12,6 +12,7 @@ const StyledWrapper = styled.div<{ size: Size; fullWidth: boolean }>`
   flex-direction: column;
   gap: 6px;
   max-width: 100%;
+  min-width: 0;
   width: ${({ size, fullWidth }) => (fullWidth ? undefined : theme.size[size].maxWidth)};
   transition: width ${theme.transitionTiming} ease;
   &:has(input:focus),

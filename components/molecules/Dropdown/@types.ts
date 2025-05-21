@@ -72,7 +72,7 @@ export type StickyBottomModule<T> = {
 } & (StickyBottomElementType | StickyBottomItemType<T>);
 
 export type StickyBottomElementType = {
-  element: ReactElement;
+  element: ReactElement | ((close: () => void) => ReactElement);
 };
 
 export type StickyBottomItemType<T> = {
@@ -87,7 +87,7 @@ export type StickyBottomItemType<T> = {
 
 export type StickyTopModule = {
   type: 'sticky-top';
-  element: ReactElement;
+  element: ReactElement | ((close: () => void) => ReactElement);
 };
 
 export type CustomModule<T> = {

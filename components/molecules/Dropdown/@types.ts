@@ -1,5 +1,6 @@
 import { CSSProperties, ReactElement } from 'react';
 import { PopoverPosition } from '../Popover/@type';
+import { MDSButtonProps } from '../Button';
 
 type SubLabel = {
   label: number | string;
@@ -37,7 +38,8 @@ export type ModuleType =
   | 'sticky-bottom'
   | 'sticky-top'
   | 'custom-sub-label'
-  | 'on-select';
+  | 'on-select'
+  | 'filter-button';
 
 /**
  * @property [minLength] default `2`
@@ -90,9 +92,15 @@ export type StickyTopModule = {
   element: ReactElement | ((close: () => void) => ReactElement);
 };
 
+export type FilterButtonModule = {
+  type: 'filter-button';
+  size?: MDSButtonProps['size'];
+  color?: MDSButtonProps['color'];
+};
+
 export type CustomModule<T> = {
   type: ModuleType;
-} & (SearchModule | SortModule<T> | InfiniteModule | StickyBottomModule<T> | StickyTopModule);
+} & (SearchModule | SortModule<T> | InfiniteModule | StickyBottomModule<T> | StickyTopModule | FilterButtonModule);
 
 export type Module<T> = 'search' | 'sort' | '1-depth-single' | 'hide-select-all' | CustomModule<T>;
 

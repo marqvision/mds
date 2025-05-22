@@ -10,6 +10,7 @@ import { Item } from './@components/Item';
 import { useDropdown, useInitDropdown } from './@hooks';
 import {
   DropdownItem,
+  FilterButtonModule,
   InferType,
   InfiniteModule,
   Props,
@@ -500,6 +501,10 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
 
   const ref = useRef<EventTarget & Element>(null);
 
+  const filterButtonProps = restProps.modules?.find((v) => typeof v === 'object' && v.type === 'filter-button') as
+    | FilterButtonModule
+    | undefined;
+
   const anchor = renderAnchor ? (
     renderAnchor(value, selectedItems, list)
   ) : (
@@ -508,6 +513,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
       selectedLabel={labels}
       isLoading={!isOpen && isLoading}
       isDisabled={isDisabled || selectableValue.length === 0}
+      {...filterButtonProps}
     />
   );
 

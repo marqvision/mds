@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { MDSButton } from '../../Button';
 import { MDSTag } from '../../Tag';
 import { MDSIcon } from '../../../atoms/Icon';
+import { FilterButtonModule } from '../@types';
 
 type Props = {
   label: string;
@@ -10,22 +11,22 @@ type Props = {
   isLoading?: boolean;
   isDisabled?: boolean;
   onClick?: (e: MouseEvent) => void;
-};
+} & Omit<FilterButtonModule, 'type'>;
 
 const StyledWrap = styled(MDSButton)`
   align-self: flex-start;
 `;
 
 export const FilterButton = (props: Props) => {
-  const { label, selectedLabel, isLoading, isDisabled, onClick } = props;
+  const { label, selectedLabel, isLoading, isDisabled, onClick, size = 'medium', color = 'bluegray' } = props;
 
   const isSelected = selectedLabel.length > 0;
 
   return (
     <StyledWrap
       variant={isSelected ? 'fill' : 'tint'}
-      size="medium"
-      color="bluegray"
+      size={size}
+      color={color}
       isDisabled={isDisabled}
       tags={
         isSelected && !isDisabled ? (

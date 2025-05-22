@@ -37,7 +37,7 @@ export const Group = (props: GroupProps) => {
 
   useEffect(() => {
     setIsSubOpen(defaultSubOpen);
-  }, [defaultSubOpen]);
+  }, [defaultSubOpen, props.value]);
 
   // 하위 메뉴가 없을 경우
   if (!items || !items.length) {

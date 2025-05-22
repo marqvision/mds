@@ -35,7 +35,7 @@ const PageHeader = (props: PageHeaderProps) => {
   return (
     <Wrapper isCompact={isCompact}>
       {isBackButtonVisible && <BackButton {...backButtonProps} />}
-      <MDSTypography variant="title" weight="semibold" size="xl">
+      <MDSTypography variant="title" weight="semibold" size="l">
         {pageTitle}
       </MDSTypography>
       {children}

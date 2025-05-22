@@ -25,7 +25,12 @@ const Wrapper = styled.div<{ isOpen: boolean; type: ItemType; selected?: boolean
       color: ${color};
       background-color: ${backgroundColor};
       
-      &:hover, &:active, &:visited {
+      &:active, &:visited {
+        color: ${color};
+        background-color: ${backgroundColor};
+      }
+      
+      &:hover {
         color: ${hoverColor};
         background-color: ${hoverBackgroundColor};
       }

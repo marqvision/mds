@@ -39,6 +39,8 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
         position: absolute;
         content: '';
         display: block;
+        top: 50%;
+        left: 50%;
         width: calc(100% + (${sizeStyle.horizontalPadding} * 2));
         height: calc(100% + (${sizeStyle.verticalPadding} * 2));
         padding: ${sizeStyle.verticalPadding} ${sizeStyle.horizontalPadding};
@@ -46,6 +48,7 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
         background: ${props.isClickable ? theme.color.bg.fill.target.default : ''};
         opacity: 0;
         transition: 0.3s;
+        transform: translate(-50%, -50%);
       }
       
       &:hover {

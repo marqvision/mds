@@ -16,6 +16,9 @@ const Wrapper = styled.div<StyledModalHeaderProps>`
     isBorderBottom && `border-bottom: 1px solid ${theme.color.border.neutral.default.normal}`};
   ${({ isScrollTop }) =>
     !isScrollTop && `box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.04), 0px 1px 8px rgba(0, 0, 0, 0.12)`};
+  position: relative;
+  transition: box-shadow 225ms ease;
+  z-index: 1;
 `;
 
 const Title = styled.div`

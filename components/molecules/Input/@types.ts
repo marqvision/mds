@@ -45,6 +45,7 @@ export type TextFieldCustom = {
   add?: {
     label?: string;
     onSubmit: (value: string) => void;
+    isDisabled?: boolean | ((value: string) => boolean);
   };
   onEnter?: (value: string) => void;
   debounce?: number;

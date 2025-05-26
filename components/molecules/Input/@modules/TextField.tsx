@@ -230,6 +230,8 @@ export const TextField = (props: Props) => {
     toFitMultiline && parseFloat(`${toFitMultiline.maxHeight}`) < (mirrorRef.current?.clientHeight || 0) + py;
 
   const mirrorMaxWidth = custom?.expandToFit?.maxWidth || inputRef.current?.clientWidth;
+  const isAddButtonDisabled =
+    add?.isDisabled !== undefined && typeof add.isDisabled === 'function' ? add.isDisabled(value) : add?.isDisabled;
 
   return (
     <StyledLabel size={size} isError={isError}>
@@ -295,7 +297,7 @@ export const TextField = (props: Props) => {
         <AddButton
           label={add.label}
           size={size}
-          isDisabled={isDisabled || isReadOnly || !value}
+          isDisabled={isDisabled || isReadOnly || !value || isAddButtonDisabled}
           isError={isError}
           onClick={() => add.onSubmit(value)}
         />

@@ -33,6 +33,7 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
   );
 };
 
+const MIN_LENGTH = 5;
 export const TextField: Story = {
   args: {
     placeholder: 'Enter value',
@@ -49,6 +50,7 @@ export const TextField: Story = {
     custom: {
       add: {
         label: 'Add',
+        isDisabled: (v) => v.length < MIN_LENGTH,
         onSubmit: () => undefined,
       },
     },
@@ -66,6 +68,7 @@ export const TextField: Story = {
 
     return (
       <Wrapper>
+        <div>add 버튼 활성화 최소 글자 수 {MIN_LENGTH}</div>
         <MDSInput {...(props as TextFieldProps)} value={value} onChange={setValue} style={{ borderTopLeftRadius: 0 }} />
       </Wrapper>
     );

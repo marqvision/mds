@@ -10,6 +10,10 @@ const Wrapper = styled.div<ModalActionProps>`
 `;
 
 export const Action = (props: ModalActionProps) => {
-  const { children, justifyContent } = props;
-  return <Wrapper justifyContent={justifyContent}>{children}</Wrapper>;
+  const { children, justifyContent, ...restProps } = props;
+  return (
+    <Wrapper justifyContent={justifyContent} {...restProps}>
+      {children}
+    </Wrapper>
+  );
 };

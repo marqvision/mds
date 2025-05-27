@@ -38,13 +38,13 @@ const Close = styled(MDSIcon.CloseDelete)`
 `;
 
 export const Header = (props: ModalHeaderProps) => {
-  const { icon, children, isBorderBottom = true, rightSideElement, onClose } = props;
+  const { icon, children, isBorderBottom = true, rightSideElement, onClose, ...restProps } = props;
   const { isScrollTop } = useContext(Context);
 
   const titleTag = typeof children === 'string' ? undefined : 'div';
 
   return (
-    <Wrapper isBorderBottom={isBorderBottom} isScrollTop={isScrollTop}>
+    <Wrapper isBorderBottom={isBorderBottom} isScrollTop={isScrollTop} {...restProps}>
       <Title>
         {icon}
         <MDSTypography variant="title" size="xl" weight="semibold" as={titleTag}>

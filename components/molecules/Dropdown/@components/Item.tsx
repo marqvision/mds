@@ -112,7 +112,7 @@ const BlankComponent = <T,>(props: Props<T>) => {
   const isFolded = foldedIndex.includes(parentIndex) || item.isDisabled;
 
   return (
-    <div>
+    <div id={item.value && depth ? `mds-drop-item-${CSS.escape(item.value)}` : undefined}>
       <StyledBlank></StyledBlank>
       {!isFolded &&
         props.item.children?.map((child, index) => (
@@ -155,10 +155,11 @@ const ItemInnerComponent = <T,>(props: Props<T>) => {
   const hasChildren = !!item.children;
 
   const selectedChildLength = allChildValue.filter((v) => selectedValue.some((v2) => v2.value === v)).length;
-  const isSelected =
-    props.isInfiniteAll || (selectedChildLength === allChildSelected.length && allChildSelected.length !== 0);
   const is1DepthSingle = props.is1DepthSingle && depth === 0 && !hasChildren;
   const isMultiple = is1DepthSingle ? false : _isMultiple;
+  const isSelected = isMultiple
+    ? props.isInfiniteAll || (selectedChildLength === allChildSelected.length && allChildSelected.length !== 0)
+    : selectedValue.some((v) => v.value === item.value);
 
   const isIndeterminate = (!isSelected && isMultiple && selectedChildLength > 0) || indeterminate.includes(item.value);
 

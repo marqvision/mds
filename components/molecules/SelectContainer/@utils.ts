@@ -93,7 +93,7 @@ export const getLayoutStyle = (type?: 'fit' | number, isCenter?: boolean) => {
 };
 
 export const getSizeStyle = (itemSizing?: 'fit' | number, orientation?: 'horizontal' | 'vertical') => {
-  if (typeof itemSizing !== 'number') return;
+  if (typeof itemSizing !== 'number') return '';
 
   return orientation === 'horizontal'
     ? `height: fit-content; width: ${itemSizing}px;`

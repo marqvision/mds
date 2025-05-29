@@ -304,8 +304,8 @@ const Dropdown = <T, SortT>(
     onClose: onClose,
   };
 
-  const isAllFolded = list.every(
-    (item, index) => !item.children || item.children.length === 0 || foldedItemIndex.includes(`${index}`)
+  const isSomeExpanded = list.every(
+    (item, index) => !item.children || (item.children.length > 0 && !foldedItemIndex.includes(`${index}`))
   );
 
   useEffect(() => {
@@ -365,7 +365,7 @@ const Dropdown = <T, SortT>(
           !debounceRef.current &&
           !isLoading &&
           !isSearchTooShort &&
-          !isAllFolded
+          isSomeExpanded
         ) {
           infinite.onScrollBottom();
         }
@@ -378,7 +378,7 @@ const Dropdown = <T, SortT>(
     return () => {
       observer.disconnect();
     };
-  }, [infinite, isLoading, isSearchTooShort, isAllFolded]);
+  }, [infinite, isLoading, isSearchTooShort, isSomeExpanded]);
 
   useEffect(() => {
     onMount();

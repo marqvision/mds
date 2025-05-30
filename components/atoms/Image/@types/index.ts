@@ -132,7 +132,7 @@ export type ImageProps = {
   custom?: CustomProps | CustomProps[];
   children?: React.ReactNode;
 } & (UseIcon | NoIcon) &
-  React.ImgHTMLAttributes<HTMLImageElement>;
+  Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'draggable'>;
 
 export type StyledImageProps = {
   isLoaded: boolean;

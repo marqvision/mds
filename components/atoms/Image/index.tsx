@@ -6,6 +6,7 @@ import { MDSTypography } from '../Typography';
 import { BORDER_RADIUS, THEME } from './@constants';
 import { useHover } from './@hooks/useHover';
 import { useLazyLoad } from './@hooks/useLazyLoad';
+import { useThumbnail } from './@hooks/useThumbnail';
 import {
   ImageProps,
   RemoveBorderRadius,
@@ -139,6 +140,7 @@ export const MDSImage = (props: ImageProps) => {
 
   const { isOnScreen, isLoaded, isError: isLoadError, onError, onLoad, size } = useLazyLoad(imageRef);
   const { Element: HoverElement, hoverWrapperProps, wrapperProps } = useHover(custom);
+  const { thumbnailSrc, thumbnailState, handleThumbnailError, handleThumbnailLoad } = useThumbnail({ src, custom });
 
   const isError = isLoadError || (!isLoading && !src);
   const wrapperWidth = width || (!aspectRatio ? `${size?.width}px` : undefined);
@@ -154,6 +156,18 @@ export const MDSImage = (props: ImageProps) => {
     _onError?.(event);
     onError();
   };
+
+  const imageWrapperProps: StyledImageWrapperProps = {
+    isDraggable,
+    borderColor,
+  };
+
+  const commonImageProps = {
+    alt,
+    objectFit,
+    objectPosition,
+    loading: 'lazy',
+  } satisfies Partial<StyledImageProps & React.ImgHTMLAttributes<HTMLImageElement>>;
 
   return (
     <Wrapper
@@ -183,20 +197,31 @@ export const MDSImage = (props: ImageProps) => {
         )}
       </ErrorWrapper>
 
-      {!isLoading && !isError && (
-        <ImageWrapper isDraggable={isDraggable} borderColor={borderColor}>
+      {!isLoading && thumbnailSrc && thumbnailState !== 'error' ? (
+        <ImageWrapper {...imageWrapperProps}>
           <Image
             ref={imageRef}
-            src={isOnScreen ? src : undefined}
-            alt={alt}
-            isLoaded={isLoaded}
-            onLoad={handleLoad}
-            onError={handleError}
-            objectFit={objectFit}
-            objectPosition={objectPosition}
-            loading="lazy"
+            src={isOnScreen ? thumbnailSrc : undefined}
+            isLoaded={thumbnailState === 'loaded'}
+            onLoad={handleThumbnailLoad}
+            onError={handleThumbnailError}
+            {...commonImageProps}
           />
         </ImageWrapper>
+      ) : (
+        !isLoading &&
+        !isError && (
+          <ImageWrapper {...imageWrapperProps}>
+            <Image
+              ref={imageRef}
+              src={isOnScreen ? src : undefined}
+              isLoaded={isLoaded}
+              onLoad={handleLoad}
+              onError={handleError}
+              {...commonImageProps}
+            />
+          </ImageWrapper>
+        )
       )}
       {children}
       {HoverElement && <HoverWrapper {...hoverWrapperProps}>{HoverElement}</HoverWrapper>}

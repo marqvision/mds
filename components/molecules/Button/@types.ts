@@ -82,7 +82,7 @@ type CommonProps = {
    * Button 끼리의 구분을 위해 플랫하게 변경된 우측에는 항상 divider 를 출력합니다.
    **/
   flat?: Flat;
-};
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick' | 'style' | 'className' | 'color' | 'disabled'>;
 
 export type CompositeButtonProps = {
   /**

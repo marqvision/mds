@@ -93,8 +93,8 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
     React.ComponentProps<'button'> & { as: React.ElementType } = {
     size,
     color,
-    as: onClick ? 'button' : 'div',
-    isClickable: !!onClick,
+    as: onClick || props.type ? 'button' : 'div',
+    isClickable: !!(onClick || props.type),
     onClick: handleClick,
     disabled: isDisabled || isCompleted,
     isDisabled,

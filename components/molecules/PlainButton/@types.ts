@@ -45,7 +45,7 @@ type CommonProps = {
    * hover 및 cursor: pointer 효과가 적용됩니다.
    **/
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-};
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick' | 'style' | 'className' | 'color' | 'disabled'>;
 
 type CompositeButtonProps = {
   /**

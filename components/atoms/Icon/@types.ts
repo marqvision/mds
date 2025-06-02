@@ -74,6 +74,7 @@ export type IconVariant = {
   Sellers: VariantSet['OutlineFill'];
   Performance: VariantSet['OutlineFill'];
   Home: VariantSet['OutlineFill'];
+  Link: VariantSet['OutlineFill'];
 
   // Editor
   Circle: VariantSet['OutlineFill'] | 'outline_small' | 'fill_small';

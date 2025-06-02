@@ -58,13 +58,13 @@ const clearBodyStyle = () => {
 export const MDSDimmed = (props: Props) => {
   const { isOpen: _isOpen, padding = '20px', intensity = 'default', style, onClose, children } = props;
 
+  const eleRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
+  const timeoutRef = useRef<number>();
 
   //@morgan: mui portal 의 createPortal 타이밍에 맞추기 위해 동일하게 mountNode state 추가함
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
-  const ref = useRef<number>();
 
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -82,13 +82,13 @@ export const MDSDimmed = (props: Props) => {
         setMountNode(document.body);
         setIsOpen(true);
       }
-      if (ref.current) {
-        clearTimeout(ref.current);
-        ref.current = undefined;
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
       }
     } else if (isOpen) {
       setIsOpen(false);
-      ref.current = window.setTimeout(() => {
+      timeoutRef.current = window.setTimeout(() => {
         setMountNode(null);
       }, transition);
     }
@@ -115,7 +115,10 @@ export const MDSDimmed = (props: Props) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      const dimmed = document.querySelectorAll('.mds-dimmed');
+      const lastDimmed = dimmed.length ? dimmed[dimmed.length - 1] : null;
+
+      if (e.key === 'Escape' && eleRef.current === lastDimmed) {
         closeRef.current?.();
       }
     };
@@ -136,6 +139,7 @@ export const MDSDimmed = (props: Props) => {
   return mountNode
     ? createPortal(
         <Wrapper
+          ref={eleRef}
           className={clsx({ isOpen }, 'mds-dimmed')}
           onMouseMove={stopPropagation}
           onMouseDown={stopPropagation}

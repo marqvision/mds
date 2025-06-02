@@ -5,10 +5,14 @@ type ClickableBackButtonProps = {
   /*
    * 뒤로가기 버튼 클릭 이벤트
    */
-  onBack?: () => void;
+  onClick: () => void;
+  /*
+   * hover 시 표시될 이전 페이지 타이틀
+   */
+  label: string;
 
   LinkComponent?: never;
-  backTo?: never;
+  to?: never;
 };
 
 type LinkBackButtonProps = {
@@ -21,12 +25,16 @@ type LinkBackButtonProps = {
   /*
    * 뒤로가기 클릭 시 이동할 경로
    */
-  backTo: LinkPath;
+  to: LinkPath;
+  /*
+   * hover 시 표시될 이전 페이지 타이틀
+   */
+  label: string;
 
-  onBack?: never;
+  onClick?: never;
 };
 
-export type ButtonProps = ClickableBackButtonProps | LinkBackButtonProps;
+export type BackButtonProps = ClickableBackButtonProps | LinkBackButtonProps;
 
 export type PageHeaderProps = {
   /*
@@ -45,4 +53,8 @@ export type PageHeaderProps = {
    * `true` 일 경우 하단 여백이 상단 여백보다 더 작게 설정되며, border-bottom 이 사라집니다.
    */
   isCompact?: boolean;
-} & ButtonProps;
+  /*
+   * 뒤로가기 버튼 클릭 이벤트
+   */
+  backButton?: BackButtonProps;
+};

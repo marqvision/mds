@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { MDSTypography } from '../..';
 import { BackButton } from './@components/BackButton';
-import { ButtonProps, PageHeaderProps } from './@types';
+import { PageHeaderProps } from './@types';
 
 const Wrapper = styled.div<{ isCompact: boolean }>`
   ${({ theme, isCompact }) => {
@@ -18,23 +18,11 @@ const Wrapper = styled.div<{ isCompact: boolean }>`
 `;
 
 const PageHeader = (props: PageHeaderProps) => {
-  const { onBack, LinkComponent, backTo, pageTitle, isCompact = false, children } = props;
-
-  const isBackButtonVisible = !!(onBack || backTo);
-
-  const backButtonProps: ButtonProps =
-    backTo && LinkComponent
-      ? {
-          LinkComponent,
-          backTo,
-        }
-      : {
-          onBack,
-        };
+  const { backButton, pageTitle, isCompact = false, children } = props;
 
   return (
     <Wrapper isCompact={isCompact}>
-      {isBackButtonVisible && <BackButton {...backButtonProps} />}
+      {backButton && <BackButton {...backButton} />}
       <MDSTypography variant="title" weight="semibold" size="l">
         {pageTitle}
       </MDSTypography>

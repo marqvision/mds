@@ -30,8 +30,11 @@ export const Preview: Story = {
 
 export const BackButton: Story = {
   args: {
-    onBack: () => {
-      alert('onBack');
+    backButton: {
+      onClick: () => {
+        alert('onClick');
+      },
+      label: '뒤로가기',
     },
   },
   render: (args) => (
@@ -44,9 +47,12 @@ export const BackButton: Story = {
 
 export const BackLink: Story = {
   args: {
-    backTo: '/back',
-    LinkComponent: (props) => {
-      return <a {...props} />;
+    backButton: {
+      label: '뒤로가기',
+      to: '/back',
+      LinkComponent: (props) => {
+        return <a {...props} />;
+      },
     },
   },
   render: (args) => (

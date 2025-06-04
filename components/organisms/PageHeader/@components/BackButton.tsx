@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { LinkComponentProps } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
-import { ButtonProps } from '../@types';
+import { BackButtonProps } from '../@types';
 
 const Wrapper = styled.button<Partial<LinkComponentProps>>`
   ${({ theme }) => {
@@ -16,52 +16,58 @@ const Wrapper = styled.button<Partial<LinkComponentProps>>`
       cursor: pointer;
       transition: 0.2s;
       overflow: hidden;
+      interpolate-size: allow-keywords;
+      text-decoration: none;
       
       &>div {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        display: flex;
+        display: grid;
+        grid-template-columns: auto 1fr;
         align-items: center;
         gap: 2px;
         transition: 0.2s;
       }
       
       &>.default {
+        padding: 1px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
         opacity: 1;
         transform: translate(-50%, -50%);
       }
       &>.hovered {
+        padding: 3px 8px;
         opacity: 0;
-        transform: translate(0%, -50%);
+        transform: translate(13px, 0%);
+        white-space: nowrap;
       }
 
       &:hover {
-        width: 65px;
+        width: max-content;
         &>.default {
           opacity: 0;
           transform: translate(0%, -50%);
         }
         &>.hovered {
           opacity: 1;
-          transform: translate(-50%, -50%);
+          transform: translate(0%, 0%);
         }
       }
     `;
   }}
 `;
 
-export const BackButton = (props: ButtonProps) => {
-  const { onBack, backTo, LinkComponent } = props;
+export const BackButton = (props: BackButtonProps) => {
+  const { onClick, to, LinkComponent, label } = props;
 
   return (
-    <Wrapper as={LinkComponent} to={backTo} onClick={onBack}>
+    <Wrapper as={LinkComponent} to={to} onClick={onClick}>
       <div className="default">
         <MDSIcon.ArrowLeft variant="outline" />
       </div>
       <div className="hovered">
         <MDSIcon.ArrowLeft variant="outline" size={16} />
-        <MDSTypography size="s" weight="medium">Back</MDSTypography>
+        <MDSTypography size="s" weight="medium">{label}</MDSTypography>
       </div>
     </Wrapper>
   );

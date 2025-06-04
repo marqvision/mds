@@ -190,6 +190,7 @@ export const MDSIcon = {
   SocialMedia: createIcon(Symbols.SocialMedia),
   Translate: createIcon(Symbols.Translate),
   Performance: createIcon(Symbols.Performance),
+  Link: createIcon(Symbols.Link),
 
   // editor
   Bold: createIcon(Editor.Bold),

@@ -386,3 +386,45 @@ export const Hover: Story = {
     </Wrapper>
   ),
 };
+
+export const Thumbnail: Story = {
+  render: (props) => (
+    <Wrapper>
+      <MDSTypography>썸네일 이미지를 출력합니다. 썸네일 이미지가 없으면(엑박) 원본 이미지를 출력합니다.</MDSTypography>
+      <Grid>
+        <MDSImage
+          aspectRatio="1"
+          custom={{ type: 'thumbnail', suffix: '_200w' }}
+          src="https://marq-commerce-prd.s3.us-east-2.amazonaws.com/dhgate.com/2024_10/1022085235_4_1729489262.jpg"
+        />
+        <MDSImage
+          aspectRatio="1"
+          custom={{ type: 'thumbnail', suffix: '아무말이나 적으면 원본 이미지가 보이겠죠' }}
+          src="https://marq-commerce-prd.s3.us-east-2.amazonaws.com/dhgate.com/2024_10/1022085235_4_1729489262.jpg"
+        />
+        <MDSImage
+          aspectRatio="1"
+          custom={{ type: 'thumbnail', suffix: '아무말이나 적으면 원본 이미지가 보이겠죠' }}
+          src={`그러나 원본 이미지가 없음`}
+        />
+      </Grid>
+      <Grid>
+        <MDSImage
+          aspectRatio="1"
+          custom={{ type: 'thumbnail', suffix: '/100' }}
+          src="https://picsum.photos/id/10/300"
+        />
+        <MDSImage
+          aspectRatio="1"
+          custom={{ type: 'thumbnail', suffix: '아무말이나 적으면 원본 이미지가 보이겠죠' }}
+          src="https://picsum.photos/id/10/300"
+        />
+        <MDSImage
+          aspectRatio="1"
+          custom={{ type: 'thumbnail', suffix: '아무말이나 적으면 원본 이미지가 보이겠죠' }}
+          src={`그러나 원본 이미지가 없음`}
+        />
+      </Grid>
+    </Wrapper>
+  ),
+};

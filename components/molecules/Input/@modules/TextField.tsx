@@ -250,7 +250,7 @@ export const TextField = (props: Props) => {
         {Prefix}
         <StyledMirror ref={mirrorRef} isMultiline={isMultiline} style={{ maxWidth: mirrorMaxWidth }}>
           <MDSTypography size={typographySize} wordBreak="break-word">
-            {mirrorText.split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
+            {String(mirrorText).split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
           </MDSTypography>
         </StyledMirror>
         {isInit && (

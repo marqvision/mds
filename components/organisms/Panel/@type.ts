@@ -30,7 +30,6 @@ export type MDSPanelBodyProps = {
 export type MDSPanelActionProps = {
   justifyContent?: 'space-between' | 'flex-end';
   /* body 스크롤에 따라 감춰지는 shadow를 항상 보이도록 */
-  persistentShadow?: boolean;
   children: ReactNode | ReactNode[];
   style?: CSSProperties;
 };

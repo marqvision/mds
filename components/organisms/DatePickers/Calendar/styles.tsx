@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-export const CalendarContainer = styled.div`
+export const CalendarLayout = styled.div`
   width: 304px;
   background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
 `;
@@ -30,10 +30,10 @@ export const CalendarGrid = styled.div`
 export const DayCell = styled.div<{
   isDisplayedMonth: boolean;
   isToday: boolean;
-  isStartDate: boolean;
-  isEndDate: boolean;
-  isInRange: boolean;
   isSelectable: boolean;
+  isStartDate?: boolean;
+  isEndDate?: boolean;
+  isInRange?: boolean;
 }>`
   aspect-ratio: 1;
   user-select: none;

@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSDropdown } from '../../../molecules/Dropdown';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
+import { AVAILABLE_YEARS, MONTH_LABELS } from './@constants';
 
 const MonthSelectorContainer = styled.div`
   width: 100%;
@@ -16,22 +17,6 @@ const YearMonth = styled.div`
   align-items: center;
   gap: 8px;
 `;
-
-const MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-const YEARS = Array.from({ length: 10 }, (_, i) => dayjs().year() - 5 + i); // todo-@jamie: 스펙에 따라 전/후년도 기간 업데이트하기
 
 type Props = {
   value: dayjs.Dayjs;
@@ -66,7 +51,7 @@ export const YearMonthSelector = (props: Props) => {
       />
       <YearMonth>
         <MDSDropdown
-          list={YEARS.map((year) => ({
+          list={AVAILABLE_YEARS.map((year) => ({
             label: year.toString(),
             value: year,
           }))}
@@ -80,7 +65,7 @@ export const YearMonthSelector = (props: Props) => {
         />
 
         <MDSDropdown
-          list={MONTHS.map((month, index) => ({
+          list={MONTH_LABELS.map((month, index) => ({
             label: month,
             value: index,
           }))}
@@ -88,7 +73,7 @@ export const YearMonthSelector = (props: Props) => {
           onChange={(value) => handleMonthChange(value)}
           renderAnchor={(value) => (
             <MDSPlainButton color="bluegray" size="large" endIcon={<MDSIcon.ArrowDown variant="outline" size={20} />}>
-              {typeof value === 'number' ? MONTHS[value] : ''}
+              {typeof value === 'number' ? MONTH_LABELS[value] : ''}
             </MDSPlainButton>
           )}
         />

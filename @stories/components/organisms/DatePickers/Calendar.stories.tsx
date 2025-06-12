@@ -26,12 +26,18 @@ const meta: Meta<typeof MDSCalendar> = {
 export default meta;
 type Story = StoryObj<typeof MDSCalendar>;
 
-
-export const Preview: Story = {
+export const Default: Story = {
   args: {
     value: new Date(),
-    minDate: new Date('2025-06-03'),
-    maxDate: new Date('2025-06-20'),
+    onChange: () => {},
+  },
+};
+
+export const MultiMonthRange: Story = {
+  args: {
+    value: [new Date('2025-05-12'), new Date('2025-06-20')],
+    minDate: new Date('2025-05-03'),
+    maxDate: new Date('2025-06-30'),
     onChange: () => {},
   },
 };

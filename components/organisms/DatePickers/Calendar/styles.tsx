@@ -24,44 +24,38 @@ export const Weekday = styled.div<{ isWeekend: boolean }>`
 export const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
   padding: 0 12px 12px;
 `;
 
 export const DayCell = styled.div<{
   isDisplayedMonth: boolean;
   isToday: boolean;
-  isSelected: boolean;
-  isFuture: boolean;
+  isStartDate: boolean;
+  isEndDate: boolean;
+  isInRange: boolean;
   isSelectable: boolean;
 }>`
   aspect-ratio: 1;
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   cursor: ${({ isSelectable }) => (isSelectable ? 'pointer' : 'default')};
-  border-radius: 50%;
-  color: ${({ isSelected, isDisplayedMonth, isSelectable, theme }) => {
-    if (isSelected) return theme.color.content.on_default_color;
-    if (!isDisplayedMonth) return 'transparent';
-    if (!isSelectable) return theme.color.content.neutral.default.disabled;
-    return theme.color.content.neutral.default.normal;
-  }};
-  background-color: ${({ isSelected, theme }) => {
-    if (isSelected) return theme.color.bg.fill.primary.default.normal;
 
-    return 'transparent';
+  background-color: ${({ isInRange, isStartDate, isEndDate, isDisplayedMonth, theme }) =>
+    isStartDate || isEndDate || isInRange ? theme.color.bg.fill.primary.tint.normal : 'transparent'};
+
+  border-radius: ${({ isStartDate, isEndDate }) => {
+    if (isStartDate && isEndDate) return '50%';
+    else if (isStartDate) return '50% 0 0 50%';
+    else if (isEndDate) return '0 50% 50% 0';
+    return '0;';
   }};
 
-  &:hover {
-    background-color: ${({ isSelected, theme }) => {
-      return isSelected ? theme.color.bg.fill.primary.default.hover : theme.color.bg.fill.primary.tint.hover;
-    }};
-  }
   ${({ isToday, theme }) =>
     isToday &&
     css`
-      position: relative;
       &:before {
         content: '';
         display: block;
@@ -75,5 +69,45 @@ export const DayCell = styled.div<{
         transform: translateX(-50%);
       }
     `}
+
+  ${({ isStartDate, isEndDate, theme }) => css`
+    &:after {
+      content: '';
+      position: absolute;
+      z-index: 0;
+      display: block;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background-color: ${isStartDate || isEndDate ? theme.color.bg.fill.primary.default.normal : 'transparent'};
+    }
+  `}
+
+  &:hover {
+    &:after {
+      content: '';
+      position: absolute;
+      z-index: 0;
+      display: block;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background-color: ${({ isStartDate, isEndDate, isDisplayedMonth, isSelectable, theme }) => {
+        if (isStartDate || isEndDate) return theme.color.bg.fill.primary.default.hover;
+        else if (!isDisplayedMonth || !isSelectable) return 'transparent';
+        return theme.color.bg.fill.primary.tint.hover;
+      }};
+    }
+  }
+
+  & > span {
+    user-select: none;
+    z-index: 1;
+    color: ${({ isStartDate, isEndDate, isDisplayedMonth, isSelectable, theme }) => {
+      if (isStartDate || isEndDate) return theme.color.content.on_default_color;
+      if (!isDisplayedMonth) return 'transparent';
+      if (!isSelectable) return theme.color.content.neutral.default.disabled;
+      return theme.color.content.neutral.default.normal;
+    }};
   }
 `;

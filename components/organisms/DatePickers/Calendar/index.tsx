@@ -1,12 +1,13 @@
+import { useState } from 'react';
 import dayjs from 'dayjs';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSDivider } from '../../../atoms/Divider';
 import { CalendarLayout, CalendarGrid, DayCell, WeekdayHeader } from './styles';
 import { YearMonthSelector } from './YearMonthSelector';
 import { useCalendar } from './@hooks/useCalendar';
-import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from './@types';
+import { CalendarDay, CommonOptions, DateRangeSelectionMode, DateRangeValue, SingleDateValue } from './@types';
 import { WEEKDAYS } from './@constants';
-import { useDragSelect } from './@hooks/useDragSelect';
+import { useDragSelect } from './@hooks/useDateRangeSelect';
 
 type Props = CommonOptions & (SingleDateValue | DateRangeValue);
 
@@ -15,7 +16,12 @@ const CalendarContainer = (props: Props) => {
 
   return (
     <CalendarLayout>
-      <YearMonthSelector value={calendarState.displayedDate} onChange={calendarState.setDisplayedDate} />
+      <YearMonthSelector
+        value={calendarState.displayedDate}
+        minDate={props.minDate}
+        maxDate={props.maxDate}
+        onChange={calendarState.setDisplayedDate}
+      />
       <WeekdayHeader>
         <MDSDivider intensity="weak" length="100%" orientation="horizontal" />
         <div>
@@ -60,6 +66,8 @@ const DateRangeCalendarContent = (props: {
 }) => {
   const { days, initialDate, minDate, maxDate, onChange } = props;
 
+  const [dateSelectionMode, setDateSelectionMode] = useState<DateRangeSelectionMode>('click');
+
   const dragProps = useDragSelect({
     startDate: initialDate.startDate,
     lastDate: initialDate.endDate,
@@ -68,12 +76,16 @@ const DateRangeCalendarContent = (props: {
     onDateRangeUpdate: (startDateStr, lastDateStr) => {
       onChange(dayjs(startDateStr).toDate(), dayjs(lastDateStr).toDate());
     },
+    onDateRangeSelectionModeChange: () => {
+      setDateSelectionMode('drag');
+    },
   });
+
   return (
     <CalendarGrid onMouseMove={dragProps.handleDragMove}>
       {days.map((day, index) => {
         const dayDate = dayjs(day.date);
-        const dateStr = dayDate.format('YYYY-MM-DD');
+        const dateStr = day.isDisplayedMonth ? dayDate.format('YYYY-MM-DD') : '';
         const isToday = dayDate.isSame(dayjs(), 'day');
         const isStartDate = dayDate.isSame(dayjs(initialDate.startDate), 'day');
         const isEndDate = dayDate.isSame(dayjs(initialDate.endDate), 'day');
@@ -86,14 +98,16 @@ const DateRangeCalendarContent = (props: {
             data-date={dateStr}
             isDisplayedMonth={day.isDisplayedMonth}
             isToday={isToday}
-            isSelectable={day.isSelectable}
+            isSelectable={day.isSelectable && day.isDisplayedMonth}
             isStartDate={isStartDate}
             isEndDate={isEndDate}
             isInRange={isInRange}
+            dateSelectionMode={dateSelectionMode}
+            onClick={() => day.isDisplayedMonth && onChange(dayDate.toDate(), dayDate.toDate())}
             onMouseDown={dragProps.handleDragStart}
             onMouseUp={dragProps.handleDragEnd}
           >
-            <MDSTypography as="span">{dayDate.date()}</MDSTypography>
+            {day.isDisplayedMonth && <MDSTypography as="span">{dayDate.date()}</MDSTypography>}
           </DayCell>
         );
       })}

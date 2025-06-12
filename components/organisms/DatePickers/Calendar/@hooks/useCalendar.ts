@@ -55,7 +55,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   const firstDayOfMonth = currentDate.startOf('month');
   const lastDayOfMonth = currentDate.endOf('month');
 
-  // 이전 달의 마지막 날짜들
+  // 이전 달의 마지막 날짜들 --- 미래에 이 날짜들로 뭔가 하고 싶을 수도 있어서 일단은 남겨둠
   const firstDayOfWeek = firstDayOfMonth.day();
   const prevMonthDays = Array.from({ length: firstDayOfWeek }, (_, i) => ({
     date: firstDayOfMonth.subtract(firstDayOfWeek - i, 'day').toDate(),
@@ -72,7 +72,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
     weekIndex: Math.floor((firstDayOfWeek + i) / 7),
   }));
 
-  // 다음 달의 시작 날짜들
+  // 다음 달의 시작 날짜들 --- 미래에 이 날짜들로 뭔가 하고 싶을 수도 있어서 일단은 남겨둠
   const totalDays = prevMonthDays.length + currentMonthDays.length;
   const remainingDays = 42 - totalDays;
 

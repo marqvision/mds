@@ -1,3 +1,4 @@
+
 // public facing interfaces
 export type SingleDateValue = {
   value: Date;
@@ -10,13 +11,13 @@ export type DateRangeValue = {
 export type CommonOptions = {
   minDate?: Date;
   maxDate?: Date;
-}
-
-
+};
 // models
+
 export type CalendarDay = {
   date: Date;
   isDisplayedMonth: boolean;
   isSelectable: boolean;
-  weekIndex: number; // 0-5 사이의 값으로 몇 번째 주인지 표시
+  weekIndex: number;
 };
+export type DateRangeSelectionMode = 'drag' | 'click'; // date input group으로 입력하는 것도 'click'과 동일한 모드로 처리한다.

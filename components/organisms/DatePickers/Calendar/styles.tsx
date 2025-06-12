@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { DateRangeSelectionMode } from './@types';
 
 export const CalendarLayout = styled.div`
   width: 304px;
@@ -34,6 +35,7 @@ export const DayCell = styled.div<{
   isStartDate?: boolean;
   isEndDate?: boolean;
   isInRange?: boolean;
+  dateSelectionMode?: DateRangeSelectionMode;
 }>`
   aspect-ratio: 1;
   user-select: none;
@@ -43,7 +45,7 @@ export const DayCell = styled.div<{
   position: relative;
   cursor: ${({ isSelectable }) => (isSelectable ? 'pointer' : 'default')};
 
-  background-color: ${({ isInRange, isStartDate, isEndDate, isDisplayedMonth, theme }) =>
+  background-color: ${({ isInRange, isStartDate, isEndDate, theme }) =>
     isStartDate || isEndDate || isInRange ? theme.color.bg.fill.primary.tint.normal : 'transparent'};
 
   border-radius: ${({ isStartDate, isEndDate }) => {
@@ -100,12 +102,14 @@ export const DayCell = styled.div<{
     }
   }
 
+
+  // 캘린더 내에서 날짜 typography의 상호작용 관련 스타일
   & > span {
     user-select: none;
     z-index: 1;
     color: ${({ isStartDate, isEndDate, isDisplayedMonth, isSelectable, theme }) => {
       if (isStartDate || isEndDate) return theme.color.content.on_default_color;
-      if (!isDisplayedMonth) return 'transparent';
+      
       if (!isSelectable) return theme.color.content.neutral.default.disabled;
       return theme.color.content.neutral.default.normal;
     }};

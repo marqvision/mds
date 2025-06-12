@@ -17,7 +17,7 @@ const CalendarContainer = (props: Props) => {
   return (
     <CalendarLayout>
       <YearMonthSelector
-        value={calendarState.displayedDate}
+        displayedDate={calendarState.displayedDate}
         minDate={props.minDate}
         maxDate={props.maxDate}
         onChange={calendarState.setDisplayedDate}

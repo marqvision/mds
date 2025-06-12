@@ -32,8 +32,11 @@ type Story = StoryObj<typeof MDSCalendar>;
 export const SingleDate: Story = {
   args: {
     value: new Date(),
-    minDate: dayjs().subtract(10, 'day').toDate(),
-    maxDate: dayjs().add(10, 'day').toDate(),
+    minDate: dayjs('2023-11-22').toDate(), //dayjs().subtract(25, 'day').toDate(),
+    maxDate: dayjs('2027-11-11').toDate(), //dayjs().add(25, 'day').toDate(),
+    onChange: (date: Date) => {
+      alert(`선택한 날짜: ${date.toLocaleDateString()}`);
+    },
   },
   render: function Render(args) {
     const [selectedDate, setSelectedDate] = useState<Date>(args.value as Date);
@@ -43,7 +46,7 @@ export const SingleDate: Story = {
     return (
       <div>
         <MDSTypography>선택한 날짜: {selectedDate?.toLocaleDateString()}</MDSTypography>
-        <MDSCalendar value={selectedDate} onChange={handleChange} minDate={args.minDate} maxDate={args.maxDate} />;
+        <MDSCalendar value={selectedDate} onChange={handleChange} minDate={args.minDate} maxDate={args.maxDate} />
       </div>
     );
   },

@@ -71,21 +71,12 @@ const StyledBody = styled.div`
   position: relative;
 `;
 
-const StyledObserver = styled.div`
-  position: absolute;
-  height: 1px;
-  width: 100%;
-  margin-top: -1px;
-  z-index: -1;
-`;
-
 const StyledActions = styled.div`
   padding: 16px;
   flex: 0;
   display: flex;
   gap: 8px;
   align-items: center;
-  transition: box-shadow ${transition};
   border-top: 1px solid ${({ theme }) => theme.comp.divider.color.default};
 `;
 
@@ -172,8 +163,8 @@ const Content = forwardRef<HTMLDivElement, MDSPanelBodyProps>((props: MDSPanelBo
   const { children, style } = props;
 
   return (
-    <StyledBody ref={ref}>
-      <div style={{ ...style }}>{children}</div>
+    <StyledBody ref={ref} style={{ ...style }}>
+      {children}
     </StyledBody>
   );
 });

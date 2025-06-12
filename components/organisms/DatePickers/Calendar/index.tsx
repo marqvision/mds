@@ -6,21 +6,16 @@ import { YearMonthSelector } from './YearMonthSelector';
 import { useCalendar } from './@hooks/useCalendar';
 import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from './@types';
 import { WEEKDAYS } from './@constants';
+import { useDragSelect } from './@hooks/useDragSelect';
 
 type Props = CommonOptions & (SingleDateValue | DateRangeValue);
 
 const CalendarContainer = (props: Props) => {
-  const { value, calendarDays, displayedDate, setDisplayedDate, onChange } = useCalendar(props);
-
-  const isDateRange = 'startDate' in props.value;
-
-  const handleDateRangeChange = (startDate: Date, endDate: Date) => {
-    // onChange([startDate, endDate]);
-  };
+  const calendarState = useCalendar(props);
 
   return (
     <CalendarLayout>
-      <YearMonthSelector value={displayedDate} onChange={setDisplayedDate} />
+      <YearMonthSelector value={calendarState.displayedDate} onChange={calendarState.setDisplayedDate} />
       <WeekdayHeader>
         <MDSDivider intensity="weak" length="100%" orientation="horizontal" />
         <div>
@@ -37,73 +32,74 @@ const CalendarContainer = (props: Props) => {
         </div>
         <MDSDivider intensity="weak" length="100%" orientation="horizontal" />
       </WeekdayHeader>
-      {'startDate' in props.value ? (
-        // <DateRangeCalendarContent
-        //   days={calendarDays}
-        //   initialDate={value}
-        //   minDate={props.minDate}
-        //   maxDate={props.maxDate}
-        //   onChange={handleDateRangeChange}
-        // />
-        <div>test</div>
+      {calendarState.type === 'range' ? (
+        <DateRangeCalendarContent
+          days={calendarState.calendarDays}
+          initialDate={calendarState.value}
+          minDate={props.minDate}
+          maxDate={props.maxDate}
+          onChange={calendarState.onChange}
+        />
       ) : (
-        <SingleDateCalendarContent days={calendarDays} value={value.startDate} onChange={onChange} />
+        <SingleDateCalendarContent
+          days={calendarState.calendarDays}
+          value={calendarState.value.startDate}
+          onChange={calendarState.onChange}
+        />
       )}
     </CalendarLayout>
   );
 };
 
-// const DateRangeCalendarContent = (props: {
-//   days: CalendarDay[];
-//   initialDate: { startDate: Date; endDate: Date };
-//   minDate?: Date;
-//   maxDate?: Date;
-//   onChange: (startDate: Date, endDate: Date) => void;
-// }) => {
-//   const { days, initialDate, minDate, maxDate, onChange } = props;
+const DateRangeCalendarContent = (props: {
+  days: CalendarDay[];
+  initialDate: { startDate: Date; endDate: Date };
+  minDate?: Date;
+  maxDate?: Date;
+  onChange: (startDate: Date, endDate: Date) => void;
+}) => {
+  const { days, initialDate, minDate, maxDate, onChange } = props;
 
-//   const calendarContainerRef = useRef<HTMLDivElement>(null);
-//   const dragProps = useDragSelect({
-//     calendarContainerRef,
-//     startDate: initialDate.startDate,
-//     lastDate: initialDate.endDate,
-//     minDate: props.minDate,
-//     maxDate: props.maxDate,
-//     onDateRangeUpdate: (startDateStr, lastDateStr) => {
-//       onChange(dayjs(startDateStr).toDate(), dayjs(lastDateStr).toDate());
-//     },
-//   });
-//   return (
-//     <CalendarGrid onMouseMove={dragProps.handleDragMove} ref={calendarContainerRef}>
-//       {days.map((day, index) => {
-//         const dayDate = dayjs(day.date);
-//         const dateStr = dayDate.format('YYYY-MM-DD');
-//         const isToday = dayDate.isSame(dayjs(), 'day');
-//         const isStartDate = dayDate.isSame(dayjs(startDate), 'day');
-//         const isEndDate = dayDate.isSame(dayjs(endDate), 'day');
-//         const isInRange = dayDate.isAfter(dayjs(startDate), 'day') && dayDate.isBefore(dayjs(endDate), 'day');
+  const dragProps = useDragSelect({
+    startDate: initialDate.startDate,
+    lastDate: initialDate.endDate,
+    minDate,
+    maxDate,
+    onDateRangeUpdate: (startDateStr, lastDateStr) => {
+      onChange(dayjs(startDateStr).toDate(), dayjs(lastDateStr).toDate());
+    },
+  });
+  return (
+    <CalendarGrid onMouseMove={dragProps.handleDragMove}>
+      {days.map((day, index) => {
+        const dayDate = dayjs(day.date);
+        const dateStr = dayDate.format('YYYY-MM-DD');
+        const isToday = dayDate.isSame(dayjs(), 'day');
+        const isStartDate = dayDate.isSame(dayjs(initialDate.startDate), 'day');
+        const isEndDate = dayDate.isSame(dayjs(initialDate.endDate), 'day');
+        const isInRange =
+          dayDate.isAfter(dayjs(initialDate.startDate), 'day') && dayDate.isBefore(dayjs(initialDate.endDate), 'day');
 
-//         return (
-//           <DayCell
-//             key={index}
-//             data-date={dateStr}
-//             isDisplayedMonth={day.isDisplayedMonth}
-//             isToday={isToday}
-//             isSelectable={day.isSelectable}
-//             isStartDate={isStartDate}
-//             isEndDate={isEndDate}
-//             isInRange={isInRange}
-//             onClick={() => day.isDisplayedMonth && onChange(day.date)}
-//             onMouseDown={dragProps.handleDragStart}
-//             onMouseUp={dragProps.handleDragEnd}
-//           >
-//             <MDSTypography as="span">{dayDate.date()}</MDSTypography>
-//           </DayCell>
-//         );
-//       })}
-//     </CalendarGrid>
-//   );
-// };
+        return (
+          <DayCell
+            key={index}
+            data-date={dateStr}
+            isDisplayedMonth={day.isDisplayedMonth}
+            isToday={isToday}
+            isSelectable={day.isSelectable}
+            isStartDate={isStartDate}
+            isEndDate={isEndDate}
+            isInRange={isInRange}
+            onMouseDown={dragProps.handleDragStart}
+            onMouseUp={dragProps.handleDragEnd}
+          >
+            <MDSTypography as="span">{dayDate.date()}</MDSTypography>
+          </DayCell>
+        );
+      })}
+    </CalendarGrid>
+  );
+};
 
 const SingleDateCalendarContent = (props: { days: CalendarDay[]; value: Date; onChange: (date: Date) => void }) => {
   const { days, value, onChange } = props;

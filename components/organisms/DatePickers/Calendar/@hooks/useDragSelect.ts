@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-import { getIsSelectable } from "../../@utils";
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { getIsSelectable } from '../../@utils';
 
 export const useDragSelect = (params: {
-  calendarContainerRef: React.RefObject<HTMLDivElement>;
   startDate: Date;
   lastDate: Date;
   minDate?: Date;
@@ -71,28 +70,23 @@ export const useDragSelect = (params: {
 
   //#region - Mouse action by area
   useEffect(() => {
-    const onMouseLeave = () => {
+    const onMouseUp = () => {
       setDragState((prev) => ({
         ...prev,
         isDragging: false,
       }));
     };
-    const containerDom = params.calendarContainerRef.current;
-    if (containerDom) {
-      if (dragState.isDragging) {
-        containerDom?.addEventListener('mouseup', onMouseLeave);
-        containerDom?.addEventListener('mouseleave', onMouseLeave);
-      } else {
-        containerDom?.removeEventListener('mouseup', onMouseLeave);
-        containerDom?.addEventListener('mouseleave', onMouseLeave);
-      }
 
-      return () => {
-        containerDom?.removeEventListener('mouseup', onMouseLeave);
-        containerDom?.addEventListener('mouseleave', onMouseLeave);
-      };
+    if (dragState.isDragging) {
+      document.body.addEventListener('mouseup', onMouseUp);
+    } else {
+      document.body.removeEventListener('mouseup', onMouseUp);
     }
-  }, [dragState.isDragging, params.calendarContainerRef, setDragState]);
+
+    return () => {
+      document.body.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [dragState.isDragging, setDragState]);
   //#endregion
 
   return {

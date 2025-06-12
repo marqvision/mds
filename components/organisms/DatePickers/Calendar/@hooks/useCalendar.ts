@@ -14,19 +14,33 @@ export const useCalendar = (params: Params) => {
 
   const calendarDays = getCalendarDays(displayedDate.toDate(), params.minDate, params.maxDate);
 
-  return {
+  const commonProps = {
     value: _value,
     calendarDays,
     displayedDate,
     setDisplayedDate,
+  };
+
+  if (isDateRange(params)) {
+    return {
+      ...commonProps,
+      type: 'range' as const,
+      onChange: (startDate: Date, endDate: Date) => {
+        if (!getIsSelectable(startDate, params.minDate, params.maxDate)) return;
+        if (!getIsSelectable(endDate, params.minDate, params.maxDate)) return;
+        setValue({ startDate, endDate });
+        params.onChange(startDate, endDate);
+      },
+    };
+  }
+
+  return {
+    ...commonProps,
+    type: 'single' as const,
     onChange: (date: Date) => {
       if (!getIsSelectable(date, params.minDate, params.maxDate)) return;
       setValue({ startDate: date, endDate: date });
-      if (isDateRange(params)) {
-        params.onChange(date, date);
-      } else {
-        params.onChange(date);
-      }
+      params.onChange(date);
     },
   };
 };

@@ -64,15 +64,15 @@ export const DateRange: Story = {
     const [selectedDate, setSelectedDate] = useState<{ startDate: Date; endDate: Date }>(
       args.value as { startDate: Date; endDate: Date }
     );
-    const handleChange = (newDate: Date) => {
-      setSelectedDate({ ...selectedDate, startDate: newDate });
+    const handleChange = (startDate: Date, endDate: Date) => {
+      setSelectedDate({ startDate, endDate });
     };
     return (
       <div>
         <MDSTypography>
           선택한 날짜 범위: {selectedDate.startDate.toLocaleDateString()} - {selectedDate.endDate.toLocaleDateString()}
         </MDSTypography>
-        <MDSCalendar value={selectedDate} onChange={handleChange} />;
+        <MDSCalendar value={selectedDate} onChange={handleChange} />
       </div>
     );
   },

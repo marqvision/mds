@@ -61,18 +61,30 @@ export const DayCell = styled.div<{
   }};
 
   //#region border styles
-  border-top: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, theme }) => {
-    if (isSelectionInProgress) {
-      if (isInRange) return `1px dashed ${theme.color.border.neutral.strong.normal}`;
-    }
-    return 'transparent';
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.color.border.neutral.strong.normal};
+  border-style: ${({ isInRange, isSelectionInProgress }) => {
+    return isSelectionInProgress && isInRange ? `solid none solid none` : 'none';
   }};
-  border-bottom: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, theme }) => {
+  ${({ isStartDate, isEndDate, isSelectionInProgress, theme }) => {
     if (isSelectionInProgress) {
-      if (isInRange) return `1px dashed ${theme.color.border.neutral.strong.normal}`;
+      if (isStartDate) {
+        return css`
+          border-top: 1px dashed;
+          border-bottom: 1px dashed;
+          border-image: linear-gradient(to right, transparent 50%, ${theme.color.border.neutral.strong.normal} 50%) 100% 1;
+        `;
+      } else if (isEndDate) {
+        return css`
+          border-top: 1px dashed;
+          border-bottom: 1px dashed;
+          border-image: linear-gradient(to right, ${theme.color.border.neutral.strong.normal} 50%, transparent 50%) 100% 1;
+        `;
+      } else {
+        return 'none';
+      }
     }
-    return 'transparent';
-  }};
+  }}
 
   //#endregion
 
@@ -160,7 +172,6 @@ export const DayCell = styled.div<{
   }
   //#endregion
 `;
-
 
 export const StartDayCell = styled.div``;
 export const EndDayCell = styled.div``;

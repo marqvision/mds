@@ -31,13 +31,34 @@ export const useDragSelect = (params: {
     if (!isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
 
     setDragState((prev) => {
-      return {
-        actionState: 'in-progress',
-        selectionMode: prev.selectionMode,
-        anchorDateStr: currentAnchorDateStr,
-        startDateStr: prev.selectionMode === 'click' ? prev.startDateStr : currentAnchorDateStr,
-        endDateStr: prev.selectionMode === 'click' ? prev.endDateStr : currentAnchorDateStr,
-      };
+      if (prev.selectionMode === 'click') {
+        return {
+          actionState: 'idle',
+          selectionMode: 'drag',
+          anchorDateStr: currentAnchorDateStr,
+          startDateStr: prev.startDateStr,
+          endDateStr: prev.endDateStr,
+        };
+      } else {
+        if (prev.actionState === 'in-progress') {
+          // 드래그 하다가 캘린더 밖으로 나갔다 온 케이스
+          return {
+            actionState: 'idle',
+            selectionMode: 'drag',
+            anchorDateStr: prev.anchorDateStr,
+            startDateStr: prev.startDateStr,
+            endDateStr: prev.endDateStr,
+          };
+        } else {
+          return {
+            actionState: 'in-progress',
+            selectionMode: prev.selectionMode,
+            anchorDateStr: currentAnchorDateStr,
+            startDateStr: currentAnchorDateStr,
+            endDateStr: currentAnchorDateStr,
+          };
+        }
+      }
     });
   };
   const dragMove = (event: React.MouseEvent) => {
@@ -65,7 +86,6 @@ export const useDragSelect = (params: {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
     if (!currentAnchorDateStr || !isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
-
 
     setDragState((prev) => {
       const { newStartDateStr, newEndDateStr } = resolveDateRange({

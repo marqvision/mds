@@ -138,7 +138,7 @@ const SingleDateCalendarContent = (props: { days: CalendarDay[]; value: Date; on
             isStartAndEndSame={true}
             onClick={() => day.isDisplayedMonth && onChange(day.date)}
           >
-            <MDSTypography as="span">{dayDate.date()}</MDSTypography>
+            {day.isDisplayedMonth && <MDSTypography as="span">{dayDate.date()}</MDSTypography>}
           </DayCell>
         );
       })}

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-export const getIsSelectable = (rawDate: Date | string, minDate?: Date, maxDate?: Date) => {
+export const isDateInMinMaxRange = (rawDate: Date | string, minDate?: Date, maxDate?: Date) => {
   const date = typeof rawDate === 'string' ? dayjs(rawDate).toDate() : rawDate;
 
   if (!minDate && !maxDate) return true;

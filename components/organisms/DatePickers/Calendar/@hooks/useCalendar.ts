@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
-import { getIsSelectable } from '../../@utils';
+import { isDateInMinMaxRange } from '../../@utils';
 import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from '../@types';
 
 type Params = CommonOptions & (SingleDateValue | DateRangeValue);
@@ -26,8 +26,8 @@ export const useCalendar = (params: Params) => {
       ...commonProps,
       type: 'range' as const,
       onChange: (startDate: Date, endDate: Date) => {
-        if (!getIsSelectable(startDate, params.minDate, params.maxDate)) return;
-        if (!getIsSelectable(endDate, params.minDate, params.maxDate)) return;
+        if (!isDateInMinMaxRange(startDate, params.minDate, params.maxDate)) return;
+        if (!isDateInMinMaxRange(endDate, params.minDate, params.maxDate)) return;
         setValue({ startDate, endDate });
         params.onChange(startDate, endDate);
       },
@@ -38,7 +38,7 @@ export const useCalendar = (params: Params) => {
     ...commonProps,
     type: 'single' as const,
     onChange: (date: Date) => {
-      if (!getIsSelectable(date, params.minDate, params.maxDate)) return;
+      if (!isDateInMinMaxRange(date, params.minDate, params.maxDate)) return;
       setValue({ startDate: date, endDate: date });
       params.onChange(date);
     },
@@ -60,7 +60,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   const prevMonthDays = Array.from({ length: firstDayOfWeek }, (_, i) => ({
     date: firstDayOfMonth.subtract(firstDayOfWeek - i, 'day').toDate(),
     isDisplayedMonth: false,
-    isSelectable: getIsSelectable(firstDayOfMonth.add(i, 'day').toDate(), minDate, maxDate),
+    isSelectable: isDateInMinMaxRange(firstDayOfMonth.add(i, 'day').toDate(), minDate, maxDate),
     weekIndex: 0,
   }));
 
@@ -68,7 +68,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   const currentMonthDays = Array.from({ length: lastDayOfMonth.date() }, (_, i) => ({
     date: firstDayOfMonth.add(i, 'day').toDate(),
     isDisplayedMonth: true,
-    isSelectable: getIsSelectable(firstDayOfMonth.add(i, 'day').toDate(), minDate, maxDate),
+    isSelectable: isDateInMinMaxRange(firstDayOfMonth.add(i, 'day').toDate(), minDate, maxDate),
     weekIndex: Math.floor((firstDayOfWeek + i) / 7),
   }));
 
@@ -97,7 +97,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
     return {
       date: nextMonthDate,
       isDisplayedMonth: false,
-      isSelectable: getIsSelectable(nextMonthDate, minDate, maxDate),
+      isSelectable: isDateInMinMaxRange(nextMonthDate, minDate, maxDate),
       weekIndex,
     };
   });

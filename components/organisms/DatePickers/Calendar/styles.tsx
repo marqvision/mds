@@ -25,7 +25,7 @@ export const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   row-gap: 2px;
-  padding: 0 12px 12px;
+  padding: 2px 12px 12px;
 `;
 
 export const DayCell = styled.div<{
@@ -34,6 +34,7 @@ export const DayCell = styled.div<{
   isSelectable: boolean;
   isStartDate?: boolean;
   isEndDate?: boolean;
+  isStartAndEndSame?: boolean;
   isInRange?: boolean;
   isSelectionInProgress?: boolean;
   isAnchorDate?: boolean;
@@ -46,8 +47,8 @@ export const DayCell = styled.div<{
   position: relative;
   cursor: ${({ isSelectable }) => (isSelectable ? 'pointer' : 'default')};
 
-  background: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, theme }) => {
-    if (isSelectionInProgress) {
+  background: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, isStartAndEndSame, theme }) => {
+    if (isSelectionInProgress || isStartAndEndSame) {
       return 'transparent';
     } else if (isStartDate) {
       return `linear-gradient(90deg, transparent 50%, ${theme.color.bg.fill.primary.tint.normal} 50%)`;
@@ -61,28 +62,36 @@ export const DayCell = styled.div<{
   }};
 
   //#region border styles
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.color.border.neutral.strong.normal};
-  border-style: ${({ isInRange, isSelectionInProgress }) => {
-    return isSelectionInProgress && isInRange ? `solid none solid none` : 'none';
-  }};
-  ${({ isStartDate, isEndDate, isSelectionInProgress, theme }) => {
-    if (isSelectionInProgress) {
-      if (isStartDate) {
-        return css`
-          border-top: 1px dashed;
-          border-bottom: 1px dashed;
-          border-image: linear-gradient(to right, transparent 50%, ${theme.color.border.neutral.strong.normal} 50%) 100% 1;
+  ${({ isStartAndEndSame, isInRange, isSelectionInProgress, isStartDate, isEndDate, theme }) => {
+    if (isStartAndEndSame) return;
+    else {
+      const startDateBorderStyle =
+        isSelectionInProgress &&
+        isStartDate &&
+        css`
+          border-top: 0.5px solid;
+          border-bottom: 0.5px solid;
+          border-image: linear-gradient(to right, transparent 50%, ${theme.color.border.neutral.strong.normal} 50%) 100%
+            1;
         `;
-      } else if (isEndDate) {
-        return css`
-          border-top: 1px dashed;
-          border-bottom: 1px dashed;
-          border-image: linear-gradient(to right, ${theme.color.border.neutral.strong.normal} 50%, transparent 50%) 100% 1;
+      const endDateBorderStyle =
+        isSelectionInProgress &&
+        isEndDate &&
+        css`
+          border-top: 0.5px solid;
+          border-bottom: 0.5px solid;
+          border-image: linear-gradient(to right, ${theme.color.border.neutral.strong.normal} 50%, transparent 50%) 100%
+            1;
         `;
-      } else {
-        return 'none';
-      }
+
+      return css`
+        border-width: 0.5px;
+        border-color: ${theme.color.border.neutral.strong.normal};
+        border-style: ${isSelectionInProgress && isInRange ? `solid none solid none` : 'none'};
+
+        ${startDateBorderStyle}
+        ${endDateBorderStyle}
+      `;
     }
   }}
 

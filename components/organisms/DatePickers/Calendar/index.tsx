@@ -83,6 +83,7 @@ const DateRangeCalendarContent = (props: {
         const isToday = dayDate.isSame(dayjs(), 'day');
         const isStartDate = dayDate.isSame(dayjs(selectedDate.startDate), 'day');
         const isEndDate = dayDate.isSame(dayjs(selectedDate.endDate), 'day');
+        const isStartAndEndSame = dayjs(selectedDate.startDate).isSame(dayjs(selectedDate.endDate), 'day');
         const isInRange =
           dayDate.isAfter(dayjs(selectedDate.startDate), 'day') && dayDate.isBefore(dayjs(selectedDate.endDate), 'day');
 
@@ -95,6 +96,7 @@ const DateRangeCalendarContent = (props: {
             isSelectable={day.isSelectable && day.isDisplayedMonth}
             isStartDate={isStartDate}
             isEndDate={isEndDate}
+            isStartAndEndSame={isStartAndEndSame}
             isInRange={isInRange}
             isAnchorDate={handlers.dragState.anchorDateStr === dateStr}
             isSelectionInProgress={handlers.dragState.actionState === 'in-progress'}
@@ -132,6 +134,7 @@ const SingleDateCalendarContent = (props: { days: CalendarDay[]; value: Date; on
             isSelectable={day.isSelectable}
             isStartDate={isSelectedDate}
             isEndDate={isSelectedDate}
+            isStartAndEndSame={true}
             onClick={() => day.isDisplayedMonth && onChange(day.date)}
           >
             <MDSTypography as="span">{dayDate.date()}</MDSTypography>

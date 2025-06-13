@@ -30,15 +30,12 @@ export default meta;
 type Story = StoryObj<typeof MDSCalendar>;
 
 export const SingleDate: Story = {
-  args: {
-    value: new Date(),
-    minDate: dayjs('2023-11-22').toDate(), //dayjs().subtract(25, 'day').toDate(),
-    maxDate: dayjs('2027-11-11').toDate(), //dayjs().add(25, 'day').toDate(),
-    onChange: (date: Date) => {
-      alert(`선택한 날짜: ${date.toLocaleDateString()}`);
-    },
-  },
-  render: function Render(args) {
+  render: function Render() {
+    const args = {
+      value: new Date(),
+      minDate: dayjs('2023-11-22').toDate(),
+      maxDate: dayjs('2027-11-11').toDate(),
+    };
     const [selectedDate, setSelectedDate] = useState<Date>(args.value as Date);
     const handleChange = (newDate: Date) => {
       setSelectedDate(newDate);
@@ -52,18 +49,20 @@ export const SingleDate: Story = {
   },
 };
 export const DateRange: Story = {
-  args: {
-    value: {
-      startDate: new Date('2025-05-12'),
-      endDate: new Date('2025-05-20'),
-    },
-    minDate: new Date('2025-05-03'),
-    maxDate: new Date('2025-06-30'),
-    onChange: (startDate: Date, endDate: Date) => {
-      alert(`${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`);
-    },
-  },
-  render: function Render(args) {
+/**
+ * todo - known issues
+ * - [ ] start, end date에 같은 날짜를 선택 가능하는 기능
+ * - [ ] date range를 선택 중일 때, border style을 dashed로 하면 두 날짜 셀이 만나는 부분에서 dashed 선이 뭉치는 문제
+ */
+  render: function Render() {
+    const args = {
+      value: {
+        startDate: new Date('2025-05-12'),
+        endDate: new Date('2025-05-20'),
+      },
+      minDate: new Date('2025-05-03'),
+      maxDate: new Date('2025-06-30'),
+    };
     const [selectedDate, setSelectedDate] = useState<{ startDate: Date; endDate: Date }>(
       args.value as { startDate: Date; endDate: Date }
     );

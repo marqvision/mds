@@ -25,6 +25,14 @@ export const useDragSelect = (params: {
     endDateStr: dayjs(params.lastDate).format('YYYY-MM-DD'),
   });
 
+  const [displayDate, setDisplayDate] = useState<{
+    startDate: string;
+    endDate: string;
+  }>({
+    startDate: dragState.startDateStr,
+    endDate: dragState.endDateStr,
+  });
+
   const dragStart = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
@@ -68,9 +76,10 @@ export const useDragSelect = (params: {
     if (!currentAnchorDateStr) return;
     if (!isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
 
+    
     setDragState((prev) => {
       if (!prev.startDateStr) return prev;
-
+      
       const { newStartDateStr, newEndDateStr } = resolveDateRange({
         anchorDateStr: prev.anchorDateStr,
         startDateStr: prev.startDateStr,
@@ -78,7 +87,10 @@ export const useDragSelect = (params: {
         currentDateStr: currentAnchorDateStr,
       });
 
-      params.onDateRangeUpdate(dayjs(newStartDateStr).toDate(), dayjs(newEndDateStr).toDate());
+      setDisplayDate({
+        startDate: newStartDateStr,
+        endDate: newEndDateStr,
+      });
       return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
     });
   };
@@ -88,6 +100,17 @@ export const useDragSelect = (params: {
     if (!currentAnchorDateStr || !isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
 
     setDragState((prev) => {
+      if(prev.anchorDateStr === currentAnchorDateStr && prev.actionState === 'in-progress' && prev.selectionMode === 'click') {
+        return {
+          actionState: 'idle',
+          selectionMode: 'drag',
+          anchorDateStr: prev.anchorDateStr,
+          startDateStr: prev.anchorDateStr,
+          endDateStr: prev.anchorDateStr,
+        };
+      }
+
+
       const { newStartDateStr, newEndDateStr } = resolveDateRange({
         anchorDateStr: prev.anchorDateStr,
         startDateStr: prev.startDateStr,
@@ -95,6 +118,10 @@ export const useDragSelect = (params: {
         currentDateStr: currentAnchorDateStr,
       });
 
+      setDisplayDate({
+        startDate: newStartDateStr,
+        endDate: newEndDateStr,
+      });
       params.onDateRangeUpdate(dayjs(newStartDateStr).toDate(), dayjs(newEndDateStr).toDate());
 
       const selectionMode = newStartDateStr === newEndDateStr ? 'click' : 'drag';
@@ -110,6 +137,7 @@ export const useDragSelect = (params: {
   };
 
   return {
+    displayDate,
     dragState,
     dragStart,
     dragMove,
@@ -154,7 +182,7 @@ const resolveDateRange = (params: {
   } else if (currentDate.isAfter(anchorDate, 'day')) {
     newStartDateStr = params.anchorDateStr;
     newEndDateStr = params.currentDateStr;
-  }
+  } 
 
   return { newStartDateStr, newEndDateStr };
 };

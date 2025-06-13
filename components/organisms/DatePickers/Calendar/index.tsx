@@ -65,7 +65,7 @@ const DateRangeCalendarContent = (props: {
 }) => {
   const { days, selectedDate, minDate, maxDate, onChange } = props;
 
-  const handlers = useDragSelect({
+  const { dragState, dragMove, dragStart, dragEnd, displayDate } = useDragSelect({
     startDate: selectedDate.startDate,
     lastDate: selectedDate.endDate,
     minDate,
@@ -76,16 +76,16 @@ const DateRangeCalendarContent = (props: {
   });
 
   return (
-    <CalendarGrid onMouseMove={handlers.dragMove} onMouseDown={handlers.dragStart} onMouseUp={handlers.dragEnd}>
+    <CalendarGrid onMouseMove={dragMove} onMouseDown={dragStart} onMouseUp={dragEnd}>
       {days.map((day, index) => {
         const dayDate = dayjs(day.date);
         const dateStr = day.isDisplayedMonth ? dayDate.format('YYYY-MM-DD') : '';
         const isToday = dayDate.isSame(dayjs(), 'day');
-        const isStartDate = dayDate.isSame(dayjs(selectedDate.startDate), 'day');
-        const isEndDate = dayDate.isSame(dayjs(selectedDate.endDate), 'day');
-        const isStartAndEndSame = dayjs(selectedDate.startDate).isSame(dayjs(selectedDate.endDate), 'day');
+        const isStartDate = dayDate.isSame(dayjs(displayDate.startDate), 'day');
+        const isEndDate = dayDate.isSame(dayjs(displayDate.endDate), 'day');
+        const isStartAndEndSame = dayjs(displayDate.startDate).isSame(dayjs(displayDate.endDate), 'day');
         const isInRange =
-          dayDate.isAfter(dayjs(selectedDate.startDate), 'day') && dayDate.isBefore(dayjs(selectedDate.endDate), 'day');
+          dayDate.isAfter(dayjs(displayDate.startDate), 'day') && dayDate.isBefore(dayjs(displayDate.endDate), 'day');
 
         return (
           <DayCell
@@ -98,8 +98,8 @@ const DateRangeCalendarContent = (props: {
             isEndDate={isEndDate}
             isStartAndEndSame={isStartAndEndSame}
             isInRange={isInRange}
-            isAnchorDate={handlers.dragState.anchorDateStr === dateStr}
-            isSelectionInProgress={handlers.dragState.actionState === 'in-progress'}
+            isAnchorDate={dragState.anchorDateStr === dateStr}
+            isSelectionInProgress={dragState.actionState === 'in-progress'}
           >
             {day.isDisplayedMonth && <MDSTypography as="span">{dayDate.date()}</MDSTypography>}
           </DayCell>
@@ -108,7 +108,8 @@ const DateRangeCalendarContent = (props: {
       <Debugger
         title="date range"
         data={{
-          selectProps: handlers,
+          displayDate,
+          dragState,
         }}
       />
     </CalendarGrid>

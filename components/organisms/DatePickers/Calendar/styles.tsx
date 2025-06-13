@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { DateRangeSelectionMode } from './@types';
 
 export const CalendarLayout = styled.div`
   width: 304px;
@@ -25,6 +24,7 @@ export const Weekday = styled.div<{ isWeekend: boolean }>`
 export const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  row-gap: 2px;
   padding: 0 12px 12px;
 `;
 
@@ -35,25 +35,46 @@ export const DayCell = styled.div<{
   isStartDate?: boolean;
   isEndDate?: boolean;
   isInRange?: boolean;
-  dateSelectionMode?: DateRangeSelectionMode;
+  isSelectionInProgress?: boolean;
+  isAnchorDate?: boolean;
 }>`
   aspect-ratio: 1;
-  user-select: none;
+
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   cursor: ${({ isSelectable }) => (isSelectable ? 'pointer' : 'default')};
 
-  background-color: ${({ isInRange, isStartDate, isEndDate, theme }) =>
-    isStartDate || isEndDate || isInRange ? theme.color.bg.fill.primary.tint.normal : 'transparent'};
-
-  border-radius: ${({ isStartDate, isEndDate }) => {
-    if (isStartDate && isEndDate) return '50%';
-    else if (isStartDate) return '50% 0 0 50%';
-    else if (isEndDate) return '0 50% 50% 0';
-    return '0;';
+  background: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, theme }) => {
+    if (isSelectionInProgress) {
+      return 'transparent';
+    } else if (isStartDate) {
+      return `linear-gradient(90deg, transparent 50%, ${theme.color.bg.fill.primary.tint.normal} 50%)`;
+    } else if (isEndDate) {
+      return `linear-gradient(90deg, ${theme.color.bg.fill.primary.tint.normal} 50%, transparent 50%)`;
+    } else if (isInRange) {
+      return theme.color.bg.fill.primary.tint.normal;
+    } else {
+      return 'transparent';
+    }
   }};
+
+  //#region border styles
+  border-top: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, theme }) => {
+    if (isSelectionInProgress) {
+      if (isInRange) return `1px dashed ${theme.color.border.neutral.strong.normal}`;
+    }
+    return 'transparent';
+  }};
+  border-bottom: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, theme }) => {
+    if (isSelectionInProgress) {
+      if (isInRange) return `1px dashed ${theme.color.border.neutral.strong.normal}`;
+    }
+    return 'transparent';
+  }};
+
+  //#endregion
 
   ${({ isToday, theme }) =>
     isToday &&
@@ -72,18 +93,31 @@ export const DayCell = styled.div<{
       }
     `}
 
-  ${({ isStartDate, isEndDate, theme }) => css`
-    &:after {
-      content: '';
-      position: absolute;
-      z-index: 0;
-      display: block;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      background-color: ${isStartDate || isEndDate ? theme.color.bg.fill.primary.default.normal : 'transparent'};
+  ${({ isStartDate, isEndDate, isSelectionInProgress, isAnchorDate, theme }) => {
+    let bgColor = 'transparent';
+
+    if (isAnchorDate) bgColor = theme.color.bg.fill.primary.default.normal;
+    else if (isStartDate || isEndDate) {
+      if (isSelectionInProgress) {
+        bgColor = theme.color.bg.fill.primary.tint.hover;
+      } else {
+        bgColor = theme.color.bg.fill.primary.default.normal;
+      }
     }
-  `}
+
+    return css`
+      &:after {
+        content: '';
+        position: absolute;
+        z-index: 0;
+        display: block;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        background-color: ${bgColor};
+      }
+    `;
+  }}
 
   &:hover {
     &:after {
@@ -94,24 +128,39 @@ export const DayCell = styled.div<{
       border-radius: 50%;
       width: 40px;
       height: 40px;
-      background-color: ${({ isStartDate, isEndDate, isDisplayedMonth, isSelectable, theme }) => {
-        if (isStartDate || isEndDate) return theme.color.bg.fill.primary.default.hover;
-        else if (!isDisplayedMonth || !isSelectable) return 'transparent';
+      background-color: ${({
+        isAnchorDate,
+        isStartDate,
+        isEndDate,
+        isSelectionInProgress,
+        isDisplayedMonth,
+        isSelectable,
+        theme,
+      }) => {
+        if (!isDisplayedMonth || !isSelectable) return 'transparent';
+        else if (isAnchorDate) return theme.color.bg.fill.primary.default.hover;
+        else if (isSelectionInProgress) return theme.color.bg.fill.primary.tint.hover;
+        else if (isStartDate || isEndDate) return theme.color.bg.fill.primary.default.hover;
         return theme.color.bg.fill.primary.tint.hover;
       }};
     }
   }
 
-
-  // 캘린더 내에서 날짜 typography의 상호작용 관련 스타일
+  //#region 캘린더 내에서 날짜 typography의 상호작용 관련 스타일
   & > span {
     user-select: none;
     z-index: 1;
-    color: ${({ isStartDate, isEndDate, isDisplayedMonth, isSelectable, theme }) => {
-      if (isStartDate || isEndDate) return theme.color.content.on_default_color;
-      
-      if (!isSelectable) return theme.color.content.neutral.default.disabled;
+    color: ${({ isAnchorDate, isStartDate, isEndDate, isSelectionInProgress, isSelectable, theme }) => {
+      if (isAnchorDate) return theme.color.content.on_default_color;
+      else if (isSelectionInProgress) return theme.color.content.neutral.default.normal;
+      else if (isStartDate || isEndDate) return theme.color.content.on_default_color;
+      else if (!isSelectable) return theme.color.content.neutral.default.disabled;
       return theme.color.content.neutral.default.normal;
     }};
   }
+  //#endregion
 `;
+
+
+export const StartDayCell = styled.div``;
+export const EndDayCell = styled.div``;

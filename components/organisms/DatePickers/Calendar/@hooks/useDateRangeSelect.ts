@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import dayjs from 'dayjs';
 import { isDateInMinMaxRange } from '../../@utils';
+import { DateRangeSelectionMode } from '../@types';
 
 type SelectActionState = {
-  isDragging: boolean;
-  isClicking: boolean;
+  actionState: 'in-progress' | 'idle';
+  selectionMode: DateRangeSelectionMode;
   anchorDateStr: string;
   startDateStr: string;
   endDateStr: string;
@@ -17,30 +18,33 @@ export const useDragSelect = (params: {
   onDateRangeUpdate: (startDate: Date, lastDate: Date) => void;
 }) => {
   const [dragState, setDragState] = useState<SelectActionState>({
-    isDragging: false,
-    isClicking: false,
+    actionState: 'idle',
+    selectionMode: 'drag',
     anchorDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
     startDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
     endDateStr: dayjs(params.lastDate).format('YYYY-MM-DD'),
   });
 
   const dragStart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const dateStr = (e.currentTarget as HTMLElement).getAttribute('data-date');
-    if (!dateStr || !isDateInMinMaxRange(dateStr, params.minDate, params.maxDate)) return;
+    const currentAnchorDateStr = calculateCurrentDate(e);
+    if (!currentAnchorDateStr) return;
+    if (!isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
 
-    setDragState({
-      isDragging: true,
-      isClicking: false,
-      anchorDateStr: dateStr,
-      startDateStr: dateStr,
-      endDateStr: dateStr,
+    setDragState((prev) => {
+      return {
+        actionState: 'in-progress',
+        selectionMode: prev.selectionMode,
+        anchorDateStr: currentAnchorDateStr,
+        startDateStr: prev.selectionMode === 'click' ? prev.startDateStr : currentAnchorDateStr,
+        endDateStr: prev.selectionMode === 'click' ? prev.endDateStr : currentAnchorDateStr,
+      };
     });
   };
   const dragMove = (event: React.MouseEvent) => {
-    const currentAnchorDateStr = calculateCurrentDate(event);
+    if (dragState.actionState === 'idle') return;
 
-    if (!dragState.isDragging || !currentAnchorDateStr) return;
+    const currentAnchorDateStr = calculateCurrentDate(event);
+    if (!currentAnchorDateStr) return;
     if (!isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
 
     setDragState((prev) => {
@@ -58,50 +62,32 @@ export const useDragSelect = (params: {
     });
   };
   const dragEnd = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const dateStr = (e.currentTarget as HTMLElement).getAttribute('data-date');
-    if (!dateStr || !isDateInMinMaxRange(dateStr, params.minDate, params.maxDate)) return;
+    const currentAnchorDateStr = calculateCurrentDate(e);
+    if (!currentAnchorDateStr) return;
+    if (!currentAnchorDateStr || !isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
+
 
     setDragState((prev) => {
       const { newStartDateStr, newEndDateStr } = resolveDateRange({
         anchorDateStr: prev.anchorDateStr,
         startDateStr: prev.startDateStr,
         endDateStr: prev.endDateStr,
-        currentDateStr: dateStr,
+        currentDateStr: currentAnchorDateStr,
       });
 
       params.onDateRangeUpdate(dayjs(newStartDateStr).toDate(), dayjs(newEndDateStr).toDate());
 
+      const selectionMode = newStartDateStr === newEndDateStr ? 'click' : 'drag';
+
       return {
-        isDragging: false,
-        isClicking: newStartDateStr === newEndDateStr,
+        actionState: selectionMode === 'click' ? 'in-progress' : 'idle',
+        selectionMode,
         anchorDateStr: prev.anchorDateStr,
         startDateStr: newStartDateStr,
         endDateStr: newEndDateStr,
       };
     });
   };
-
-  //#region - Mouse action by area
-  useEffect(() => {
-    const onMouseUp = () => {
-      setDragState((prev) => ({
-        ...prev,
-        isDragging: false,
-      }));
-    };
-
-    if (dragState.isDragging) {
-      document.body.addEventListener('mouseup', onMouseUp);
-    } else {
-      document.body.removeEventListener('mouseup', onMouseUp);
-    }
-
-    return () => {
-      document.body.removeEventListener('mouseup', onMouseUp);
-    };
-  }, [dragState.isDragging, setDragState]);
-  //#endregion
 
   return {
     dragState,

@@ -55,7 +55,7 @@ export const DateRange: Story = {
   args: {
     value: {
       startDate: new Date('2025-05-12'),
-      endDate: new Date('2025-06-20'),
+      endDate: new Date('2025-05-20'),
     },
     minDate: new Date('2025-05-03'),
     maxDate: new Date('2025-06-30'),

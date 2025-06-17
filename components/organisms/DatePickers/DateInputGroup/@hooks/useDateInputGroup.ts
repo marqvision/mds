@@ -87,13 +87,32 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   const startHasError = errors.start || !!startDate.isError || errors.range;
   const endHasError = errors.end || !!endDate.isError || errors.range;
 
+
+  //#region 밖에서 주입되는 값 검증
+  const validateExternalInjectedDates = useCallback(
+    (currentStartValue: string, currentEndValue: string) => {
+      const startError = validateDateValue(currentStartValue, format, minDate, maxDate);
+      const endError = validateDateValue(currentEndValue, format, minDate, maxDate);
+
+      const validStartDate = getValidatedDate(currentStartValue, format, minDate, maxDate);
+      const validEndDate = getValidatedDate(currentEndValue, format, minDate, maxDate);
+
+      let rangeError = false;
+      if (validStartDate && validEndDate) {
+        rangeError = !isDateRangeValid(validStartDate, validEndDate);
+      }
+
+      setErrors({ start: startError, end: endError, range: rangeError });
+    },
+    [format, minDate, maxDate]
+  );
+
   useEffect(() => {
     if (startDate.value !== undefined) {
       const value = startDate.value || '';
       setStartDateState((prev) => ({ ...prev, value }));
-      validateAndSyncDates(value, endDateState.value);
+      validateExternalInjectedDates(value, endDateState.value);
     }
-    // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate.value]);
 
@@ -101,11 +120,11 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
     if (endDate.value !== undefined) {
       const value = endDate.value || '';
       setEndDateState((prev) => ({ ...prev, value }));
-      validateAndSyncDates(startDateState.value, value);
+      validateExternalInjectedDates(startDateState.value, value);
     }
-    // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endDate.value]);
+  //#endregion
 
   return {
     startDateState,

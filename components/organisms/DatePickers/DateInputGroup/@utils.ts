@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { DateInputProps } from './@types';
 
 const SEPARATOR_MAP = {
   'MM/DD/YYYY': '/',
@@ -126,10 +127,7 @@ export const isValidDate = (
     return { isValid: false, isOutOfRange: false };
   }
 
-  if (
-    (minDate && dayjs(date).isBefore(minDate, 'day')) ||
-    (maxDate && dayjs(date).isAfter(maxDate, 'day'))
-  ) {
+  if ((minDate && dayjs(date).isBefore(minDate, 'day')) || (maxDate && dayjs(date).isAfter(maxDate, 'day'))) {
     return { isValid: true, isOutOfRange: true };
   }
 
@@ -142,4 +140,23 @@ export const isDateRangeValid = (startDate: Date | null, endDate: Date | null): 
   }
 
   return dayjs(startDate).isSame(endDate, 'day') || dayjs(startDate).isBefore(endDate, 'day');
-}; 
+};
+
+export const getHelperText = (
+  type: 'start' | 'end',
+  errors: { start: boolean; end: boolean; range: boolean },
+  dateInputProps: DateInputProps
+) => {
+  if (errors.range) {
+    return type === 'start'
+      ? 'Start date must be same or before end date'
+      : 'End date must be same or after start date';
+  }
+
+  const hasError = type === 'start' ? errors.start : errors.end;
+  if (hasError || dateInputProps.isError) {
+    return dateInputProps.helperText || 'Invalid date';
+  }
+
+  return undefined;
+};

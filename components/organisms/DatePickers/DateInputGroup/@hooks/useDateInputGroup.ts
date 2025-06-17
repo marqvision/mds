@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
+import { isValidDate } from '../../@utils';
 import { DateInputGroupProps, DateInputProps } from '../@types';
 import {
   isDateRangeValid,
   isDateShapeValid,
   isPartiallyValidDate,
-  isValidDate,
   parseDateString,
   validateDateValue,
   getValidatedDate,
@@ -53,13 +53,13 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
         const nextStartDate = validStartDate ?? startDateState.lastValid;
         const nextEndDate = validEndDate ?? endDateState.lastValid;
 
-        if (validStartDate) setStartDateState(prev => ({ ...prev, lastValid: validStartDate }));
-        if (validEndDate) setEndDateState(prev => ({ ...prev, lastValid: validEndDate }));
+        if (validStartDate) setStartDateState((prev) => ({ ...prev, lastValid: validStartDate }));
+        if (validEndDate) setEndDateState((prev) => ({ ...prev, lastValid: validEndDate }));
 
         onDateChange({ startDate: nextStartDate, endDate: nextEndDate });
       }
     },
-    [format, startDateState.lastValid, endDateState.lastValid, maxDate, minDate, onDateChange],
+    [format, startDateState.lastValid, endDateState.lastValid, maxDate, minDate, onDateChange]
   );
 
   const handleStartDateChange = useDateChangeHandler('start', {
@@ -93,6 +93,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       setStartDateState((prev) => ({ ...prev, value }));
       validateAndSyncDates(value, endDateState.value);
     }
+    // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate.value]);
 
@@ -102,6 +103,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       setEndDateState((prev) => ({ ...prev, value }));
       validateAndSyncDates(startDateState.value, value);
     }
+    // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endDate.value]);
 

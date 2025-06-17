@@ -118,8 +118,14 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       }
 
       setErrorsOptimized({ start: startError, end: endError, range: rangeError });
+      if (!startError && !endError && !rangeError) {
+        onDateChange?.({
+          startDate: validStartDate ?? startDateState.lastValid,
+          endDate: validEndDate ?? endDateState.lastValid,
+        });
+      }
     },
-    [format, minDate, maxDate, setErrorsOptimized]
+    [format, minDate, maxDate, setErrorsOptimized, onDateChange, startDateState.lastValid, endDateState.lastValid]
   );
 
   useEffect(() => {

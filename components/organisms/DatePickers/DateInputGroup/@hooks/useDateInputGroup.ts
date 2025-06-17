@@ -34,60 +34,70 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   });
   const [errors, setErrors] = useState({ start: false, end: false, range: false });
 
-  const validateAndSyncDates = useCallback(
-    (currentStartValue: string, currentEndValue: string) => {
-      const shouldClearStartDate = currentStartValue.trim().length === 0;
-      const shouldClearEndDate = currentEndValue.trim().length === 0;
-
-      const startError = shouldClearStartDate ? false : validateDateValue(currentStartValue, format, minDate, maxDate);
-      const endError = shouldClearEndDate ? false : validateDateValue(currentEndValue, format, minDate, maxDate);
-
-      const validStartDate = shouldClearStartDate ? null : getValidatedDate(currentStartValue, format, minDate, maxDate);
-      const validEndDate = shouldClearEndDate ? null : getValidatedDate(currentEndValue, format, minDate, maxDate);
-
-      let rangeError = false;
-      if (validStartDate && validEndDate) {
-        rangeError = !isDateRangeValid(validStartDate, validEndDate);
+  const setErrorsOptimized = useCallback((newErrors: Partial<{ start: boolean; end: boolean; range: boolean }>) => {
+    setErrors((currentErrors) => {
+      const nextErrors = { ...currentErrors, ...newErrors };
+      if (
+        currentErrors.start === nextErrors.start &&
+        currentErrors.end === nextErrors.end &&
+        currentErrors.range === nextErrors.range
+      ) {
+        return currentErrors;
       }
-
-      setErrors({ start: startError, end: endError, range: rangeError });
-
-      if (onDateChange) {
-        if (startError || endError || rangeError) {
-          return;
-        }
-        const nextStartDate = shouldClearStartDate ? null : validStartDate ?? startDateState.lastValid;
-        const nextEndDate = shouldClearEndDate ? null : validEndDate ?? endDateState.lastValid;
-
-        if (validStartDate) setStartDateState((prev) => ({ ...prev, lastValid: validStartDate }));
-        if (validEndDate) setEndDateState((prev) => ({ ...prev, lastValid: validEndDate }));
-
-        onDateChange({ startDate: nextStartDate, endDate: nextEndDate });
-      }
-    },
-    [format, startDateState.lastValid, endDateState.lastValid, maxDate, minDate, onDateChange]
-  );
+      return nextErrors;
+    });
+  }, []);
 
   const handleStartDateChange = useDateChangeHandler('start', {
     dateProps: startDate,
-    otherValue: endDateState.value,
-    setState: setStartDateState,
-    setErrors,
+    otherState: endDateState,
+    setTargetDateState: setStartDateState,
+    setOtherState: setEndDateState,
+    setErrors: setErrorsOptimized,
     format,
-    validateAndSyncDates,
+    minDate,
+    maxDate,
+    onDateChange,
   });
 
   const handleEndDateChange = useDateChangeHandler('end', {
     dateProps: endDate,
-    otherValue: startDateState.value,
-    setState: setEndDateState,
-    setErrors,
+    otherState: startDateState,
+    setTargetDateState: setEndDateState,
+    setOtherState: setStartDateState,
+    setErrors: setErrorsOptimized,
     format,
-    validateAndSyncDates,
+    minDate,
+    maxDate,
+    onDateChange,
   });
 
   const handleBlur = () => {
-    validateAndSyncDates(startDateState.value, endDateState.value);
+    const startError = validateDateValue(startDateState.value, format, minDate, maxDate);
+    const endError = validateDateValue(endDateState.value, format, minDate, maxDate);
+
+    const validStartDate = getValidatedDate(startDateState.value, format, minDate, maxDate);
+    const validEndDate = getValidatedDate(endDateState.value, format, minDate, maxDate);
+
+    let rangeError = false;
+    if (validStartDate && validEndDate) {
+      rangeError = !isDateRangeValid(validStartDate, validEndDate);
+    }
+
+    setErrorsOptimized({ start: startError, end: endError, range: rangeError });
+
+    if (!startError && !endError && !rangeError) {
+      if (validStartDate) {
+        setStartDateState((prev) => ({ ...prev, lastValid: validStartDate }));
+      }
+      if (validEndDate) {
+        setEndDateState((prev) => ({ ...prev, lastValid: validEndDate }));
+      }
+      onDateChange?.({
+        startDate: validStartDate ?? startDateState.lastValid,
+        endDate: validEndDate ?? endDateState.lastValid,
+      });
+    }
   };
 
   const startHasError = errors.start || !!startDate.isError || errors.range;
@@ -107,9 +117,9 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
         rangeError = !isDateRangeValid(validStartDate, validEndDate);
       }
 
-      setErrors({ start: startError, end: endError, range: rangeError });
+      setErrorsOptimized({ start: startError, end: endError, range: rangeError });
     },
-    [format, minDate, maxDate]
+    [format, minDate, maxDate, setErrorsOptimized]
   );
 
   useEffect(() => {
@@ -147,39 +157,75 @@ const useDateChangeHandler = (
   type: 'start' | 'end',
   {
     dateProps,
-    otherValue,
-    setState,
+    otherState,
+    setTargetDateState,
+    setOtherState,
     setErrors,
     format,
-    validateAndSyncDates,
+    minDate,
+    maxDate,
+    onDateChange,
   }: {
     dateProps: DateInputProps;
-    otherValue: string;
-    setState: React.Dispatch<React.SetStateAction<{ value: string; lastValid: Date | null }>>;
-    setErrors: React.Dispatch<React.SetStateAction<{ start: boolean; end: boolean; range: boolean }>>;
+    otherState: { value: string; lastValid: Date | null };
+    setTargetDateState: React.Dispatch<React.SetStateAction<{ value: string; lastValid: Date | null }>>;
+    setOtherState: React.Dispatch<React.SetStateAction<{ value: string; lastValid: Date | null }>>;
+    setErrors: (newErrors: Partial<{ start: boolean; end: boolean; range: boolean }>) => void;
     format: 'MM/DD/YYYY' | 'YYYY-MM-DD';
-    validateAndSyncDates: (start: string, end: string) => void;
+    minDate?: Date;
+    maxDate?: Date;
+    onDateChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;
   }
 ) => {
   return useCallback(
     (inputValue: string) => {
       const { onChange } = dateProps;
-      setState((prev) => ({ ...prev, value: inputValue }));
+      setTargetDateState((prev) => ({ ...prev, value: inputValue }));
       onChange?.(inputValue);
 
       if (!isDateShapeValid(inputValue, format) || !isPartiallyValidDate(inputValue, format)) {
-        setErrors((prev) => ({ ...prev, [type]: true }));
-      } else {
-        setErrors((prev) => ({ ...prev, [type]: false }));
+        setErrors({ [type]: true, range: false });
+        return;
       }
+      setErrors({ [type]: false });
 
       if (inputValue.length >= format.length || inputValue.length === 0) {
+        const otherValue = otherState.value;
         const currentStartValue = type === 'start' ? inputValue : otherValue;
-        const currentEndValue = type === 'start' ? otherValue : inputValue;
+        const currentEndValue = type === 'end' ? inputValue : otherValue;
 
-        validateAndSyncDates(currentStartValue, currentEndValue);
+        const startError = validateDateValue(currentStartValue, format, minDate, maxDate);
+        const endError = validateDateValue(currentEndValue, format, minDate, maxDate);
+
+        const validStartDate = getValidatedDate(currentStartValue, format, minDate, maxDate);
+        const validEndDate = getValidatedDate(currentEndValue, format, minDate, maxDate);
+
+        let rangeError = false;
+        if (validStartDate && validEndDate) {
+          rangeError = !isDateRangeValid(validStartDate, validEndDate);
+        }
+
+        setErrors({ start: startError, end: endError, range: rangeError });
+
+        if (!startError && !endError && !rangeError) {
+          const nextStartDate = validStartDate ?? (inputValue === '' ? null : otherState.lastValid);
+          const nextEndDate = validEndDate ?? (inputValue === '' ? null : otherState.lastValid);
+
+          if (type === 'start') {
+            setTargetDateState({ value: inputValue, lastValid: nextStartDate });
+            if (validEndDate) setOtherState((prev) => ({ ...prev, lastValid: validEndDate }));
+          } else {
+            setTargetDateState({ value: inputValue, lastValid: nextEndDate });
+            if (validStartDate) setOtherState((prev) => ({ ...prev, lastValid: validStartDate }));
+          }
+
+          onDateChange?.({
+            startDate: type === 'start' ? nextStartDate : validStartDate ?? otherState.lastValid,
+            endDate: type === 'end' ? nextEndDate : validEndDate ?? otherState.lastValid,
+          });
+        }
       }
     },
-    [dateProps, otherValue, setState, setErrors, format, validateAndSyncDates, type]
+    [dateProps, otherState, setTargetDateState, setOtherState, setErrors, format, minDate, maxDate, onDateChange, type]
   );
 };

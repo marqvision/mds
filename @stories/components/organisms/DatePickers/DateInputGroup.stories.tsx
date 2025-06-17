@@ -152,7 +152,7 @@ export const ExternallyInjectedValue: Story = {
     return (
       <div css={testGroupStyle}>
         <MDSTypography variant="title">Case 4: 포맷 {format} + 외부에서 값 주입</MDSTypography>
-        <div style={{ border: '1px solid gray', padding: '20px', borderRadius: '10px', width: '300px' }}>
+        <div style={{ border: '1px solid gray', padding: '20px', borderRadius: '10px', width: '320px' }}>
           <MDSTypography variant="title" size="m">
             외부 주입을 위한 컴포넌트
           </MDSTypography>
@@ -243,7 +243,7 @@ export const MinMax: Story = {
             maxDate: {maxDateStr}
           </MDSTypography>
         </div>
-        <div style={{ border: '1px solid gray', padding: '20px', borderRadius: '10px', width: '300px' }}>
+        <div style={{ border: '1px solid gray', padding: '20px', borderRadius: '10px', width: '320px' }}>
           <MDSTypography variant="title" size="m">
             외부 주입을 위한 컴포넌트
           </MDSTypography>

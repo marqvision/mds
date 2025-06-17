@@ -13,13 +13,16 @@ const DateInputGroup = (props: DateInputGroupProps) => {
 
   return (
     <DateInputGroupLayout>
-      <div>
+      <div data-role="start-date-input-wrapper">
         <MDSInput
           fullWidth
           variant="textField"
           value={startDateState.value}
           label={props.startDate.label}
           placeholder={startDate.placeholder || format || DEFAULT_PROPS.placeholder}
+          inputProps={{
+            autoFocus: true,
+          }}
           onChange={handleStartDateChange}
           onBlur={handleBlur}
           status={errors.startDateField ? 'error' : undefined}
@@ -27,7 +30,7 @@ const DateInputGroup = (props: DateInputGroupProps) => {
         />
       </div>
       {typeof separator === 'string' ? <MDSTypography data-role="separator">{separator}</MDSTypography> : separator}
-      <div>
+      <div data-role="end-date-input-wrapper">
         <MDSInput
           fullWidth
           variant="textField"

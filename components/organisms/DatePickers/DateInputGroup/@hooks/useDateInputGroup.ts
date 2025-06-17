@@ -243,6 +243,17 @@ const useDateChangeHandler = (
             startDate: type === 'start' ? nextStartDate : validStartDate ?? otherState.lastValid,
             endDate: type === 'end' ? nextEndDate : validEndDate ?? otherState.lastValid,
           });
+
+          // note-@jamie: 
+          // dom을 바로 동기적으로 update 하는 로직이라, react state (onDateChange) 업데이트가 끝난 뒤에 실행되도록 
+          // setTimeout으로 한 틱을 미룬다. (MDSInput이 ref가 없어서 일단 이렇게라도 🥲)
+          setTimeout(() => {
+            if (type === 'start' && inputValue !== '' && nextEndDate === null) {
+              (document.querySelector('[data-role="end-date-input-wrapper"] input') as HTMLInputElement)?.focus();
+            } else if (type === 'end' && inputValue !== '' && nextStartDate === null) {
+              (document.querySelector('[data-role="start-date-input-wrapper"] input') as HTMLInputElement)?.focus();
+            }
+          }, 0);
         } else {
           setTargetDateState((prev) => ({ ...prev, value: inputValue }));
         }

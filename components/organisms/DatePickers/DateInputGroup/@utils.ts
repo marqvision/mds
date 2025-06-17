@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { isValidDate } from '../@utils';
+import { validateDateAndRange } from '../@utils';
 import { DateInputProps } from './@types';
 
 const SEPARATOR_MAP = {
@@ -149,34 +149,45 @@ export const isDateRangeValid = (startDate: Date | null, endDate: Date | null): 
   return dayjs(startDate).isSame(endDate, 'day') || dayjs(startDate).isBefore(endDate, 'day');
 };
 
+export type DateValidationError = 'INVALID_DATE' | 'MIN_DATE' | 'MAX_DATE';
+
 /**
- * 날짜 문자열 값에 대한 전체 유효성을 검사하여 에러 발생 여부를 반환합니다.
- * (형식, 길이, 부분적 유효성, 전체 유효성, min/max 범위 포함)
+ * 날짜 문자열의 전체적인 유효성을 검사하고, 유효하지 않은 경우 구체적인 오류 유형을 반환합니다.
+ * 형식, 부분적 유효성, 날짜 존재 여부, 그리고 min/max 범위를 모두 검사합니다.
  * @param value - 검사할 날짜 문자열.
- * @param format - 날짜 포맷.
+ * @param format - 'MM/DD/YYYY' 또는 'YYYY-MM-DD' 형식의 날짜 포맷.
  * @param minDate - 허용되는 최소 날짜.
  * @param maxDate - 허용되는 최대 날짜.
- * @returns 에러가 있으면 true, 유효하면 false.
+ * @returns 유효성 검사를 통과하면 null을 반환하고, 오류가 있는 경우 'INVALID_DATE', 'MIN_DATE', 'MAX_DATE' 중 하나의 오류 코드를 반환합니다.
  */
 export const validateDateValue = (
   value: string,
   format: 'MM/DD/YYYY' | 'YYYY-MM-DD',
   minDate?: Date,
-  maxDate?: Date,
-): boolean => {
+  maxDate?: Date
+): DateValidationError | null => {
   if (!value) {
-    return false;
+    return null;
   }
-  if (
-    !isDateShapeValid(value, format) ||
-    value.length < format.length ||
-    !isPartiallyValidDate(value, format)
-  ) {
-    return true;
+  if (value.length < format.length || !isDateShapeValid(value, format) || !isPartiallyValidDate(value, format)) {
+    return 'INVALID_DATE';
   }
   const parsedDate = parseDateString(value, format);
-  const { isValid, isOutOfRange } = isValidDate(parsedDate, minDate, maxDate);
-  return !isValid || isOutOfRange;
+  const { isValid, isOutOfRange } = validateDateAndRange(parsedDate, minDate, maxDate);
+
+  if (!isValid) {
+    return 'INVALID_DATE';
+  }
+
+  if (isOutOfRange) {
+    const isBeforeMin = minDate && dayjs(parsedDate).isBefore(minDate, 'day');
+    if (isBeforeMin) {
+      return 'MIN_DATE';
+    }
+    return 'MAX_DATE';
+  }
+
+  return null;
 };
 
 /**
@@ -197,20 +208,21 @@ export const getValidatedDate = (
   if (!parsedDate) {
     return null;
   }
-  const { isValid, isOutOfRange } = isValidDate(parsedDate, minDate, maxDate);
+  const { isValid, isOutOfRange } = validateDateAndRange(parsedDate, minDate, maxDate);
   return isValid && !isOutOfRange ? parsedDate : null;
 };
 
 /**
- * 에러 상태와 입력 타입('start' 또는 'end')에 따라 적절한 헬퍼 텍스트를 반환합니다.
- * @param type - 'start' 또는 'end'.
- * @param errors - 에러 상태 객체.
- * @param dateInputProps - 해당 입력 필드의 props.
- * @returns 헬퍼 텍스트 문자열 또는 undefined.
+ * 현재 오류 상태에 따라 사용자에게 표시할 적절한 도움말 텍스트를 결정합니다.
+ * 날짜 범위 오류, 최소/최대 날짜 오류, 또는 일반적인 유효성 오류 등 다양한 케이스를 처리합니다.
+ * @param type - 'start' 또는 'end' 중 어떤 입력 필드에 대한 텍스트인지 지정합니다.
+ * @param errors - 시작 및 종료 날짜의 오류 상태와 범위 오류 여부를 포함하는 객체.
+ * @param dateInputProps - 해당 입력 필드에 전달된 props. 사용자 정의 helperText를 확인하는 데 사용됩니다.
+ * @returns 오류 상태에 맞는 헬퍼 텍스트 문자열을 반환합니다. 오류가 없으면 undefined를 반환합니다.
  */
 export const getHelperText = (
   type: 'start' | 'end',
-  errors: { start: boolean; end: boolean; range: boolean },
+  errors: { start: DateValidationError | null; end: DateValidationError | null; range: boolean },
   dateInputProps: DateInputProps
 ) => {
   if (errors.range) {
@@ -219,8 +231,19 @@ export const getHelperText = (
       : 'End date must be same or after start date';
   }
 
-  const hasError = type === 'start' ? errors.start : errors.end;
-  if (hasError || dateInputProps.isError) {
+  const errorType = type === 'start' ? errors.start : errors.end;
+
+  if (errorType) {
+    if (errorType === 'MIN_DATE') {
+      return `Date cannot be before the minimum date`;
+    }
+    if (errorType === 'MAX_DATE') {
+      return `Date cannot be after the maximum date`;
+    }
+    return dateInputProps.helperText || 'Invalid date';
+  }
+
+  if (dateInputProps.isError) {
     return dateInputProps.helperText || 'Invalid date';
   }
 

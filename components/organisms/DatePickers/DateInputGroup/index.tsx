@@ -8,16 +8,8 @@ import { DEFAULT_PROPS } from './@constants';
 
 const DateInputGroup = (props: DateInputGroupProps) => {
   const { startDate, endDate, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
-  const {
-    startDateState,
-    endDateState,
-    errors,
-    handleStartDateChange,
-    handleEndDateChange,
-    handleBlur,
-    startHasError,
-    endHasError,
-  } = useDateInputGroup(props);
+  const { startDateState, endDateState, errors, handleStartDateChange, handleEndDateChange, handleBlur } =
+    useDateInputGroup(props);
 
   return (
     <DateInputGroupLayout>
@@ -30,8 +22,8 @@ const DateInputGroup = (props: DateInputGroupProps) => {
           placeholder={startDate.placeholder || format || DEFAULT_PROPS.placeholder}
           onChange={handleStartDateChange}
           onBlur={handleBlur}
-          status={startHasError ? 'error' : undefined}
-          guide={getHelperText('start', errors, startDate)}
+          status={errors.startDateField ? 'error' : undefined}
+          guide={getHelperText('start', errors.value, startDate)}
         />
       </div>
       {typeof separator === 'string' ? <MDSTypography data-role="separator">{separator}</MDSTypography> : separator}
@@ -44,8 +36,8 @@ const DateInputGroup = (props: DateInputGroupProps) => {
           placeholder={endDate.placeholder || format || DEFAULT_PROPS.placeholder}
           onChange={handleEndDateChange}
           onBlur={handleBlur}
-          status={endHasError ? 'error' : undefined}
-          guide={getHelperText('end', errors, endDate)}
+          status={errors.endDateField ? 'error' : undefined}
+          guide={getHelperText('end', errors.value, endDate)}
         />
       </div>
     </DateInputGroupLayout>

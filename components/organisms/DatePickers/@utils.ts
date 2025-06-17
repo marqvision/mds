@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
 
 /**
- * 주어진 Date 객체가 유효한 날짜인지, 그리고 min/max 날짜 범위 내에 있는지 확인합니다.
+ * 주어진 Date 객체의 유효성을 검사하고, 선택적인 min/max 날짜 범위 내에 있는지 확인합니다.
+ * min/max 날짜와 동일한 날짜는 유효한 것으로 간주합니다.
  * @param date - 검사할 Date 객체.
- * @param minDate - 허용되는 최소 날짜.
- * @param maxDate - 허용되는 최대 날짜.
- * @returns 유효성과 범위 이탈 여부를 담은 객체.
+ * @param minDate - 허용되는 최소 날짜 (경계 포함).
+ * @param maxDate - 허용되는 최대 날짜 (경계 포함).
+ * @returns 날짜의 유효성(isValid)과 범위 이탈 여부(isOutOfRange)를 포함하는 객체를 반환합니다.
  */
-export const isValidDate = (
+export const validateDateAndRange = (
   date: Date | null,
   minDate?: Date,
   maxDate?: Date
@@ -21,7 +22,10 @@ export const isValidDate = (
     return { isValid: false, isOutOfRange: false };
   }
 
-  if ((minDate && dayjs(date).isBefore(minDate, 'day')) || (maxDate && dayjs(date).isAfter(maxDate, 'day'))) {
+  const isBeforeMin = minDate && dayjs(date).isBefore(minDate, 'day');
+  const isAfterMax = maxDate && dayjs(date).isAfter(maxDate, 'day');
+
+  if (isBeforeMin || isAfterMax) {
     return { isValid: true, isOutOfRange: true };
   }
 

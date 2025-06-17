@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { isValidDate } from '../../@utils';
+import { validateDateAndRange } from '../../@utils';
 import { DateInputGroupProps, DateInputProps } from '../@types';
 import {
   isDateRangeValid,
@@ -8,16 +8,18 @@ import {
   parseDateString,
   validateDateValue,
   getValidatedDate,
+  DateValidationError,
 } from '../@utils';
 import { DEFAULT_PROPS } from '../@constants';
 
 export const useDateInputGroup = (params: DateInputGroupProps) => {
   const { startDate, endDate, minDate, maxDate, format = DEFAULT_PROPS.format, onDateChange } = params;
 
+  //#region - local state
   const [startDateState, setStartDateState] = useState(() => {
     const initialValue = startDate.value || '';
     const d = parseDateString(initialValue, format);
-    const { isValid, isOutOfRange } = isValidDate(d, minDate, maxDate);
+    const { isValid, isOutOfRange } = validateDateAndRange(d, minDate, maxDate);
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,
@@ -26,27 +28,36 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   const [endDateState, setEndDateState] = useState(() => {
     const initialValue = endDate.value || '';
     const d = parseDateString(initialValue, format);
-    const { isValid, isOutOfRange } = isValidDate(d, minDate, maxDate);
+    const { isValid, isOutOfRange } = validateDateAndRange(d, minDate, maxDate);
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,
     };
   });
-  const [errors, setErrors] = useState({ start: false, end: false, range: false });
+  const [errors, setErrors] = useState<{
+    start: DateValidationError | null;
+    end: DateValidationError | null;
+    range: boolean;
+  }>({ start: null, end: null, range: false });
+  //#endregion
 
-  const setErrorsOptimized = useCallback((newErrors: Partial<{ start: boolean; end: boolean; range: boolean }>) => {
-    setErrors((currentErrors) => {
-      const nextErrors = { ...currentErrors, ...newErrors };
-      if (
-        currentErrors.start === nextErrors.start &&
-        currentErrors.end === nextErrors.end &&
-        currentErrors.range === nextErrors.range
-      ) {
-        return currentErrors;
-      }
-      return nextErrors;
-    });
-  }, []);
+  //#region - handlers
+  const setErrorsOptimized = useCallback(
+    (newErrors: Partial<{ start: DateValidationError | null; end: DateValidationError | null; range: boolean }>) => {
+      setErrors((currentErrors) => {
+        const nextErrors = { ...currentErrors, ...newErrors };
+        if (
+          currentErrors.start === nextErrors.start &&
+          currentErrors.end === nextErrors.end &&
+          currentErrors.range === nextErrors.range
+        ) {
+          return currentErrors;
+        }
+        return nextErrors;
+      });
+    },
+    []
+  );
 
   const handleStartDateChange = useDateChangeHandler('start', {
     dateProps: startDate,
@@ -99,9 +110,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       });
     }
   };
-
-  const startHasError = errors.start || !!startDate.isError || errors.range;
-  const endHasError = errors.end || !!endDate.isError || errors.range;
+  //#endregion
 
   //#region 밖에서 주입되는 값 검증
   const validateExternalInjectedDates = useCallback(
@@ -134,6 +143,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       setStartDateState((prev) => ({ ...prev, value }));
       validateExternalInjectedDates(value, endDateState.value);
     }
+    // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate.value]);
 
@@ -143,6 +153,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       setEndDateState((prev) => ({ ...prev, value }));
       validateExternalInjectedDates(startDateState.value, value);
     }
+    // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endDate.value]);
   //#endregion
@@ -150,12 +161,14 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   return {
     startDateState,
     endDateState,
-    errors,
+    errors: {
+      value: errors,
+      startDateField: !!errors.start || !!startDate.isError || errors.range,
+      endDateField: !!errors.end || !!endDate.isError || errors.range,
+    },
     handleStartDateChange,
     handleEndDateChange,
     handleBlur,
-    startHasError,
-    endHasError,
   };
 };
 
@@ -176,7 +189,9 @@ const useDateChangeHandler = (
     otherState: { value: string; lastValid: Date | null };
     setTargetDateState: React.Dispatch<React.SetStateAction<{ value: string; lastValid: Date | null }>>;
     setOtherState: React.Dispatch<React.SetStateAction<{ value: string; lastValid: Date | null }>>;
-    setErrors: (newErrors: Partial<{ start: boolean; end: boolean; range: boolean }>) => void;
+    setErrors: (
+      newErrors: Partial<{ start: DateValidationError | null; end: DateValidationError | null; range: boolean }>
+    ) => void;
     format: 'MM/DD/YYYY' | 'YYYY-MM-DD';
     minDate?: Date;
     maxDate?: Date;
@@ -185,15 +200,14 @@ const useDateChangeHandler = (
 ) => {
   return useCallback(
     (inputValue: string) => {
-      const { onChange } = dateProps;
-      setTargetDateState((prev) => ({ ...prev, value: inputValue }));
-      onChange?.(inputValue);
+      const { onChange: onDateFieldChange } = dateProps;
+      onDateFieldChange?.(inputValue);
 
       if (!isDateShapeValid(inputValue, format) || !isPartiallyValidDate(inputValue, format)) {
-        setErrors({ [type]: true, range: false });
+        setErrors({ [type]: 'INVALID_DATE', range: false });
+        setTargetDateState((prev) => ({ ...prev, value: inputValue }));
         return;
       }
-      setErrors({ [type]: false });
 
       if (inputValue.length >= format.length || inputValue.length === 0) {
         const otherValue = otherState.value;
@@ -229,7 +243,12 @@ const useDateChangeHandler = (
             startDate: type === 'start' ? nextStartDate : validStartDate ?? otherState.lastValid,
             endDate: type === 'end' ? nextEndDate : validEndDate ?? otherState.lastValid,
           });
+        } else {
+          setTargetDateState((prev) => ({ ...prev, value: inputValue }));
         }
+      } else {
+        setErrors({ [type]: null, range: false });
+        setTargetDateState((prev) => ({ ...prev, value: inputValue }));
       }
     },
     [dateProps, otherState, setTargetDateState, setOtherState, setErrors, format, minDate, maxDate, onDateChange, type]

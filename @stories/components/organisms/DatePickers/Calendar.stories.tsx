@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useState } from '@storybook/preview-api';
 import dayjs from 'dayjs';
 import { MDSCalendar } from '../../../../components/organisms/DatePickers/Calendar';
-import { MDSInput, MDSTypography } from '../../../../components';
+import { MDSButton, MDSInput, MDSTypography } from '../../../../components';
 
 const meta: Meta<typeof MDSCalendar> = {
   component: MDSCalendar,
@@ -92,6 +92,15 @@ export const DateRange: Story = {
     const handleChange = (startDate: Date, endDate: Date) => {
       setSelectedDate({ startDate, endDate });
     };
+
+    const [inputStartDate, setInputStartDate] = useState<string>(selectedDate.startDate.toLocaleDateString());
+    const [inputEndDate, setInputEndDate] = useState<string>(selectedDate.endDate.toLocaleDateString());
+    const submitInputChange = (startDate: string, endDate: string) => {
+      const newStartDate = dayjs(startDate, 'MM/DD/YYYY').toDate();
+      const newEndDate = dayjs(endDate, 'MM/DD/YYYY').toDate();
+      setSelectedDate({ startDate: newStartDate, endDate: newEndDate });
+    };
+
     return (
       <div>
         <div>
@@ -101,6 +110,12 @@ export const DateRange: Story = {
             선택한 날짜 범위: {selectedDate.startDate.toLocaleDateString()} -{' '}
             {selectedDate.endDate.toLocaleDateString()}
           </MDSTypography>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '110px 4px 110px 60px', gap: '10px', alignItems: 'center' }}>
+          <MDSInput variant="textField" value={inputStartDate} onChange={setInputStartDate} />
+          ~
+          <MDSInput variant="textField" value={inputEndDate} onChange={setInputEndDate} />
+          <MDSButton onClick={() => submitInputChange(inputStartDate, inputEndDate)}>선택</MDSButton>
         </div>
         <MDSCalendar value={selectedDate} minDate={args.minDate} maxDate={args.maxDate} onChange={handleChange} />
       </div>

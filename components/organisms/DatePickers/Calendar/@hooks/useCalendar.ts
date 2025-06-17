@@ -24,9 +24,18 @@ export const useCalendar = (params: Params) => {
   useEffect(() => {
     // note-@jamie: 외부 입력 값으로 min/maxDate를 벗어나면 calendar에서는 그냥 값을 무시하기로 하고, 입력하는 쪽에서 에러를 표시하는 방향으로.
     if (isDateRange(params)) {
-      if (isDateInMinMaxRange(params.value.startDate, params.minDate, params.maxDate)) {
+      if (
+        isDateInMinMaxRange(params.value.startDate, params.minDate, params.maxDate) &&
+        isDateInMinMaxRange(params.value.endDate, params.minDate, params.maxDate)
+      ) {
+        const whichDateChanged =
+          _value.startDate.toLocaleDateString() === params.value.startDate.toLocaleDateString()
+            ? 'endDate'
+            : 'startDate';
         setValue({ startDate: params.value.startDate, endDate: params.value.endDate });
-        setDisplayedDate(dayjs(params.value.startDate));
+        setDisplayedDate(
+          whichDateChanged === 'startDate' ? dayjs(params.value.startDate) : dayjs(params.value.endDate)
+        );
       }
     } else {
       if (isDateInMinMaxRange(params.value, params.minDate, params.maxDate)) {

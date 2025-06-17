@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { throttle } from 'lodash';
 import { isDateInMinMaxRange } from '../../@utils';
 import { DateRangeSelectionMode } from '../@types';
 
@@ -12,7 +13,7 @@ type SelectActionState = {
 };
 export const useDragSelect = (params: {
   startDate: Date;
-  lastDate: Date;
+  endDate: Date;
   minDate?: Date;
   maxDate?: Date;
   onDateRangeUpdate: (startDate: Date, lastDate: Date) => void;
@@ -22,7 +23,7 @@ export const useDragSelect = (params: {
     selectionMode: 'drag',
     anchorDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
     startDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-    endDateStr: dayjs(params.lastDate).format('YYYY-MM-DD'),
+    endDateStr: dayjs(params.endDate).format('YYYY-MM-DD'),
   });
 
   const [displayDate, setDisplayDate] = useState<{
@@ -69,17 +70,16 @@ export const useDragSelect = (params: {
       }
     });
   };
-  const dragMove = (event: React.MouseEvent) => {
+  const dragMove = throttle((event: React.MouseEvent) => {
     if (dragState.actionState === 'idle') return;
 
     const currentAnchorDateStr = calculateCurrentDate(event);
     if (!currentAnchorDateStr) return;
     if (!isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
 
-    
     setDragState((prev) => {
       if (!prev.startDateStr) return prev;
-      
+
       const { newStartDateStr, newEndDateStr } = resolveDateRange({
         anchorDateStr: prev.anchorDateStr,
         startDateStr: prev.startDateStr,
@@ -93,14 +93,18 @@ export const useDragSelect = (params: {
       });
       return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
     });
-  };
+  }, 100);
   const dragEnd = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
     if (!currentAnchorDateStr || !isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
 
     setDragState((prev) => {
-      if(prev.anchorDateStr === currentAnchorDateStr && prev.actionState === 'in-progress' && prev.selectionMode === 'click') {
+      if (
+        prev.anchorDateStr === currentAnchorDateStr &&
+        prev.actionState === 'in-progress' &&
+        prev.selectionMode === 'click'
+      ) {
         return {
           actionState: 'idle',
           selectionMode: 'drag',
@@ -109,7 +113,6 @@ export const useDragSelect = (params: {
           endDateStr: prev.anchorDateStr,
         };
       }
-
 
       const { newStartDateStr, newEndDateStr } = resolveDateRange({
         anchorDateStr: prev.anchorDateStr,
@@ -135,6 +138,22 @@ export const useDragSelect = (params: {
       };
     });
   };
+
+  useEffect(() => {
+    // 값에 대한 validation은 useCalendar에서 모두 처리하고 내려오니까 여기에서는 넘어온 값을 쓰기만 하면 된다!
+    setDisplayDate({
+      startDate: dayjs(params.startDate).format('YYYY-MM-DD'),
+      endDate: dayjs(params.endDate).format('YYYY-MM-DD'),
+    });
+    setDragState((prev) => {
+      return {
+        ...prev,
+        anchorDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
+        startDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
+        endDateStr: dayjs(params.endDate).format('YYYY-MM-DD'),
+      };
+    });
+  }, [params.startDate, params.endDate]);
 
   return {
     displayDate,
@@ -182,7 +201,7 @@ const resolveDateRange = (params: {
   } else if (currentDate.isAfter(anchorDate, 'day')) {
     newStartDateStr = params.anchorDateStr;
     newEndDateStr = params.currentDateStr;
-  } 
+  }
 
   return { newStartDateStr, newEndDateStr };
 };

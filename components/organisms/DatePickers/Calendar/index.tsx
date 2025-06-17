@@ -67,7 +67,7 @@ const DateRangeCalendarContent = (props: {
 
   const { dragState, dragMove, dragStart, dragEnd, displayDate } = useDragSelect({
     startDate: selectedDate.startDate,
-    lastDate: selectedDate.endDate,
+    endDate: selectedDate.endDate,
     minDate,
     maxDate,
     onDateRangeUpdate: (startDate, lastDate) => {

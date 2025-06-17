@@ -4,16 +4,26 @@
   "description": "Common design system for MarqVision web applications",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "typecheck": "tsc --noEmit"
   },
   "eslintConfig": {
     "rules": {
-      "no-restricted-imports": ["error", {
-        "patterns": ["opscc-ui-web*", "contents*", "brand*", "folio*", "mds*", "shared*"]
-      }]
+      "no-restricted-imports": [
+        "error",
+        {
+          "patterns": [
+            "opscc-ui-web*",
+            "contents*",
+            "brand*",
+            "folio*",
+            "mds*",
+            "shared*"
+          ]
+        }
+      ]
     }
   },
   "devDependencies": {
@@ -30,11 +40,41 @@
     "storybook": "^8.0.2",
     "clsx": "^2.1.1",
     "jotai": "^2.12.0",
-    "html-react-parser": "^5.1.12"
+    "html-react-parser": "^5.1.12",
+    "vite": "^5.0.10",
+    "dayjs": "^1.11.10"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "vite": "^5.0.10"
+    "@emotion/styled": "^11.11.0"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{js,jsx,ts,tsx}",
+      "!**/*.d.ts",
+      "!**/*.stories.tsx"
+    ],
+    "testMatch": [
+      "<rootDir>/**/**/**.test.{ts,tsx}"
+    ],
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "tsx",
+      "ts"
+    ],
+    "resetMocks": true
   }
 }

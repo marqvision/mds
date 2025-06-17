@@ -1,10 +1,13 @@
 import dayjs from 'dayjs';
+import minMax from 'dayjs/plugin/minMax';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSDropdown } from '../../../molecules/Dropdown';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { MDSTypography } from '../../../atoms/Typography';
 import { AVAILABLE_YEARS, MONTH_LABELS } from './@constants';
+
+dayjs.extend(minMax);
 
 const MonthSelectorContainer = styled.div`
   width: 100%;
@@ -91,7 +94,14 @@ const useYearMonthSelector = (props: Props) => {
   };
 
   const handleYearChange = (year: number) => {
-    onChange(displayedDate.year(year));
+    // year 값을 바꾸었을 때 displayedDate가 min/maxDate를 초과하는 케이스 처리 --> 선택 가능한 month view로 보여준다.
+    let newYearMonth = dayjs(new Date(year, displayedDate.month(), 1));
+    const minBound = dayjs.max(dayjs(new Date(year, displayedDate.month(), 1)), dayjs(minDate));
+    newYearMonth = minBound || newYearMonth;
+    const maxBound = dayjs.min(newYearMonth, dayjs(maxDate));
+    newYearMonth = maxBound || newYearMonth;
+
+    onChange(newYearMonth);
   };
 
   const handlePrevMonth = () => {

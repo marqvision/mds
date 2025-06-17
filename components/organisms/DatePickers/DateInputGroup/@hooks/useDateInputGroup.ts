@@ -36,11 +36,14 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
 
   const validateAndSyncDates = useCallback(
     (currentStartValue: string, currentEndValue: string) => {
-      const startError = validateDateValue(currentStartValue, format, minDate, maxDate);
-      const endError = validateDateValue(currentEndValue, format, minDate, maxDate);
+      const shouldClearStartDate = currentStartValue.trim().length === 0;
+      const shouldClearEndDate = currentEndValue.trim().length === 0;
 
-      const validStartDate = getValidatedDate(currentStartValue, format, minDate, maxDate);
-      const validEndDate = getValidatedDate(currentEndValue, format, minDate, maxDate);
+      const startError = shouldClearStartDate ? false : validateDateValue(currentStartValue, format, minDate, maxDate);
+      const endError = shouldClearEndDate ? false : validateDateValue(currentEndValue, format, minDate, maxDate);
+
+      const validStartDate = shouldClearStartDate ? null : getValidatedDate(currentStartValue, format, minDate, maxDate);
+      const validEndDate = shouldClearEndDate ? null : getValidatedDate(currentEndValue, format, minDate, maxDate);
 
       let rangeError = false;
       if (validStartDate && validEndDate) {
@@ -50,8 +53,11 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       setErrors({ start: startError, end: endError, range: rangeError });
 
       if (onDateChange) {
-        const nextStartDate = validStartDate ?? startDateState.lastValid;
-        const nextEndDate = validEndDate ?? endDateState.lastValid;
+        if (startError || endError || rangeError) {
+          return;
+        }
+        const nextStartDate = shouldClearStartDate ? null : validStartDate ?? startDateState.lastValid;
+        const nextEndDate = shouldClearEndDate ? null : validEndDate ?? endDateState.lastValid;
 
         if (validStartDate) setStartDateState((prev) => ({ ...prev, lastValid: validStartDate }));
         if (validEndDate) setEndDateState((prev) => ({ ...prev, lastValid: validEndDate }));
@@ -86,7 +92,6 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
 
   const startHasError = errors.start || !!startDate.isError || errors.range;
   const endHasError = errors.end || !!endDate.isError || errors.range;
-
 
   //#region 밖에서 주입되는 값 검증
   const validateExternalInjectedDates = useCallback(
@@ -168,9 +173,10 @@ const useDateChangeHandler = (
         setErrors((prev) => ({ ...prev, [type]: false }));
       }
 
-      if (inputValue.length >= format.length) {
+      if (inputValue.length >= format.length || inputValue.length === 0) {
         const currentStartValue = type === 'start' ? inputValue : otherValue;
         const currentEndValue = type === 'start' ? otherValue : inputValue;
+
         validateAndSyncDates(currentStartValue, currentEndValue);
       }
     },

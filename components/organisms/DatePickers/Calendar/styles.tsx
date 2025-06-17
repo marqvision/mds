@@ -173,9 +173,9 @@ export const DayCell = styled.div<{
     z-index: 1;
     color: ${({ isAnchorDate, isStartDate, isEndDate, isSelectionInProgress, isSelectable, theme }) => {
       if (isAnchorDate) return theme.color.content.on_default_color;
+      else if (!isSelectable) return theme.color.content.neutral.default.disabled;
       else if (isSelectionInProgress) return theme.color.content.neutral.default.normal;
       else if (isStartDate || isEndDate) return theme.color.content.on_default_color;
-      else if (!isSelectable) return theme.color.content.neutral.default.disabled;
       return theme.color.content.neutral.default.normal;
     }};
   }

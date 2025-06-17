@@ -5,42 +5,77 @@ const SEPARATOR_MAP = {
   'YYYY-MM-DD': '-',
 };
 
-type DatePart = 'year' | 'month' | 'day';
-
-const DATE_ORDER_MAP: Record<'MM/DD/YYYY' | 'YYYY-MM-DD', DatePart[]> = {
-  'MM/DD/YYYY': ['month', 'day', 'year'],
-  'YYYY-MM-DD': ['year', 'month', 'day'],
+const DATE_SHAPE_REGEX_MAP = {
+  'MM/DD/YYYY': /^(?!.*\/\/)\d{0,2}(\/(\d{0,2}(\/(\d{0,4})?)?)?)?$/,
+  'YYYY-MM-DD': /^(?!.*--)\d{0,4}(-(\d{0,2}(-(\d{0,2})?)?)?)?$/,
 };
 
-const PART_LENGTH_MAP: Record<DatePart, number> = {
-  month: 2,
-  day: 2,
-  year: 4,
-};
+export const isDateShapeValid = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-DD') => {
+  if (!DATE_SHAPE_REGEX_MAP[format].test(value)) {
+    return false;
+  }
 
-export const autoformatDate = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-DD' = 'MM/DD/YYYY') => {
   const separator = SEPARATOR_MAP[format];
-  const order = DATE_ORDER_MAP[format];
-  const cleaned = value.replace(new RegExp(`[^0-9\\${separator}]`, 'g'), '');
-  const parts = cleaned.split(separator);
+  const parts = value.split(separator);
 
-  const part1Length = PART_LENGTH_MAP[order[0]];
-  const part2Length = PART_LENGTH_MAP[order[1]];
-
-  let formatted = cleaned;
-
-  if (parts.length === 1 && parts[0].length === part1Length && value.length === part1Length) {
-    formatted = `${parts[0]}${separator}`;
-  } else if (parts.length === 2 && parts[1].length === part2Length && value.length === part1Length + 1 + part2Length) {
-    formatted = `${parts[0]}${separator}${parts[1]}${separator}`;
+  if (format === 'MM/DD/YYYY') {
+    if (parts.length > 1 && parts[0].length < 2) {
+      return false;
+    }
+    if (parts.length > 2 && parts[1].length < 2) {
+      return false;
+    }
+  } else if (format === 'YYYY-MM-DD') {
+    if (parts.length > 1 && parts[0].length < 4) {
+      return false;
+    }
+    if (parts.length > 2 && parts[1].length < 2) {
+      return false;
+    }
   }
 
-  const maxLength = PART_LENGTH_MAP.year + PART_LENGTH_MAP.day + PART_LENGTH_MAP.month + 2;
-  if (formatted.length > maxLength) {
-    formatted = formatted.substring(0, maxLength);
+  return true;
+};
+
+export const isPartiallyValidDate = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-DD'): boolean => {
+  const separator = SEPARATOR_MAP[format];
+  const parts = value.split(separator);
+
+  if (format === 'MM/DD/YYYY') {
+    const [monthStr, dayStr] = parts;
+
+    if (monthStr && monthStr.length === 2) {
+      const month = parseInt(monthStr, 10);
+      if (month < 1 || month > 12) {
+        return false;
+      }
+    }
+
+    if (dayStr && dayStr.length === 2) {
+      const day = parseInt(dayStr, 10);
+      if (day < 1 || day > 31) {
+        return false;
+      }
+    }
+  } else if (format === 'YYYY-MM-DD') {
+    const [, monthStr, dayStr] = parts;
+
+    if (monthStr && monthStr.length === 2) {
+      const month = parseInt(monthStr, 10);
+      if (month < 1 || month > 12) {
+        return false;
+      }
+    }
+
+    if (dayStr && dayStr.length === 2) {
+      const day = parseInt(dayStr, 10);
+      if (day < 1 || day > 31) {
+        return false;
+      }
+    }
   }
 
-  return formatted;
+  return true;
 };
 
 export const parseDateString = (

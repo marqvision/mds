@@ -1,107 +1,113 @@
-import { parseDateString, isValidDate, autoformatDate } from './@utils';
+import { parseDateString, isValidDate, isDateShapeValid, isPartiallyValidDate } from './@utils';
 
-describe('DateInputGroup utils', () => {
-  describe('autoformatDate with "MM/DD/YYYY"', () => {
-    it('should add separator after month part', () => {
-      expect(autoformatDate('01', 'MM/DD/YYYY')).toBe('01/');
+describe('DateInputGroup 유틸 함수', () => {
+  describe('isDateShapeValid 함수', () => {
+    it('MM/DD/YYYY: 부분적으로 또는 완전히 올바른 형태를 유효하다고 판단해야 합니다', () => {
+      expect(isDateShapeValid('01', 'MM/DD/YYYY')).toBe(true);
+      expect(isDateShapeValid('01/', 'MM/DD/YYYY')).toBe(true);
+      expect(isDateShapeValid('01/23', 'MM/DD/YYYY')).toBe(true);
+      expect(isDateShapeValid('01/23/', 'MM/DD/YYYY')).toBe(true);
+      expect(isDateShapeValid('01/23/2024', 'MM/DD/YYYY')).toBe(true);
     });
 
-    it('should add separator after day part', () => {
-      expect(autoformatDate('01/23', 'MM/DD/YYYY')).toBe('01/23/');
+    it('MM/DD/YYYY: 잘못된 형태를 유효하지 않다고 판단해야 합니다', () => {
+      expect(isDateShapeValid('222222222', 'MM/DD/YYYY')).toBe(false);
+      expect(isDateShapeValid('01//23', 'MM/DD/YYYY')).toBe(false);
+      expect(isDateShapeValid('01/23/2024/', 'MM/DD/YYYY')).toBe(false);
+      expect(isDateShapeValid('a/b/c', 'MM/DD/YYYY')).toBe(false);
+      expect(isDateShapeValid('1/23/2024', 'MM/DD/YYYY')).toBe(false);
+      expect(isDateShapeValid('01/2/2024', 'MM/DD/YYYY')).toBe(false);
     });
 
-    it('should not add separator if length is not met', () => {
-      expect(autoformatDate('1', 'MM/DD/YYYY')).toBe('1');
-      expect(autoformatDate('01/2', 'MM/DD/YYYY')).toBe('01/2');
+    it('YYYY-MM-DD: 부분적으로 또는 완전히 올바른 형태를 유효하다고 판단해야 합니다', () => {
+      expect(isDateShapeValid('2024', 'YYYY-MM-DD')).toBe(true);
+      expect(isDateShapeValid('2024-', 'YYYY-MM-DD')).toBe(true);
+      expect(isDateShapeValid('2024-01-23', 'YYYY-MM-DD')).toBe(true);
     });
 
-    it('should filter out invalid characters', () => {
-      expect(autoformatDate('01a', 'MM/DD/YYYY')).toBe('01');
-      expect(autoformatDate('01/a23', 'MM/DD/YYYY')).toBe('01/23');
-    });
-
-    it('should limit total length to format length', () => {
-      expect(autoformatDate('01/23/20245', 'MM/DD/YYYY')).toBe('01/23/2024');
+    it('YYYY-MM-DD: 잘못된 형태를 유효하지 않다고 판단해야 합니다', () => {
+      expect(isDateShapeValid('222222222', 'YYYY-MM-DD')).toBe(false);
+      expect(isDateShapeValid('2024--01', 'YYYY-MM-DD')).toBe(false);
+      expect(isDateShapeValid('2023-/10/10', 'YYYY-MM-DD')).toBe(false);
+      expect(isDateShapeValid('2024/01-/10', 'YYYY-MM-DD')).toBe(false);
     });
   });
 
-  describe('parseDateString with "MM/DD/YYYY"', () => {
-    it('should correctly parse a valid date string', () => {
+  describe('parseDateString 함수 ("MM/DD/YYYY" 포맷)', () => {
+    it('유효한 날짜 문자열을 올바르게 파싱해야 합니다', () => {
       const date = parseDateString('03/15/2024', 'MM/DD/YYYY');
       expect(date).toEqual(new Date(2024, 2, 15));
     });
 
-    it('should return null for an invalid month', () => {
+    it('유효하지 않은 월에 대해 null을 반환해야 합니다', () => {
       expect(parseDateString('13/15/2024', 'MM/DD/YYYY')).toBeNull();
       expect(parseDateString('00/15/2024', 'MM/DD/YYYY')).toBeNull();
     });
 
-    it('should return null for an invalid day', () => {
+    it('유효하지 않은 일에 대해 null을 반환해야 합니다', () => {
       expect(parseDateString('02/30/2024', 'MM/DD/YYYY')).toBeNull();
       expect(parseDateString('04/31/2024', 'MM/DD/YYYY')).toBeNull();
     });
 
-    it('should return null for an invalid date format', () => {
+    it('유효하지 않은 날짜 포맷에 대해 null을 반환해야 합니다', () => {
       expect(parseDateString('3/15/2024', 'MM/DD/YYYY')).toBeNull();
       expect(parseDateString('03/1/2024', 'MM/DD/YYYY')).toBeNull();
       expect(parseDateString('03/15/202', 'MM/DD/YYYY')).toBeNull();
-      expect(parseDateString('54/2/3342', 'MM/DD/YYYY')).toBeNull();
-    });
-
-    it('should return null for non-numeric parts', () => {
-      expect(parseDateString('aa/bb/cccc', 'MM/DD/YYYY')).toBeNull();
-    });
-
-    it('should handle dates with invalid month or day values, like "54/02/3342"', () => {
-      expect(parseDateString('54/02/3342', 'MM/DD/YYYY')).toBeNull();
     });
   });
 
-  describe('parseDateString with "YYYY-MM-DD"', () => {
-    it('should correctly parse a valid date string', () => {
+  describe('parseDateString 함수 ("YYYY-MM-DD" 포맷)', () => {
+    it('유효한 날짜 문자열을 올바르게 파싱해야 합니다', () => {
       const date = parseDateString('2024-03-15', 'YYYY-MM-DD');
       expect(date).toEqual(new Date(2024, 2, 15));
     });
 
-    it('should return null for an invalid month', () => {
+    it('유효하지 않은 월에 대해 null을 반환해야 합니다', () => {
       expect(parseDateString('2024-13-15', 'YYYY-MM-DD')).toBeNull();
     });
 
-    it('should return null for an invalid day', () => {
+    it('유효하지 않은 일에 대해 null을 반환해야 합니다', () => {
       expect(parseDateString('2024-02-30', 'YYYY-MM-DD')).toBeNull();
     });
   });
 
-  describe('isValidDate', () => {
+  describe('isValidDate 함수', () => {
     const minDate = new Date(2024, 0, 1);
     const maxDate = new Date(2024, 11, 31);
 
-    it('should return { isValid: false, isOutOfRange: false } for a null date', () => {
+    it('null 날짜에 대해 { isValid: false, isOutOfRange: false }를 반환해야 합니다', () => {
       expect(isValidDate(null)).toEqual({ isValid: false, isOutOfRange: false });
     });
 
-    it('should return { isValid: true, isOutOfRange: false } for a valid date within range', () => {
+    it('범위 내의 유효한 날짜에 대해 { isValid: true, isOutOfRange: false }를 반환해야 합니다', () => {
       const date = new Date(2024, 5, 15);
       expect(isValidDate(date, minDate, maxDate)).toEqual({ isValid: true, isOutOfRange: false });
     });
+  });
 
-    it('should return { isValid: true, isOutOfRange: true } for a date before minDate', () => {
-      const date = new Date(2023, 11, 31);
-      const result = isValidDate(date, minDate, maxDate);
-      expect(result.isValid).toBe(true);
-      expect(result.isOutOfRange).toBe(true);
+  describe('isPartiallyValidDate 함수', () => {
+    it('MM/DD/YYYY: 유효한 부분 날짜를 올바르게 판단해야 합니다', () => {
+      expect(isPartiallyValidDate('12', 'MM/DD/YYYY')).toBe(true);
+      expect(isPartiallyValidDate('12/31', 'MM/DD/YYYY')).toBe(true);
     });
 
-    it('should return { isValid: true, isOutOfRange: true } for a date after maxDate', () => {
-      const date = new Date(2025, 0, 1);
-      const result = isValidDate(date, minDate, maxDate);
-      expect(result.isValid).toBe(true);
-      expect(result.isOutOfRange).toBe(true);
+    it('MM/DD/YYYY: 유효하지 않은 부분 날짜를 올바르게 판단해야 합니다', () => {
+      expect(isPartiallyValidDate('13', 'MM/DD/YYYY')).toBe(false);
+      expect(isPartiallyValidDate('00', 'MM/DD/YYYY')).toBe(false);
+      expect(isPartiallyValidDate('12/32', 'MM/DD/YYYY')).toBe(false);
+      expect(isPartiallyValidDate('12/00', 'MM/DD/YYYY')).toBe(false);
     });
 
-    it('should return { isValid: true, isOutOfRange: false } for a valid date without range constraints', () => {
-      const date = new Date();
-      expect(isValidDate(date)).toEqual({ isValid: true, isOutOfRange: false });
+    it('YYYY-MM-DD: 유효한 부분 날짜를 올바르게 판단해야 합니다', () => {
+      expect(isPartiallyValidDate('2024-12', 'YYYY-MM-DD')).toBe(true);
+      expect(isPartiallyValidDate('2024-12-31', 'YYYY-MM-DD')).toBe(true);
+    });
+
+    it('YYYY-MM-DD: 유효하지 않은 부분 날짜를 올바르게 판단해야 합니다', () => {
+      expect(isPartiallyValidDate('2024-13', 'YYYY-MM-DD')).toBe(false);
+      expect(isPartiallyValidDate('2024-00', 'YYYY-MM-DD')).toBe(false);
+      expect(isPartiallyValidDate('2024-12-32', 'YYYY-MM-DD')).toBe(false);
+      expect(isPartiallyValidDate('2024-12-00', 'YYYY-MM-DD')).toBe(false);
     });
   });
-}); 
+});

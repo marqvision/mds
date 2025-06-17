@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from '@storybook/preview-api';
 import { MDSDateInputGroup } from '../../../../components/organisms/DatePickers/DateInputGroup';
+import { MDSTypography } from '../../../../components';
 
 const meta: Meta<typeof MDSDateInputGroup> = {
   component: MDSDateInputGroup,
@@ -30,22 +31,34 @@ type Story = StoryObj<typeof MDSDateInputGroup>;
 export const Preview: Story = {
   args: {
     startDate: {
-      format: 'MM/DD/YYYY',
       onChange: () => {},
     },
     endDate: {
-      format: 'MM/DD/YYYY',
       onChange: () => {},
     },
   },
   render: function Render() {
-    const [startDate, setStartDate] = useState<string>('');
-    const [endDate, setEndDate] = useState<string>('');
+    const [date1, setDate1] = useState<{ start: string; end: string }>({ start: '', end: '' });
+    const [date2, setDate2] = useState<{ start: string; end: string }>({ start: '', end: '' });
     return (
-      <MDSDateInputGroup
-        startDate={{ value: startDate, onChange: setStartDate }}
-        endDate={{ value: endDate, onChange: setEndDate }}
-      />
+      <div>
+        <div>
+          <MDSTypography>포맷: MM/DD/YYYY</MDSTypography>
+          <MDSDateInputGroup
+            format="MM/DD/YYYY" // 기본값
+            startDate={{ value: date1.start, onChange: (value) => setDate1({ ...date1, start: value }) }}
+            endDate={{ value: date1.end, onChange: (value) => setDate1({ ...date1, end: value }) }}
+          />
+        </div>
+        <div>
+          <MDSTypography>포맷: YYYY-MM-DD</MDSTypography>
+          <MDSDateInputGroup
+            format="YYYY-MM-DD"
+            startDate={{ value: date2.start, onChange: (value) => setDate2({ ...date2, start: value }) }}
+            endDate={{ value: date2.end, onChange: (value) => setDate2({ ...date2, end: value }) }}
+          />
+        </div>
+      </div>
     );
   },
 };

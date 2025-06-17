@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSInput, MDSInputProps } from '../../../molecules/Input';
 import { DateInputGroupLayout } from './styles';
-import { autoformatDate, isValidDate, parseDateString } from './@utils';
+import { isValidDate, parseDateString, isDateShapeValid, isPartiallyValidDate } from './@utils';
 
 type DateInputProps = {
   value?: MDSInputProps<string>['value'];
   label?: MDSInputProps<string>['label'];
   placeholder?: MDSInputProps<string>['placeholder'];
-  format?: 'MM/DD/YYYY' | 'YYYY-MM-DD';
-  minDate?: Date;
-  maxDate?: Date;
   onChange: (value: string) => void;
   isError?: boolean;
   helperText?: string;
@@ -20,6 +18,9 @@ type Props = {
   separator?: React.ReactNode;
   startDate: DateInputProps;
   endDate: DateInputProps;
+  minDate?: Date;
+  maxDate?: Date;
+  format?: 'MM/DD/YYYY' | 'YYYY-MM-DD';
 };
 
 const DEFAULT_PROPS: {
@@ -34,7 +35,14 @@ const DEFAULT_PROPS: {
   format: 'MM/DD/YYYY',
 };
 
-const DateInputGroup = ({ separator = DEFAULT_PROPS.separator, startDate, endDate }: Props) => {
+const DateInputGroup = ({
+  separator = DEFAULT_PROPS.separator,
+  startDate,
+  endDate,
+  minDate,
+  maxDate,
+  format = DEFAULT_PROPS.format,
+}: Props) => {
   const [startValue, setStartValue] = useState(startDate.value || '');
   const [endValue, setEndValue] = useState(endDate.value || '');
 
@@ -56,17 +64,22 @@ const DateInputGroup = ({ separator = DEFAULT_PROPS.separator, startDate, endDat
       setError: React.Dispatch<React.SetStateAction<boolean>>
     ) =>
     (inputValue: string) => {
-      const { format = DEFAULT_PROPS.format, minDate, maxDate, onChange } = dateProps;
-      const formattedValue = autoformatDate(inputValue, format);
-      setValue(formattedValue);
-      onChange(formattedValue);
+      const { onChange } = dateProps;
 
-      const parsedDate = parseDateString(formattedValue, format);
-      if (formattedValue.length >= format.length) {
+      setValue(inputValue);
+      onChange(inputValue);
+
+      if (!isDateShapeValid(inputValue, format)) {
+        setError(true);
+        return;
+      }
+
+      if (inputValue.length >= format.length) {
+        const parsedDate = dayjs(inputValue, format, true).isValid() ? parseDateString(inputValue, format) : null;
         const { isValid, isOutOfRange } = isValidDate(parsedDate, minDate, maxDate);
         setError(!isValid || isOutOfRange);
       } else {
-        setError(false);
+        setError(!isPartiallyValidDate(inputValue, format));
       }
     };
 
@@ -84,7 +97,7 @@ const DateInputGroup = ({ separator = DEFAULT_PROPS.separator, startDate, endDat
           variant="textField"
           value={startValue}
           label={startDate.label}
-          placeholder={startDate.placeholder || DEFAULT_PROPS.placeholder}
+          placeholder={startDate.placeholder || format || DEFAULT_PROPS.placeholder}
           onChange={handleStartDateChange}
           status={startHasError ? 'error' : undefined}
           guide={startHasError ? startDate.helperText || 'Invalid date' : undefined}
@@ -97,7 +110,7 @@ const DateInputGroup = ({ separator = DEFAULT_PROPS.separator, startDate, endDat
           variant="textField"
           value={endValue}
           label={endDate.label}
-          placeholder={endDate.placeholder || DEFAULT_PROPS.placeholder}
+          placeholder={endDate.placeholder || format || DEFAULT_PROPS.placeholder}
           onChange={handleEndDateChange}
           status={endHasError ? 'error' : undefined}
           guide={endHasError ? endDate.helperText || 'Invalid date' : undefined}

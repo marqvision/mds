@@ -23,8 +23,11 @@ type Param = {
   printStackTrace?: boolean;
 };
 
-const debug = ({ title, message, data, printStackTrace = false }: Param) => {
-  const logContent: any[] = [`[DEBUG] ${title}`];
+const generateLogContent = (
+  level: 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR',
+  { title, message, data, printStackTrace }: Param,
+) => {
+  const logContent: any[] = [`[${level}] ${title}`];
   if (message) {
     logContent.push(`\n\n📝 Message: ${message}`);
   }
@@ -34,44 +37,26 @@ const debug = ({ title, message, data, printStackTrace = false }: Param) => {
   if (printStackTrace) {
     logContent.push(`\n\n📍 Stack Trace:\n${getCallSite()}`);
   }
+  return logContent;
+};
+
+const debug = ({ title, message, data, printStackTrace = false }: Param) => {
+  const logContent = generateLogContent('DEBUG', { title, message, data, printStackTrace });
   console.debug(...getStyledPrefix('#9E9E9E'), ...logContent); // Gray
 };
 
 const info = ({ title, message, data, printStackTrace = false }: Param) => {
-  const logContent: any[] = [`[INFO] ${title}`];
-  if (message) {
-    logContent.push(`\n\n📝 Message: ${message}`);
-  }
-  if (data) {
-    logContent.push('\n\n📦 Data:', data);
-  }
-  if (printStackTrace) {
-    logContent.push(`\n\n📍 Stack Trace:\n${getCallSite()}`);
-  }
+  const logContent = generateLogContent('INFO', { title, message, data, printStackTrace });
   console.info(...getStyledPrefix('#2196F3'), ...logContent); // Blue
 };
 
-const warning = ({ title, message, data }: Param) => {
-  const logContent: any[] = [`[WARNING] ${title}`];
-  if (message) {
-    logContent.push(`\n\n📝 Message: ${message}`);
-  }
-  if (data) {
-    logContent.push('\n\n📦 Data:', data);
-  }
-  logContent.push(`\n\n📍 Stack Trace:\n`);
+const warning = ({ title, message, data, printStackTrace }: Param) => {
+  const logContent = generateLogContent('WARNING', { title, message, data, printStackTrace });
   console.warn(...getStyledPrefix('#FF9800'), ...logContent); // Orange
 };
 
-const error = ({ title, message, data }: Param) => {
-  const logContent: any[] = [`[ERROR] ${title}`];
-  if (message) {
-    logContent.push(`\n\n📝 Message: ${message}`);
-  }
-  if (data) {
-    logContent.push('\n\n📦 Data:', data);
-  }
-  logContent.push(`\n\n📍 Stack Trace:\n`);
+const error = ({ title, message, data, printStackTrace }: Param) => {
+  const logContent = generateLogContent('ERROR', { title, message, data, printStackTrace });
   console.error(...getStyledPrefix('#F44336'), ...logContent); // Red
 };
 

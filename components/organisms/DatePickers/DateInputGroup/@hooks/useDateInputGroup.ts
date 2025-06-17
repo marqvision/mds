@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { DateInputGroupProps, DateInputProps } from '../@types';
-import { isDateRangeValid, isDateShapeValid, isPartiallyValidDate, isValidDate, parseDateString } from '../@utils';
+import {
+  isDateRangeValid,
+  isDateShapeValid,
+  isPartiallyValidDate,
+  isValidDate,
+  parseDateString,
+  validateDateValue,
+  getValidatedDate,
+} from '../@utils';
 import { DEFAULT_PROPS } from '../@constants';
 
 export const useDateInputGroup = (params: DateInputGroupProps) => {
@@ -15,7 +23,6 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       lastValid: d && isValid && !isOutOfRange ? d : null,
     };
   });
-
   const [endDateState, setEndDateState] = useState(() => {
     const initialValue = endDate.value || '';
     const d = parseDateString(initialValue, format);
@@ -25,67 +32,34 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       lastValid: d && isValid && !isOutOfRange ? d : null,
     };
   });
-
   const [errors, setErrors] = useState({ start: false, end: false, range: false });
 
   const validateAndSyncDates = useCallback(
     (currentStartValue: string, currentEndValue: string) => {
-      let startError = false;
-      if (currentStartValue) {
-        if (
-          !isDateShapeValid(currentStartValue, format) ||
-          currentStartValue.length < format.length ||
-          !isPartiallyValidDate(currentStartValue, format)
-        ) {
-          startError = true;
-        } else {
-          const parsedDate = parseDateString(currentStartValue, format);
-          const { isValid, isOutOfRange } = isValidDate(parsedDate, minDate, maxDate);
-          startError = !isValid || isOutOfRange;
-        }
-      }
+      const startError = validateDateValue(currentStartValue, format, minDate, maxDate);
+      const endError = validateDateValue(currentEndValue, format, minDate, maxDate);
 
-      let endError = false;
-      if (currentEndValue) {
-        if (
-          !isDateShapeValid(currentEndValue, format) ||
-          currentEndValue.length < format.length ||
-          !isPartiallyValidDate(currentEndValue, format)
-        ) {
-          endError = true;
-        } else {
-          const parsedDate = parseDateString(currentEndValue, format);
-          const { isValid, isOutOfRange } = isValidDate(parsedDate, minDate, maxDate);
-          endError = !isValid || isOutOfRange;
-        }
-      }
-
-      const parsedStart = parseDateString(currentStartValue, format);
-      const startCheck = isValidDate(parsedStart, minDate, maxDate);
-      const isStartOk = parsedStart && startCheck.isValid && !startCheck.isOutOfRange;
-
-      const parsedEnd = parseDateString(currentEndValue, format);
-      const endCheck = isValidDate(parsedEnd, minDate, maxDate);
-      const isEndOk = parsedEnd && endCheck.isValid && !endCheck.isOutOfRange;
+      const validStartDate = getValidatedDate(currentStartValue, format, minDate, maxDate);
+      const validEndDate = getValidatedDate(currentEndValue, format, minDate, maxDate);
 
       let rangeError = false;
-      if (isStartOk && isEndOk) {
-        rangeError = !isDateRangeValid(parsedStart, parsedEnd);
+      if (validStartDate && validEndDate) {
+        rangeError = !isDateRangeValid(validStartDate, validEndDate);
       }
 
       setErrors({ start: startError, end: endError, range: rangeError });
 
       if (onDateChange) {
-        const nextStartDate = isStartOk ? parsedStart : startDateState.lastValid;
-        const nextEndDate = isEndOk ? parsedEnd : endDateState.lastValid;
+        const nextStartDate = validStartDate ?? startDateState.lastValid;
+        const nextEndDate = validEndDate ?? endDateState.lastValid;
 
-        if (isStartOk) setStartDateState((prev) => ({ ...prev, lastValid: parsedStart }));
-        if (isEndOk) setEndDateState((prev) => ({ ...prev, lastValid: parsedEnd }));
+        if (validStartDate) setStartDateState(prev => ({ ...prev, lastValid: validStartDate }));
+        if (validEndDate) setEndDateState(prev => ({ ...prev, lastValid: validEndDate }));
 
         onDateChange({ startDate: nextStartDate, endDate: nextEndDate });
       }
     },
-    [format, startDateState.lastValid, endDateState.lastValid, maxDate, minDate, onDateChange]
+    [format, startDateState.lastValid, endDateState.lastValid, maxDate, minDate, onDateChange],
   );
 
   const handleStartDateChange = useDateChangeHandler('start', {

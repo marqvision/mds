@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { isDateInMinMaxRange } from '../../@utils';
+import { isValidDate } from '../../@utils';
 import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from '../@types';
 
 type Params = CommonOptions & (SingleDateValue | DateRangeValue);
@@ -24,10 +24,18 @@ export const useCalendar = (params: Params) => {
   useEffect(() => {
     // note-@jamie: 외부 입력 값으로 min/maxDate를 벗어나면 calendar에서는 그냥 값을 무시하기로 하고, 입력하는 쪽에서 에러를 표시하는 방향으로.
     if (isDateRange(params)) {
-      if (
-        isDateInMinMaxRange(params.value.startDate, params.minDate, params.maxDate) &&
-        isDateInMinMaxRange(params.value.endDate, params.minDate, params.maxDate)
-      ) {
+      const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = isValidDate(
+        params.value.startDate,
+        params.minDate,
+        params.maxDate
+      );
+      const { isValid: isEndValid, isOutOfRange: isEndOutOfRange } = isValidDate(
+        params.value.endDate,
+        params.minDate,
+        params.maxDate
+      );
+
+      if (isStartValid && !isStartOutOfRange && isEndValid && !isEndOutOfRange) {
         const whichDateChanged =
           _value.startDate.toLocaleDateString() === params.value.startDate.toLocaleDateString()
             ? 'endDate'
@@ -38,7 +46,8 @@ export const useCalendar = (params: Params) => {
         );
       }
     } else {
-      if (isDateInMinMaxRange(params.value, params.minDate, params.maxDate)) {
+      const { isValid, isOutOfRange } = isValidDate(params.value, params.minDate, params.maxDate);
+      if (isValid && !isOutOfRange) {
         setValue({ startDate: params.value, endDate: params.value });
         setDisplayedDate(dayjs(params.value));
       }
@@ -52,8 +61,20 @@ export const useCalendar = (params: Params) => {
       ...commonProps,
       type: 'range' as const,
       onChange: (startDate: Date, endDate: Date) => {
-        if (!isDateInMinMaxRange(startDate, params.minDate, params.maxDate)) return;
-        if (!isDateInMinMaxRange(endDate, params.minDate, params.maxDate)) return;
+        const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = isValidDate(
+          startDate,
+          params.minDate,
+          params.maxDate
+        );
+        if (!isStartValid || isStartOutOfRange) return;
+
+        const { isValid: isEndValid, isOutOfRange: isEndOutOfRange } = isValidDate(
+          endDate,
+          params.minDate,
+          params.maxDate
+        );
+        if (!isEndValid || isEndOutOfRange) return;
+
         setValue({ startDate, endDate });
         params.onChange(startDate, endDate);
       },
@@ -64,7 +85,9 @@ export const useCalendar = (params: Params) => {
     ...commonProps,
     type: 'single' as const,
     onChange: (date: Date) => {
-      if (!isDateInMinMaxRange(date, params.minDate, params.maxDate)) return;
+      const { isValid, isOutOfRange } = isValidDate(date, params.minDate, params.maxDate);
+      if (!isValid || isOutOfRange) return;
+
       setValue({ startDate: date, endDate: date });
       params.onChange(date);
     },
@@ -81,22 +104,33 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   const firstDayOfMonth = currentDate.startOf('month');
   const lastDayOfMonth = currentDate.endOf('month');
 
+  const isSelectableDate = (d: Date) => {
+    const { isValid, isOutOfRange } = isValidDate(d, minDate, maxDate);
+    return isValid && !isOutOfRange;
+  };
+
   // 이전 달의 마지막 날짜들 --- 미래에 이 날짜들로 뭔가 하고 싶을 수도 있어서 일단은 남겨둠
   const firstDayOfWeek = firstDayOfMonth.day();
-  const prevMonthDays = Array.from({ length: firstDayOfWeek }, (_, i) => ({
-    date: firstDayOfMonth.subtract(firstDayOfWeek - i, 'day').toDate(),
-    isDisplayedMonth: false,
-    isSelectable: isDateInMinMaxRange(firstDayOfMonth.add(i, 'day').toDate(), minDate, maxDate),
-    weekIndex: 0,
-  }));
+  const prevMonthDays = Array.from({ length: firstDayOfWeek }, (_, i) => {
+    const prevMonthDate = firstDayOfMonth.subtract(firstDayOfWeek - i, 'day').toDate();
+    return {
+      date: prevMonthDate,
+      isDisplayedMonth: false,
+      isSelectable: isSelectableDate(prevMonthDate),
+      weekIndex: 0,
+    };
+  });
 
   // 현재 달의 날짜들
-  const currentMonthDays = Array.from({ length: lastDayOfMonth.date() }, (_, i) => ({
-    date: firstDayOfMonth.add(i, 'day').toDate(),
-    isDisplayedMonth: true,
-    isSelectable: isDateInMinMaxRange(firstDayOfMonth.add(i, 'day').toDate(), minDate, maxDate),
-    weekIndex: Math.floor((firstDayOfWeek + i) / 7),
-  }));
+  const currentMonthDays = Array.from({ length: lastDayOfMonth.date() }, (_, i) => {
+    const currentMonthDate = firstDayOfMonth.add(i, 'day').toDate();
+    return {
+      date: currentMonthDate,
+      isDisplayedMonth: true,
+      isSelectable: isSelectableDate(currentMonthDate),
+      weekIndex: Math.floor((firstDayOfWeek + i) / 7),
+    };
+  });
 
   // 다음 달의 시작 날짜들 --- 미래에 이 날짜들로 뭔가 하고 싶을 수도 있어서 일단은 남겨둠
   const totalDays = prevMonthDays.length + currentMonthDays.length;
@@ -123,7 +157,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
     return {
       date: nextMonthDate,
       isDisplayedMonth: false,
-      isSelectable: isDateInMinMaxRange(nextMonthDate, minDate, maxDate),
+      isSelectable: isSelectableDate(nextMonthDate),
       weekIndex,
     };
   });

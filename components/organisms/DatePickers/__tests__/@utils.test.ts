@@ -1,6 +1,23 @@
-import { parseDateString, isValidDate, isDateShapeValid, isPartiallyValidDate, isDateRangeValid } from './@utils';
+import { isValidDate } from '../@utils';
+import { parseDateString, isDateShapeValid, isPartiallyValidDate, isDateRangeValid } from '../DateInputGroup/@utils';
 
-describe('DateInputGroup 유틸 함수', () => {
+describe('DatePickers 유틸 함수', () => {
+  describe('isValidDate 함수', () => {
+    const minDate = new Date(2024, 0, 1);
+    const maxDate = new Date(2024, 11, 31);
+
+    it('null 날짜에 대해 { isValid: false, isOutOfRange: false }를 반환해야 합니다', () => {
+      expect(isValidDate(null)).toEqual({ isValid: false, isOutOfRange: false });
+    });
+
+    it('범위 내의 유효한 날짜에 대해 { isValid: true, isOutOfRange: false }를 반환해야 합니다', () => {
+      const date = new Date(2024, 5, 15);
+      expect(isValidDate(date, minDate, maxDate)).toEqual({ isValid: true, isOutOfRange: false });
+    });
+  });
+});
+
+describe('DateInputGroup 컴포넌트 유틸 함수', () => {
   describe('isDateShapeValid 함수', () => {
     it('MM/DD/YYYY: 부분적으로 또는 완전히 올바른 형태를 유효하다고 판단해야 합니다', () => {
       expect(isDateShapeValid('01', 'MM/DD/YYYY')).toBe(true);
@@ -68,20 +85,6 @@ describe('DateInputGroup 유틸 함수', () => {
 
     it('유효하지 않은 일에 대해 null을 반환해야 합니다', () => {
       expect(parseDateString('2024-02-30', 'YYYY-MM-DD')).toBeNull();
-    });
-  });
-
-  describe('isValidDate 함수', () => {
-    const minDate = new Date(2024, 0, 1);
-    const maxDate = new Date(2024, 11, 31);
-
-    it('null 날짜에 대해 { isValid: false, isOutOfRange: false }를 반환해야 합니다', () => {
-      expect(isValidDate(null)).toEqual({ isValid: false, isOutOfRange: false });
-    });
-
-    it('범위 내의 유효한 날짜에 대해 { isValid: true, isOutOfRange: false }를 반환해야 합니다', () => {
-      const date = new Date(2024, 5, 15);
-      expect(isValidDate(date, minDate, maxDate)).toEqual({ isValid: true, isOutOfRange: false });
     });
   });
 

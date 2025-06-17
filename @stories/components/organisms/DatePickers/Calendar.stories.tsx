@@ -42,18 +42,22 @@ export const SingleDate: Story = {
     };
     return (
       <div>
-        <MDSTypography>선택한 날짜: {selectedDate?.toLocaleDateString()}</MDSTypography>
+        <div>
+          <MDSTypography>minDate: {args.minDate.toLocaleDateString()}</MDSTypography>
+          <MDSTypography>maxDate: {args.maxDate.toLocaleDateString()}</MDSTypography>
+          <MDSTypography>선택한 날짜: {selectedDate?.toLocaleDateString()}</MDSTypography>
+        </div>
         <MDSCalendar value={selectedDate} onChange={handleChange} minDate={args.minDate} maxDate={args.maxDate} />
       </div>
     );
   },
 };
 export const DateRange: Story = {
-/**
- * todo - known issues
- * - [ ] start, end date에 같은 날짜를 선택 가능하는 기능
- * - [ ] date range를 선택 중일 때, border style을 dashed로 하면 두 날짜 셀이 만나는 부분에서 dashed 선이 뭉치는 문제
- */
+  /**
+   * todo - known issues
+   * - [ ] start, end date에 같은 날짜를 선택 가능하는 기능
+   * - [ ] date range를 선택 중일 때, border style을 dashed로 하면 두 날짜 셀이 만나는 부분에서 dashed 선이 뭉치는 문제
+   */
   render: function Render() {
     const args = {
       value: {
@@ -71,10 +75,15 @@ export const DateRange: Story = {
     };
     return (
       <div>
-        <MDSTypography>
-          선택한 날짜 범위: {selectedDate.startDate.toLocaleDateString()} - {selectedDate.endDate.toLocaleDateString()}
-        </MDSTypography>
-        <MDSCalendar value={selectedDate} onChange={handleChange} />
+        <div>
+          <MDSTypography>minDate: {args.minDate.toLocaleDateString()}</MDSTypography>
+          <MDSTypography>maxDate: {args.maxDate.toLocaleDateString()}</MDSTypography>
+          <MDSTypography>
+            선택한 날짜 범위: {selectedDate.startDate.toLocaleDateString()} -{' '}
+            {selectedDate.endDate.toLocaleDateString()}
+          </MDSTypography>
+        </div>
+        <MDSCalendar value={selectedDate} minDate={args.minDate} maxDate={args.maxDate} onChange={handleChange} />
       </div>
     );
   },

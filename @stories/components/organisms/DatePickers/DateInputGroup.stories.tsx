@@ -30,23 +30,21 @@ export default meta;
 type Story = StoryObj<typeof MDSDateInputGroup>;
 
 export const Preview: Story = {
-  args: {
-    startDate: {
-      onChange: () => {},
-    },
-    endDate: {
-      onChange: () => {},
-    },
-  },
   render: function Render() {
     const format1 = 'MM/DD/YYYY';
     const format2 = 'YYYY-MM-DD';
-    const [date1, setDate1] = useState<{ start: string; end: string }>({ start: '', end: '' });
-    const [date2, setDate2] = useState<{ start: string; end: string }>({ start: '', end: '' });
+    const [date1, setDate1] = useState<{ start: string; end: string }>({
+      start: dayjs().format(format1),
+      end: dayjs().add(1, 'day').format(format1),
+    });
+    const [date2, setDate2] = useState<{ start: string; end: string }>({
+      start: dayjs().format(format2),
+      end: dayjs().add(1, 'day').format(format2),
+    });
     return (
       <div>
-        <div>
-          <MDSTypography>포맷: {format1}</MDSTypography>
+        <div style={{ marginBottom: '20px' }}>
+          <MDSTypography variant="title">포맷: {format1}</MDSTypography>
           <MDSDateInputGroup
             format={format1} // 기본값
             startDate={{ value: date1.start }}
@@ -59,12 +57,15 @@ export const Preview: Story = {
             }}
           />
           <div>
+            <MDSTypography variant="title" size="m">
+              결과
+            </MDSTypography>
             <MDSTypography>startDate: {date1.start}</MDSTypography>
             <MDSTypography>endDate: {date1.end}</MDSTypography>
           </div>
         </div>
         <div>
-          <MDSTypography>포맷: {format2}</MDSTypography>
+          <MDSTypography variant="title">포맷: {format2}</MDSTypography>
           <MDSDateInputGroup
             format={format2}
             startDate={{ value: date2.start }}
@@ -77,6 +78,9 @@ export const Preview: Story = {
             }}
           />
           <div>
+            <MDSTypography variant="title" size="m">
+              결과
+            </MDSTypography>
             <MDSTypography>startDate: {date2.start}</MDSTypography>
             <MDSTypography>endDate: {date2.end}</MDSTypography>
           </div>

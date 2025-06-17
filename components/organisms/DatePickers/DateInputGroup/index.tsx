@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSInput, MDSInputProps } from '../../../molecules/Input';
 import { DateInputGroupLayout } from './styles';
-import { isValidDate, parseDateString, isDateShapeValid, isPartiallyValidDate } from './@utils';
+import { isValidDate, parseDateString, isDateShapeValid, isPartiallyValidDate, isDateRangeValid } from './@utils';
 
 type DateInputProps = {
   value?: MDSInputProps<string>['value'];
@@ -50,6 +50,7 @@ const DateInputGroup = ({
 
   const [isStartError, setIsStartError] = useState(false);
   const [isEndError, setIsEndError] = useState(false);
+  const [isRangeError, setIsRangeError] = useState(false);
 
   const [lastValidStartDate, setLastValidStartDate] = useState<Date | null>(() => {
     const d = parseDateString(startDate.value || '', format);
@@ -69,6 +70,23 @@ const DateInputGroup = ({
   useEffect(() => {
     setEndValue(endDate.value || '');
   }, [endDate.value]);
+
+  useEffect(() => {
+    const start = parseDateString(startValue, format);
+    const end = parseDateString(endValue, format);
+
+    const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = isValidDate(start, minDate, maxDate);
+    const { isValid: isEndValid, isOutOfRange: isEndOutOfRange } = isValidDate(end, minDate, maxDate);
+
+    const isStartOk = start && isStartValid && !isStartOutOfRange;
+    const isEndOk = end && isEndValid && !isEndOutOfRange;
+
+    if (isStartOk && isEndOk) {
+      setIsRangeError(!isDateRangeValid(start, end));
+    } else {
+      setIsRangeError(false);
+    }
+  }, [startValue, endValue, format, minDate, maxDate, lastValidStartDate, lastValidEndDate]);
 
   const callOnDateChange = (startStr: string, endStr: string) => {
     if (!onDateChange) {
@@ -158,8 +176,20 @@ const DateInputGroup = ({
     callOnDateChange(startValue, endValue);
   };
 
-  const startHasError = isStartError || startDate.isError;
-  const endHasError = isEndError || endDate.isError;
+  const startHasError = isStartError || !!startDate.isError || isRangeError;
+  const endHasError = isEndError || !!endDate.isError || isRangeError;
+
+  const getStartHelperText = () => {
+    if (isRangeError) return 'Start date must be same or before end date';
+    if (isStartError || startDate.isError) return startDate.helperText || 'Invalid date';
+    return undefined;
+  };
+
+  const getEndHelperText = () => {
+    if (isRangeError) return 'End date must be same or after start date';
+    if (isEndError || endDate.isError) return endDate.helperText || 'Invalid date';
+    return undefined;
+  };
 
   return (
     <DateInputGroupLayout>
@@ -173,7 +203,7 @@ const DateInputGroup = ({
           onChange={handleStartDateChange}
           onBlur={handleBlur}
           status={startHasError ? 'error' : undefined}
-          guide={startHasError ? startDate.helperText || 'Invalid date' : undefined}
+          guide={getStartHelperText()}
         />
       </div>
       {typeof separator === 'string' ? <MDSTypography data-role="separator">{separator}</MDSTypography> : separator}
@@ -187,7 +217,7 @@ const DateInputGroup = ({
           onChange={handleEndDateChange}
           onBlur={handleBlur}
           status={endHasError ? 'error' : undefined}
-          guide={endHasError ? endDate.helperText || 'Invalid date' : undefined}
+          guide={getEndHelperText()}
         />
       </div>
     </DateInputGroupLayout>

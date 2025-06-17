@@ -134,4 +134,12 @@ export const isValidDate = (
   }
 
   return { isValid: true, isOutOfRange: false };
+};
+
+export const isDateRangeValid = (startDate: Date | null, endDate: Date | null): boolean => {
+  if (!startDate || !endDate) {
+    return true;
+  }
+
+  return dayjs(startDate).isSame(endDate, 'day') || dayjs(startDate).isBefore(endDate, 'day');
 }; 

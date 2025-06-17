@@ -1,4 +1,4 @@
-import { parseDateString, isValidDate, isDateShapeValid, isPartiallyValidDate } from './@utils';
+import { parseDateString, isValidDate, isDateShapeValid, isPartiallyValidDate, isDateRangeValid } from './@utils';
 
 describe('DateInputGroup 유틸 함수', () => {
   describe('isDateShapeValid 함수', () => {
@@ -108,6 +108,36 @@ describe('DateInputGroup 유틸 함수', () => {
       expect(isPartiallyValidDate('2024-00', 'YYYY-MM-DD')).toBe(false);
       expect(isPartiallyValidDate('2024-12-32', 'YYYY-MM-DD')).toBe(false);
       expect(isPartiallyValidDate('2024-12-00', 'YYYY-MM-DD')).toBe(false);
+    });
+  });
+
+  describe('isDateRangeValid 함수', () => {
+    it('startDate가 endDate보다 이전일 경우 true를 반환해야 합니다', () => {
+      const startDate = new Date(2024, 0, 1);
+      const endDate = new Date(2024, 0, 2);
+      expect(isDateRangeValid(startDate, endDate)).toBe(true);
+    });
+
+    it('startDate와 endDate가 동일할 경우 true를 반환해야 합니다', () => {
+      const startDate = new Date(2024, 0, 1);
+      const endDate = new Date(2024, 0, 1);
+      expect(isDateRangeValid(startDate, endDate)).toBe(true);
+    });
+
+    it('startDate가 endDate보다 이후일 경우 false를 반환해야 합니다', () => {
+      const startDate = new Date(2024, 0, 2);
+      const endDate = new Date(2024, 0, 1);
+      expect(isDateRangeValid(startDate, endDate)).toBe(false);
+    });
+
+    it('startDate 또는 endDate 중 하나가 null일 경우 true를 반환해야 합니다', () => {
+      const date = new Date(2024, 0, 1);
+      expect(isDateRangeValid(date, null)).toBe(true);
+      expect(isDateRangeValid(null, date)).toBe(true);
+    });
+
+    it('startDate와 endDate가 모두 null일 경우 true를 반환해야 합니다', () => {
+      expect(isDateRangeValid(null, null)).toBe(true);
     });
   });
 });

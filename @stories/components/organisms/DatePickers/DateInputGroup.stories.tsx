@@ -1,5 +1,5 @@
-
 import { Meta, StoryObj } from '@storybook/react';
+import { useState } from '@storybook/preview-api';
 import { MDSDateInputGroup } from '../../../../components/organisms/DatePickers/DateInputGroup';
 
 const meta: Meta<typeof MDSDateInputGroup> = {
@@ -13,13 +13,13 @@ const meta: Meta<typeof MDSDateInputGroup> = {
     },
   },
   tags: ['autodocs'],
-  args: {
-    value: '2025-01-01',
-    onChange: () => {},
-  },
+  args: {},
   argTypes: {
-    value: {
-      control: 'date',
+    startDate: {
+      control: 'object',
+    },
+    endDate: {
+      control: 'object',
     },
   },
 };
@@ -27,10 +27,25 @@ const meta: Meta<typeof MDSDateInputGroup> = {
 export default meta;
 type Story = StoryObj<typeof MDSDateInputGroup>;
 
-
 export const Preview: Story = {
   args: {
-    value: '2025-01-01',
-    onChange: () => {},
+    startDate: {
+      format: 'MM/DD/YYYY',
+      onChange: () => {},
+    },
+    endDate: {
+      format: 'MM/DD/YYYY',
+      onChange: () => {},
+    },
+  },
+  render: function Render() {
+    const [startDate, setStartDate] = useState<string>('');
+    const [endDate, setEndDate] = useState<string>('');
+    return (
+      <MDSDateInputGroup
+        startDate={{ value: startDate, onChange: setStartDate }}
+        endDate={{ value: endDate, onChange: setEndDate }}
+      />
+    );
   },
 };

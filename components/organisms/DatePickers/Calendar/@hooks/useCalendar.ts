@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { isDateInMinMaxRange } from '../../@utils';
 import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from '../@types';
@@ -20,6 +20,23 @@ export const useCalendar = (params: Params) => {
     displayedDate,
     setDisplayedDate,
   };
+
+  useEffect(() => {
+    // note-@jamie: 외부 입력 값으로 min/maxDate를 벗어나면 calendar에서는 그냥 값을 무시하기로 하고, 입력하는 쪽에서 에러를 표시하는 방향으로.
+    if (isDateRange(params)) {
+      if (isDateInMinMaxRange(params.value.startDate, params.minDate, params.maxDate)) {
+        setValue({ startDate: params.value.startDate, endDate: params.value.endDate });
+        setDisplayedDate(dayjs(params.value.startDate));
+      }
+    } else {
+      if (isDateInMinMaxRange(params.value, params.minDate, params.maxDate)) {
+        setValue({ startDate: params.value, endDate: params.value });
+        setDisplayedDate(dayjs(params.value));
+      }
+    }
+    // note-@jamie: 의도된 exhaustive-deps -- params.onChange 함수의 참조를 얼려야 해결될듯..
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.value]);
 
   if (isDateRange(params)) {
     return {

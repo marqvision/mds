@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useState } from '@storybook/preview-api';
 import dayjs from 'dayjs';
 import { MDSCalendar } from '../../../../components/organisms/DatePickers/Calendar';
-import { MDSTypography } from '../../../../components';
+import { MDSInput, MDSTypography } from '../../../../components';
 
 const meta: Meta<typeof MDSCalendar> = {
   component: MDSCalendar,
@@ -40,12 +40,31 @@ export const SingleDate: Story = {
     const handleChange = (newDate: Date) => {
       setSelectedDate(newDate);
     };
+
+    const [inputValue, setInputValue] = useState<string>(selectedDate.toLocaleDateString());
+    const submitInputChange = (value: string) => {
+      const newDate = dayjs(value, 'MM/DD/YYYY').toDate();
+      setSelectedDate(newDate);
+    };
     return (
       <div>
         <div>
           <MDSTypography>minDate: {args.minDate.toLocaleDateString()}</MDSTypography>
           <MDSTypography>maxDate: {args.maxDate.toLocaleDateString()}</MDSTypography>
           <MDSTypography>선택한 날짜: {selectedDate?.toLocaleDateString()}</MDSTypography>
+        </div>
+        <div>
+          <MDSInput
+            variant="textField"
+            value={inputValue}
+            custom={{
+              add: {
+                label: '선택',
+                onSubmit: submitInputChange,
+              },
+            }}
+            onChange={setInputValue}
+          />
         </div>
         <MDSCalendar value={selectedDate} onChange={handleChange} minDate={args.minDate} maxDate={args.maxDate} />
       </div>

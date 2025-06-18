@@ -12,8 +12,8 @@ type SelectActionState = {
   endDateStr: string;
 };
 export const useDragSelect = (params: {
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date;
+  endDate?: Date;
   minDate?: Date;
   maxDate?: Date;
   onDateRangeUpdate: (startDate: Date, lastDate: Date) => void;
@@ -21,9 +21,9 @@ export const useDragSelect = (params: {
   const [dragState, setDragState] = useState<SelectActionState>({
     actionState: 'idle',
     selectionMode: 'drag',
-    anchorDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-    startDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-    endDateStr: dayjs(params.endDate).format('YYYY-MM-DD'),
+    anchorDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+    startDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+    endDateStr: params.endDate ? dayjs(params.endDate).format('YYYY-MM-DD') : '',
   });
 
   const [displayDate, setDisplayDate] = useState<{
@@ -37,7 +37,11 @@ export const useDragSelect = (params: {
   const dragStart = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = validateDateAndRange(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
+    const { isValid, isOutOfRange } = validateDateAndRange(
+      dayjs(currentAnchorDateStr).toDate(),
+      params.minDate,
+      params.maxDate
+    );
     if (!isValid || isOutOfRange) return;
 
     setDragState((prev) => {
@@ -76,7 +80,11 @@ export const useDragSelect = (params: {
 
     const currentAnchorDateStr = calculateCurrentDate(event);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = validateDateAndRange(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
+    const { isValid, isOutOfRange } = validateDateAndRange(
+      dayjs(currentAnchorDateStr).toDate(),
+      params.minDate,
+      params.maxDate
+    );
     if (!isValid || isOutOfRange) return;
 
     setDragState((prev) => {
@@ -99,7 +107,11 @@ export const useDragSelect = (params: {
   const dragEnd = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = validateDateAndRange(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
+    const { isValid, isOutOfRange } = validateDateAndRange(
+      dayjs(currentAnchorDateStr).toDate(),
+      params.minDate,
+      params.maxDate
+    );
     if (!isValid || isOutOfRange) return;
 
     setDragState((prev) => {
@@ -145,15 +157,15 @@ export const useDragSelect = (params: {
   useEffect(() => {
     // 값에 대한 validation은 useCalendar에서 모두 처리하고 내려오니까 여기에서는 넘어온 값을 쓰기만 하면 된다!
     setDisplayDate({
-      startDate: dayjs(params.startDate).format('YYYY-MM-DD'),
-      endDate: dayjs(params.endDate).format('YYYY-MM-DD'),
+      startDate: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+      endDate: params.endDate ? dayjs(params.endDate).format('YYYY-MM-DD') : '',
     });
     setDragState((prev) => {
       return {
         ...prev,
-        anchorDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-        startDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-        endDateStr: dayjs(params.endDate).format('YYYY-MM-DD'),
+        anchorDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+        startDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+        endDateStr: params.endDate ? dayjs(params.endDate).format('YYYY-MM-DD') : '',
       };
     });
   }, [params.startDate, params.endDate]);

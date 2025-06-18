@@ -10,7 +10,7 @@ import { mdsLogger } from '../../../utils';
  * @returns 날짜의 유효성(isValid)과 범위 이탈 여부(isOutOfRange)를 포함하는 객체를 반환합니다.
  */
 export const validateDateAndRange = (
-  date: Date | null,
+  date?: Date | null,
   minDate?: Date,
   maxDate?: Date
 ): { isValid: boolean; isOutOfRange: boolean } => {

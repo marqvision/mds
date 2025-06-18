@@ -5,7 +5,7 @@ import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from '../
 
 type Params = CommonOptions & (SingleDateValue | DateRangeValue);
 export const useCalendar = (params: Params) => {
-  const [_value, setValue] = useState<{ startDate: Date; endDate: Date }>(
+  const [_value, setValue] = useState<{ startDate?: Date; endDate?: Date }>(
     isDateRange(params) ? params.value : { startDate: params.value, endDate: params.value }
   );
   const [displayedDate, setDisplayedDate] = useState(
@@ -37,7 +37,7 @@ export const useCalendar = (params: Params) => {
 
       if (isStartValid && !isStartOutOfRange && isEndValid && !isEndOutOfRange) {
         const whichDateChanged =
-          _value.startDate.toLocaleDateString() === params.value.startDate.toLocaleDateString()
+          _value.startDate?.toLocaleDateString() === params.value.startDate?.toLocaleDateString()
             ? 'endDate'
             : 'startDate';
         setValue({ startDate: params.value.startDate, endDate: params.value.endDate });

@@ -54,7 +54,6 @@ export const useDragSelect = (params: {
           endDateStr: prev.endDateStr,
         };
       } else {
-        
         if (prev.actionState === 'in-progress') {
           // 드래그 하다가 캘린더 밖으로 나갔다 온 케이스
           return {
@@ -86,6 +85,20 @@ export const useDragSelect = (params: {
     );
     if (!isValid || isOutOfRange) return;
 
+    setDisplayDate((prev) => {
+      const { newStartDateStr, newEndDateStr } = resolveDateRange({
+        anchorDateStr: anchorDateStr.current,
+        startDateStr: prev.startDate,
+        endDateStr: prev.endDate,
+        currentDateStr: currentAnchorDateStr,
+      });
+
+      return {
+        startDate: newStartDateStr,
+        endDate: newEndDateStr,
+      };
+    });
+
     setSelectActionState((prev) => {
       if (!prev.startDateStr) return prev;
 
@@ -96,10 +109,6 @@ export const useDragSelect = (params: {
         currentDateStr: currentAnchorDateStr,
       });
 
-      setDisplayDate({
-        startDate: newStartDateStr,
-        endDate: newEndDateStr,
-      });
       params.onDateRangeUpdate(dayjs(newStartDateStr).toDate(), dayjs(newEndDateStr).toDate());
       return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
     });
@@ -113,6 +122,19 @@ export const useDragSelect = (params: {
       params.maxDate
     );
     if (!isValid || isOutOfRange) return;
+
+    setDisplayDate((prev) => {
+      const { newStartDateStr, newEndDateStr } = resolveDateRange({
+        anchorDateStr: anchorDateStr.current,
+        startDateStr: prev.startDate,
+        endDateStr: prev.endDate,
+        currentDateStr: currentAnchorDateStr,
+      });
+      return {
+        startDate: newStartDateStr,
+        endDate: newEndDateStr,
+      };
+    });
 
     setSelectActionState((prev) => {
       // console.log('>>>>> prev anchor', prev.anchorDateStr);
@@ -143,10 +165,6 @@ export const useDragSelect = (params: {
         currentDateStr: currentAnchorDateStr,
       });
 
-      setDisplayDate({
-        startDate: newStartDateStr,
-        endDate: newEndDateStr,
-      });
       params.onDateRangeUpdate(dayjs(newStartDateStr).toDate(), dayjs(newEndDateStr).toDate());
 
       const selectionMode = newStartDateStr === newEndDateStr ? 'click' : 'drag';

@@ -1,12 +1,10 @@
-import { forwardRef, isValidElement, useEffect, useRef } from 'react';
+import { forwardRef, isValidElement } from 'react';
 import styled from '@emotion/styled';
-import { useAtom, useAtomValue } from 'jotai';
 import { keyframes } from '@emotion/react';
 import { MDSDimmed } from '../Dimmed';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSTypography } from '../../atoms/Typography';
 import { MDSPanelActionProps, MDSPanelBodyProps, MDSPanelHeaderProps, MDSPanelProps, PanelDirection } from './@type';
-import { panelAtom } from './@atom';
 
 // todo-@matthew 추후 공통 transition 으로 변경
 const transition = '300ms ease';
@@ -73,22 +71,13 @@ const StyledBody = styled.div`
   position: relative;
 `;
 
-const StyledObserver = styled.div`
-  position: absolute;
-  height: 1px;
-  width: 100%;
-  margin-top: -1px;
-  z-index: -1;
-`;
-
 const StyledActions = styled.div`
   padding: 16px;
   flex: 0;
   display: flex;
   gap: 8px;
   align-items: center;
-  transition: box-shadow ${transition};
-  box-shadow: 0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;
+  border-top: 1px solid ${({ theme }) => theme.comp.divider.color.default};
 `;
 
 /**
@@ -173,31 +162,9 @@ Header.displayName = 'MDSPanel.Header';
 const Content = forwardRef<HTMLDivElement, MDSPanelBodyProps>((props: MDSPanelBodyProps, ref) => {
   const { children, style } = props;
 
-  const [, setAtom] = useAtom(panelAtom);
-
-  const observerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      setAtom((ps) => ({
-        ...ps,
-        isScrollBottom: entries[0].isIntersecting,
-      }));
-    });
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [setAtom]);
-
   return (
-    <StyledBody ref={ref}>
-      <div style={{ ...style }}>{children}</div>
-      <StyledObserver ref={observerRef}></StyledObserver>
+    <StyledBody ref={ref} style={{ ...style }}>
+      {children}
     </StyledBody>
   );
 });
@@ -205,15 +172,10 @@ const Content = forwardRef<HTMLDivElement, MDSPanelBodyProps>((props: MDSPanelBo
 Content.displayName = 'MDSPanel.Content';
 
 const Action = forwardRef<HTMLDivElement, MDSPanelActionProps>((props: MDSPanelActionProps, ref) => {
-  const { children, justifyContent = 'flex-end', persistentShadow = false, style } = props;
-
-  const atom = useAtomValue(panelAtom);
+  const { children, justifyContent = 'flex-end', style } = props;
 
   return (
-    <StyledActions
-      ref={ref}
-      style={{ justifyContent, boxShadow: !persistentShadow && atom.isScrollBottom ? 'none' : undefined, ...style }}
-    >
+    <StyledActions ref={ref} style={{ justifyContent, ...style }}>
       {children}
     </StyledActions>
   );

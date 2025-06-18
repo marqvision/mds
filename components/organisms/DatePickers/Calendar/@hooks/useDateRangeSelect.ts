@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { throttle } from 'lodash';
-import { isValidDate } from '../../@utils';
+import { validateDateAndRange } from '../../@utils';
 import { DateRangeSelectionMode } from '../@types';
 
 type SelectActionState = {
@@ -37,7 +37,7 @@ export const useDragSelect = (params: {
   const dragStart = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = isValidDate(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
+    const { isValid, isOutOfRange } = validateDateAndRange(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
     if (!isValid || isOutOfRange) return;
 
     setDragState((prev) => {
@@ -76,7 +76,7 @@ export const useDragSelect = (params: {
 
     const currentAnchorDateStr = calculateCurrentDate(event);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = isValidDate(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
+    const { isValid, isOutOfRange } = validateDateAndRange(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
     if (!isValid || isOutOfRange) return;
 
     setDragState((prev) => {
@@ -99,7 +99,7 @@ export const useDragSelect = (params: {
   const dragEnd = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = isValidDate(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
+    const { isValid, isOutOfRange } = validateDateAndRange(dayjs(currentAnchorDateStr).toDate(), params.minDate, params.maxDate);
     if (!isValid || isOutOfRange) return;
 
     setDragState((prev) => {

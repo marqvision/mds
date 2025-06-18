@@ -38,7 +38,7 @@ export type TableHeadProps = {
   HTMLAttributes<HTMLTableSectionElement>;
 
 // Table body
-export type TBodyProps = React.PropsWithChildren & HTMLAttributes<HTMLTableSectionElement>;
+export type TableBodyProps = React.PropsWithChildren & HTMLAttributes<HTMLTableSectionElement>;
 
 type TableRowVariant = 'default' | 'secondary' | 'viewing';
 

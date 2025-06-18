@@ -78,4 +78,4 @@ Table.Row = TableRow;
 Table.Cell = TableCell;
 export const MDSTable = Table;
 
-export type { TableProps, TableHeadProps, TableRowProps, TableCellProps } from './@types';
+export type { TableProps, TableHeadProps, TableBodyProps, TableRowProps, TableCellProps } from './@types';

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { mdsLogger } from '../../../utils';
 
 /**
  * 주어진 Date 객체의 유효성을 검사하고, 선택적인 min/max 날짜 범위 내에 있는지 확인합니다.
@@ -19,6 +20,12 @@ export const validateDateAndRange = (
 
   const isDateValid = !isNaN(date.getTime());
   if (!isDateValid) {
+    mdsLogger.warning({
+      title: 'validateDateAndRange',
+      message: 'date is not in minMaxRange',
+      data: { date, minDate, maxDate },
+    });
+
     return { isValid: false, isOutOfRange: false };
   }
 
@@ -26,8 +33,21 @@ export const validateDateAndRange = (
   const isAfterMax = maxDate && dayjs(date).isAfter(maxDate, 'day');
 
   if (isBeforeMin || isAfterMax) {
+    if (isBeforeMin) {
+      mdsLogger.warning({
+        title: 'validateDateAndRange',
+        message: 'date is not after minDate',
+        data: { date, minDate },
+      });
+    } else if (isAfterMax) {
+      mdsLogger.warning({
+        title: 'validateDateAndRange',
+        message: 'date is not before maxDate',
+        data: { date, maxDate },
+      });
+    }
     return { isValid: true, isOutOfRange: true };
   }
 
   return { isValid: true, isOutOfRange: false };
-}; 
+};

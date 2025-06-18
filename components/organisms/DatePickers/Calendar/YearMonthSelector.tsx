@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import styled from '@emotion/styled';
@@ -45,7 +46,7 @@ export const YearMonthSelector = (props: Props) => {
           list={list.years}
           value={props.displayedDate.year()}
           isDisabled={isDisabled.year}
-          onChange={(value) => handlers.handleYearChange(value)}
+          onChange={handlers.handleYearChange}
           renderAnchor={(value) =>
             isDisabled.year ? (
               <MDSTypography variant="body" size="l" weight="medium">
@@ -96,10 +97,14 @@ const useYearMonthSelector = (props: Props) => {
   const handleYearChange = (year: number) => {
     // year 값을 바꾸었을 때 displayedDate가 min/maxDate를 초과하는 케이스 처리 --> 선택 가능한 month view로 보여준다.
     let newYearMonth = dayjs(new Date(year, displayedDate.month(), 1));
-    const minBound = dayjs.max(dayjs(new Date(year, displayedDate.month(), 1)), dayjs(minDate));
-    newYearMonth = minBound || newYearMonth;
-    const maxBound = dayjs.min(newYearMonth, dayjs(maxDate));
-    newYearMonth = maxBound || newYearMonth;
+    if (minDate) {
+      const minBound = dayjs.max(dayjs(new Date(year, displayedDate.month(), 1)), dayjs(minDate));
+      newYearMonth = minBound || newYearMonth;
+    }
+    if (maxDate) {
+      const maxBound = dayjs.min(newYearMonth, dayjs(maxDate));
+      newYearMonth = maxBound || newYearMonth;
+    }
 
     onChange(newYearMonth);
   };
@@ -112,41 +117,52 @@ const useYearMonthSelector = (props: Props) => {
     onChange(displayedDate.add(1, 'month'));
   };
 
-  const isPrevMonthDisabled = minDate && displayedDate.isBefore(dayjs(minDate).add(1, 'month'), 'month');
-  const isNextMonthDisabled = maxDate && displayedDate.isAfter(dayjs(maxDate).subtract(1, 'month'), 'month');
+  const isDisabled = useMemo(() => {
+    const result = {
+      prevMonth: false,
+      nextMonth: false,
+      year: false,
+      month: false,
+      yearMonth: false,
+    };
+    if (minDate) {
+      result.prevMonth = displayedDate.isBefore(dayjs(minDate).add(1, 'month'), 'month');
+    }
+    if (maxDate) {
+      result.nextMonth = displayedDate.isAfter(dayjs(maxDate).subtract(1, 'month'), 'month');
+    }
+    if (minDate && maxDate) {
+      result.year =
+        displayedDate.isBefore(dayjs(minDate).add(1, 'year'), 'year') &&
+        displayedDate.isAfter(dayjs(maxDate).subtract(1, 'year'), 'year');
+      result.month =
+        displayedDate.isBefore(dayjs(minDate).add(1, 'month'), 'month') &&
+        displayedDate.isAfter(dayjs(maxDate).subtract(1, 'month'), 'month');
+      result.yearMonth = result.year || result.month;
+    }
 
-  const isYearDisabled =
-    minDate &&
-    maxDate &&
-    displayedDate.isBefore(dayjs(minDate).add(1, 'year'), 'year') &&
-    displayedDate.isAfter(dayjs(maxDate).subtract(1, 'year'), 'year');
+    return result;
+  }, [displayedDate, minDate, maxDate]);
+
+  const isAllEnabled = !minDate && !maxDate;
+
   const years = AVAILABLE_YEARS.map((year) => ({
     label: year.format('YYYY'),
     value: year.year(),
-    isDisabled: year.isBefore(dayjs(minDate), 'year') || year.isAfter(dayjs(maxDate), 'year'),
+    isDisabled: isAllEnabled ? false : year.isBefore(dayjs(minDate), 'year') || year.isAfter(dayjs(maxDate), 'year'),
   }));
 
-  const isMonthDisabled =
-    minDate &&
-    maxDate &&
-    displayedDate.isBefore(dayjs(minDate).add(1, 'month'), 'month') &&
-    displayedDate.isAfter(dayjs(maxDate).subtract(1, 'month'), 'month');
   const months = MONTH_LABELS.map((month, index) => ({
     label: month,
     value: index,
-    isDisabled:
-      dayjs(`${displayedDate.year()}-${index + 1}-01`).isBefore(dayjs(minDate), 'month') ||
-      dayjs(`${displayedDate.year()}-${index + 1}-01`).isAfter(dayjs(maxDate), 'month'),
+    isDisabled: isAllEnabled
+      ? false
+      : dayjs(`${displayedDate.year()}-${index + 1}-01`).isBefore(dayjs(minDate), 'month') ||
+        dayjs(`${displayedDate.year()}-${index + 1}-01`).isAfter(dayjs(maxDate), 'month'),
   }));
 
   return {
-    isDisabled: {
-      prevMonth: isPrevMonthDisabled,
-      nextMonth: isNextMonthDisabled,
-      year: isYearDisabled,
-      month: isMonthDisabled,
-      yearMonth: isYearDisabled || isMonthDisabled,
-    },
+    isDisabled,
     list: {
       years,
       months,

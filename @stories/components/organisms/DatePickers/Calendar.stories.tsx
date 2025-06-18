@@ -31,6 +31,42 @@ type Story = StoryObj<typeof MDSCalendar>;
 
 export const SingleDate: Story = {
   render: function Render() {
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+    const handleChange = (newDate: Date) => {
+      setSelectedDate(newDate);
+    };
+
+    const [inputValue, setInputValue] = useState<string>(selectedDate?.toLocaleDateString() || '');
+    const submitInputChange = (value: string) => {
+      const newDate = dayjs(value, 'MM/DD/YYYY').toDate();
+      setSelectedDate(newDate);
+    };
+    return (
+      <div>
+        <div>
+          <MDSTypography>선택한 날짜: {selectedDate?.toLocaleDateString()}</MDSTypography>
+        </div>
+        <div>
+          <MDSInput
+            variant="textField"
+            value={inputValue}
+            placeholder="MM/DD/YYYY"
+            custom={{
+              add: {
+                label: '선택',
+                onSubmit: submitInputChange,
+              },
+            }}
+            onChange={setInputValue}
+          />
+        </div>
+        <MDSCalendar value={selectedDate} onChange={handleChange} />
+      </div>
+    );
+  },
+};
+export const SingleDateWithMinMax: Story = {
+  render: function Render() {
     const args = {
       value: new Date(),
       minDate: dayjs('2023-11-22').toDate(),
@@ -111,7 +147,9 @@ export const DateRange: Story = {
             {selectedDate.endDate.toLocaleDateString()}
           </MDSTypography>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '110px 4px 110px 60px', gap: '10px', alignItems: 'center' }}>
+        <div
+          style={{ display: 'grid', gridTemplateColumns: '110px 4px 110px 60px', gap: '10px', alignItems: 'center' }}
+        >
           <MDSInput variant="textField" value={inputStartDate} onChange={setInputStartDate} />
           ~
           <MDSInput variant="textField" value={inputEndDate} onChange={setInputEndDate} />

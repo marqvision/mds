@@ -71,8 +71,7 @@ export const DayCell = styled.div<{
         css`
           border-top: 2px solid;
           border-bottom: 2px solid;
-          border-image: linear-gradient(to right, transparent 50%, ${theme._raw_color.blue50} 50%) 100%
-            1;
+          border-image: linear-gradient(to right, transparent 50%, ${theme._raw_color.blue50} 50%) 100% 1;
         `;
       const endDateBorderStyle =
         isSelectionInProgress &&
@@ -80,8 +79,7 @@ export const DayCell = styled.div<{
         css`
           border-top: 2px solid;
           border-bottom: 2px solid;
-          border-image: linear-gradient(to right, ${theme._raw_color.blue50} 50%, transparent 50%) 100%
-            1;
+          border-image: linear-gradient(to right, ${theme._raw_color.blue50} 50%, transparent 50%) 100% 1;
         `;
 
       return css`
@@ -97,22 +95,39 @@ export const DayCell = styled.div<{
 
   //#endregion
 
-  ${({ isToday, theme }) =>
-    isToday &&
-    css`
-      &:before {
-        content: '';
-        display: block;
-        border-radius: 50%;
-        background-color: ${theme.color.bg.fill.primary.default.normal};
-        width: 4px;
-        height: 4px;
-        position: absolute;
-        top: 4px;
-        left: 50%;
-        transform: translateX(-50%);
+  ${({ isToday, isStartDate, isEndDate, isInRange, isAnchorDate, isSelectionInProgress, theme }) => {
+    const markerStyles ={
+      top: '4px',
+      display: 'block'
+    }
+    if(isAnchorDate) {
+      markerStyles.display = 'none';
+    }
+    if(isSelectionInProgress) {
+      if(isInRange || isStartDate || isEndDate) {
+        markerStyles.top = '2px'; // border 만큼 보정 필요
       }
-    `}
+    }
+
+    return (
+      isToday &&
+      css`
+        &:before {
+          content: '';
+          display: ${markerStyles.display};
+          border-radius: 50%;
+          background-color: ${theme.color.bg.fill.primary.default.normal};
+          width: 4px;
+          height: 4px;
+          position: absolute;
+          top: ${markerStyles.top};
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1;
+        }
+      `
+    );
+  }}
 
   ${({ isStartDate, isEndDate, isSelectionInProgress, isAnchorDate, theme }) => {
     let bgColor = 'transparent';
@@ -141,6 +156,9 @@ export const DayCell = styled.div<{
   }}
 
   &:hover {
+    &:before: {
+      top: 2px;
+    }
     &:after {
       content: '';
       position: absolute;

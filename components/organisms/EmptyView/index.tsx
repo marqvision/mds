@@ -6,6 +6,7 @@ import { EmptyViewProps, StyledWrapperProps } from './@types';
 const Wrapper = styled.div<StyledWrapperProps>`
   width: 100%;
   min-height: ${({ height }) => height};
+  padding: 40px 0;
   display: grid;
   grid-template-rows: 1fr auto 2fr;
   background-color: ${({ backgroundColor }) => (backgroundColor ? resolveColor(backgroundColor) : '')};

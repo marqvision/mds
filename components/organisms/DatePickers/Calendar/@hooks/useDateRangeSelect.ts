@@ -196,7 +196,7 @@ export const useDateRangeSelect = (params: {
       anchorDateStr: anchorDateStr.current,
     },
     selectStart,
-    selectMove: throttle(selectMove, 300),
+    selectMove: throttle(selectMove, 30),
     selectEnd,
   };
 };

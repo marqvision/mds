@@ -69,24 +69,24 @@ export const DayCell = styled.div<{
         isSelectionInProgress &&
         isStartDate &&
         css`
-          border-top: 0.5px solid;
-          border-bottom: 0.5px solid;
-          border-image: linear-gradient(to right, transparent 50%, ${theme.color.border.neutral.strong.normal} 50%) 100%
+          border-top: 2px solid;
+          border-bottom: 2px solid;
+          border-image: linear-gradient(to right, transparent 50%, ${theme._raw_color.blue50} 50%) 100%
             1;
         `;
       const endDateBorderStyle =
         isSelectionInProgress &&
         isEndDate &&
         css`
-          border-top: 0.5px solid;
-          border-bottom: 0.5px solid;
-          border-image: linear-gradient(to right, ${theme.color.border.neutral.strong.normal} 50%, transparent 50%) 100%
+          border-top: 2px solid;
+          border-bottom: 2px solid;
+          border-image: linear-gradient(to right, ${theme._raw_color.blue50} 50%, transparent 50%) 100%
             1;
         `;
 
       return css`
-        border-width: 0.5px;
-        border-color: ${theme.color.border.neutral.strong.normal};
+        border-width: 2px;
+        border-color: ${theme._raw_color.blue50};
         border-style: ${isSelectionInProgress && isInRange ? `solid none solid none` : 'none'};
 
         ${startDateBorderStyle}

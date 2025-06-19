@@ -36,7 +36,15 @@ export const Default: Story = {
     };
     return (
       <div css={testGroupStyle}>
-        <MDSDatePicker value={date} format={format} onChange={handleChange} />
+        <MDSDatePicker
+          value={date}
+          format={format}
+          onChange={handleChange}
+          anchorSelectProps={{
+            label: 'Label',
+            placeholder: 'YYYY-MM-DD',
+          }}
+        />
         <div>
           <MDSTypography variant="title" size="m">
             결과
@@ -60,6 +68,10 @@ export const MinMax: Story = {
         <MDSDatePicker
           value={date}
           format={format}
+          anchorSelectProps={{
+            label: 'Start date',
+            placeholder: 'YYYY-MM-DD',
+          }}
           minDate={new Date('2025-06-07')}
           maxDate={new Date('2025-06-28')}
           onChange={handleChange}

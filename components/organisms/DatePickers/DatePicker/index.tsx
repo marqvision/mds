@@ -9,7 +9,7 @@ import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { MDSButton } from '../../../molecules/Button';
 import { MDSDivider } from '../../../atoms/Divider';
 import { MDSPopover } from '../../../molecules/Popover';
-import { MDSInput } from '../../../molecules/Input';
+import { MDSInput, MDSInputProps } from '../../../molecules/Input';
 
 const DatePickerContainer = styled.div`
   display: flex;
@@ -39,6 +39,10 @@ type Props = {
   minDate?: Date;
   maxDate?: Date;
   onClose?: () => void;
+  anchorSelectProps?: Omit<
+    MDSInputProps<string>,
+    'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
+  >;
 } & SingleDateInput;
 
 const DatePicker = (props: Props) => {
@@ -105,7 +109,8 @@ const DatePicker = (props: Props) => {
 };
 
 const DatePickerWrapper = (props: Props) => {
-  const { value } = props;
+  const { value, anchorSelectProps: anchorInputProps } = props;
+  const _anchorInputProps = anchorInputProps ?? {};
   return (
     <div>
       <MDSPopover
@@ -120,6 +125,7 @@ const DatePickerWrapper = (props: Props) => {
               variant="select"
               value={value || ''}
               list={[{ label: value || '', value: value || '' }]}
+              {..._anchorInputProps}
             />
           </div>
         )}

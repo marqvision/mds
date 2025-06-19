@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 import { validateDateAndRange } from '../../@utils';
 import { DateRangeSelectionMode } from '../@types';
 
@@ -74,7 +74,7 @@ export const useDateRangeSelect = (params: {
       }
     });
   };
-  const selectMove = throttle((event: React.MouseEvent) => {
+  const selectMove = (event: React.MouseEvent) => {
     if (selectActionState.actionState === 'idle') return;
 
     const currentAnchorDateStr = calculateCurrentDate(event);
@@ -111,7 +111,7 @@ export const useDateRangeSelect = (params: {
       });
       return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
     });
-  }, 100);
+  }
   const selectEnd = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
@@ -196,7 +196,7 @@ export const useDateRangeSelect = (params: {
       anchorDateStr: anchorDateStr.current,
     },
     selectStart,
-    selectMove,
+    selectMove: throttle(selectMove, 300),
     selectEnd,
   };
 };

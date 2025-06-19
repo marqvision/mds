@@ -33,6 +33,8 @@ export const useDragSelect = (params: {
     endDate: selectActionState.endDateStr,
   });
 
+  const { targetDataRef, fireTrigger: fireDateRangeUpdate } = useHandlerDateRangeUpdate(params.onDateRangeUpdate);
+
   const selectStart = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
@@ -45,7 +47,6 @@ export const useDragSelect = (params: {
 
     anchorDateStr.current = currentAnchorDateStr;
     setSelectActionState((prev) => {
-      console.log('>>>>> prev selectionMode', prev.selectionMode);
       if (prev.selectionMode === 'click') {
         return {
           actionState: 'idle',
@@ -108,8 +109,6 @@ export const useDragSelect = (params: {
         endDateStr: prev.endDateStr,
         currentDateStr: currentAnchorDateStr,
       });
-
-      params.onDateRangeUpdate(dayjs(newStartDateStr).toDate(), dayjs(newEndDateStr).toDate());
       return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
     });
   }, 100);
@@ -137,14 +136,6 @@ export const useDragSelect = (params: {
     });
 
     setSelectActionState((prev) => {
-      // console.log('>>>>> prev anchor', prev.anchorDateStr);
-      // console.log('>>>>> prev startDateStr', prev.startDateStr);
-      // console.log('>>>>> prev endDateStr', prev.endDateStr);
-      // console.log('>>>>> prev actionState', prev.actionState);
-      // console.log('>>>>> prev selectionMode', prev.selectionMode);
-      // console.log('>>>>> currentAnchorDateStr', currentAnchorDateStr);
-      // console.log('>>>>>');
-
       if (
         anchorDateStr.current === currentAnchorDateStr &&
         prev.actionState === 'in-progress' &&
@@ -165,9 +156,12 @@ export const useDragSelect = (params: {
         currentDateStr: currentAnchorDateStr,
       });
 
-      params.onDateRangeUpdate(dayjs(newStartDateStr).toDate(), dayjs(newEndDateStr).toDate());
-
       const selectionMode = newStartDateStr === newEndDateStr ? 'click' : 'drag';
+
+      targetDataRef.current = {
+        startDateStr: newStartDateStr,
+        endDateStr: newEndDateStr,
+      };
 
       return {
         actionState: selectionMode === 'click' ? 'in-progress' : 'idle',
@@ -176,6 +170,7 @@ export const useDragSelect = (params: {
         endDateStr: newEndDateStr,
       };
     });
+    fireDateRangeUpdate();
   };
 
   useEffect(() => {
@@ -246,4 +241,34 @@ const resolveDateRange = (params: {
   }
 
   return { newStartDateStr, newEndDateStr };
+};
+
+const useHandlerDateRangeUpdate = (externalCallback: (...args: any[]) => void) => {
+  const frozenExternalCallbackRef = useRef(externalCallback); // callback의 참조를 한번 얼리고
+
+  // 매 렌더마다 callback의 참조를 업데이트 한다
+  // callback 함수 내부에 다른 state가 있어서 외부 렌더 타이밍에 따라 callback 함수의 업데이트가 필요할 수 있으므로.
+  frozenExternalCallbackRef.current = externalCallback;
+
+  // 핵심은
+  // 1. callback 의 참조가 계속 변해서, callback을 내부에서 호출하는 useEffect가 계속실행되는 것을 막는 것
+  // 2. 이와 동시에 useEffect의 dep array를 react 원칙에 맞게 잘 채우는 것
+
+  const [callDateRangeUpdateTrigger, setCallDateRangeUpdateTrigger] = useState(0);
+  const updateTargetData = useRef({
+    startDateStr: '',
+    endDateStr: '',
+  });
+  useEffect(() => {
+    frozenExternalCallbackRef.current(
+      dayjs(updateTargetData.current.startDateStr).toDate(),
+      dayjs(updateTargetData.current.endDateStr).toDate()
+    );
+  }, [callDateRangeUpdateTrigger]);
+
+  return {
+    targetDataRef: updateTargetData,
+    fireTrigger: () => setCallDateRangeUpdateTrigger((prev) => prev + 1),
+  };
+  //-------
 };

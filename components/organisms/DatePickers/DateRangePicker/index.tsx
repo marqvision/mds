@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import dayjs from 'dayjs';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { MDSCalendar } from '../Calendar';
 import { MDSDateInputGroup } from '../DateInputGroup';
 import { DEFAULT_PROPS } from '../DateInputGroup/@constants';

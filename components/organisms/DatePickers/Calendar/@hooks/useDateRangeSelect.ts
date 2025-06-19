@@ -10,7 +10,7 @@ type SelectActionState = {
   startDateStr: string;
   endDateStr: string;
 };
-export const useDragSelect = (params: {
+export const useDateRangeSelect = (params: {
   startDate?: Date;
   endDate?: Date;
   minDate?: Date;

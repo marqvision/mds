@@ -6,7 +6,7 @@ import { YearMonthSelector } from './YearMonthSelector';
 import { useCalendar } from './@hooks/useCalendar';
 import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from './@types';
 import { WEEKDAYS } from './@constants';
-import { useDragSelect } from './@hooks/useDateRangeSelect';
+import { useDateRangeSelect } from './@hooks/useDateRangeSelect';
 
 type Props = CommonOptions & (SingleDateValue | DateRangeValue);
 
@@ -65,7 +65,7 @@ const DateRangeCalendarContent = (props: {
 }) => {
   const { days, selectedDate, minDate, maxDate, onChange } = props;
 
-  const { selectActionState, selectMove, selectStart, selectEnd, displayDate } = useDragSelect({
+  const { selectActionState, selectMove, selectStart, selectEnd, displayDate } = useDateRangeSelect({
     startDate: selectedDate.startDate,
     endDate: selectedDate.endDate,
     minDate,

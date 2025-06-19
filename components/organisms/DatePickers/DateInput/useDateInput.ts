@@ -28,10 +28,18 @@ export const useDateInput = (params: DateInputProps) => {
     if (!isDateShapeValid(inputValue, format) || !isPartiallyValidDate(inputValue, format)) {
       setErrors('INVALID_DATE');
       setDateState((prev) => ({ ...prev, value: inputValue }));
+      onDateChange?.(null);
       return;
     }
 
-    if (inputValue.length >= format.length || inputValue.length === 0) {
+    if (inputValue.length === 0) {
+      setErrors(null);
+      setDateState((prev) => ({ ...prev, value: inputValue }));
+      onDateChange?.(null);
+      return;
+    }
+
+    if (inputValue.length >= format.length) {
       const dateError = validateDateValue(inputValue, format, minDate, maxDate);
       const validDate = getValidatedDate(inputValue, format, minDate, maxDate);
 
@@ -41,6 +49,7 @@ export const useDateInput = (params: DateInputProps) => {
         if (validDate) {
           setDateState({ value: inputValue, lastValid: validDate });
         }
+        console.log('>>>> nextDateState', inputValue, validDate, nextDateState);
         onDateChange?.(nextDateState);
       }
     } else {
@@ -61,7 +70,13 @@ export const useDateInput = (params: DateInputProps) => {
   };
 
   const validateExternalInjectedDates = useCallback(
-    (currentValue: string) => {
+    (currentValue: string | undefined) => {
+      if (!currentValue) {
+        setErrors(null);
+        setDateState((prev) => ({ ...prev, value: '', lastValid: null }));
+        onDateChange?.(null);
+        return;
+      }
       const dateError = validateDateValue(currentValue, format, minDate, maxDate);
       const validDate = getValidatedDate(currentValue, format, minDate, maxDate);
 
@@ -75,11 +90,10 @@ export const useDateInput = (params: DateInputProps) => {
   );
 
   useEffect(() => {
-    if (value !== undefined) {
-      const newValue = value || '';
-      validateExternalInjectedDates(value);
-      setDateState((prev) => ({ ...prev, value: newValue }));
-    }
+    const newValue = value || '';
+    validateExternalInjectedDates(value);
+    setDateState((prev) => ({ ...prev, value: newValue }));
+
     // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);

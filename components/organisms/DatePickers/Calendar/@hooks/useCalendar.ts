@@ -8,6 +8,7 @@ export const useCalendar = (params: Params) => {
   const [_value, setValue] = useState<{ startDate?: Date; endDate?: Date }>(
     isDateRange(params) ? params.value : { startDate: params.value, endDate: params.value }
   );
+
   const [displayedDate, setDisplayedDate] = useState(
     dayjs(isDateRange(params) ? params.value.startDate : params.value)
   );
@@ -46,10 +47,15 @@ export const useCalendar = (params: Params) => {
         );
       }
     } else {
-      const { isValid, isOutOfRange } = validateDateAndMinMaxRange(params.value, params.minDate, params.maxDate);
-      if (isValid && !isOutOfRange) {
-        setValue({ startDate: params.value, endDate: params.value });
-        setDisplayedDate(dayjs(params.value));
+      if (!params.value) {
+        setValue({ startDate: undefined, endDate: undefined });
+      } else {
+        const { isValid, isOutOfRange } = validateDateAndMinMaxRange(params.value, params.minDate, params.maxDate);
+
+        if (isValid && !isOutOfRange) {
+          setValue({ startDate: params.value, endDate: params.value });
+          setDisplayedDate(dayjs(params.value));
+        }
       }
     }
     // note-@jamie: 의도된 exhaustive-deps -- params.onChange 함수의 참조를 얼려야 해결될듯..

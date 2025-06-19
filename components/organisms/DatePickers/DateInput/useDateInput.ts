@@ -28,7 +28,6 @@ export const useDateInput = (params: DateInputProps) => {
     if (!isDateShapeValid(inputValue, format) || !isPartiallyValidDate(inputValue, format)) {
       setErrors('INVALID_DATE');
       setDateState((prev) => ({ ...prev, value: inputValue }));
-      onDateChange?.(null);
       return;
     }
 
@@ -49,7 +48,6 @@ export const useDateInput = (params: DateInputProps) => {
         if (validDate) {
           setDateState({ value: inputValue, lastValid: validDate });
         }
-        console.log('>>>> nextDateState', inputValue, validDate, nextDateState);
         onDateChange?.(nextDateState);
       }
     } else {

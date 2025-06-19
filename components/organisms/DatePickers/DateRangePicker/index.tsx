@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { MDSCalendar } from '../Calendar';
 import { MDSDateInputGroup } from '../DateInputGroup';
 import { DEFAULT_PROPS } from '../DateInputGroup/@constants';
-import { DateInputProps } from '../DateInputGroup/@types';
+import { SingleDateInput } from '../DateInputGroup/@types';
 
 const DateRangePickerLayout = styled.div`
   display: flex;
@@ -14,8 +14,8 @@ const DateRangePickerLayout = styled.div`
 `;
 
 type Props = {
-  startDate?: DateInputProps;
-  endDate?: DateInputProps;
+  startDate?: SingleDateInput;
+  endDate?: SingleDateInput;
   format?: 'MM/DD/YYYY' | 'YYYY-MM-DD';
   onChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;
   minDate?: Date;

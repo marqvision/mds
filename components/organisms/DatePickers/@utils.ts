@@ -9,7 +9,7 @@ import { mdsLogger } from '../../../utils';
  * @param maxDate - 허용되는 최대 날짜 (경계 포함).
  * @returns 날짜의 유효성(isValid)과 범위 이탈 여부(isOutOfRange)를 포함하는 객체를 반환합니다.
  */
-export const validateDateAndRange = (
+export const validateDateAndMinMaxRange = (
   date?: Date | null,
   minDate?: Date,
   maxDate?: Date
@@ -21,8 +21,8 @@ export const validateDateAndRange = (
   const isDateValid = !isNaN(date.getTime());
   if (!isDateValid) {
     mdsLogger.warning({
-      title: 'validateDateAndRange',
-      message: 'date is not in minMaxRange',
+      title: 'validateDateAndMinMaxRange',
+      message: 'date is invalid',
       data: { date, minDate, maxDate },
     });
 

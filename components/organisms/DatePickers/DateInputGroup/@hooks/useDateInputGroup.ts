@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { validateDateAndRange } from '../../@utils';
-import { DateInputGroupProps, DateInputProps } from '../@types';
+import { validateDateAndMinMaxRange } from '../../@utils';
+import { DateInputGroupProps, SingleDateInput } from '../@types';
 import {
   isDateRangeValid,
   isDateShapeValid,
@@ -19,7 +19,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   const [startDateState, setStartDateState] = useState(() => {
     const initialValue = startDate.value || '';
     const d = parseDateString(initialValue, format);
-    const { isValid, isOutOfRange } = validateDateAndRange(d, minDate, maxDate);
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(d, minDate, maxDate);
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,
@@ -28,7 +28,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   const [endDateState, setEndDateState] = useState(() => {
     const initialValue = endDate.value || '';
     const d = parseDateString(initialValue, format);
-    const { isValid, isOutOfRange } = validateDateAndRange(d, minDate, maxDate);
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(d, minDate, maxDate);
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,
@@ -185,7 +185,7 @@ const useDateChangeHandler = (
     maxDate,
     onDateChange,
   }: {
-    dateProps: DateInputProps;
+    dateProps: SingleDateInput;
     otherState: { value: string; lastValid: Date | null };
     setTargetDateState: React.Dispatch<React.SetStateAction<{ value: string; lastValid: Date | null }>>;
     setOtherState: React.Dispatch<React.SetStateAction<{ value: string; lastValid: Date | null }>>;

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import throttle from 'lodash/throttle';
-import { validateDateAndRange } from '../../@utils';
+import { validateDateAndMinMaxRange } from '../../@utils';
 import { DateRangeSelectionMode } from '../@types';
 
 type SelectActionState = {
@@ -38,7 +38,7 @@ export const useDateRangeSelect = (params: {
   const selectStart = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = validateDateAndRange(
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(
       dayjs(currentAnchorDateStr).toDate(),
       params.minDate,
       params.maxDate
@@ -79,7 +79,7 @@ export const useDateRangeSelect = (params: {
 
     const currentAnchorDateStr = calculateCurrentDate(event);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = validateDateAndRange(
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(
       dayjs(currentAnchorDateStr).toDate(),
       params.minDate,
       params.maxDate
@@ -115,7 +115,7 @@ export const useDateRangeSelect = (params: {
   const selectEnd = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
-    const { isValid, isOutOfRange } = validateDateAndRange(
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(
       dayjs(currentAnchorDateStr).toDate(),
       params.minDate,
       params.maxDate

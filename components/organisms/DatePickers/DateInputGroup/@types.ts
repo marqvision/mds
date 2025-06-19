@@ -1,6 +1,6 @@
 import { MDSInputProps } from "../../../molecules/Input";
 
-export type DateInputProps = {
+export type SingleDateInput = {
   value?: MDSInputProps<string>['value'];
   label?: MDSInputProps<string>['label'];
   placeholder?: MDSInputProps<string>['placeholder'];
@@ -12,8 +12,8 @@ export type DateInputProps = {
 
 export type DateInputGroupProps = {
   separator?: React.ReactNode;
-  startDate: DateInputProps;
-  endDate: DateInputProps;
+  startDate: SingleDateInput;
+  endDate: SingleDateInput;
   minDate?: Date;
   maxDate?: Date;
   format?: 'MM/DD/YYYY' | 'YYYY-MM-DD';

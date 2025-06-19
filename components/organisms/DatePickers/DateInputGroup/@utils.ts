@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { validateDateAndRange } from '../@utils';
-import { DateInputProps } from './@types';
+import { validateDateAndMinMaxRange } from '../@utils';
+import { SingleDateInput } from './@types';
 
 const SEPARATOR_MAP = {
   'MM/DD/YYYY': '/',
@@ -173,7 +173,7 @@ export const validateDateValue = (
     return 'INVALID_DATE';
   }
   const parsedDate = parseDateString(value, format);
-  const { isValid, isOutOfRange } = validateDateAndRange(parsedDate, minDate, maxDate);
+  const { isValid, isOutOfRange } = validateDateAndMinMaxRange(parsedDate, minDate, maxDate);
 
   if (!isValid) {
     return 'INVALID_DATE';
@@ -208,7 +208,7 @@ export const getValidatedDate = (
   if (!parsedDate) {
     return null;
   }
-  const { isValid, isOutOfRange } = validateDateAndRange(parsedDate, minDate, maxDate);
+  const { isValid, isOutOfRange } = validateDateAndMinMaxRange(parsedDate, minDate, maxDate);
   return isValid && !isOutOfRange ? parsedDate : null;
 };
 
@@ -223,7 +223,7 @@ export const getValidatedDate = (
 export const getHelperText = (
   type: 'start' | 'end',
   errors: { start: DateValidationError | null; end: DateValidationError | null; range: boolean },
-  dateInputProps: DateInputProps
+  dateInputProps: SingleDateInput
 ) => {
   if (errors.range) {
     return type === 'start'

@@ -15,7 +15,6 @@ const DatePickerLayout = styled.div`
 
 type Props = {
   format?: 'MM/DD/YYYY' | 'YYYY-MM-DD';
-  onChange?: (date: Date | null) => void;
   minDate?: Date;
   maxDate?: Date;
 } & SingleDateInput;
@@ -30,14 +29,14 @@ const DatePicker = (props: Props) => {
     setStore(date ? dayjs(date).toDate() : undefined);
 
     if (frozenOnChange.current) {
-      frozenOnChange.current(date);
+      frozenOnChange.current(date ? dayjs(date).format(format) : undefined);
     }
   }, []);
 
   const handleCalendarChange = useCallback((date: Date) => {
     setStore(date);
     if (frozenOnChange.current) {
-      frozenOnChange.current(date);
+      frozenOnChange.current(date ? dayjs(date).format(format) : undefined);
     }
   }, []);
 

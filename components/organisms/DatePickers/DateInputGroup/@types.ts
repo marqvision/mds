@@ -4,7 +4,7 @@ export type SingleDateInput = {
   value?: MDSInputProps<string>['value'];
   label?: MDSInputProps<string>['label'];
   placeholder?: MDSInputProps<string>['placeholder'];
-  onChange?: (value: string) => void;
+  onChange?: (value: string | undefined) => void;
   isError?: boolean;
   helperText?: string;
 };

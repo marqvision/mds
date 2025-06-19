@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { css } from '@emotion/react';
 import { MDSDateRangePicker } from '../../../../components/organisms/DatePickers/DateRangePicker';
 
 const meta: Meta<typeof MDSDateRangePicker> = {
@@ -17,8 +18,18 @@ const meta: Meta<typeof MDSDateRangePicker> = {
 export default meta;
 type Story = StoryObj<typeof MDSDateRangePicker>;
 
+const testGroupStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
 export const Default: Story = {
   render: function Render() {
-    return <MDSDateRangePicker />;
+    return (
+      <div css={testGroupStyle}>
+        <MDSDateRangePicker />
+      </div>
+    );
   },
 };

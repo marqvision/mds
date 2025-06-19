@@ -1,50 +1,56 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
-import { throttle } from 'lodash';
-import { isDateInMinMaxRange } from '../../@utils';
+import throttle from 'lodash/throttle';
+import { validateDateAndMinMaxRange } from '../../@utils';
 import { DateRangeSelectionMode } from '../@types';
 
 type SelectActionState = {
   actionState: 'in-progress' | 'idle';
   selectionMode: DateRangeSelectionMode;
-  anchorDateStr: string;
   startDateStr: string;
   endDateStr: string;
 };
-export const useDragSelect = (params: {
-  startDate: Date;
-  endDate: Date;
+export const useDateRangeSelect = (params: {
+  startDate?: Date;
+  endDate?: Date;
   minDate?: Date;
   maxDate?: Date;
   onDateRangeUpdate: (startDate: Date, lastDate: Date) => void;
 }) => {
-  const [dragState, setDragState] = useState<SelectActionState>({
+  const [selectActionState, setSelectActionState] = useState<SelectActionState>({
     actionState: 'idle',
     selectionMode: 'drag',
-    anchorDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-    startDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-    endDateStr: dayjs(params.endDate).format('YYYY-MM-DD'),
+    startDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+    endDateStr: params.endDate ? dayjs(params.endDate).format('YYYY-MM-DD') : '',
   });
+  const anchorDateStr = useRef<string>(params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '');
 
   const [displayDate, setDisplayDate] = useState<{
     startDate: string;
     endDate: string;
   }>({
-    startDate: dragState.startDateStr,
-    endDate: dragState.endDateStr,
+    startDate: selectActionState.startDateStr,
+    endDate: selectActionState.endDateStr,
   });
 
-  const dragStart = (e: React.MouseEvent) => {
+  const { targetDataRef, fireTrigger: fireDateRangeUpdate } = useHandlerDateRangeUpdate(params.onDateRangeUpdate);
+
+  const selectStart = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
-    if (!isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(
+      dayjs(currentAnchorDateStr).toDate(),
+      params.minDate,
+      params.maxDate
+    );
+    if (!isValid || isOutOfRange) return;
 
-    setDragState((prev) => {
+    anchorDateStr.current = currentAnchorDateStr;
+    setSelectActionState((prev) => {
       if (prev.selectionMode === 'click') {
         return {
           actionState: 'idle',
           selectionMode: 'drag',
-          anchorDateStr: currentAnchorDateStr,
           startDateStr: prev.startDateStr,
           endDateStr: prev.endDateStr,
         };
@@ -54,7 +60,6 @@ export const useDragSelect = (params: {
           return {
             actionState: 'idle',
             selectionMode: 'drag',
-            anchorDateStr: prev.anchorDateStr,
             startDateStr: prev.startDateStr,
             endDateStr: prev.endDateStr,
           };
@@ -62,7 +67,6 @@ export const useDragSelect = (params: {
           return {
             actionState: 'in-progress',
             selectionMode: prev.selectionMode,
-            anchorDateStr: currentAnchorDateStr,
             startDateStr: currentAnchorDateStr,
             endDateStr: currentAnchorDateStr,
           };
@@ -70,97 +74,130 @@ export const useDragSelect = (params: {
       }
     });
   };
-  const dragMove = throttle((event: React.MouseEvent) => {
-    if (dragState.actionState === 'idle') return;
+  const selectMove = (event: React.MouseEvent) => {
+    if (selectActionState.actionState === 'idle') return;
 
     const currentAnchorDateStr = calculateCurrentDate(event);
     if (!currentAnchorDateStr) return;
-    if (!isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(
+      dayjs(currentAnchorDateStr).toDate(),
+      params.minDate,
+      params.maxDate
+    );
+    if (!isValid || isOutOfRange) return;
 
-    setDragState((prev) => {
+    setDisplayDate((prev) => {
+      const { newStartDateStr, newEndDateStr } = resolveDateRange({
+        anchorDateStr: anchorDateStr.current,
+        startDateStr: prev.startDate,
+        endDateStr: prev.endDate,
+        currentDateStr: currentAnchorDateStr,
+      });
+
+      return {
+        startDate: newStartDateStr,
+        endDate: newEndDateStr,
+      };
+    });
+
+    setSelectActionState((prev) => {
       if (!prev.startDateStr) return prev;
 
       const { newStartDateStr, newEndDateStr } = resolveDateRange({
-        anchorDateStr: prev.anchorDateStr,
+        anchorDateStr: anchorDateStr.current,
         startDateStr: prev.startDateStr,
         endDateStr: prev.endDateStr,
         currentDateStr: currentAnchorDateStr,
       });
-
-      setDisplayDate({
-        startDate: newStartDateStr,
-        endDate: newEndDateStr,
-      });
       return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
     });
-  }, 100);
-  const dragEnd = (e: React.MouseEvent) => {
+  }
+  const selectEnd = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
-    if (!currentAnchorDateStr || !isDateInMinMaxRange(currentAnchorDateStr, params.minDate, params.maxDate)) return;
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(
+      dayjs(currentAnchorDateStr).toDate(),
+      params.minDate,
+      params.maxDate
+    );
+    if (!isValid || isOutOfRange) return;
 
-    setDragState((prev) => {
+    setDisplayDate((prev) => {
+      const { newStartDateStr, newEndDateStr } = resolveDateRange({
+        anchorDateStr: anchorDateStr.current,
+        startDateStr: prev.startDate,
+        endDateStr: prev.endDate,
+        currentDateStr: currentAnchorDateStr,
+      });
+      return {
+        startDate: newStartDateStr,
+        endDate: newEndDateStr,
+      };
+    });
+
+    setSelectActionState((prev) => {
       if (
-        prev.anchorDateStr === currentAnchorDateStr &&
+        anchorDateStr.current === currentAnchorDateStr &&
         prev.actionState === 'in-progress' &&
         prev.selectionMode === 'click'
       ) {
         return {
           actionState: 'idle',
           selectionMode: 'drag',
-          anchorDateStr: prev.anchorDateStr,
-          startDateStr: prev.anchorDateStr,
-          endDateStr: prev.anchorDateStr,
+          startDateStr: anchorDateStr.current,
+          endDateStr: anchorDateStr.current,
         };
       }
 
       const { newStartDateStr, newEndDateStr } = resolveDateRange({
-        anchorDateStr: prev.anchorDateStr,
+        anchorDateStr: anchorDateStr.current,
         startDateStr: prev.startDateStr,
         endDateStr: prev.endDateStr,
         currentDateStr: currentAnchorDateStr,
       });
 
-      setDisplayDate({
-        startDate: newStartDateStr,
-        endDate: newEndDateStr,
-      });
-      params.onDateRangeUpdate(dayjs(newStartDateStr).toDate(), dayjs(newEndDateStr).toDate());
-
       const selectionMode = newStartDateStr === newEndDateStr ? 'click' : 'drag';
+
+      targetDataRef.current = {
+        startDateStr: newStartDateStr,
+        endDateStr: newEndDateStr,
+      };
 
       return {
         actionState: selectionMode === 'click' ? 'in-progress' : 'idle',
         selectionMode,
-        anchorDateStr: prev.anchorDateStr,
         startDateStr: newStartDateStr,
         endDateStr: newEndDateStr,
       };
     });
+    fireDateRangeUpdate();
   };
 
   useEffect(() => {
     // 값에 대한 validation은 useCalendar에서 모두 처리하고 내려오니까 여기에서는 넘어온 값을 쓰기만 하면 된다!
     setDisplayDate({
-      startDate: dayjs(params.startDate).format('YYYY-MM-DD'),
-      endDate: dayjs(params.endDate).format('YYYY-MM-DD'),
+      startDate: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+      endDate: params.endDate ? dayjs(params.endDate).format('YYYY-MM-DD') : '',
     });
-    setDragState((prev) => {
+    setSelectActionState((prev) => {
       return {
         ...prev,
-        anchorDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-        startDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
-        endDateStr: dayjs(params.endDate).format('YYYY-MM-DD'),
+        anchorDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+        startDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
+        endDateStr: params.endDate ? dayjs(params.endDate).format('YYYY-MM-DD') : '',
       };
     });
   }, [params.startDate, params.endDate]);
 
   return {
     displayDate,
-    dragState,
-    dragStart,
-    dragMove,
-    dragEnd,
+    selectActionState: {
+      ...selectActionState,
+      anchorDateStr: anchorDateStr.current,
+    },
+    selectStart,
+    selectMove: throttle(selectMove, 300),
+    selectEnd,
   };
 };
 
@@ -204,4 +241,34 @@ const resolveDateRange = (params: {
   }
 
   return { newStartDateStr, newEndDateStr };
+};
+
+const useHandlerDateRangeUpdate = (externalCallback: (...args: any[]) => void) => {
+  const frozenExternalCallbackRef = useRef(externalCallback); // callback의 참조를 한번 얼리고
+
+  // 매 렌더마다 callback의 참조를 업데이트 한다
+  // callback 함수 내부에 다른 state가 있어서 외부 렌더 타이밍에 따라 callback 함수의 업데이트가 필요할 수 있으므로.
+  frozenExternalCallbackRef.current = externalCallback;
+
+  // 핵심은
+  // 1. callback 의 참조가 계속 변해서, callback을 내부에서 호출하는 useEffect가 계속실행되는 것을 막는 것
+  // 2. 이와 동시에 useEffect의 dep array를 react 원칙에 맞게 잘 채우는 것
+
+  const [callDateRangeUpdateTrigger, setCallDateRangeUpdateTrigger] = useState(0);
+  const updateTargetData = useRef({
+    startDateStr: '',
+    endDateStr: '',
+  });
+  useEffect(() => {
+    frozenExternalCallbackRef.current(
+      dayjs(updateTargetData.current.startDateStr).toDate(),
+      dayjs(updateTargetData.current.endDateStr).toDate()
+    );
+  }, [callDateRangeUpdateTrigger]);
+
+  return {
+    targetDataRef: updateTargetData,
+    fireTrigger: () => setCallDateRangeUpdateTrigger((prev) => prev + 1),
+  };
+  //-------
 };

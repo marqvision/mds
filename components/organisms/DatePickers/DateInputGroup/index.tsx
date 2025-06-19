@@ -1,14 +1,51 @@
-type Props = {
-  value: string;
-  onChange: (value: string) => void;
+import { MDSTypography } from '../../../atoms/Typography';
+import { MDSInput } from '../../../molecules/Input';
+import { DateInputGroupLayout } from './styles';
+import { getHelperText } from './@utils';
+import { DateInputGroupProps } from './@types';
+import { useDateInputGroup } from './@hooks/useDateInputGroup';
+import { DEFAULT_PROPS } from './@constants';
+
+const DateInputGroup = (props: DateInputGroupProps) => {
+  const { startDate, endDate, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
+  const { startDateState, endDateState, errors, handleStartDateChange, handleEndDateChange, handleBlur } =
+    useDateInputGroup(props);
+
+  return (
+    <DateInputGroupLayout>
+      <div data-role="start-date-input-wrapper">
+        <MDSInput
+          fullWidth
+          variant="textField"
+          value={startDateState.value}
+          label={props.startDate.label}
+          placeholder={startDate.placeholder || format || DEFAULT_PROPS.placeholder}
+          inputProps={{
+            autoFocus: true,
+          }}
+          onChange={handleStartDateChange}
+          onBlur={handleBlur}
+          status={errors.startDateField ? 'error' : undefined}
+          guide={getHelperText('start', errors.value, startDate)}
+        />
+      </div>
+      {typeof separator === 'string' ? <MDSTypography data-role="separator">{separator}</MDSTypography> : separator}
+      <div data-role="end-date-input-wrapper">
+        <MDSInput
+          fullWidth
+          variant="textField"
+          value={endDateState.value}
+          label={endDate.label}
+          placeholder={endDate.placeholder || format || DEFAULT_PROPS.placeholder}
+          onChange={handleEndDateChange}
+          onBlur={handleBlur}
+          status={errors.endDateField ? 'error' : undefined}
+          guide={getHelperText('end', errors.value, endDate)}
+        />
+      </div>
+    </DateInputGroupLayout>
+  );
 };
-
-const DateInputGroup = ({ value, onChange }: Props) => {
-  return <div>DateInputGroup</div>;
-};
-
-
-
 
 export const MDSDateInputGroup = DateInputGroup;
-export type MDSDateInputGroupProps = Props;
+export type MDSDateInputGroupProps = DateInputGroupProps;

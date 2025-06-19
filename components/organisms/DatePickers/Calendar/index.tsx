@@ -6,7 +6,7 @@ import { YearMonthSelector } from './YearMonthSelector';
 import { useCalendar } from './@hooks/useCalendar';
 import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from './@types';
 import { WEEKDAYS } from './@constants';
-import { useDragSelect } from './@hooks/useDateRangeSelect';
+import { useDateRangeSelect } from './@hooks/useDateRangeSelect';
 
 type Props = CommonOptions & (SingleDateValue | DateRangeValue);
 
@@ -65,7 +65,7 @@ const DateRangeCalendarContent = (props: {
 }) => {
   const { days, selectedDate, minDate, maxDate, onChange } = props;
 
-  const { dragState, dragMove, dragStart, dragEnd, displayDate } = useDragSelect({
+  const { selectActionState, selectMove, selectStart, selectEnd, displayDate } = useDateRangeSelect({
     startDate: selectedDate.startDate,
     endDate: selectedDate.endDate,
     minDate,
@@ -76,16 +76,22 @@ const DateRangeCalendarContent = (props: {
   });
 
   return (
-    <CalendarGrid onMouseMove={dragMove} onMouseDown={dragStart} onMouseUp={dragEnd}>
+    <CalendarGrid onMouseMove={selectMove} onMouseDown={selectStart} onMouseUp={selectEnd}>
       {days.map((day, index) => {
         const dayDate = dayjs(day.date);
         const dateStr = day.isDisplayedMonth ? dayDate.format('YYYY-MM-DD') : '';
         const isToday = dayDate.isSame(dayjs(), 'day');
-        const isStartDate = dayDate.isSame(dayjs(displayDate.startDate), 'day');
-        const isEndDate = dayDate.isSame(dayjs(displayDate.endDate), 'day');
-        const isStartAndEndSame = dayjs(displayDate.startDate).isSame(dayjs(displayDate.endDate), 'day');
+        const isStartDate = displayDate.startDate ? dayDate.isSame(dayjs(displayDate.startDate), 'day') : false;
+        const isEndDate = displayDate.endDate ? dayDate.isSame(dayjs(displayDate.endDate), 'day') : false;
+        const isStartAndEndSame =
+          displayDate.startDate && displayDate.endDate
+            ? dayjs(displayDate.startDate).isSame(dayjs(displayDate.endDate), 'day')
+            : false;
         const isInRange =
-          dayDate.isAfter(dayjs(displayDate.startDate), 'day') && dayDate.isBefore(dayjs(displayDate.endDate), 'day');
+          displayDate.startDate && displayDate.endDate
+            ? dayDate.isAfter(dayjs(displayDate.startDate), 'day') &&
+              dayDate.isBefore(dayjs(displayDate.endDate), 'day')
+            : false;
 
         return (
           <DayCell
@@ -98,33 +104,27 @@ const DateRangeCalendarContent = (props: {
             isEndDate={isEndDate}
             isStartAndEndSame={isStartAndEndSame}
             isInRange={isInRange}
-            isAnchorDate={dragState.anchorDateStr === dateStr}
-            isSelectionInProgress={dragState.actionState === 'in-progress'}
+            isAnchorDate={selectActionState.anchorDateStr === dateStr}
+            isSelectionInProgress={selectActionState.actionState === 'in-progress'}
           >
             {day.isDisplayedMonth && <MDSTypography as="span">{dayDate.date()}</MDSTypography>}
           </DayCell>
         );
       })}
-      <Debugger
-        title="date range"
-        data={{
-          displayDate,
-          dragState,
-        }}
-      />
     </CalendarGrid>
   );
 };
 
-const SingleDateCalendarContent = (props: { days: CalendarDay[]; value: Date; onChange: (date: Date) => void }) => {
+const SingleDateCalendarContent = (props: { days: CalendarDay[]; value?: Date; onChange: (date: Date) => void }) => {
   const { days, value, onChange } = props;
+  
   return (
     <CalendarGrid>
       {days.map((day, index) => {
         const dayDate = dayjs(day.date);
         const dateStr = dayDate.format('YYYY-MM-DD');
         const isToday = dayDate.isSame(dayjs(), 'day');
-        const isSelectedDate = dayDate.isSame(dayjs(value), 'day');
+        const isSelectedDate = value ? dayDate.isSame(dayjs(value), 'day') : false;
 
         return (
           <DayCell
@@ -147,26 +147,3 @@ const SingleDateCalendarContent = (props: { days: CalendarDay[]; value: Date; on
 };
 export const MDSCalendar = CalendarContainer;
 export type MDSCalendarProps = Props;
-
-///-----
-
-const Debugger = ({ title, data }: { title: string; data: any }) => {
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        right: 0,
-        width: 400,
-        height: '100%',
-        overflow: 'auto',
-
-        border: '1px solid gray',
-        fontSize: '12px',
-      }}
-    >
-      <MDSTypography variant="title">{title}</MDSTypography>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
-  );
-};

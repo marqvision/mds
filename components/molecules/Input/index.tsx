@@ -182,3 +182,4 @@ export const MDSInput = <T,>(props: Props<T>) => {
     </StyledWrapper>
   );
 };
+export type MDSInputProps<T> = Props<T>;

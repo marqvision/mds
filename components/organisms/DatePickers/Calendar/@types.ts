@@ -1,11 +1,11 @@
 
 // public facing interfaces
 export type SingleDateValue = {
-  value: Date;
+  value?: Date;
   onChange: (date: Date) => void;
 };
 export type DateRangeValue = {
-  value: { startDate: Date; endDate: Date };
+  value: { startDate?: Date; endDate?: Date };
   onChange: (startDate: Date, endDate: Date) => void;
 };
 export type CommonOptions = {

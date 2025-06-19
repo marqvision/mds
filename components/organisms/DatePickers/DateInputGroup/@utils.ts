@@ -173,7 +173,7 @@ export const validateDateValue = (
     return 'INVALID_DATE';
   }
   const parsedDate = parseDateString(value, format);
-  const { isValid, isOutOfRange } = validateDateAndMinMaxRange(parsedDate, minDate, maxDate);
+  const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: parsedDate, minDate, maxDate });
 
   if (!isValid) {
     return 'INVALID_DATE';
@@ -202,13 +202,13 @@ export const getValidatedDate = (
   value: string,
   format: 'MM/DD/YYYY' | 'YYYY-MM-DD',
   minDate?: Date,
-  maxDate?: Date,
+  maxDate?: Date
 ): Date | null => {
   const parsedDate = parseDateString(value, format);
   if (!parsedDate) {
     return null;
   }
-  const { isValid, isOutOfRange } = validateDateAndMinMaxRange(parsedDate, minDate, maxDate);
+  const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: parsedDate, minDate, maxDate });
   return isValid && !isOutOfRange ? parsedDate : null;
 };
 

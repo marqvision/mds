@@ -9,11 +9,14 @@ import { mdsLogger } from '../../../utils';
  * @param maxDate - 허용되는 최대 날짜 (경계 포함).
  * @returns 날짜의 유효성(isValid)과 범위 이탈 여부(isOutOfRange)를 포함하는 객체를 반환합니다.
  */
-export const validateDateAndMinMaxRange = (
-  date?: Date | null,
-  minDate?: Date,
-  maxDate?: Date
-): { isValid: boolean; isOutOfRange: boolean } => {
+type Params = {
+  date?: Date | null;
+  minDate?: Date;
+  maxDate?: Date;
+  unit?: dayjs.OpUnitType;
+};
+export const validateDateAndMinMaxRange = (params: Params): { isValid: boolean; isOutOfRange: boolean } => {
+  const { date, minDate, maxDate, unit = 'day' } = params;
   if (!date) {
     return { isValid: false, isOutOfRange: false };
   }
@@ -29,8 +32,8 @@ export const validateDateAndMinMaxRange = (
     return { isValid: false, isOutOfRange: false };
   }
 
-  const isBeforeMin = minDate && dayjs(date).isBefore(minDate, 'day');
-  const isAfterMax = maxDate && dayjs(date).isAfter(maxDate, 'day');
+  const isBeforeMin = minDate && dayjs(date).isBefore(minDate, unit);
+  const isAfterMax = maxDate && dayjs(date).isAfter(maxDate, unit);
 
   if (isBeforeMin || isAfterMax) {
     if (isBeforeMin) {

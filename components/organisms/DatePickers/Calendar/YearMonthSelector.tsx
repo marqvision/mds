@@ -6,6 +6,7 @@ import { MDSIcon } from '../../../atoms/Icon';
 import { MDSDropdown } from '../../../molecules/Dropdown';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { MDSTypography } from '../../../atoms/Typography';
+import { validateDateAndMinMaxRange } from '../@utils';
 import { AVAILABLE_YEARS, MONTH_LABELS } from './@constants';
 
 dayjs.extend(minMax);
@@ -149,7 +150,14 @@ const useYearMonthSelector = (props: Props) => {
   const years = AVAILABLE_YEARS.map((year) => ({
     label: year.format('YYYY'),
     value: year.year(),
-    isDisabled: isAllEnabled ? false : year.isBefore(dayjs(minDate), 'year') || year.isAfter(dayjs(maxDate), 'year'),
+    isDisabled: isAllEnabled
+      ? false
+      : validateDateAndMinMaxRange({
+          date: year.toDate(),
+          minDate,
+          maxDate,
+          unit: 'year',
+        }).isOutOfRange,
   }));
 
   const months = MONTH_LABELS.map((month, index) => ({
@@ -157,8 +165,12 @@ const useYearMonthSelector = (props: Props) => {
     value: index,
     isDisabled: isAllEnabled
       ? false
-      : dayjs(`${displayedDate.year()}-${index + 1}-01`).isBefore(dayjs(minDate), 'month') ||
-        dayjs(`${displayedDate.year()}-${index + 1}-01`).isAfter(dayjs(maxDate), 'month'),
+      : validateDateAndMinMaxRange({
+          date: dayjs(`${displayedDate.year()}-${index + 1}-01`).toDate(),
+          minDate,
+          maxDate,
+          unit: 'month',
+        }).isOutOfRange,
   }));
 
   return {

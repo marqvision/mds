@@ -16,9 +16,9 @@ const meta: Meta<typeof MDSInput> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof MDSInput>;
+export type Story = StoryObj<typeof MDSInput>;
 
-const Wrapper = ({ children }: React.PropsWithChildren) => {
+export const Wrapper = ({ children }: React.PropsWithChildren) => {
   return (
     <div
       style={{

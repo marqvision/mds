@@ -51,6 +51,5 @@ export const validateDateAndMinMaxRange = (params: Params): { isValid: boolean; 
     }
     return { isValid: true, isOutOfRange: true };
   }
-
   return { isValid: true, isOutOfRange: false };
 };

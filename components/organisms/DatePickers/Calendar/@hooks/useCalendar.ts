@@ -25,6 +25,7 @@ export const useCalendar = (params: Params) => {
   useEffect(() => {
     // note-@jamie: 외부 입력 값으로 min/maxDate를 벗어나면 calendar에서는 그냥 값을 무시하기로 하고, 입력하는 쪽에서 에러를 표시하는 방향으로.
     if (isDateRange(params)) {
+
       const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange({
         date: params.value.startDate,
         minDate: params.minDate,
@@ -83,6 +84,7 @@ export const useCalendar = (params: Params) => {
           minDate: params.minDate,
           maxDate: params.maxDate,
         });
+
         if (!isEndValid || isEndOutOfRange) return;
 
         setValue({ startDate, endDate });
@@ -100,6 +102,7 @@ export const useCalendar = (params: Params) => {
         minDate: params.minDate,
         maxDate: params.maxDate,
       });
+
       if (!isValid || isOutOfRange) return;
 
       setValue({ startDate: date, endDate: date });
@@ -124,6 +127,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
       minDate,
       maxDate,
     });
+
     return isValid && !isOutOfRange;
   };
 

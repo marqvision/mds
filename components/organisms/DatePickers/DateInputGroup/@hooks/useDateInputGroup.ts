@@ -20,6 +20,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
     const initialValue = startDate.value || '';
     const d = parseDateString(initialValue, format);
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: d, minDate, maxDate });
+
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,
@@ -29,6 +30,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
     const initialValue = endDate.value || '';
     const d = parseDateString(initialValue, format);
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: d, minDate, maxDate });
+
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,

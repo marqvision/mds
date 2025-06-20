@@ -38,11 +38,13 @@ export const useDateRangeSelect = (params: {
   const selectStart = (e: React.MouseEvent) => {
     const currentAnchorDateStr = calculateCurrentDate(e);
     if (!currentAnchorDateStr) return;
+    
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
       date: dayjs(currentAnchorDateStr).toDate(),
       minDate: params.minDate,
       maxDate: params.maxDate,
     });
+
     if (!isValid || isOutOfRange) return;
 
     anchorDateStr.current = currentAnchorDateStr;
@@ -79,11 +81,13 @@ export const useDateRangeSelect = (params: {
 
     const currentAnchorDateStr = calculateCurrentDate(event);
     if (!currentAnchorDateStr) return;
+
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
       date: dayjs(currentAnchorDateStr).toDate(),
       minDate: params.minDate,
       maxDate: params.maxDate,
     });
+
     if (!isValid || isOutOfRange) return;
 
     setDisplayDate((prev) => {

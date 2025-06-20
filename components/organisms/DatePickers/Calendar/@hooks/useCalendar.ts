@@ -25,16 +25,17 @@ export const useCalendar = (params: Params) => {
   useEffect(() => {
     // note-@jamie: 외부 입력 값으로 min/maxDate를 벗어나면 calendar에서는 그냥 값을 무시하기로 하고, 입력하는 쪽에서 에러를 표시하는 방향으로.
     if (isDateRange(params)) {
-      const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange(
-        params.value.startDate,
-        params.minDate,
-        params.maxDate
-      );
-      const { isValid: isEndValid, isOutOfRange: isEndOutOfRange } = validateDateAndMinMaxRange(
-        params.value.endDate,
-        params.minDate,
-        params.maxDate
-      );
+
+      const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange({
+        date: params.value.startDate,
+        minDate: params.minDate,
+        maxDate: params.maxDate,
+      });
+      const { isValid: isEndValid, isOutOfRange: isEndOutOfRange } = validateDateAndMinMaxRange({
+        date: params.value.endDate,
+        minDate: params.minDate,
+        maxDate: params.maxDate,
+      });
 
       if (isStartValid && !isStartOutOfRange && isEndValid && !isEndOutOfRange) {
         const whichDateChanged =
@@ -50,7 +51,11 @@ export const useCalendar = (params: Params) => {
       if (!params.value) {
         setValue({ startDate: undefined, endDate: undefined });
       } else {
-        const { isValid, isOutOfRange } = validateDateAndMinMaxRange(params.value, params.minDate, params.maxDate);
+        const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
+          date: params.value,
+          minDate: params.minDate,
+          maxDate: params.maxDate,
+        });
 
         if (isValid && !isOutOfRange) {
           setValue({ startDate: params.value, endDate: params.value });
@@ -67,18 +72,19 @@ export const useCalendar = (params: Params) => {
       ...commonProps,
       type: 'range' as const,
       onChange: (startDate: Date, endDate: Date) => {
-        const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange(
-          startDate,
-          params.minDate,
-          params.maxDate
-        );
+        const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange({
+          date: startDate,
+          minDate: params.minDate,
+          maxDate: params.maxDate,
+        });
         if (!isStartValid || isStartOutOfRange) return;
 
-        const { isValid: isEndValid, isOutOfRange: isEndOutOfRange } = validateDateAndMinMaxRange(
-          endDate,
-          params.minDate,
-          params.maxDate
-        );
+        const { isValid: isEndValid, isOutOfRange: isEndOutOfRange } = validateDateAndMinMaxRange({
+          date: endDate,
+          minDate: params.minDate,
+          maxDate: params.maxDate,
+        });
+
         if (!isEndValid || isEndOutOfRange) return;
 
         setValue({ startDate, endDate });
@@ -91,7 +97,12 @@ export const useCalendar = (params: Params) => {
     ...commonProps,
     type: 'single' as const,
     onChange: (date: Date) => {
-      const { isValid, isOutOfRange } = validateDateAndMinMaxRange(date, params.minDate, params.maxDate);
+      const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
+        date,
+        minDate: params.minDate,
+        maxDate: params.maxDate,
+      });
+
       if (!isValid || isOutOfRange) return;
 
       setValue({ startDate: date, endDate: date });
@@ -111,7 +122,12 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   const lastDayOfMonth = currentDate.endOf('month');
 
   const isSelectableDate = (d: Date) => {
-    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(d, minDate, maxDate);
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
+      date: d,
+      minDate,
+      maxDate,
+    });
+
     return isValid && !isOutOfRange;
   };
 

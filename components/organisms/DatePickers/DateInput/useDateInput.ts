@@ -16,7 +16,8 @@ export const useDateInput = (params: DateInputProps) => {
   const [dateState, setDateState] = useState(() => {
     const initialValue = value || '';
     const d = parseDateString(initialValue, format);
-    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(d, minDate, maxDate);
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: d, minDate, maxDate });
+
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,

@@ -1,4 +1,4 @@
-import { cloneElement } from 'react';
+import { cloneElement, MouseEvent } from 'react';
 import styled from '@emotion/styled';
 import { LinkComponentProps } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
@@ -49,7 +49,19 @@ const Label = styled(MDSTypography)<{ isVisible: boolean }>`
 `;
 
 export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
-  const { LinkComponent, path, label, icon, isSubOpen, type, shouldCollapse, onFold, onClick, onItemClick, parentLabel } = props;
+  const {
+    LinkComponent,
+    path,
+    label,
+    icon,
+    isSubOpen,
+    type,
+    shouldCollapse,
+    onFold,
+    onClick,
+    onItemClick,
+    parentLabel,
+  } = props;
 
   const Icon = icon && cloneElement(icon, { size: 20, color: 'currentColor' });
 
@@ -57,7 +69,7 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
   const FoldIcon = isSubOpen ? MDSIcon.ArrowUp : MDSIcon.ArrowDown;
   const isLabelVisible = props.isOpen || type === 'popover';
 
-  const handleClick = () => {
+  const handleClick = (e: MouseEvent<HTMLAnchorElement & HTMLDivElement>) => {
     if (isFoldVisible) {
       onClick?.();
     } else if (shouldCollapse) {
@@ -72,7 +84,7 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
       key: props.key,
       items: props.items,
     };
-    onItemClick?.(currentItem);
+    onItemClick?.(currentItem, e);
   };
 
   return (

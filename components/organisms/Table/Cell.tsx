@@ -53,6 +53,8 @@ const Wrapper = styled.td<StyledTableCellProps>`
 const CellBox = styled.div<TableCellInnerProps>`
   padding: ${({ cellSize }) => theme.cell.size[cellSize].padding};
   text-align: ${({ align }) => align};
+  min-height: 40px;
+
   & > div {
     height: 100%;
   }
@@ -70,7 +72,7 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
         <MDSTypography
           as={typeof children !== 'string' && typeof children !== 'number' ? 'div' : undefined}
           variant="body"
-          size="m"
+          size="s"
           color={color}
           weight={weight}
         >

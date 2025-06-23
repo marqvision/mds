@@ -83,7 +83,7 @@ export const theme: TableTheme = {
         padding: '6.5px 8px',
       },
       medium: {
-        padding: '12px',
+        padding: '8px',
       },
     },
   },

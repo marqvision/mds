@@ -2,8 +2,8 @@ import { ReactNode, SVGAttributes } from 'react';
 import { resolveColor } from '../../../utils';
 import { Features, IconVariant } from './@types';
 import * as Arrows from './set/Arrows';
-import * as Symbols from './set/Symbols';
 import * as Editor from './set/Editor';
+import * as Symbols from './set/Symbols';
 
 export type MDSIconProps<IC = ''> = Features<IC> & SVGAttributes<SVGElement>;
 
@@ -191,6 +191,7 @@ export const MDSIcon = {
   Translate: createIcon(Symbols.Translate),
   Performance: createIcon(Symbols.Performance),
   Link: createIcon(Symbols.Link),
+  Live: createIcon(Symbols.Live),
 
   // editor
   Bold: createIcon(Editor.Bold),

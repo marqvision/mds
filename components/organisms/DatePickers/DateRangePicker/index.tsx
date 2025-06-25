@@ -41,20 +41,23 @@ const DateRangePicker = (props: Props) => {
   );
   const frozenOnChange = useRef(onChange);
 
-  const handleDateInputGroupChange = useCallback((dates: { startDate: Date | null; endDate: Date | null }) => {
-    setStore(
-      dates.startDate && dates.endDate
-        ? {
-            startDate: dayjs(dates.startDate, format).toDate(),
-            endDate: dayjs(dates.endDate, format).toDate(),
-          }
-        : undefined
-    );
+  const handleDateInputGroupChange = useCallback(
+    (dates: { startDate: Date | null; endDate: Date | null }) => {
+      setStore(
+        dates.startDate && dates.endDate
+          ? {
+              startDate: dayjs(dates.startDate, format).toDate(),
+              endDate: dayjs(dates.endDate, format).toDate(),
+            }
+          : undefined
+      );
 
-    if (frozenOnChange.current) {
-      frozenOnChange.current(dates);
-    }
-  }, [format]);
+      if (frozenOnChange.current) {
+        frozenOnChange.current(dates);
+      }
+    },
+    [format]
+  );
 
   const handleCalendarChange = useCallback((startDate: Date, endDate: Date) => {
     setStore({
@@ -97,4 +100,4 @@ const DateRangePicker = (props: Props) => {
 };
 
 export const MDSDateRangePicker = DateRangePicker;
-// export type MDSDateRangePickerProps = Props;
+export type MDSDateRangePickerProps = Props;

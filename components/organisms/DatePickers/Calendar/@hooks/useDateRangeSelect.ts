@@ -8,7 +8,7 @@ type DateRangeSelectParams = {
   endDate?: Date;
   minDate?: Date;
   maxDate?: Date;
-  onDateRangeUpdate: (startDate: Date, lastDate: Date) => void;
+  onDateRangeUpdate: (startDate: Date, lastDate: Date, lastUpdatedDateType: 'start' | 'end') => void;
 };
 
 type SelectActionState = {
@@ -56,11 +56,8 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
       const newEndDateStr = prev.actionState === 'in-progress' ? prev.endDateStr : currentAnchorDateStr;
 
       if (newActionState === 'done') {
-        console.group('>>>>> targetDataRef');
-        console.log('>>>>> targetDataRef.startDateStr', newStartDateStr);
-        console.log('>>>>> targetDataRef.endDateStr', newEndDateStr);
-        console.groupEnd();
         targetDataRef.current = {
+          ...targetDataRef.current,
           startDateStr: newStartDateStr,
           endDateStr: newEndDateStr,
         };
@@ -91,12 +88,13 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
     if (!isValid || isOutOfRange) return;
 
     setSelectActionState((prev) => {
-      const { newStartDateStr, newEndDateStr } = resolveDateRange({
+      const { newStartDateStr, newEndDateStr, lastUpdatedDateType } = resolveDateRange({
         anchorDateStr: prev.anchorDateStr,
         startDateStr: prev.startDateStr,
         endDateStr: prev.endDateStr,
         currentDateStr: currentAnchorDateStr,
       });
+      targetDataRef.current.lastUpdatedDateType = lastUpdatedDateType;
 
       return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
     });
@@ -187,18 +185,22 @@ const resolveDateRange = (params: {
   const currentDate = dayjs(params.currentDateStr);
   const anchorDate = dayjs(params.anchorDateStr);
 
+  let lastUpdatedDateType: 'start' | 'end' = 'start';
   if (currentDate.isBefore(anchorDate, 'day')) {
     newStartDateStr = params.currentDateStr;
     newEndDateStr = params.anchorDateStr;
+    lastUpdatedDateType = 'start';
   } else if (currentDate.isAfter(anchorDate, 'day')) {
     newStartDateStr = params.anchorDateStr;
     newEndDateStr = params.currentDateStr;
+    lastUpdatedDateType = 'end';
   } else if (currentDate.isSame(anchorDate, 'day')) {
     newStartDateStr = params.anchorDateStr;
     newEndDateStr = params.anchorDateStr;
+    lastUpdatedDateType = 'end';
   }
 
-  return { newStartDateStr, newEndDateStr };
+  return { newStartDateStr, newEndDateStr, lastUpdatedDateType };
 };
 const useHandlerDateRangeUpdate = (externalCallback: (...args: any[]) => void) => {
   const frozenExternalCallbackRef = useRef(externalCallback); // callback의 참조를 한번 얼리고
@@ -215,11 +217,13 @@ const useHandlerDateRangeUpdate = (externalCallback: (...args: any[]) => void) =
   const updateTargetData = useRef({
     startDateStr: '',
     endDateStr: '',
+    lastUpdatedDateType: 'start',
   });
   useEffect(() => {
     frozenExternalCallbackRef.current(
       dayjs(updateTargetData.current.startDateStr).toDate(),
-      dayjs(updateTargetData.current.endDateStr).toDate()
+      dayjs(updateTargetData.current.endDateStr).toDate(),
+      updateTargetData.current.lastUpdatedDateType
     );
   }, [callDateRangeUpdateTrigger]);
 

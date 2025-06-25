@@ -47,8 +47,16 @@ export const DayCell = styled.div<{
   position: relative;
   cursor: ${({ isSelectable }) => (isSelectable ? 'pointer' : 'default')};
 
-  background: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, isStartAndEndSame, theme }) => {
-    if (isSelectionInProgress || isStartAndEndSame) {
+  background: ${({
+    isDisplayedMonth,
+    isInRange,
+    isStartDate,
+    isEndDate,
+    isSelectionInProgress,
+    isStartAndEndSame,
+    theme,
+  }) => {
+    if (!isDisplayedMonth || isSelectionInProgress || isStartAndEndSame) {
       return 'transparent';
     } else if (isStartDate) {
       return `linear-gradient(90deg, transparent 50%, ${theme.color.bg.fill.primary.tint.normal} 50%)`;
@@ -61,9 +69,9 @@ export const DayCell = styled.div<{
     }
   }};
 
-  //#region border styles
-  ${({ isStartAndEndSame, isInRange, isSelectionInProgress, isStartDate, isEndDate, theme }) => {
-    if (isStartAndEndSame) return;
+  //#region border style
+  ${({  isDisplayedMonth, isStartAndEndSame, isInRange, isSelectionInProgress, isStartDate, isEndDate, theme }) => {
+    if (!isDisplayedMonth || isStartAndEndSame) return;
     else {
       const startDateBorderStyle =
         isSelectionInProgress &&
@@ -92,19 +100,21 @@ export const DayCell = styled.div<{
       `;
     }
   }}
-
   //#endregion
 
-  ${({ isToday, isStartDate, isEndDate, isInRange, isAnchorDate, isSelectionInProgress, theme }) => {
-    const markerStyles ={
+  //#region today marker style
+  ${({ isDisplayedMonth, isToday, isStartDate, isEndDate, isInRange, isAnchorDate, isSelectionInProgress, theme }) => {
+    if (!isDisplayedMonth) return;
+
+    const markerStyles = {
       top: '4px',
-      display: 'block'
-    }
-    if(isAnchorDate) {
+      display: 'block',
+    };
+    if (isAnchorDate) {
       markerStyles.display = 'none';
     }
-    if(isSelectionInProgress) {
-      if(isInRange || isStartDate || isEndDate) {
+    if (isSelectionInProgress) {
+      if (isInRange || isStartDate || isEndDate) {
         markerStyles.top = '2px'; // border 만큼 보정 필요
       }
     }
@@ -128,8 +138,12 @@ export const DayCell = styled.div<{
       `
     );
   }}
+  //#endregion
 
-  ${({ isStartDate, isEndDate, isSelectionInProgress, isAnchorDate, theme }) => {
+  //#region selection progress style
+  ${({ isDisplayedMonth, isStartDate, isEndDate, isSelectionInProgress, isAnchorDate, theme }) => {
+    if (!isDisplayedMonth) return;
+
     let bgColor = 'transparent';
 
     if (isAnchorDate) bgColor = theme.color.bg.fill.primary.default.normal;
@@ -184,6 +198,7 @@ export const DayCell = styled.div<{
       }};
     }
   }
+  //#endregion
 
   //#region 캘린더 내에서 날짜 typography의 상호작용 관련 스타일
   & > span {

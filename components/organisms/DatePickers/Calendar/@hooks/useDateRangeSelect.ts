@@ -13,7 +13,6 @@ type DateRangeSelectParams = {
 
 type SelectActionState = {
   actionState: 'initial' | 'in-progress' | 'done'; // initial: 초기 상태, in-progress: 선택 중, done: 선택 완료(start, end date 확정)
-  anchorDateStr: string;
   startDateStr: string;
   endDateStr: string;
 };
@@ -35,7 +34,7 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
       };
     }
   });
-
+  const anchorDateStrRef = useRef(selectActionState.startDateStr);
   const { targetDataRef, fireTrigger: fireDateRangeUpdate } = useHandlerDateRangeUpdate(params.onDateRangeUpdate);
 
   const selectStart = (e: React.MouseEvent) => {
@@ -54,24 +53,26 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
       const newActionState = prev.actionState === 'in-progress' ? 'done' : 'in-progress';
       const newStartDateStr = prev.actionState === 'in-progress' ? prev.startDateStr : currentAnchorDateStr;
       const newEndDateStr = prev.actionState === 'in-progress' ? prev.endDateStr : currentAnchorDateStr;
-
+      
+      anchorDateStrRef.current = currentAnchorDateStr;
+      targetDataRef.current = {
+        ...targetDataRef.current,
+        startDateStr: newStartDateStr,
+        endDateStr: newEndDateStr,
+      };
       if (newActionState === 'done') {
-        targetDataRef.current = {
-          ...targetDataRef.current,
-          startDateStr: newStartDateStr,
-          endDateStr: newEndDateStr,
-        };
+        fireDateRangeUpdate();
       }
 
       return {
         ...prev,
-        anchorDateStr: currentAnchorDateStr,
         actionState: newActionState,
         startDateStr: newStartDateStr,
         endDateStr: newEndDateStr,
       };
     });
-    fireDateRangeUpdate();
+
+    console.log('>>>>>>> targetDataRef 2', targetDataRef.current);
   };
   const selectMove = (event: React.MouseEvent) => {
     if (selectActionState.actionState !== 'in-progress') return;
@@ -89,7 +90,7 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
 
     setSelectActionState((prev) => {
       const { newStartDateStr, newEndDateStr, lastUpdatedDateType } = resolveDateRange({
-        anchorDateStr: prev.anchorDateStr,
+        anchorDateStr: anchorDateStrRef.current,
         startDateStr: prev.startDateStr,
         endDateStr: prev.endDateStr,
         currentDateStr: currentAnchorDateStr,
@@ -114,7 +115,7 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
       // 첫번째 날짜 선택 중
       if (prev.actionState === 'in-progress') {
         const { newStartDateStr, newEndDateStr } = resolveDateRange({
-          anchorDateStr: prev.anchorDateStr,
+          anchorDateStr: anchorDateStrRef.current,
           startDateStr: prev.startDateStr,
           endDateStr: prev.endDateStr,
           currentDateStr: currentAnchorDateStr,
@@ -132,9 +133,9 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
       if (prev.actionState === 'in-progress') {
         return prev;
       } else {
+        anchorDateStrRef.current = params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '';
         return {
           ...prev,
-          anchorDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
           startDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
           endDateStr: params.endDate ? dayjs(params.endDate).format('YYYY-MM-DD') : '',
         };
@@ -143,7 +144,10 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
   }, [params.startDate, params.endDate]);
 
   return {
-    selectActionState,
+    selectActionState: {
+      ...selectActionState,
+      anchorDateStr: anchorDateStrRef.current,
+    },
     displayDate: {
       startDate: selectActionState.startDateStr,
       endDate: selectActionState.endDateStr,

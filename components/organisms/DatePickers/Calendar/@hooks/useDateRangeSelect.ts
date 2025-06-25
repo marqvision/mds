@@ -131,15 +131,15 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
   useEffect(() => {
     // 값에 대한 validation은 useCalendar에서 모두 처리하고 내려오니까 여기에서는 넘어온 값을 쓰기만 하면 된다!
     setSelectActionState((prev) => {
-      if (prev.actionState === 'initial') {
+      if (prev.actionState === 'in-progress') {
+        return prev;
+      } else {
         return {
           ...prev,
           anchorDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
           startDateStr: params.startDate ? dayjs(params.startDate).format('YYYY-MM-DD') : '',
           endDateStr: params.endDate ? dayjs(params.endDate).format('YYYY-MM-DD') : '',
         };
-      } else {
-        return prev;
       }
     });
   }, [params.startDate, params.endDate]);

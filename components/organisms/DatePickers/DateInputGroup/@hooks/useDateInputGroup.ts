@@ -19,7 +19,8 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   const [startDateState, setStartDateState] = useState(() => {
     const initialValue = startDate.value || '';
     const d = parseDateString(initialValue, format);
-    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(d, minDate, maxDate);
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: d, minDate, maxDate });
+
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,
@@ -28,7 +29,8 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   const [endDateState, setEndDateState] = useState(() => {
     const initialValue = endDate.value || '';
     const d = parseDateString(initialValue, format);
-    const { isValid, isOutOfRange } = validateDateAndMinMaxRange(d, minDate, maxDate);
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: d, minDate, maxDate });
+
     return {
       value: initialValue,
       lastValid: d && isValid && !isOutOfRange ? d : null,
@@ -244,8 +246,8 @@ const useDateChangeHandler = (
             endDate: type === 'end' ? nextEndDate : validEndDate ?? otherState.lastValid,
           });
 
-          // note-@jamie: 
-          // dom을 바로 동기적으로 update 하는 로직이라, react state (onDateChange) 업데이트가 끝난 뒤에 실행되도록 
+          // note-@jamie:
+          // dom을 바로 동기적으로 update 하는 로직이라, react state (onDateChange) 업데이트가 끝난 뒤에 실행되도록
           // setTimeout으로 한 틱을 미룬다. (MDSInput이 ref가 없어서 일단 이렇게라도 🥲)
           setTimeout(() => {
             if (type === 'start' && inputValue !== '' && nextEndDate === null) {

@@ -117,7 +117,7 @@ const DateRangeCalendarContent = (props: {
 
 const SingleDateCalendarContent = (props: { days: CalendarDay[]; value?: Date; onChange: (date: Date) => void }) => {
   const { days, value, onChange } = props;
-  
+
   return (
     <CalendarGrid>
       {days.map((day, index) => {

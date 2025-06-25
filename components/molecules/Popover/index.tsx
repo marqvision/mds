@@ -440,27 +440,12 @@ export const MDSPopover = (props: Props & StyleProps) => {
         const target = e.target as HTMLElement;
         const isIn = dialogRef.current?.contains(target) || anchorRef.current?.contains(target);
         const isDimmed = target.closest?.('.mds-dimmed') && target.closest?.('.mds-dimmed') !== dimmed;
-        const currentPopover = target.closest?.('.mds-popover');
-        const isNotDelete = !!target.closest?.('.mds-delete-icon');
+        const isPopover = target.closest?.('.mds-popover');
+        const isNotDelete = target.closest?.('.mds-delete-icon');
 
-        if ((!isIn && !isDimmed && !currentPopover) || (isIn && isNotDelete)) {
+        if ((!isIn && !isDimmed && !isPopover) || (isIn && !!isNotDelete)) {
           handleClosePopover();
-          return;
         }
-
-        // for multiple popovers, any popup opened after the current one will be closed.
-        const allPopovers = document.querySelectorAll('.mds-popover');
-        let targetPopoverIndex = -1;
-        allPopovers.forEach((el, index) => {
-          if (targetPopoverIndex > -1) {
-            if (currentPopover !== dialogRef.current) {
-              handleClosePopover();
-            }
-          }
-          if (el === currentPopover) {
-            targetPopoverIndex = index;
-          }
-        });
       };
       if (isOpen) {
         document.body.addEventListener('click', handleBodyClick, { capture: true });

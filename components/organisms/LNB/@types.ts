@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import { LinkComponentProps, LinkPath } from '../../../types';
 
 export type ItemType = 'group' | 'sub' | 'popover';
@@ -76,5 +76,5 @@ export type LNBProps = {
   /*
    * 메뉴 아이템 클릭 시 실행되는 함수
    */
-  onItemClick?: (item: Partial<LNBItem>, e: MouseEvent<HTMLDivElement & HTMLAnchorElement>) => void;
+  onItemClick?: (item: Partial<LNBItem>) => void;
 };

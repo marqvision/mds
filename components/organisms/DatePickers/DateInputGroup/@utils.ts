@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { isDateShapeValid, validateDateAndMinMaxRange } from '../@utils';
 import { SEPARATOR_MAP } from '../@constants';
+import { AvailableDateFormat } from '../DateRangePicker/@types';
+import { DateValidationError } from '../@types';
 import { SingleDateInput } from './@types';
 
 /**
@@ -10,7 +12,7 @@ import { SingleDateInput } from './@types';
  * @param format - 'MM/DD/YYYY' 또는 'YYYY-MM-DD' 형식의 날짜 포맷.
  * @returns 각 세그먼트가 유효하면 true, 그렇지 않으면 false.
  */
-export const isPartiallyValidDate = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-DD'): boolean => {
+export const isPartiallyValidDate = (value: string, format: AvailableDateFormat): boolean => {
   const separator = SEPARATOR_MAP[format];
   const parts = value.split(separator);
 
@@ -58,10 +60,7 @@ export const isPartiallyValidDate = (value: string, format: 'MM/DD/YYYY' | 'YYYY
  * @param format - 'MM/DD/YYYY' 또는 'YYYY-MM-DD' 형식의 날짜 포맷.
  * @returns 파싱된 Date 객체 또는 null.
  */
-export const parseDateString = (
-  dateString: string,
-  format: 'MM/DD/YYYY' | 'YYYY-MM-DD' = 'MM/DD/YYYY'
-): Date | null => {
+export const parseDateString = (dateString: string, format: AvailableDateFormat = 'MM/DD/YYYY'): Date | null => {
   const separator = SEPARATOR_MAP[format];
   const parts = dateString.split(separator);
 
@@ -92,8 +91,6 @@ export const parseDateString = (
   return null;
 };
 
-export type DateValidationError = 'INVALID_DATE' | 'MIN_DATE' | 'MAX_DATE';
-
 /**
  * 날짜 문자열의 전체적인 유효성을 검사하고, 유효하지 않은 경우 구체적인 오류 유형을 반환합니다.
  * 형식, 부분적 유효성, 날짜 존재 여부, 그리고 min/max 범위를 모두 검사합니다.
@@ -105,7 +102,7 @@ export type DateValidationError = 'INVALID_DATE' | 'MIN_DATE' | 'MAX_DATE';
  */
 export const validateDateValue = (
   value: string,
-  format: 'MM/DD/YYYY' | 'YYYY-MM-DD',
+  format: AvailableDateFormat,
   minDate?: Date,
   maxDate?: Date
 ): DateValidationError | null => {

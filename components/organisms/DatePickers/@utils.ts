@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { mdsLogger } from '../../../utils';
 import { DATE_SHAPE_REGEX_MAP, SEPARATOR_MAP } from './@constants';
 
 /**
@@ -24,11 +23,12 @@ export const validateDateAndMinMaxRange = (params: Params): { isValid: boolean; 
 
   const isDateValid = !isNaN(date.getTime());
   if (!isDateValid) {
-    mdsLogger.warning({
-      title: 'validateDateAndMinMaxRange',
-      message: 'date is invalid',
-      data: { date, minDate, maxDate },
-    });
+    // todo-@jamie: 값을 확정 했을 때에만 log 출력 하도록 수정
+    // mdsLogger.warning({
+    //   title: 'validateDateAndMinMaxRange',
+    //   message: 'date is invalid',
+    //   data: { date, minDate, maxDate },
+    // });
 
     return { isValid: false, isOutOfRange: false };
   }
@@ -37,19 +37,20 @@ export const validateDateAndMinMaxRange = (params: Params): { isValid: boolean; 
   const isAfterMax = maxDate && dayjs(date).isAfter(maxDate, unit);
 
   if (isBeforeMin || isAfterMax) {
-    if (isBeforeMin) {
-      mdsLogger.warning({
-        title: 'validateDateAndRange',
-        message: 'date is not after minDate',
-        data: { date, minDate },
-      });
-    } else if (isAfterMax) {
-      mdsLogger.warning({
-        title: 'validateDateAndRange',
-        message: 'date is not before maxDate',
-        data: { date, maxDate },
-      });
-    }
+    // todo-@jamie: 값을 확정 했을 때에만 log 출력 하도록 수정
+    // if (isBeforeMin) {
+    //   mdsLogger.warning({
+    //     title: 'validateDateAndRange',
+    //     message: 'date is not after minDate',
+    //     data: { date, minDate },
+    //   });
+    // } else if (isAfterMax) {
+    //   mdsLogger.warning({
+    //     title: 'validateDateAndRange',
+    //     message: 'date is not before maxDate',
+    //     data: { date, maxDate },
+    //   });
+    // }
     return { isValid: true, isOutOfRange: true };
   }
   return { isValid: true, isOutOfRange: false };
@@ -68,7 +69,6 @@ export const isDateRangeValid = (startDate: Date | null, endDate: Date | null): 
 
   return dayjs(startDate).isSame(endDate, 'day') || dayjs(startDate).isBefore(endDate, 'day');
 };
-
 
 /**
  * 입력된 날짜 문자열이 지정된 포맷의 기본 구조(정규식, 구분자 위치)를 따르는지 검사합니다.
@@ -102,4 +102,42 @@ export const isDateShapeValid = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-
   }
 
   return true;
+};
+
+export const validateDateRange = (params: {
+  startDate: Date | null;
+  endDate: Date | null;
+  format: 'MM/DD/YYYY' | 'YYYY-MM-DD';
+  minDate?: Date;
+  maxDate?: Date;
+}) => {
+  const { startDate, endDate, format, minDate, maxDate } = params;
+
+  if (!isDateRangeValid(startDate, endDate)) {
+    return false;
+  }
+
+  const formattedStartDate = startDate ? dayjs(startDate).format(format) : undefined;
+  if (!formattedStartDate || !isDateShapeValid(formattedStartDate, format)) {
+    return false;
+  }
+  const formattedEndDate = endDate ? dayjs(endDate).format(format) : undefined;
+  if (!formattedEndDate || !isDateShapeValid(formattedEndDate, format)) {
+    return false;
+  }
+
+  const isStartDateValid = validateDateAndMinMaxRange({
+    date: startDate,
+    minDate,
+    maxDate,
+  });
+  const isEndDateValid = validateDateAndMinMaxRange({
+    date: endDate,
+    minDate,
+    maxDate,
+  });
+
+  return (
+    isStartDateValid.isValid && !isStartDateValid.isOutOfRange && isEndDateValid.isValid && !isEndDateValid.isOutOfRange
+  );
 };

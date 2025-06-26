@@ -1,4 +1,6 @@
-import { MDSInputProps } from "../../../molecules/Input";
+import { MDSInputProps } from '../../../molecules/Input';
+import { DateValidationError } from '../@types';
+import { AvailableDateFormat } from '../DateRangePicker/@types';
 
 export type SingleDateInput = {
   value?: MDSInputProps<string>['value'];
@@ -9,13 +11,13 @@ export type SingleDateInput = {
   helperText?: string;
 };
 
-
 export type DateInputGroupProps = {
   separator?: React.ReactNode;
   startDate: SingleDateInput;
   endDate: SingleDateInput;
   minDate?: Date;
   maxDate?: Date;
-  format?: 'MM/DD/YYYY' | 'YYYY-MM-DD';
+  format?: AvailableDateFormat;
   onDateChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;
+  onError?: (error: DateValidationError) => void;
 };

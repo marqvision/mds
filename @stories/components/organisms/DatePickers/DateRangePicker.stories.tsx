@@ -176,16 +176,114 @@ export const AnchorButton: Story = {
 
 export const AnchorPlainButton: Story = {
   render: function Render() {
+    const DEFAULT_VALUE = {
+      format: 'MM/DD/YYYY',
+      minDate: '06/02/2025', //'2025-06-02',
+      maxDate: '07/02/2025', //'2025-07-02',
+    };
+    const [selectedDate, setSelectedDate] = useState<{
+      startDate: Date | null;
+      endDate: Date | null;
+    }>({
+      startDate: null,
+      endDate: null,
+    });
+    const [tempDateRangeInput, setTempDateRangeInput] = useState<{ start: string; end: string }>({
+      start: '',
+      end: '',
+    });
+    const [dateFromMDSDateRangePicker, setDateFromMDSDateRangePicker] = useState<{ start: string; end: string }>({
+      start: '',
+      end: '',
+    });
+    const handleChange = (dates: { startDate: Date | null; endDate: Date | null }) => {
+      setSelectedDate(dates);
+      setDateFromMDSDateRangePicker({
+        start: dayjs(dates.startDate).format(DEFAULT_VALUE.format),
+        end: dayjs(dates.endDate).format(DEFAULT_VALUE.format),
+      });
+    };
+
     return (
       <div css={testGroupStyle}>
-        <MDSDateRangePicker
-          anchor={{
-            variant: 'plainButton',
-            props: {
-              children: '🚧 In progress',
-            },
-          }}
-        />
+        <div css={dataBoxLayout}>
+          <div css={dataBoxStyle}>
+            <MDSTypography variant="title" size="m">
+              외부 값 주입을 위한 컴포넌트
+            </MDSTypography>
+            <MDSInput
+              fullWidth
+              value={tempDateRangeInput.start}
+              label="start date"
+              placeholder={DEFAULT_VALUE.format}
+              custom={{
+                add: {
+                  label: '완료',
+                  onSubmit: (value) => {
+                    setSelectedDate({ ...selectedDate, startDate: dayjs(value).toDate() });
+                  },
+                },
+              }}
+              onChange={(value) => {
+                setTempDateRangeInput({ ...tempDateRangeInput, start: value });
+              }}
+            />
+            <MDSInput
+              fullWidth
+              value={tempDateRangeInput.end}
+              label="end date"
+              placeholder={DEFAULT_VALUE.format}
+              custom={{
+                add: {
+                  label: '완료',
+                  onSubmit: (value) => {
+                    setSelectedDate({ ...selectedDate, endDate: dayjs(value).toDate() });
+                  },
+                },
+              }}
+              onChange={(value) => {
+                setTempDateRangeInput({ ...tempDateRangeInput, end: value });
+              }}
+            />
+          </div>
+          <div css={dataBoxStyle}>
+            <MDSTypography variant="title" size="m">
+              props
+            </MDSTypography>
+            <div>
+              <pre>{JSON.stringify(DEFAULT_VALUE, null, 2)}</pre>
+            </div>
+          </div>
+          <div css={dataBoxStyle}>
+            <MDSTypography variant="title" size="m">
+              결과
+            </MDSTypography>
+            <MDSTypography>startDate: {dateFromMDSDateRangePicker.start}</MDSTypography>
+            <MDSTypography>endDate: {dateFromMDSDateRangePicker.end}</MDSTypography>
+          </div>
+        </div>
+        <div>
+          <MDSDateRangePicker
+            anchor={{
+              variant: 'plainButton',
+              format: 'MMM DD, YYYY',
+              separator: ' ~ ',
+              props: {
+                children: 'Button',
+              },
+            }}
+            startDate={{
+              value: selectedDate.startDate ? dayjs(selectedDate.startDate).format(DEFAULT_VALUE.format) : undefined,
+            }}
+            endDate={{
+              value: selectedDate.endDate ? dayjs(selectedDate.endDate).format(DEFAULT_VALUE.format) : undefined,
+            }}
+            format={DEFAULT_VALUE.format as MDSDateRangePickerProps['format']}
+            minDate={dayjs(DEFAULT_VALUE.minDate).toDate()}
+            maxDate={dayjs(DEFAULT_VALUE.maxDate).toDate()}
+            onChange={handleChange}
+          />
+        </div>
       </div>
     );
   },

@@ -1,5 +1,5 @@
 import { MDSInput } from '../../../molecules/Input';
-import { DEFAULT_PROPS } from '../DateInputGroup/@constants';
+import { DEFAULT_PROPS } from '../@constants';
 import { getHelperText } from '../DateInputGroup/@utils';
 import { DateInputProps } from './@types';
 import { useDateInput } from './useDateInput';

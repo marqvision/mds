@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import styled from '@emotion/styled';
 import { MDSCalendar } from '../Calendar';
-import { DEFAULT_PROPS } from '../DateInputGroup/@constants';
 import { SingleDateInput } from '../DateInputGroup/@types';
 import { MDSDateInput } from '../DateInput';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
@@ -10,6 +9,7 @@ import { MDSButton } from '../../../molecules/Button';
 import { MDSDivider } from '../../../atoms/Divider';
 import { MDSPopover } from '../../../molecules/Popover';
 import { MDSInput, MDSInputProps } from '../../../molecules/Input';
+import { DEFAULT_PROPS } from '../@constants';
 
 const DatePickerContainer = styled.div`
   display: flex;

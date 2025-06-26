@@ -71,8 +71,6 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
         endDateStr: newEndDateStr,
       };
     });
-
-    console.log('>>>>>>> targetDataRef 2', targetDataRef.current);
   };
   const selectMove = (event: React.MouseEvent) => {
     if (selectActionState.actionState !== 'in-progress') return;

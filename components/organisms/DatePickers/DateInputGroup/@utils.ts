@@ -1,50 +1,7 @@
 import dayjs from 'dayjs';
-import { validateDateAndMinMaxRange } from '../@utils';
+import { isDateShapeValid, validateDateAndMinMaxRange } from '../@utils';
+import { SEPARATOR_MAP } from '../@constants';
 import { SingleDateInput } from './@types';
-
-const SEPARATOR_MAP = {
-  'MM/DD/YYYY': '/',
-  'YYYY-MM-DD': '-',
-};
-
-const DATE_SHAPE_REGEX_MAP = {
-  'MM/DD/YYYY': /^(?!.*\/\/)\d{0,2}(\/(\d{0,2}(\/(\d{0,4})?)?)?)?$/,
-  'YYYY-MM-DD': /^(?!.*--)\d{0,4}(-(\d{0,2}(-(\d{0,2})?)?)?)?$/,
-};
-
-/**
- * 입력된 날짜 문자열이 지정된 포맷의 기본 구조(정규식, 구분자 위치)를 따르는지 검사합니다.
- * 값의 유효성(예: 13월)은 검사하지 않습니다.
- * @param value - 사용자가 입력한 날짜 문자열.
- * @param format - 'MM/DD/YYYY' 또는 'YYYY-MM-DD' 형식의 날짜 포맷.
- * @returns 형식이 올바르면 true, 그렇지 않으면 false.
- */
-export const isDateShapeValid = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-DD') => {
-  if (!DATE_SHAPE_REGEX_MAP[format].test(value)) {
-    return false;
-  }
-
-  const separator = SEPARATOR_MAP[format];
-  const parts = value.split(separator);
-
-  if (format === 'MM/DD/YYYY') {
-    if (parts.length > 1 && parts[0].length < 2) {
-      return false;
-    }
-    if (parts.length > 2 && parts[1].length < 2) {
-      return false;
-    }
-  } else if (format === 'YYYY-MM-DD') {
-    if (parts.length > 1 && parts[0].length < 4) {
-      return false;
-    }
-    if (parts.length > 2 && parts[1].length < 2) {
-      return false;
-    }
-  }
-
-  return true;
-};
 
 /**
  * 부분적으로 입력된 날짜 문자열의 각 세그먼트(월, 일)가 논리적으로 유효한지 검사합니다.
@@ -133,20 +90,6 @@ export const parseDateString = (
   }
 
   return null;
-};
-
-/**
- * 시작 날짜가 종료 날짜보다 이전이거나 같은지 확인합니다.
- * @param startDate - 시작 날짜.
- * @param endDate - 종료 날짜.
- * @returns 날짜 범위가 유효하면 true, 그렇지 않으면 false.
- */
-export const isDateRangeValid = (startDate: Date | null, endDate: Date | null): boolean => {
-  if (!startDate || !endDate) {
-    return true;
-  }
-
-  return dayjs(startDate).isSame(endDate, 'day') || dayjs(startDate).isBefore(endDate, 'day');
 };
 
 export type DateValidationError = 'INVALID_DATE' | 'MIN_DATE' | 'MAX_DATE';

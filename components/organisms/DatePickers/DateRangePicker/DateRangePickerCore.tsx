@@ -35,7 +35,17 @@ const DateRangePickerActionContainer = styled.div`
 `;
 
 export const DateRangePickerCore = (props: DateRangePickerProps) => {
-  const { startDate, endDate, format = DEFAULT_PROPS.format, onChange, minDate, maxDate, anchor, onClose } = props;
+  const {
+    startDate,
+    endDate,
+    format = DEFAULT_PROPS.format,
+    onChange,
+    minDate,
+    maxDate,
+    anchor,
+    initialFocus,
+    onClose,
+  } = props;
 
   const [store, setStore] = useState<
     | {
@@ -116,6 +126,7 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
               onError={handleDateInputGroupError}
               minDate={minDate}
               maxDate={maxDate}
+              initialFocus={initialFocus}
             />
           </div>
         )}

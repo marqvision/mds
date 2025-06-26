@@ -18,6 +18,7 @@ export type DateInputGroupProps = {
   minDate?: Date;
   maxDate?: Date;
   format?: AvailableDateFormat;
+  initialFocus?: 'startDate' | 'endDate';
   onDateChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;
   onError?: (error: DateValidationError) => void;
 };

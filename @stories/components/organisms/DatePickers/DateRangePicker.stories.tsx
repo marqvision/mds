@@ -178,6 +178,8 @@ export const AnchorPlainButton: Story = {
   render: function Render() {
     const DEFAULT_VALUE = {
       format: 'MM/DD/YYYY',
+      startDate: '06/11/2025',
+      endDate: '06/25/2025',
       minDate: '06/02/2025', //'2025-06-02',
       maxDate: '07/02/2025', //'2025-07-02',
     };
@@ -185,8 +187,8 @@ export const AnchorPlainButton: Story = {
       startDate: Date | null;
       endDate: Date | null;
     }>({
-      startDate: null,
-      endDate: null,
+      startDate: dayjs(DEFAULT_VALUE.startDate).toDate(),
+      endDate: dayjs(DEFAULT_VALUE.endDate).toDate(),
     });
     const [tempDateRangeInput, setTempDateRangeInput] = useState<{ start: string; end: string }>({
       start: '',

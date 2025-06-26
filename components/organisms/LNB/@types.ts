@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { LinkComponentProps, LinkPath } from '../../../types';
 
 export type ItemType = 'group' | 'sub' | 'popover';
@@ -9,6 +9,7 @@ export type Item<Type extends ItemType> = {
   label: string;
   shouldCollapse?: boolean;
   parentLabel?: string;
+  isNew?: boolean;
 
   items?: never;
 } & (Type extends 'group' ? { icon: React.ReactElement } : { icon?: never });
@@ -19,6 +20,7 @@ export type Group = {
   icon: React.ReactElement;
   items: Item<'sub'>[];
   shouldCollapse?: boolean;
+  isNew?: boolean;
 
   path?: never;
   parentLabel?: never;
@@ -76,5 +78,5 @@ export type LNBProps = {
   /*
    * 메뉴 아이템 클릭 시 실행되는 함수
    */
-  onItemClick?: (item: Partial<LNBItem>) => void;
+  onItemClick?: (item: Partial<LNBItem>, e: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) => void;
 };

@@ -1,14 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { validateDateAndMinMaxRange, isDateRangeValid, isDateShapeValid } from '../../@utils';
 import { DateInputGroupProps, SingleDateInput } from '../@types';
-import {
-  isPartiallyValidDate,
-  parseDateString,
-  validateDateValue,
-  getValidatedDate,
-} from '../@utils';
+import { isPartiallyValidDate, parseDateString, validateDateValue, getValidatedDate } from '../@utils';
 import { DEFAULT_PROPS } from '../../@constants';
 import { DateValidationError } from '../../@types';
+import { AvailableDateFormat } from '../../DateRangePicker/@types';
 
 export const useDateInputGroup = (params: DateInputGroupProps) => {
   const { startDate, endDate, minDate, maxDate, format = DEFAULT_PROPS.format, onDateChange } = params;
@@ -188,7 +184,7 @@ const useDateChangeHandler = (
     setErrors: (
       newErrors: Partial<{ start: DateValidationError | null; end: DateValidationError | null; range: boolean }>
     ) => void;
-    format: 'MM/DD/YYYY' | 'YYYY-MM-DD';
+    format: AvailableDateFormat;
     minDate?: Date;
     maxDate?: Date;
     onDateChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;

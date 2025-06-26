@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { DATE_SHAPE_REGEX_MAP, SEPARATOR_MAP } from './@constants';
+import { AvailableDateFormat } from './DateRangePicker/@types';
 
 /**
  * 주어진 Date 객체의 유효성을 검사하고, 선택적인 min/max 날짜 범위 내에 있는지 확인합니다.
@@ -77,7 +78,7 @@ export const isDateRangeValid = (startDate: Date | null, endDate: Date | null): 
  * @param format - 'MM/DD/YYYY' 또는 'YYYY-MM-DD' 형식의 날짜 포맷.
  * @returns 형식이 올바르면 true, 그렇지 않으면 false.
  */
-export const isDateShapeValid = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-DD') => {
+export const isDateShapeValid = (value: string, format: AvailableDateFormat) => {
   if (!DATE_SHAPE_REGEX_MAP[format].test(value)) {
     return false;
   }
@@ -100,6 +101,7 @@ export const isDateShapeValid = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-
       return false;
     }
   }
+  // todo-@jamie: 나머지 포맷 검사 추가
 
   return true;
 };
@@ -107,7 +109,7 @@ export const isDateShapeValid = (value: string, format: 'MM/DD/YYYY' | 'YYYY-MM-
 export const validateDateRange = (params: {
   startDate: Date | null;
   endDate: Date | null;
-  format: 'MM/DD/YYYY' | 'YYYY-MM-DD';
+  format: AvailableDateFormat;
   minDate?: Date;
   maxDate?: Date;
 }) => {

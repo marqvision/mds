@@ -46,7 +46,7 @@ const DateRangePicker = (props: DateRangePickerProps) => {
     onChange,
     minDate,
     maxDate,
-    anchorVariant,
+    anchor,
     onClose,
   } = props;
 
@@ -115,7 +115,7 @@ const DateRangePicker = (props: DateRangePickerProps) => {
   return (
     <DateRangePickerContainer>
       <DateRangePickerLayout>
-        {anchorVariant !== 'input' && (
+        {anchor.variant !== 'input' && (
           <div className="mds-date-picker-input-container">
             <MDSDateInputGroup
               format={format}
@@ -170,7 +170,7 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 };
 
 const DateRangePickerWrapper = (props: DateRangePickerProps) => {
-  const { anchorVariant, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
+  const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
 
   const { internalDate, handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePicker(props);
 
@@ -184,36 +184,36 @@ const DateRangePickerWrapper = (props: DateRangePickerProps) => {
               open(e);
             }}
           >
-            {anchorVariant === 'input' ? (
+            {anchor.variant === 'input' ? (
               <div>input</div>
-            ) : anchorVariant === 'button' ? (
+            ) : anchor.variant === 'button' ? (
               <MDSButton
                 variant={internalDate.startDate && internalDate.endDate ? 'fill' : 'tint'}
                 color="bluegray"
                 tags={
                   internalDate.startDate && internalDate.endDate ? (
                     <MDSTag size="small" variant="tint" color="bluegray">
-                      {formattedStartDate} {separator} {formattedEndDate}
+                      {formattedStartDate} {anchor.separator} {formattedEndDate}
                     </MDSTag>
                   ) : undefined
                 }
                 endIcon={<MDSIcon.Calendar />}
-                {...props.anchorProps}
+                {...anchor.props}
               >
-                {props.anchorProps?.children || 'Label'}
+                {anchor.props?.children || 'Label'}
               </MDSButton>
-            ) : anchorVariant === 'plainButton' ? (
-              <MDSPlainButton {...props.anchorProps}>{props.anchorProps?.children || 'test'}</MDSPlainButton>
-            ) : anchorVariant === 'custom' ? (
-              typeof props.children === 'function' ? (
-                props.children({
+            ) : anchor.variant === 'plainButton' ? (
+              <MDSPlainButton {...anchor.props}>{anchor.props?.children || 'test'}</MDSPlainButton>
+            ) : anchor.variant === 'custom' ? (
+              typeof anchor.children === 'function' ? (
+                anchor.children({
                   open: (e) => {
                     open(e as React.MouseEvent<Element, MouseEvent>);
                   },
                   close,
                 })
               ) : (
-                props.children
+                anchor.children
               )
             ) : null}
           </div>

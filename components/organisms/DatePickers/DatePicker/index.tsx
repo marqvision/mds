@@ -10,6 +10,7 @@ import { MDSDivider } from '../../../atoms/Divider';
 import { MDSPopover } from '../../../molecules/Popover';
 import { MDSInput, MDSInputProps } from '../../../molecules/Input';
 import { DEFAULT_PROPS } from '../@constants';
+import { AvailableDateFormat } from '../DateRangePicker/@types';
 
 const DatePickerContainer = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ const DatePickerActionContainer = styled.div`
 `;
 
 type Props = {
-  format?: 'MM/DD/YYYY' | 'YYYY-MM-DD';
+  format?: AvailableDateFormat;
   minDate?: Date;
   maxDate?: Date;
   onClose?: () => void;

@@ -47,9 +47,11 @@ export const AnchorInput: Story = {
     return (
       <div css={testGroupStyle}>
         <MDSDateRangePicker
-          anchorVariant="input"
-          anchorProps={{
-            label: '🚧 In progress',
+          anchor={{
+            variant: 'input',
+            props: {
+              label: '🚧 In progress',
+            },
           }}
         />
       </div>
@@ -147,9 +149,13 @@ export const AnchorButton: Story = {
         </div>
         <div>
           <MDSDateRangePicker
-            anchorVariant="button"
-            anchorProps={{
-              children: 'Button',
+            anchor={{
+              variant: 'button',
+              format: 'MMM DD, YYYY',
+              separator: ' ~ ',
+              props: {
+                children: 'Button',
+              },
             }}
             startDate={{
               value: selectedDate.startDate ? dayjs(selectedDate.startDate).format(DEFAULT_VALUE.format) : undefined,
@@ -173,9 +179,11 @@ export const AnchorPlainButton: Story = {
     return (
       <div css={testGroupStyle}>
         <MDSDateRangePicker
-          anchorVariant="plainButton"
-          anchorProps={{
-            children: '🚧 In progress',
+          anchor={{
+            variant: 'plainButton',
+            props: {
+              children: '🚧 In progress',
+            },
           }}
         />
       </div>
@@ -188,18 +196,24 @@ export const AnchorCustom: Story = {
     return (
       <div css={testGroupStyle}>
         <div>
-          <MDSDateRangePicker anchorVariant="custom">
-            {({ open, close }) => (
-              <div onClick={open}>
-                <div>🚧 In progress - function style</div>
-              </div>
-            )}
-          </MDSDateRangePicker>
+          <MDSDateRangePicker
+            anchor={{
+              variant: 'custom',
+              children: ({ open, close }) => (
+                <div onClick={open}>
+                  <div>🚧 In progress - function style</div>
+                </div>
+              ),
+            }}
+          />
         </div>
         <div>
-          <MDSDateRangePicker anchorVariant="custom">
-            <div>🚧 In progress - component style</div>
-          </MDSDateRangePicker>
+          <MDSDateRangePicker
+            anchor={{
+              variant: 'custom',
+              children: <div>🚧 In progress - component style</div>,
+            }}
+          />
         </div>
       </div>
     );

@@ -5,6 +5,9 @@ import { AvailableDateFormat } from '../DateRangePicker/@types';
 import { DateValidationError } from '../@types';
 import { SingleDateInput } from './@types';
 
+
+// todo-@jamie: 아래의 format 검사하는 함수들을 dayjs의 customParseFormat를 사용하는 방법으로 바꾸기
+
 /**
  * 부분적으로 입력된 날짜 문자열의 각 세그먼트(월, 일)가 논리적으로 유효한지 검사합니다.
  * (예: 월은 1-12 사이, 일은 1-31 사이)
@@ -140,7 +143,7 @@ export const validateDateValue = (
  */
 export const getValidatedDate = (
   value: string,
-  format: 'MM/DD/YYYY' | 'YYYY-MM-DD',
+  format: AvailableDateFormat,
   minDate?: Date,
   maxDate?: Date
 ): Date | null => {

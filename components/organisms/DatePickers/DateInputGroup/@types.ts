@@ -7,6 +7,7 @@ export type SingleDateInput = {
   label?: MDSInputProps<string>['label'];
   placeholder?: MDSInputProps<string>['placeholder'];
   onChange?: (value: string | undefined) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   isError?: boolean;
   helperText?: string;
 };

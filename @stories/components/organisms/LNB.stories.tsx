@@ -49,6 +49,7 @@ const meta: Meta<typeof MDSLNB> = {
               key: 'marketplace',
               path: '/marketplace/review-needed',
               label: 'Review Needed',
+              isNew: true,
             },
           ],
         },

@@ -25,12 +25,16 @@ const GNB = (props: GNBProps) => {
 
   const MenuIcon = isLNBOpen ? MDSIcon.MenuClose : MDSIcon.MenuOpen;
 
-  const Logo = <MDSLogo logoType="ai" color="black" />;
-
   return (
     <Wrapper>
       <MDSButton variant="border" size="medium" color="bluegray" icon={<MenuIcon />} onClick={onLNBToggle} />
-      {LinkComponent ? <LinkComponent to="/">{Logo}</LinkComponent> : Logo}
+      {LinkComponent ? (
+        <LinkComponent to="/">
+          <MDSLogo logoType="ai" color="black" />
+        </LinkComponent>
+      ) : (
+        <MDSLogo logoType="ai" color="black" />
+      )}
       {children}
     </Wrapper>
   );

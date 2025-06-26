@@ -178,18 +178,13 @@ export const SingleDateWithMinMaxAndDefaultValue: Story = {
   },
 };
 export const DateRange: Story = {
-  /**
-   * todo - known issues
-   * - [ ] start, end date에 같은 날짜를 선택 가능하는 기능
-   */
   render: function Render() {
     const DEFAULT_VALUE = {
       format: 'YYYY-MM-DD',
     };
 
-    const [injectedDate, setInjectedDate] = useState<{ start?: string; end?: string }>({});
-    const [dateInput, setDateInput] = useState<{ start?: string; end?: string }>({});
-    const [dateFromMDSDateInput, setDateFromMDSDateInput] = useState<{ start?: string; end?: string }>({});
+    const [tempDateInputState, setTempDateInputState] = useState<{ start?: string; end?: string }>({});
+    const [selectedDate, setSelectedDate] = useState<{ start?: string; end?: string }>({});
 
     return (
       <div css={testGroupStyle}>
@@ -203,37 +198,37 @@ export const DateRange: Story = {
             <MDSInput
               fullWidth
               variant="textField"
-              value={dateInput.start || ''}
+              value={tempDateInputState.start || ''}
               label="start date"
               placeholder={DEFAULT_VALUE.format}
               custom={{
                 add: {
                   label: '완료',
                   onSubmit: (value) => {
-                    setInjectedDate({ ...injectedDate, start: value });
+                    setSelectedDate((prev) => ({ ...prev, start: value }));
                   },
                 },
               }}
               onChange={(value) => {
-                setDateInput({ ...dateInput, start: value });
+                setTempDateInputState({ ...tempDateInputState, start: value });
               }}
             />
             <MDSInput
               fullWidth
               variant="textField"
-              value={dateInput.end || ''}
+              value={tempDateInputState.end || ''}
               label="end date"
               placeholder={DEFAULT_VALUE.format}
               custom={{
                 add: {
                   label: '완료',
                   onSubmit: (value) => {
-                    setInjectedDate({ ...injectedDate, end: value });
+                    setSelectedDate((prev) => ({ ...prev, end: value }));
                   },
                 },
               }}
               onChange={(value) => {
-                setDateInput({ ...dateInput, end: value });
+                setTempDateInputState({ ...tempDateInputState, end: value });
               }}
             />
           </div>
@@ -251,25 +246,21 @@ export const DateRange: Story = {
             </MDSTypography>
             <MDSTypography>
               선택한 start date:{' '}
-              {dateFromMDSDateInput.start
-                ? dayjs(dateFromMDSDateInput.start, DEFAULT_VALUE.format).format(DEFAULT_VALUE.format)
-                : ''}
+              {selectedDate.start ? dayjs(selectedDate.start, DEFAULT_VALUE.format).format(DEFAULT_VALUE.format) : ''}
             </MDSTypography>
             <MDSTypography>
               선택한 end date:{' '}
-              {dateFromMDSDateInput.end
-                ? dayjs(dateFromMDSDateInput.end, DEFAULT_VALUE.format).format(DEFAULT_VALUE.format)
-                : ''}
+              {selectedDate.end ? dayjs(selectedDate.end, DEFAULT_VALUE.format).format(DEFAULT_VALUE.format) : ''}
             </MDSTypography>
           </div>
         </div>
         <MDSCalendar
           value={{
-            startDate: injectedDate.start ? dayjs(injectedDate.start, DEFAULT_VALUE.format).toDate() : undefined,
-            endDate: injectedDate.end ? dayjs(injectedDate.end, DEFAULT_VALUE.format).toDate() : undefined,
+            startDate: selectedDate.start ? dayjs(selectedDate.start, DEFAULT_VALUE.format).toDate() : undefined,
+            endDate: selectedDate.end ? dayjs(selectedDate.end, DEFAULT_VALUE.format).toDate() : undefined,
           }}
           onChange={(startDate, endDate) => {
-            setDateFromMDSDateInput({
+            setSelectedDate({
               start: dayjs(startDate).format(DEFAULT_VALUE.format),
               end: dayjs(endDate).format(DEFAULT_VALUE.format),
             });
@@ -281,10 +272,6 @@ export const DateRange: Story = {
 };
 
 export const DateRangeWithMinMaxAndDefaultValue: Story = {
-  /**
-   * todo - known issues
-   * - [ ] start, end date에 같은 날짜를 선택 가능하는 기능
-   */
   render: function Render() {
     const DEFAULT_VALUE = {
       format: 'YYYY-MM-DD',
@@ -293,8 +280,8 @@ export const DateRangeWithMinMaxAndDefaultValue: Story = {
       startDate: '2025-06-10',
       endDate: '2025-06-20',
     };
-    const [dateInput, setDateInput] = useState<{ start?: string; end?: string }>({});
-    const [dateFromMDSDateInput, setDateFromMDSDateInput] = useState<{ start: Date; end: Date }>({
+    const [tempDateInputState, setTempDateInputState] = useState<{ start?: string; end?: string }>({});
+    const [selectedDate, setSelectedDate] = useState<{ start: Date; end: Date }>({
       start: dayjs(DEFAULT_VALUE.startDate, DEFAULT_VALUE.format).toDate(),
       end: dayjs(DEFAULT_VALUE.endDate, DEFAULT_VALUE.format).toDate(),
     });
@@ -311,14 +298,14 @@ export const DateRangeWithMinMaxAndDefaultValue: Story = {
             <MDSInput
               fullWidth
               variant="textField"
-              value={dateInput.start || ''}
+              value={tempDateInputState.start || ''}
               label="start date"
               placeholder={DEFAULT_VALUE.format}
               custom={{
                 add: {
                   label: '완료',
                   onSubmit: (value) => {
-                    setDateFromMDSDateInput((prev) => ({
+                    setSelectedDate((prev) => ({
                       ...prev,
                       start: dayjs(value, DEFAULT_VALUE.format).toDate(),
                     }));
@@ -326,20 +313,20 @@ export const DateRangeWithMinMaxAndDefaultValue: Story = {
                 },
               }}
               onChange={(value) => {
-                setDateInput({ ...dateInput, start: value });
+                setTempDateInputState({ ...tempDateInputState, start: value });
               }}
             />
             <MDSInput
               fullWidth
               variant="textField"
-              value={dateInput.end || ''}
+              value={tempDateInputState.end || ''}
               label="end date"
               placeholder={DEFAULT_VALUE.format}
               custom={{
                 add: {
                   label: '완료',
                   onSubmit: (value) => {
-                    setDateFromMDSDateInput((prev) => ({
+                    setSelectedDate((prev) => ({
                       ...prev,
                       end: dayjs(value, DEFAULT_VALUE.format).toDate(),
                     }));
@@ -347,7 +334,7 @@ export const DateRangeWithMinMaxAndDefaultValue: Story = {
                 },
               }}
               onChange={(value) => {
-                setDateInput({ ...dateInput, end: value });
+                setTempDateInputState({ ...tempDateInputState, end: value });
               }}
             />
           </div>
@@ -364,20 +351,20 @@ export const DateRangeWithMinMaxAndDefaultValue: Story = {
               결과
             </MDSTypography>
             <MDSTypography>
-              선택한 start date: {dayjs(dateFromMDSDateInput.start, DEFAULT_VALUE.format).format(DEFAULT_VALUE.format)}
+              선택한 start date: {dayjs(selectedDate.start, DEFAULT_VALUE.format).format(DEFAULT_VALUE.format)}
             </MDSTypography>
             <MDSTypography>
-              선택한 end date: {dayjs(dateFromMDSDateInput.end, DEFAULT_VALUE.format).format(DEFAULT_VALUE.format)}
+              선택한 end date: {dayjs(selectedDate.end, DEFAULT_VALUE.format).format(DEFAULT_VALUE.format)}
             </MDSTypography>
           </div>
         </div>
         <MDSCalendar
           value={{
-            startDate: dayjs(dateFromMDSDateInput.start, DEFAULT_VALUE.format).toDate(),
-            endDate: dayjs(dateFromMDSDateInput.end, DEFAULT_VALUE.format).toDate(),
+            startDate: dayjs(selectedDate.start, DEFAULT_VALUE.format).toDate(),
+            endDate: dayjs(selectedDate.end, DEFAULT_VALUE.format).toDate(),
           }}
           onChange={(startDate, endDate) => {
-            setDateFromMDSDateInput({
+            setSelectedDate({
               start: startDate,
               end: endDate,
             });

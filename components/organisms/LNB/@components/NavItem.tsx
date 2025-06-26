@@ -5,6 +5,7 @@ import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
 import { ItemProps, ItemType } from '../@types';
 import { resolveNavItemColor, resolveNavItemPadding } from '../@utils';
+import { MDSTag } from '../../../molecules/Tag';
 
 const Wrapper = styled.div<{ isOpen: boolean; type: ItemType; selected?: boolean } & Partial<LinkComponentProps>>`
   ${({ theme, isOpen, type, selected }) => {
@@ -38,18 +39,36 @@ const Wrapper = styled.div<{ isOpen: boolean; type: ItemType; selected?: boolean
   }}
 `;
 
-const Label = styled(MDSTypography)<{ isVisible: boolean }>`
-  ${({ isVisible }) => {
-    const opacity = isVisible ? 1 : 0;
+const FlexRow = styled.div<{ isFolded: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: 0.2s;
+  flex-grow: 1;
+  ${({ isFolded }) => {
+    const opacity = isFolded ? 0 : 1;
     return `
-      transition: 0.2s;
+      flex-wrap: ${isFolded ? 'nowrap' : 'normal'};
       opacity: ${opacity};
     `;
   }}
 `;
 
 export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
-  const { LinkComponent, path, label, icon, isSubOpen, type, shouldCollapse, onFold, onClick, onItemClick, parentLabel } = props;
+  const {
+    LinkComponent,
+    path,
+    label,
+    icon,
+    isSubOpen,
+    type,
+    shouldCollapse,
+    isNew,
+    onFold,
+    onClick,
+    onItemClick,
+    parentLabel,
+  } = props;
 
   const Icon = icon && cloneElement(icon, { size: 20, color: 'currentColor' });
 
@@ -78,9 +97,16 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
   return (
     <Wrapper as={path ? LinkComponent : undefined} to={path} {...props} onClick={handleClick}>
       {Icon}
-      <Label color="inherit" weight="medium" whiteSpace="nowrap" isVisible={isLabelVisible}>
-        {label}
-      </Label>
+      <FlexRow isFolded={!isLabelVisible}>
+        <MDSTypography color="inherit" weight="medium" whiteSpace="nowrap">
+          {label}
+        </MDSTypography>
+        {isNew && (
+          <MDSTag variant="fill" size="small" color="red">
+            New
+          </MDSTag>
+        )}
+      </FlexRow>
       {isFoldVisible && <FoldIcon variant="outline" size={16} style={{ color: 'currentColor' }} />}
     </Wrapper>
   );

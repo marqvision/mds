@@ -9,6 +9,7 @@ export type Item<Type extends ItemType> = {
   label: string;
   shouldCollapse?: boolean;
   parentLabel?: string;
+  isNew?: boolean;
 
   items?: never;
 } & (Type extends 'group' ? { icon: React.ReactElement } : { icon?: never });
@@ -19,6 +20,7 @@ export type Group = {
   icon: React.ReactElement;
   items: Item<'sub'>[];
   shouldCollapse?: boolean;
+  isNew?: boolean;
 
   path?: never;
   parentLabel?: never;

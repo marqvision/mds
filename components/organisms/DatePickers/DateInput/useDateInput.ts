@@ -1,13 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  DateValidationError,
-  getValidatedDate,
-  isPartiallyValidDate,
-  parseDateString,
-  validateDateValue,
-} from '../DateInputGroup/@utils';
+import { getValidatedDate, isPartiallyValidDate, parseDateString, validateDateValue } from '../DateInputGroup/@utils';
 import { validateDateAndMinMaxRange, isDateShapeValid } from '../@utils';
 import { DEFAULT_PROPS } from '../@constants';
+import { DateValidationError } from '../@types';
 import { DateInputProps } from './@types';
 
 export const useDateInput = (params: DateInputProps) => {

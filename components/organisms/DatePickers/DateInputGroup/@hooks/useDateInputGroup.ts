@@ -6,9 +6,9 @@ import {
   parseDateString,
   validateDateValue,
   getValidatedDate,
-  DateValidationError,
 } from '../@utils';
 import { DEFAULT_PROPS } from '../../@constants';
+import { DateValidationError } from '../../@types';
 
 export const useDateInputGroup = (params: DateInputGroupProps) => {
   const { startDate, endDate, minDate, maxDate, format = DEFAULT_PROPS.format, onDateChange } = params;

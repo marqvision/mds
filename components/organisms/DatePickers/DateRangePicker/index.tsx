@@ -111,18 +111,6 @@ const DateRangePicker = (props: DateRangePickerProps) => {
     minDate,
     maxDate,
   });
-  console.group('>>>>>> isReadyToApply', isReadyToApply);
-  console.log(
-    '>>>>>> validateDateRange',
-    validateDateRange({
-      startDate: store?.startDate ?? null,
-      endDate: store?.endDate ?? null,
-      format,
-      minDate,
-      maxDate,
-    })
-  );
-  console.groupEnd();
 
   return (
     <DateRangePickerContainer>
@@ -200,6 +188,8 @@ const DateRangePickerWrapper = (props: DateRangePickerProps) => {
               <div>input</div>
             ) : anchorVariant === 'button' ? (
               <MDSButton
+                variant={internalDate.startDate && internalDate.endDate ? 'fill' : 'tint'}
+                color="bluegray"
                 tags={
                   internalDate.startDate && internalDate.endDate ? (
                     <MDSTag size="small" variant="tint" color="bluegray">
@@ -207,7 +197,6 @@ const DateRangePickerWrapper = (props: DateRangePickerProps) => {
                     </MDSTag>
                   ) : undefined
                 }
-                color="bluegray"
                 endIcon={<MDSIcon.Calendar />}
                 {...props.anchorProps}
               >

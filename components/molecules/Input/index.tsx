@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { forwardRef, Ref, useCallback, useEffect, useRef, useState, JSX } from 'react';
 import styled from '@emotion/styled';
 import { theme } from './@constants';
 import { Props, SelectProps, Size, TextFieldCustom, TextFieldProps } from './@types';
@@ -25,7 +25,7 @@ const StyledWrapper = styled.div<{ size: Size; fullWidth: boolean }>`
 /**
  * @param {TextFieldProps | SelectProps} props.type Input에 대한 props
  * */
-export const MDSInput = <T,>(props: Props<T>) => {
+export const MDSInput = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLInputElement | HTMLButtonElement>) => {
   const {
     variant = 'textField',
     value,
@@ -136,6 +136,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
       {variant === 'textField' && (
         <TextField
           {...({
+            ref,
             value,
             size,
             custom,
@@ -157,6 +158,7 @@ export const MDSInput = <T,>(props: Props<T>) => {
       {variant === 'select' && (
         <Select<T>
           {...({
+            ref,
             value,
             list: list || [],
             size,
@@ -181,5 +183,6 @@ export const MDSInput = <T,>(props: Props<T>) => {
       )}
     </StyledWrapper>
   );
-};
+}) as <T>(props: Props<T> & { ref?: Ref<HTMLInputElement | HTMLButtonElement> }) => JSX.Element;
+
 export type MDSInputProps<T> = Props<T>;

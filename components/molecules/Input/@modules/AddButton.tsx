@@ -1,3 +1,4 @@
+import { forwardRef, MouseEvent, Ref } from 'react';
 import styled from '@emotion/styled';
 import { Size } from '../@types';
 import { theme } from '../@constants';
@@ -25,15 +26,19 @@ const StyledAddButton = styled.button<{ size: Size; isError?: boolean }>`
 type Props = {
   label?: string;
   size: Size;
-  onClick: () => void;
+  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
   isDisabled?: boolean;
   isError?: boolean;
 };
 
-export const AddButton = ({ label, size, isDisabled, isError, onClick }: Props) => {
-  return (
-    <StyledAddButton size={size} disabled={isDisabled} isError={isError} onClick={onClick}>
-      {label || 'Add'}
-    </StyledAddButton>
-  );
-};
+export const AddButton = forwardRef(
+  ({ label, size, isDisabled, isError, onClick }: Props, ref: Ref<HTMLButtonElement>) => {
+    return (
+      <StyledAddButton ref={ref} size={size} disabled={isDisabled} isError={isError} onClick={onClick}>
+        {label || 'Add'}
+      </StyledAddButton>
+    );
+  }
+);
+
+AddButton.displayName = 'MDSInput.AddButton';

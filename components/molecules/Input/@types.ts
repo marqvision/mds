@@ -1,4 +1,4 @@
-import { CSSProperties, InputHTMLAttributes, ReactElement, MouseEvent } from 'react';
+import { CSSProperties, InputHTMLAttributes, ReactElement, MouseEvent, Ref } from 'react';
 import { MDSDropdownItem } from '../Dropdown';
 
 export type Size = 'small' | 'medium' | 'large';
@@ -44,8 +44,9 @@ export type LabelType = string | { main?: string; sub?: string; right?: ReactEle
 export type TextFieldCustom = {
   add?: {
     label?: string;
-    onSubmit: (value: string) => void;
+    onSubmit: (value: string, e: MouseEvent<HTMLButtonElement>) => void;
     isDisabled?: boolean | ((value: string) => boolean);
+    ref?: Ref<HTMLButtonElement>;
   };
   onEnter?: (value: string) => void;
   debounce?: number;
@@ -89,6 +90,7 @@ type SelectCustom<T> = {
  * @property {TextFieldCustom} props.custom - TextField 추가 모듈
  */
 export type TextFieldProps = {
+  ref?: Ref<HTMLInputElement>;
   /** @default textField */
   variant?: 'textField';
   inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'size'>;
@@ -116,6 +118,7 @@ export type ElementType<T> = T extends (infer U)[] ? U : T;
  * @property {SelectCustom} props.custom - Select 추가 모듈
  */
 export type SelectProps<T = unknown> = {
+  ref?: Ref<HTMLButtonElement>;
   variant: 'select';
   inputProps?: never;
   custom?: SelectCustom<T>;

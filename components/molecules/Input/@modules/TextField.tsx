@@ -1,4 +1,14 @@
-import { ChangeEvent, isValidElement, MouseEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  forwardRef,
+  isValidElement,
+  MouseEvent,
+  Ref,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography, MDSTypographyProps } from '../../../atoms/Typography';
@@ -46,7 +56,7 @@ const StyledMirror = styled.div<{ isMultiline: boolean }>`
 
 type Props = CommonProps & TextFieldProps & { onFocus: () => void; onResize: (gap: number) => void };
 
-export const TextField = (props: Props) => {
+export const TextField = forwardRef((props: Props, ref: Ref<HTMLInputElement>) => {
   const {
     value,
     custom,
@@ -74,11 +84,13 @@ export const TextField = (props: Props) => {
 
   const lastValueRef = useRef('');
   const debounceRef = useRef<number>();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const localInputRef = useRef<HTMLInputElement>(null);
   const formatRef = useRef(format);
   const preventResizeRef = useRef(false);
   const mirrorRef = useRef<HTMLDivElement>(null);
   const resizeRef = useRef<number>();
+
+  const inputRef = (ref || localInputRef) as RefObject<HTMLInputElement>;
 
   const add = custom?.add;
   const debounce = custom?.debounce || 0;
@@ -295,13 +307,16 @@ export const TextField = (props: Props) => {
       </StyledOutline>
       {add && (
         <AddButton
+          ref={add.ref}
           label={add.label}
           size={size}
           isDisabled={isDisabled || isReadOnly || !value || isAddButtonDisabled}
           isError={isError}
-          onClick={() => add.onSubmit(value)}
+          onClick={(e) => add.onSubmit(value, e)}
         />
       )}
     </StyledLabel>
   );
-};
+});
+
+TextField.displayName = 'MDSInput.TextField';

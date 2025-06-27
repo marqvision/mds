@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { forwardRef, JSX, MouseEvent, Ref } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
 import ReactHtmlParser from 'html-react-parser';
@@ -49,7 +49,7 @@ const Placeholder = styled(MDSTypography)`
 
 type Props<T> = CommonProps & Omit<SelectProps<T>, 'variant'>;
 
-export const Select = <T,>(props: Props<T>) => {
+export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElement>) => {
   const {
     value,
     list,
@@ -157,6 +157,7 @@ export const Select = <T,>(props: Props<T>) => {
         <div style={{ overflow: 'hidden', width: '100%' }}>
           {isWithChip ? (
             <StyledChipList
+              ref={ref}
               disabled={isDisabled}
               className={clsx('chipList', {
                 readOnly: isReadOnly,
@@ -166,6 +167,7 @@ export const Select = <T,>(props: Props<T>) => {
             </StyledChipList>
           ) : (
             <StyledButton
+              ref={ref}
               className={isReadOnly ? 'readOnly' : undefined}
               customSize={size}
               title={label}
@@ -198,4 +200,4 @@ export const Select = <T,>(props: Props<T>) => {
       </StyledOutline>
     </StyledLabel>
   );
-};
+}) as <T>(props: Props<T> & { ref?: Ref<HTMLButtonElement> }) => JSX.Element;

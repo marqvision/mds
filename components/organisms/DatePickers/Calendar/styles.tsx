@@ -47,8 +47,16 @@ export const DayCell = styled.div<{
   position: relative;
   cursor: ${({ isSelectable }) => (isSelectable ? 'pointer' : 'default')};
 
-  background: ${({ isInRange, isStartDate, isEndDate, isSelectionInProgress, isStartAndEndSame, theme }) => {
-    if (isSelectionInProgress || isStartAndEndSame) {
+  background: ${({
+    isDisplayedMonth,
+    isInRange,
+    isStartDate,
+    isEndDate,
+    isSelectionInProgress,
+    isStartAndEndSame,
+    theme,
+  }) => {
+    if (!isDisplayedMonth || isSelectionInProgress || isStartAndEndSame) {
       return 'transparent';
     } else if (isStartDate) {
       return `linear-gradient(90deg, transparent 50%, ${theme.color.bg.fill.primary.tint.normal} 50%)`;
@@ -61,32 +69,30 @@ export const DayCell = styled.div<{
     }
   }};
 
-  //#region border styles
-  ${({ isStartAndEndSame, isInRange, isSelectionInProgress, isStartDate, isEndDate, theme }) => {
-    if (isStartAndEndSame) return;
+  //#region border style
+  ${({  isDisplayedMonth, isStartAndEndSame, isInRange, isSelectionInProgress, isStartDate, isEndDate, theme }) => {
+    if (!isDisplayedMonth || isStartAndEndSame) return;
     else {
       const startDateBorderStyle =
         isSelectionInProgress &&
         isStartDate &&
         css`
-          border-top: 0.5px solid;
-          border-bottom: 0.5px solid;
-          border-image: linear-gradient(to right, transparent 50%, ${theme.color.border.neutral.strong.normal} 50%) 100%
-            1;
+          border-top: 2px solid;
+          border-bottom: 2px solid;
+          border-image: linear-gradient(to right, transparent 50%, ${theme._raw_color.blue50} 50%) 100% 1;
         `;
       const endDateBorderStyle =
         isSelectionInProgress &&
         isEndDate &&
         css`
-          border-top: 0.5px solid;
-          border-bottom: 0.5px solid;
-          border-image: linear-gradient(to right, ${theme.color.border.neutral.strong.normal} 50%, transparent 50%) 100%
-            1;
+          border-top: 2px solid;
+          border-bottom: 2px solid;
+          border-image: linear-gradient(to right, ${theme._raw_color.blue50} 50%, transparent 50%) 100% 1;
         `;
 
       return css`
-        border-width: 0.5px;
-        border-color: ${theme.color.border.neutral.strong.normal};
+        border-width: 2px;
+        border-color: ${theme._raw_color.blue50};
         border-style: ${isSelectionInProgress && isInRange ? `solid none solid none` : 'none'};
 
         ${startDateBorderStyle}
@@ -94,27 +100,50 @@ export const DayCell = styled.div<{
       `;
     }
   }}
-
   //#endregion
 
-  ${({ isToday, theme }) =>
-    isToday &&
-    css`
-      &:before {
-        content: '';
-        display: block;
-        border-radius: 50%;
-        background-color: ${theme.color.bg.fill.primary.default.normal};
-        width: 4px;
-        height: 4px;
-        position: absolute;
-        top: 4px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    `}
+  //#region today marker style
+  ${({ isDisplayedMonth, isToday, isStartDate, isEndDate, isInRange, isAnchorDate, isSelectionInProgress, theme }) => {
+    if (!isDisplayedMonth) return;
 
-  ${({ isStartDate, isEndDate, isSelectionInProgress, isAnchorDate, theme }) => {
+    const markerStyles = {
+      top: '4px',
+      display: 'block',
+    };
+    if (isAnchorDate) {
+      markerStyles.display = 'none';
+    }
+    if (isSelectionInProgress) {
+      if (isInRange || isStartDate || isEndDate) {
+        markerStyles.top = '2px'; // border 만큼 보정 필요
+      }
+    }
+
+    return (
+      isToday &&
+      css`
+        &:before {
+          content: '';
+          display: ${markerStyles.display};
+          border-radius: 50%;
+          background-color: ${theme.color.bg.fill.primary.default.normal};
+          width: 4px;
+          height: 4px;
+          position: absolute;
+          top: ${markerStyles.top};
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1;
+        }
+      `
+    );
+  }}
+  //#endregion
+
+  //#region selection progress style
+  ${({ isDisplayedMonth, isStartDate, isEndDate, isSelectionInProgress, isAnchorDate, theme }) => {
+    if (!isDisplayedMonth) return;
+
     let bgColor = 'transparent';
 
     if (isAnchorDate) bgColor = theme.color.bg.fill.primary.default.normal;
@@ -141,6 +170,9 @@ export const DayCell = styled.div<{
   }}
 
   &:hover {
+    &:before: {
+      top: 2px;
+    }
     &:after {
       content: '';
       position: absolute;
@@ -166,6 +198,7 @@ export const DayCell = styled.div<{
       }};
     }
   }
+  //#endregion
 
   //#region 캘린더 내에서 날짜 typography의 상호작용 관련 스타일
   & > span {

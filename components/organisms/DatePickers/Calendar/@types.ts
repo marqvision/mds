@@ -1,12 +1,15 @@
+import { DateValidationError } from "../@types";
 
 // public facing interfaces
 export type SingleDateValue = {
   value?: Date;
   onChange: (date: Date) => void;
+  onError?: (error: DateValidationError) => void;
 };
 export type DateRangeValue = {
   value: { startDate?: Date; endDate?: Date };
   onChange: (startDate: Date, endDate: Date) => void;
+  onError?: (error: DateValidationError) => void;
 };
 export type CommonOptions = {
   minDate?: Date;

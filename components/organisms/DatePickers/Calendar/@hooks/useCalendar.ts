@@ -5,12 +5,18 @@ import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from '../
 
 type Params = CommonOptions & (SingleDateValue | DateRangeValue);
 export const useCalendar = (params: Params) => {
-  const [_value, setValue] = useState<{ startDate?: Date; endDate?: Date }>(
+  const [_value, setValue] = useState<{ startDate?: Date; endDate?: Date; lastUpdatedDateType?: 'start' | 'end' }>(
     isDateRange(params) ? params.value : { startDate: params.value, endDate: params.value }
   );
 
   const [displayedDate, setDisplayedDate] = useState(
-    dayjs(isDateRange(params) ? params.value.startDate : params.value)
+    dayjs(
+      isDateRange(params)
+        ? _value.lastUpdatedDateType === 'start'
+          ? params.value.startDate
+          : params.value.endDate
+        : params.value
+    )
   );
 
   const calendarDays = getCalendarDays(displayedDate.toDate(), params.minDate, params.maxDate);
@@ -25,7 +31,6 @@ export const useCalendar = (params: Params) => {
   useEffect(() => {
     // note-@jamie: 외부 입력 값으로 min/maxDate를 벗어나면 calendar에서는 그냥 값을 무시하기로 하고, 입력하는 쪽에서 에러를 표시하는 방향으로.
     if (isDateRange(params)) {
-
       const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange({
         date: params.value.startDate,
         minDate: params.minDate,
@@ -38,18 +43,32 @@ export const useCalendar = (params: Params) => {
       });
 
       if (isStartValid && !isStartOutOfRange && isEndValid && !isEndOutOfRange) {
-        const whichDateChanged =
-          _value.startDate?.toLocaleDateString() === params.value.startDate?.toLocaleDateString()
-            ? 'endDate'
-            : 'startDate';
-        setValue({ startDate: params.value.startDate, endDate: params.value.endDate });
-        setDisplayedDate(
-          whichDateChanged === 'startDate' ? dayjs(params.value.startDate) : dayjs(params.value.endDate)
-        );
+        const getWhichDateChanged = () => {
+          const prevStartDateStr = _value.startDate?.toLocaleDateString();
+          const injectedStartDateStr = params.value.startDate?.toLocaleDateString();
+          const prevEndDateStr = _value.endDate?.toLocaleDateString();
+          const injectedEndDateStr = params.value.endDate?.toLocaleDateString();
+
+          if (prevStartDateStr === injectedStartDateStr && prevEndDateStr === injectedEndDateStr) {
+            return _value.lastUpdatedDateType;
+          } else if (prevStartDateStr === injectedStartDateStr) {
+            return 'end';
+          } else if (prevEndDateStr === injectedEndDateStr) {
+            return 'start';
+          } else {
+            return _value.lastUpdatedDateType;
+          }
+        };
+
+        setValue({
+          startDate: params.value.startDate,
+          endDate: params.value.endDate,
+          lastUpdatedDateType: getWhichDateChanged(),
+        });
       }
     } else {
       if (!params.value) {
-        setValue({ startDate: undefined, endDate: undefined });
+        setValue({ startDate: undefined, endDate: undefined, lastUpdatedDateType: 'start' });
       } else {
         const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
           date: params.value,
@@ -58,8 +77,7 @@ export const useCalendar = (params: Params) => {
         });
 
         if (isValid && !isOutOfRange) {
-          setValue({ startDate: params.value, endDate: params.value });
-          setDisplayedDate(dayjs(params.value));
+          setValue({ startDate: params.value, endDate: params.value, lastUpdatedDateType: 'start' });
         }
       }
     }
@@ -67,11 +85,26 @@ export const useCalendar = (params: Params) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.value]);
 
+  useEffect(() => {
+    // 마지막으로 설정된 날짜와 실제 보이는 캘린더 월을 동기화 한다. (date input으로 입력하는 경우 필요)
+    setDisplayedDate(
+      dayjs(
+        isDateRange(params)
+          ? _value.lastUpdatedDateType === 'start'
+            ? params.value.startDate
+            : params.value.endDate
+          : params.value
+      )
+    );
+    // note-@jamie: 의도된 exhaustive-deps -- params.onChange 함수의 참조를 얼려야 해결될듯..
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_value.lastUpdatedDateType, params.value]);
+
   if (isDateRange(params)) {
     return {
       ...commonProps,
       type: 'range' as const,
-      onChange: (startDate: Date, endDate: Date) => {
+      onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: 'start' | 'end') => {
         const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange({
           date: startDate,
           minDate: params.minDate,
@@ -86,8 +119,7 @@ export const useCalendar = (params: Params) => {
         });
 
         if (!isEndValid || isEndOutOfRange) return;
-
-        setValue({ startDate, endDate });
+        setValue({ startDate, endDate, lastUpdatedDateType });
         params.onChange(startDate, endDate);
       },
     };
@@ -105,7 +137,7 @@ export const useCalendar = (params: Params) => {
 
       if (!isValid || isOutOfRange) return;
 
-      setValue({ startDate: date, endDate: date });
+      setValue({ startDate: date, endDate: date, lastUpdatedDateType: 'start' });
       params.onChange(date);
     },
   };

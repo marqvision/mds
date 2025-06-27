@@ -1,16 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { validateDateAndMinMaxRange } from '../../@utils';
+import { validateDateAndMinMaxRange, isDateRangeValid, isDateShapeValid } from '../../@utils';
 import { DateInputGroupProps, SingleDateInput } from '../@types';
-import {
-  isDateRangeValid,
-  isDateShapeValid,
-  isPartiallyValidDate,
-  parseDateString,
-  validateDateValue,
-  getValidatedDate,
-  DateValidationError,
-} from '../@utils';
-import { DEFAULT_PROPS } from '../@constants';
+import { isPartiallyValidDate, parseDateString, validateDateValue, getValidatedDate } from '../@utils';
+import { DEFAULT_PROPS } from '../../@constants';
+import { DateValidationError } from '../../@types';
+import { AvailableDateFormat } from '../../DateRangePicker/@types';
 
 export const useDateInputGroup = (params: DateInputGroupProps) => {
   const { startDate, endDate, minDate, maxDate, format = DEFAULT_PROPS.format, onDateChange } = params;
@@ -129,35 +123,31 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       }
 
       setErrorsOptimized({ start: startError, end: endError, range: rangeError });
-      if (!startError && !endError && !rangeError) {
-        onDateChange?.({
-          startDate: validStartDate ?? startDateState.lastValid,
-          endDate: validEndDate ?? endDateState.lastValid,
-        });
-      }
     },
-    [format, minDate, maxDate, setErrorsOptimized, onDateChange, startDateState.lastValid, endDateState.lastValid]
+    [format, minDate, maxDate, setErrorsOptimized]
   );
 
   useEffect(() => {
+    // 외부에서 들어온 값과 내부 상태 동기화
+    const isStartValueChanged = startDate.value !== startDateState.value;
+    const isEndValueChanged = endDate.value !== endDateState.value;
+
     if (startDate.value !== undefined) {
       const value = startDate.value || '';
       setStartDateState((prev) => ({ ...prev, value }));
-      validateExternalInjectedDates(value, endDateState.value);
     }
-    // note-@jamie: 의도된 exhaustive-deps
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate.value]);
-
-  useEffect(() => {
     if (endDate.value !== undefined) {
       const value = endDate.value || '';
       setEndDateState((prev) => ({ ...prev, value }));
-      validateExternalInjectedDates(startDateState.value, value);
     }
+    validateExternalInjectedDates(
+      isStartValueChanged ? startDate.value || '' : startDateState.value,
+      isEndValueChanged ? endDate.value || '' : endDateState.value
+    );
+
     // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endDate.value]);
+  }, [startDate.value, endDate.value]);
   //#endregion
 
   return {
@@ -194,7 +184,7 @@ const useDateChangeHandler = (
     setErrors: (
       newErrors: Partial<{ start: DateValidationError | null; end: DateValidationError | null; range: boolean }>
     ) => void;
-    format: 'MM/DD/YYYY' | 'YYYY-MM-DD';
+    format: AvailableDateFormat;
     minDate?: Date;
     maxDate?: Date;
     onDateChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;

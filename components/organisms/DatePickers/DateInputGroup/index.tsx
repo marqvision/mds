@@ -1,10 +1,10 @@
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSInput } from '../../../molecules/Input';
+import { DEFAULT_PROPS } from '../@constants';
 import { DateInputGroupLayout } from './styles';
 import { getHelperText } from './@utils';
 import { DateInputGroupProps } from './@types';
 import { useDateInputGroup } from './@hooks/useDateInputGroup';
-import { DEFAULT_PROPS } from './@constants';
 
 const DateInputGroup = (props: DateInputGroupProps) => {
   const { startDate, endDate, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;

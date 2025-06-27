@@ -1,0 +1,1 @@
+export type DateValidationError = 'INVALID_DATE' | 'MIN_DATE' | 'MAX_DATE';

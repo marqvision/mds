@@ -59,7 +59,7 @@ const CalendarContainer = (props: Props) => {
 const DateRangeCalendarContent = (props: {
   days: CalendarDay[];
   selectedDate: DateRangeValue['value'];
-  onChange: DateRangeValue['onChange'];
+  onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: 'start' | 'end') => void;
   minDate?: Date;
   maxDate?: Date;
 }) => {
@@ -70,8 +70,8 @@ const DateRangeCalendarContent = (props: {
     endDate: selectedDate.endDate,
     minDate,
     maxDate,
-    onDateRangeUpdate: (startDate, lastDate) => {
-      onChange(startDate, lastDate);
+    onDateRangeUpdate: (startDate, lastDate, lastUpdatedDateType) => {
+      onChange(startDate, lastDate, lastUpdatedDateType);
     },
   });
 
@@ -117,7 +117,7 @@ const DateRangeCalendarContent = (props: {
 
 const SingleDateCalendarContent = (props: { days: CalendarDay[]; value?: Date; onChange: (date: Date) => void }) => {
   const { days, value, onChange } = props;
-  
+
   return (
     <CalendarGrid>
       {days.map((day, index) => {

@@ -21,14 +21,12 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
     if (params.startDate && params.endDate) {
       return {
         actionState: 'done',
-        anchorDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
         startDateStr: dayjs(params.startDate).format('YYYY-MM-DD'),
         endDateStr: dayjs(params.endDate).format('YYYY-MM-DD'),
       };
     } else {
       return {
         actionState: 'initial',
-        anchorDateStr: '',
         startDateStr: '',
         endDateStr: '',
       };
@@ -38,48 +36,57 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
   const { targetDataRef, fireTrigger: fireDateRangeUpdate } = useHandlerDateRangeUpdate(params.onDateRangeUpdate);
 
   const selectStart = (e: React.MouseEvent) => {
-    const currentAnchorDateStr = calculateCurrentDate(e);
-    if (!currentAnchorDateStr) return;
+    const clickedDateStr = calculateCurrentDate(e);
+    if (!clickedDateStr) return;
 
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
-      date: dayjs(currentAnchorDateStr).toDate(),
+      date: dayjs(clickedDateStr).toDate(),
       minDate: params.minDate,
       maxDate: params.maxDate,
     });
 
     if (!isValid || isOutOfRange) return;
 
-    setSelectActionState((prev) => {
-      const newActionState = prev.actionState === 'in-progress' ? 'done' : 'in-progress';
-      const newStartDateStr = prev.actionState === 'in-progress' ? prev.startDateStr : currentAnchorDateStr;
-      const newEndDateStr = prev.actionState === 'in-progress' ? prev.endDateStr : currentAnchorDateStr;
-      
-      anchorDateStrRef.current = currentAnchorDateStr;
-      targetDataRef.current = {
-        ...targetDataRef.current,
-        startDateStr: newStartDateStr,
-        endDateStr: newEndDateStr,
-      };
-      if (newActionState === 'done') {
-        fireDateRangeUpdate();
-      }
+    if (selectActionState.actionState === 'in-progress') {
+      // Second click: finalize the selection
+      const { newStartDateStr, newEndDateStr, lastUpdatedDateType } = resolveDateRange({
+        anchorDateStr: anchorDateStrRef.current,
+        startDateStr: selectActionState.startDateStr,
+        endDateStr: selectActionState.endDateStr,
+        currentDateStr: clickedDateStr,
+      });
 
-      return {
-        ...prev,
-        actionState: newActionState,
+      targetDataRef.current = {
         startDateStr: newStartDateStr,
         endDateStr: newEndDateStr,
+        lastUpdatedDateType,
       };
-    });
+      fireDateRangeUpdate();
+
+      setSelectActionState({
+        actionState: 'done',
+        startDateStr: newStartDateStr,
+        endDateStr: newEndDateStr,
+      });
+    } else {
+      // First click: start the selection
+      anchorDateStrRef.current = clickedDateStr;
+      setSelectActionState({
+        actionState: 'in-progress',
+        startDateStr: clickedDateStr,
+        endDateStr: clickedDateStr,
+      });
+    }
   };
+
   const selectMove = (event: React.MouseEvent) => {
     if (selectActionState.actionState !== 'in-progress') return;
 
-    const currentAnchorDateStr = calculateCurrentDate(event);
-    if (!currentAnchorDateStr) return;
+    const currentHoverDateStr = calculateCurrentDate(event);
+    if (!currentHoverDateStr) return;
 
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
-      date: dayjs(currentAnchorDateStr).toDate(),
+      date: dayjs(currentHoverDateStr).toDate(),
       minDate: params.minDate,
       maxDate: params.maxDate,
     });
@@ -87,41 +94,13 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
     if (!isValid || isOutOfRange) return;
 
     setSelectActionState((prev) => {
-      const { newStartDateStr, newEndDateStr, lastUpdatedDateType } = resolveDateRange({
+      const { newStartDateStr, newEndDateStr } = resolveDateRange({
         anchorDateStr: anchorDateStrRef.current,
         startDateStr: prev.startDateStr,
         endDateStr: prev.endDateStr,
-        currentDateStr: currentAnchorDateStr,
+        currentDateStr: currentHoverDateStr,
       });
-      targetDataRef.current.lastUpdatedDateType = lastUpdatedDateType;
-
       return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
-    });
-  };
-  const selectEnd = (e: React.MouseEvent) => {
-    const currentAnchorDateStr = calculateCurrentDate(e);
-    if (!currentAnchorDateStr) return;
-
-    const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
-      date: dayjs(currentAnchorDateStr).toDate(),
-      minDate: params.minDate,
-      maxDate: params.maxDate,
-    });
-    if (!isValid || isOutOfRange) return;
-
-    setSelectActionState((prev) => {
-      // 첫번째 날짜 선택 중
-      if (prev.actionState === 'in-progress') {
-        const { newStartDateStr, newEndDateStr } = resolveDateRange({
-          anchorDateStr: anchorDateStrRef.current,
-          startDateStr: prev.startDateStr,
-          endDateStr: prev.endDateStr,
-          currentDateStr: currentAnchorDateStr,
-        });
-        return { ...prev, startDateStr: newStartDateStr, endDateStr: newEndDateStr };
-      } else {
-        return { ...prev, actionState: 'done' };
-      }
     });
   };
 
@@ -152,7 +131,6 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
     },
     selectStart,
     selectMove: throttle(selectMove, 30),
-    selectEnd,
   };
 };
 //#region helper functions &  hooks

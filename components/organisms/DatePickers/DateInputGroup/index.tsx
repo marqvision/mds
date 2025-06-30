@@ -7,7 +7,7 @@ import { DateInputGroupProps } from './@types';
 import { useDateInputGroup } from './@hooks/useDateInputGroup';
 
 const DateInputGroup = (props: DateInputGroupProps) => {
-  const { startDate, endDate, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
+  const { startDate, endDate, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, initialFocus = 'startDate' } = props;
   const { startDateState, endDateState, errors, handleStartDateChange, handleEndDateChange, handleBlur } =
     useDateInputGroup(props);
 
@@ -21,7 +21,7 @@ const DateInputGroup = (props: DateInputGroupProps) => {
           label={props.startDate.label}
           placeholder={startDate.placeholder || format || DEFAULT_PROPS.placeholder}
           inputProps={{
-            autoFocus: true,
+            autoFocus: initialFocus === 'startDate',
           }}
           onChange={handleStartDateChange}
           onBlur={handleBlur}
@@ -37,6 +37,9 @@ const DateInputGroup = (props: DateInputGroupProps) => {
           value={endDateState.value}
           label={endDate.label}
           placeholder={endDate.placeholder || format || DEFAULT_PROPS.placeholder}
+          inputProps={{
+            autoFocus: initialFocus === 'endDate',
+          }}
           onChange={handleEndDateChange}
           onBlur={handleBlur}
           status={errors.endDateField ? 'error' : undefined}

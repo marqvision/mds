@@ -65,7 +65,7 @@ const DateRangeCalendarContent = (props: {
 }) => {
   const { days, selectedDate, minDate, maxDate, onChange } = props;
 
-  const { selectActionState, selectMove, selectStart, selectEnd, displayDate } = useDateRangeSelect({
+  const { selectActionState, selectMove, selectStart, displayDate } = useDateRangeSelect({
     startDate: selectedDate.startDate,
     endDate: selectedDate.endDate,
     minDate,
@@ -76,7 +76,7 @@ const DateRangeCalendarContent = (props: {
   });
 
   return (
-    <CalendarGrid onMouseMove={selectMove} onMouseDown={selectStart} onMouseUp={selectEnd}>
+    <CalendarGrid onMouseMove={selectMove} onMouseDown={selectStart}>
       {days.map((day, index) => {
         const dayDate = dayjs(day.date);
         const dateStr = day.isDisplayedMonth ? dayDate.format('YYYY-MM-DD') : '';

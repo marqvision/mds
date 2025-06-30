@@ -21,9 +21,4 @@ export type GNBProps = {
    * react-router-dom 의 LinkComponent 를 주입하면 Logo 클릭 시 `/` 경로로 이동합니다.
    */
   LinkComponent?: React.ComponentType<LinkComponentProps>;
-  /*
-   * 고객사 로고 이미지
-   * 전달하지 않을 경우 MARQ AI 로고가 출력됩니다.
-   */
-  logoUrl?: string;
 };

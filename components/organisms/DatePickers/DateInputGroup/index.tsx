@@ -1,9 +1,10 @@
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSInput } from '../../../molecules/Input';
 import { DEFAULT_PROPS } from '../@constants';
+import { getDateRangeInputLabel } from '../@utils';
 import { DateInputGroupLayout } from './styles';
 import { getHelperText } from './@utils';
-import { DateInputGroupProps, SingleDateInput } from './@types';
+import { DateInputGroupProps } from './@types';
 import { useDateInputGroup } from './@hooks/useDateInputGroup';
 
 const DateInputGroup = (props: DateInputGroupProps) => {
@@ -17,8 +18,8 @@ const DateInputGroup = (props: DateInputGroupProps) => {
   const { startDateState, endDateState, errors, handleStartDateChange, handleEndDateChange, handleBlur } =
     useDateInputGroup(props);
 
-  const startMainLabel = getLabel(startDate.label, endDate.label);
-  const endMainLabel = getLabel(endDate.label, startDate.label);
+  const startMainLabel = getDateRangeInputLabel(startDate.label, endDate.label);
+  const endMainLabel = getDateRangeInputLabel(endDate.label, startDate.label);
 
   return (
     <DateInputGroupLayout
@@ -67,16 +68,3 @@ const DateInputGroup = (props: DateInputGroupProps) => {
 export const MDSDateInputGroup = DateInputGroup;
 export type MDSDateInputGroupProps = DateInputGroupProps;
 
-const getLabel = (label: SingleDateInput['label'], counterPartLabel: SingleDateInput['label']) => {
-  if (!label && !counterPartLabel) {
-    return undefined;
-  }
-
-  const mainLabel = typeof label === 'string' ? label : label?.main || '';
-  const subLabel = typeof label === 'string' ? '' : label?.sub || '';
-  const rightLabel = typeof label === 'string' ? undefined : label?.right || undefined;
-
-  const emptyLabel = !label && counterPartLabel ? <div className="mds2-empty-label"></div> : undefined;
-
-  return { main: mainLabel, sub: subLabel, right: rightLabel || emptyLabel };
-};

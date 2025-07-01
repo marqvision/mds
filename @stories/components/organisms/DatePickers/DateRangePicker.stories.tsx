@@ -37,7 +37,7 @@ const dataBoxStyle = css`
   border: 1px solid lightgray;
   padding: 20px;
   border-radius: 10px;
-  width: 304px;
+  width: 320px;
   display: grid;
   gap: 12px;
 `;
@@ -48,16 +48,17 @@ export const AnchorInput: Story = {
       format: 'MM/DD/YYYY',
       startDate: {
         value: '06/11/2025',
-        label: 'Start date',
       },
       endDate: {
         value: '06/25/2025',
-        label: 'End date',
       },
       anchor: {
         variant: 'input',
         format: 'MM/DD/YYYY',
         separator: 'to',
+        startDateProps: {
+          label: 'Start date label'
+        }
       } as MDSDateRangePickerProps['anchor'],
       minDate: '06/02/2025', //'2025-06-02',
       maxDate: '07/02/2025', //'2025-07-02',

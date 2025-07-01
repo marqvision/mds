@@ -138,6 +138,9 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
         size={TagTheme.size[size].size}
         color="inherit"
         overflowWrap="normal"
+        style={{
+          lineHeight: TagTheme.size[size].lineHeight,
+        }}
       >
         {label}
       </MDSTypography>

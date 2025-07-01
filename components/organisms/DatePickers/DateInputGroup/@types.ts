@@ -2,6 +2,12 @@ import { MDSInputProps } from '../../../molecules/Input';
 import { DateValidationError } from '../@types';
 import { AvailableDateFormat } from '../DateRangePicker/@types';
 
+export type DateInputError = {
+  start: DateValidationError | null;
+  end: DateValidationError | null;
+  range: boolean;
+};
+
 export type SingleDateInput = {
   value?: MDSInputProps<string>['value'];
   label?: MDSInputProps<string>['label'];
@@ -21,5 +27,5 @@ export type DateInputGroupProps = {
   format?: AvailableDateFormat;
   initialFocus?: 'startDate' | 'endDate';
   onDateChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;
-  onError?: (error: DateValidationError) => void;
+  onError?: (error?: DateInputError) => void;
 };

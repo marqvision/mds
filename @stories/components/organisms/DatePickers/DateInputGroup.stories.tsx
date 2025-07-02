@@ -309,3 +309,46 @@ export const MinMax: Story = {
     );
   },
 };
+
+
+
+
+export const WithInputLabel: Story = {
+  name: 'Input label 설정',
+  args: {
+    startDate: {
+      label: 'Start date label'      
+    },
+    endDate: {
+      label: 'End date label'
+    }
+  },
+  render: function Render(arg) {
+    const format = 'MM/DD/YYYY';
+    const [date, setDate] = useState<{ start: string; end: string }>({ start: '', end: '' });
+
+    return (
+      <div css={testGroupStyle}>
+        <MDSTypography variant="title">Case 6: InputProps 설정</MDSTypography>
+        <MDSDateInputGroup
+          format={format}
+          startDate={{ value: date.start, ...arg.startDate }}
+          endDate={{ value: date.end, ...arg.endDate }}
+          onDateChange={(dates) => {
+            setDate({
+              start: dates.startDate ? dayjs(dates.startDate).format(format) : '',
+              end: dates.endDate ? dayjs(dates.endDate).format(format) : '',
+            });
+          }}
+        />
+        <div>
+          <MDSTypography variant="title" size="m">
+            결과
+          </MDSTypography>
+          <MDSTypography>startDate: {date.start}</MDSTypography>
+          <MDSTypography>endDate: {date.end}</MDSTypography>
+        </div>
+      </div>
+    );
+  },
+};

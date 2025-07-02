@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
 import { DATE_SHAPE_REGEX_MAP, SEPARATOR_MAP } from './@constants';
 import { AvailableDateFormat } from './DateRangePicker/@types';
+import { SingleDateInput } from './DateInputGroup/@types';
+
+//#region  ------ VALIDATOR  ------
 
 /**
  * 주어진 Date 객체의 유효성을 검사하고, 선택적인 min/max 날짜 범위 내에 있는지 확인합니다.
@@ -142,4 +145,23 @@ export const validateDateRange = (params: {
   return (
     isStartDateValid.isValid && !isStartDateValid.isOutOfRange && isEndDateValid.isValid && !isEndDateValid.isOutOfRange
   );
+};
+
+//#endregion
+
+
+
+
+export const getDateRangeInputLabel = (label: SingleDateInput['label'], counterPartLabel: SingleDateInput['label']) => {
+  if (!label && !counterPartLabel) {
+    return undefined;
+  }
+
+  const mainLabel = typeof label === 'string' ? label : label?.main || '';
+  const subLabel = typeof label === 'string' ? '' : label?.sub || '';
+  const rightLabel = typeof label === 'string' ? undefined : label?.right || undefined;
+
+  const emptyLabel = !label && counterPartLabel ? <div className="mds2-empty-label"></div> : undefined;
+
+  return { main: mainLabel, sub: subLabel, right: rightLabel || emptyLabel };
 };

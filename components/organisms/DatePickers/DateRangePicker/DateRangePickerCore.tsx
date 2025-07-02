@@ -9,6 +9,7 @@ import { MDSButton } from '../../../molecules/Button';
 import { DEFAULT_PROPS } from '../@constants';
 import { DateValidationError } from '../@types';
 import { validateDateRange } from '../@utils';
+import { DateInputError } from '../DateInputGroup/@types';
 import { DateRangePickerProps } from './@types';
 
 const DateRangePickerContainer = styled.div`
@@ -61,6 +62,13 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
         }
       : undefined
   );
+  const [childError, setChildError] = useState<{
+    dateInputGroup: boolean;
+    calendar: boolean;
+  }>({
+    dateInputGroup: false,
+    calendar: false,
+  });
   const frozenOnChange = useRef(onChange);
 
   const handleDateInputGroupChange = useCallback(
@@ -93,43 +101,49 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
     }
   };
 
-  const handleDateInputGroupError = (error: DateValidationError) => {
-    console.log('>>>>>> error', error);
+  const handleDateInputGroupError = (error?: DateInputError) => {
+    setChildError((prev) => ({
+      ...prev,
+      dateInputGroup: !!(error?.start || error?.end || error?.range),
+    }));
   };
 
   const handleCalendarError = (error: DateValidationError) => {
-    console.log('>>>>>> error', error);
+    setChildError((prev) => ({
+      ...prev,
+      calendar: !!error,
+    }));
   };
 
-  const isReadyToApply = validateDateRange({
-    startDate: store?.startDate ?? null,
-    endDate: store?.endDate ?? null,
-    format,
-    minDate,
-    maxDate,
-  });
-
+  const isReadyToApply =
+    !(childError.calendar || childError.dateInputGroup) &&
+    validateDateRange({
+      startDate: store?.startDate ?? null,
+      endDate: store?.endDate ?? null,
+      format,
+      minDate,
+      maxDate,
+    });
+    
   return (
     <DateRangePickerContainer>
       <DateRangePickerLayout>
-        {anchor.variant !== 'input' && (
-          <div className="mds-date-picker-input-container">
-            <MDSDateInputGroup
-              format={format}
-              startDate={{
-                value: store?.startDate ? dayjs(store?.startDate).format(format) : undefined,
-              }}
-              endDate={{
-                value: store?.endDate ? dayjs(store?.endDate).format(format) : undefined,
-              }}
-              onDateChange={handleDateInputGroupChange}
-              onError={handleDateInputGroupError}
-              minDate={minDate}
-              maxDate={maxDate}
-              initialFocus={initialFocus}
-            />
-          </div>
-        )}
+        <div className="mds-date-picker-input-container">
+          <MDSDateInputGroup
+            format={format}
+            startDate={{
+              value: store?.startDate ? dayjs(store?.startDate).format(format) : undefined,
+            }}
+            endDate={{
+              value: store?.endDate ? dayjs(store?.endDate).format(format) : undefined,
+            }}
+            onDateChange={handleDateInputGroupChange}
+            onError={handleDateInputGroupError}
+            minDate={minDate}
+            maxDate={maxDate}
+            initialFocus={initialFocus}
+          />
+        </div>
         <MDSCalendar
           value={{
             startDate: store?.startDate,

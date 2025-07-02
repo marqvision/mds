@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { validateDateAndMinMaxRange, isDateRangeValid, isDateShapeValid } from '../../@utils';
-import { DateInputGroupProps, SingleDateInput } from '../@types';
+import { DateInputError, DateInputGroupProps, SingleDateInput } from '../@types';
 import { isPartiallyValidDate, parseDateString, validateDateValue, getValidatedDate } from '../@utils';
 import { DEFAULT_PROPS } from '../../@constants';
 import { DateValidationError } from '../../@types';
 import { AvailableDateFormat } from '../../DateRangePicker/@types';
 
 export const useDateInputGroup = (params: DateInputGroupProps) => {
-  const { startDate, endDate, minDate, maxDate, format = DEFAULT_PROPS.format, onDateChange } = params;
+  const { startDate, endDate, minDate, maxDate, format = DEFAULT_PROPS.format, onDateChange, onError } = params;
 
   //#region - local state
   const [startDateState, setStartDateState] = useState(() => {
@@ -30,16 +30,12 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       lastValid: d && isValid && !isOutOfRange ? d : null,
     };
   });
-  const [errors, setErrors] = useState<{
-    start: DateValidationError | null;
-    end: DateValidationError | null;
-    range: boolean;
-  }>({ start: null, end: null, range: false });
+  const [errors, setErrors] = useState<DateInputError>({ start: null, end: null, range: false });
   //#endregion
 
   //#region - handlers
   const setErrorsOptimized = useCallback(
-    (newErrors: Partial<{ start: DateValidationError | null; end: DateValidationError | null; range: boolean }>) => {
+    (newErrors: Partial<DateInputError>) => {
       setErrors((currentErrors) => {
         const nextErrors = { ...currentErrors, ...newErrors };
         if (
@@ -148,6 +144,17 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
     // note-@jamie: 의도된 exhaustive-deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate.value, endDate.value]);
+  //#endregion
+
+  //#region error를 부모에게 전달
+  const errorHandler = useRef(onError);
+  useEffect(() => {
+    if (errors) {
+      errorHandler?.current?.(errors);
+    } else {
+      errorHandler?.current?.(undefined);
+    }
+  }, [errors]);
   //#endregion
 
   return {

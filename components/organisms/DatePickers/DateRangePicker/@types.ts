@@ -14,7 +14,11 @@ export type AnchorProps =
       variant: 'input';
       format?: AvailableDateFormat;
       separator?: string;
-      props?: Omit<
+      startDateProps?: Omit<
+        MDSInputProps<string>,
+        'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
+      >;
+      endDateProps?: Omit<
         MDSInputProps<string>,
         'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
       >;

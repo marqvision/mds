@@ -1,12 +1,7 @@
 import { DateRangePickerProps } from './@types';
 import { AnchorButtonDateRangePicker } from './AnchorButtonDateRangePicker';
+import { AnchorInputDateRangePicker } from './AnchorInputDateRangePicker';
 import { AnchorPlainButtonDateRangePicker } from './AnchorPlainButtonDateRangePicker';
-
-
-const AnchorInputDateRangePicker = (props: DateRangePickerProps) => {
-  const { anchor } = props;
-  return anchor.variant === 'input' ? <div>input</div> : null;
-};
 
 const AnchorCustomDateRangePicker = (props: DateRangePickerProps) => {
   const { anchor } = props;
@@ -20,7 +15,7 @@ const DateRangePickerSelector = (props: DateRangePickerProps) => {
   ) : anchor.variant === 'plainButton' ? (
     <AnchorPlainButtonDateRangePicker {...rest} anchor={anchor} />
   ) : anchor.variant === 'input' ? (
-    <AnchorInputDateRangePicker {...props} />
+    <AnchorInputDateRangePicker {...rest} anchor={anchor} />
   ) : anchor.variant === 'custom' ? (
     <AnchorCustomDateRangePicker {...props} />
   ) : null;

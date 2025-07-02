@@ -27,3 +27,4 @@ export * from './organisms/DatePickers/Calendar';
 export * from './organisms/DatePickers/DateInput';
 export * from './organisms/DatePickers/DateInputGroup';
 export * from './organisms/DatePickers/DatePicker';
+export * from './organisms/DatePickers/DateRangePicker';

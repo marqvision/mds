@@ -1,4 +1,4 @@
-import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement, MutableRefObject } from 'react';
+import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement, MutableRefObject, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
@@ -186,20 +186,22 @@ const Popover = (
     setCoordinates(coordinatesRef.current);
   }, [init, position, anchorRef, dialogRef, margin]);
 
-  const children = isLoading ? (
-    <div
-      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px 0', minWidth: '100%' }}
-    >
-      <MDSLoadingIndicator size={24} strokeWidth={2} />
-    </div>
-  ) : typeof _children === 'function' ? (
-    _children({
-      close: onClosePopover,
-      isOpen: isOpen,
-    })
-  ) : (
-    _children
-  );
+  const children = useMemo(() => {
+    return isLoading ? (
+      <div
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px 0', minWidth: '100%' }}
+      >
+        <MDSLoadingIndicator size={24} strokeWidth={2} />
+      </div>
+    ) : typeof _children === 'function' ? (
+      _children({
+        close: onClosePopover,
+        isOpen: isOpen,
+      })
+    ) : (
+      _children
+    );
+  }, [isLoading, _children, isOpen, onClosePopover]);
 
   const dialog = (
     <Dialog

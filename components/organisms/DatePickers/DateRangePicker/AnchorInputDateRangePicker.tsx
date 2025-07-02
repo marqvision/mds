@@ -11,9 +11,9 @@ import { useDateRangePicker } from './@hooks/useDateRangePicker';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
 const StyledContainer = styled.div<{ hasLabel: boolean }>`
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
 
   & .mds2-empty-label {
     width: 10px;
@@ -108,7 +108,6 @@ export const AnchorInputDateRangePicker = (props: AnchorInputDateRangePickerProp
 
   const startMainLabel = getDateRangeInputLabel(props.anchor.startDateProps?.label, props.anchor.endDateProps?.label);
   const endMainLabel = getDateRangeInputLabel(props.anchor.endDateProps?.label, props.anchor.startDateProps?.label);
-
 
   return (
     <MDSPopover

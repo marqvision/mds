@@ -45,6 +45,14 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
   //#region - 외부에서 주입된 값의 유효성 검사 -> 통과한 경우에만 값을 할당한다.
 
   useEffect(() => {
+    if (!startDate?.value && !endDate?.value) {
+      setInternalDate({
+        startDate: null,
+        endDate: null,
+      });
+      return;
+    }
+    
     const newStartDate = startDate?.value ? getDateObject(startDate.value, anchor) : internalDate.startDate;
     const newEndDate = endDate?.value ? getDateObject(endDate.value, anchor) : internalDate.endDate;
 

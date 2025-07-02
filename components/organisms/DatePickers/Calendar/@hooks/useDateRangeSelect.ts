@@ -105,6 +105,24 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
     });
   };
 
+  const selectEnd = (e: React.MouseEvent) => {
+    const clickedDateStr = calculateCurrentDate(e);
+    if (!clickedDateStr) return;
+    if (selectActionState.actionState === 'in-progress') {
+      setSelectActionState((prev) => ({
+        actionState: 'in-progress',
+        startDateStr: prev.startDateStr,
+        endDateStr: clickedDateStr,
+      }));
+      targetDataRef.current = {
+        startDateStr: selectActionState.startDateStr,
+        endDateStr: clickedDateStr,
+        lastUpdatedDateType: 'endDate',
+      };
+      fireDateRangeUpdate();
+    }
+  };
+
   useEffect(() => {
     // 값에 대한 validation은 useCalendar에서 모두 처리하고 내려오니까 여기에서는 넘어온 값을 쓰기만 하면 된다!
     setSelectActionState((prev) => {
@@ -132,6 +150,7 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
     },
     selectStart,
     selectMove: throttle(selectMove, 30),
+    selectEnd,
   };
 };
 //#region helper functions &  hooks

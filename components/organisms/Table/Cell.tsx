@@ -53,7 +53,6 @@ const Wrapper = styled.td<StyledTableCellProps>`
 const CellBox = styled.div<TableCellInnerProps>`
   padding: ${({ cellSize }) => theme.cell.size[cellSize].padding};
   text-align: ${({ align }) => align};
-  min-height: 40px;
 
   & > div {
     height: 100%;

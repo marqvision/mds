@@ -151,6 +151,7 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
           }}
           onChange={handleCalendarChange}
           onError={handleCalendarError}
+          initialFocus={initialFocus}
           minDate={minDate}
           maxDate={maxDate}
         />

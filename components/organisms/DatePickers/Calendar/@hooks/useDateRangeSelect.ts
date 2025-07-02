@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import throttle from 'lodash/throttle';
 import { validateDateAndMinMaxRange } from '../../@utils';
+import { LastUpdatedDateKind } from '../@types';
 
 type DateRangeSelectParams = {
   startDate?: Date;
   endDate?: Date;
   minDate?: Date;
   maxDate?: Date;
-  onDateRangeUpdate: (startDate: Date, lastDate: Date, lastUpdatedDateType: 'start' | 'end') => void;
+  onDateRangeUpdate: (startDate: Date, lastDate: Date, lastUpdatedDateType: 'startDate' | 'endDate') => void;
 };
 
 type SelectActionState = {
@@ -165,19 +166,19 @@ const resolveDateRange = (params: {
   const currentDate = dayjs(params.currentDateStr);
   const anchorDate = dayjs(params.anchorDateStr);
 
-  let lastUpdatedDateType: 'start' | 'end' = 'start';
+  let lastUpdatedDateType: LastUpdatedDateKind = 'startDate';
   if (currentDate.isBefore(anchorDate, 'day')) {
     newStartDateStr = params.currentDateStr;
     newEndDateStr = params.anchorDateStr;
-    lastUpdatedDateType = 'start';
+    lastUpdatedDateType = 'startDate';
   } else if (currentDate.isAfter(anchorDate, 'day')) {
     newStartDateStr = params.anchorDateStr;
     newEndDateStr = params.currentDateStr;
-    lastUpdatedDateType = 'end';
+    lastUpdatedDateType = 'endDate';
   } else if (currentDate.isSame(anchorDate, 'day')) {
     newStartDateStr = params.anchorDateStr;
     newEndDateStr = params.anchorDateStr;
-    lastUpdatedDateType = 'end';
+    lastUpdatedDateType = 'endDate';
   }
 
   return { newStartDateStr, newEndDateStr, lastUpdatedDateType };
@@ -197,7 +198,7 @@ const useHandlerDateRangeUpdate = (externalCallback: (...args: any[]) => void) =
   const updateTargetData = useRef({
     startDateStr: '',
     endDateStr: '',
-    lastUpdatedDateType: 'start',
+    lastUpdatedDateType: 'startDate',
   });
   useEffect(() => {
     frozenExternalCallbackRef.current(

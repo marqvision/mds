@@ -47,7 +47,7 @@ export const AnchorInput: Story = {
     const DEFAULT_VALUE = {
       format: 'MM/DD/YYYY',
       startDate: {
-        value: '06/11/2025',
+        value: '05/11/2025',
       },
       endDate: {
         value: '06/25/2025',
@@ -60,7 +60,7 @@ export const AnchorInput: Story = {
           label: 'Start date label'
         }
       } as MDSDateRangePickerProps['anchor'],
-      minDate: '06/02/2025', //'2025-06-02',
+      minDate: '05/02/2025', //'2025-06-02',
       maxDate: '07/02/2025', //'2025-07-02',
     };
     const [selectedDate, setSelectedDate] = useState<{
@@ -333,9 +333,9 @@ export const AnchorPlainButton: Story = {
   render: function Render() {
     const DEFAULT_VALUE = {
       format: 'MM/DD/YYYY',
-      startDate: '06/11/2025',
-      endDate: '06/25/2025',
-      minDate: '06/02/2025', //'2025-06-02',
+      startDate: '04/11/2025',
+      endDate: '05/25/2025',
+      minDate: '05/02/2025', //'2025-06-02',
       maxDate: '07/02/2025', //'2025-07-02',
     };
     const [selectedDate, setSelectedDate] = useState<{

@@ -4,7 +4,7 @@ import { MDSDivider } from '../../../atoms/Divider';
 import { CalendarLayout, CalendarGrid, DayCell, WeekdayHeader } from './styles';
 import { YearMonthSelector } from './YearMonthSelector';
 import { useCalendar } from './@hooks/useCalendar';
-import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from './@types';
+import { CalendarDay, CommonOptions, DateRangeValue, LastUpdatedDateKind, SingleDateValue } from './@types';
 import { WEEKDAYS } from './@constants';
 import { useDateRangeSelect } from './@hooks/useDateRangeSelect';
 
@@ -59,7 +59,7 @@ const CalendarContainer = (props: Props) => {
 const DateRangeCalendarContent = (props: {
   days: CalendarDay[];
   selectedDate: DateRangeValue['value'];
-  onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: 'start' | 'end') => void;
+  onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: LastUpdatedDateKind) => void;
   minDate?: Date;
   maxDate?: Date;
 }) => {

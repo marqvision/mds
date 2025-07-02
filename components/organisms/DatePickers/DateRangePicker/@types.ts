@@ -16,11 +16,11 @@ export type AnchorProps =
       separator?: string;
       startDateProps?: Omit<
         MDSInputProps<string>,
-        'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
+        'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'ref' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
       >;
       endDateProps?: Omit<
         MDSInputProps<string>,
-        'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
+        'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'ref' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
       >;
     }
   | {

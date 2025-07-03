@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useState } from '@storybook/preview-api';
 import { MDSButton, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../../../components';
-import { StatusList } from './@constants';
 import { Wrapper } from './@components';
+import { StatusList } from './@constants';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDropdown> = {
@@ -555,6 +555,54 @@ export const SubLabel: Story = {
           ]}
           onChange={setList}
         />
+      </Wrapper>
+    );
+  },
+};
+
+export const WithFlatButton: Story = {
+  args: {},
+  argTypes: {},
+  render: function Render(args) {
+    const [list, setList] = useState<number[]>([]);
+
+    const allList = [...Array(50)].map((_, index) => ({
+      label: `Label ${index} ${[...Array(index)].map(() => 'AAA').join('')}`,
+      value: index,
+    }));
+
+    const variant = list.length > 0 ? 'fill' : 'tint';
+    const color = 'bluegray';
+
+    return (
+      <Wrapper>
+        <MDSTypography>flat 속성의 버튼과 함께 다음과 같이 사용가능합니다.</MDSTypography>
+
+        <div>
+          <MDSButton
+            variant={variant}
+            color={color}
+            size="medium"
+            onClick={() => {
+              setList((prev) => (prev.length === 1 && prev[0] === -1 ? [] : [-1]));
+            }}
+            flat="right"
+          >
+            Flat button label
+          </MDSButton>
+          <MDSDropdown
+            value={list}
+            list={allList}
+            width="420px"
+            modules={[
+              {
+                type: 'filter-button',
+                flat: 'left',
+              },
+            ]}
+            onChange={setList}
+          />
+        </div>
       </Wrapper>
     );
   },

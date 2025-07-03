@@ -1,12 +1,17 @@
 import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
-import { Provider, useAtom } from 'jotai';
 import styled from '@emotion/styled';
-import { MDSPopover } from '../Popover';
-import { MDSTypography } from '../../atoms/Typography';
+import { Provider, useAtom } from 'jotai';
 import { MDSCheckbox } from '../../atoms/Checkbox';
 import { MDSIcon } from '../../atoms/Icon';
+import { MDSTypography } from '../../atoms/Typography';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
+import { MDSPopover } from '../Popover';
+import { foldedItemIndexAtom } from './@atoms';
+import { FilterButton } from './@components/FilterButton';
 import { Item } from './@components/Item';
+import { Search } from './@components/Search';
+import { StickyBottom } from './@components/StickyBottom';
+import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constants';
 import { useDropdown, useInitDropdown } from './@hooks';
 import {
   DropdownItem,
@@ -22,12 +27,7 @@ import {
   StickyTopModule,
   ValueType,
 } from './@types';
-import { FilterButton } from './@components/FilterButton';
-import { Search } from './@components/Search';
-import { DEFAULT_DEBOUNCE_TIMING, DEFAULT_MIN_SEARCH_LETTERS } from './@constants';
-import { foldedItemIndexAtom } from './@atoms';
 import { getAllListIndex } from './@utils';
-import { StickyBottom } from './@components/StickyBottom';
 
 export type MDSDropdownItem<T> = DropdownItem<T>;
 

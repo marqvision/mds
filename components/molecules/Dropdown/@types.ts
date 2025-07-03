@@ -1,6 +1,6 @@
 import { CSSProperties, ReactElement } from 'react';
-import { PopoverPosition } from '../Popover/@type';
 import { MDSButtonProps } from '../Button';
+import { PopoverPosition } from '../Popover/@type';
 
 type SubLabel = {
   label: number | string;
@@ -96,6 +96,7 @@ export type FilterButtonModule = {
   type: 'filter-button';
   size?: MDSButtonProps['size'];
   color?: MDSButtonProps['color'];
+  flat?: MDSButtonProps['flat'];
 };
 
 export type CustomModule<T> = {

@@ -135,7 +135,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
 
         {icon && <Icon size={size} icon={icon} />}
 
-        {isDividerVisible && <Divider variant={variant} color={color} size={size} />}
+        {isDividerVisible && <Divider variant={variant} color={color} size={size} isDisabled={isDisabled} />}
       </Button>
     );
   }
@@ -169,7 +169,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
 
       {endIcon && <Icon size={size} icon={endIcon} />}
 
-      {isDividerVisible && <Divider variant={variant} color={color} size={size} />}
+      {isDividerVisible && <Divider variant={variant} color={color} size={size} isDisabled={isDisabled} />}
     </Button>
   );
 };

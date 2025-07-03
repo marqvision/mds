@@ -135,6 +135,7 @@ const IconVariant = {
   CommentAdd: ['left', 'right'],
   SiteMapTree: VariantSet['OutlineFill'],
   DragHandle: VariantSet['Orientation'],
+  AddPayment: VariantSet['OutlineFill'],
   Note: VariantSet['OutlineFill'],
   ThumbUp: VariantSet['OutlineFill'],
   ThumbDown: VariantSet['OutlineFill'],

@@ -11,9 +11,9 @@ export const BUTTON_THEME = {
       md: '9px',
       lg: '11px',
       icon: {
-        s: '4px',
-        m: '7px',
-        l: '8px',
+        s: '3px',
+        m: '5px',
+        l: '7px',
         xl: '9px',
       },
     },

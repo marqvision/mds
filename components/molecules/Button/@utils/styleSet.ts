@@ -2,7 +2,9 @@ import { MDSTheme } from '../../../../types';
 import { BodySize } from '../../../atoms/Typography';
 import { Color, ColorSet, Size, Status, Variant } from '../@types';
 
-export const getColorSet = (theme: MDSTheme): Record<Color, Record<Variant, Record<Status, ColorSet> & Partial<{ completed: ColorSet }>>> => {
+export const getColorSet = (
+  theme: MDSTheme
+): Record<Color, Record<Variant, Record<Status, ColorSet> & Partial<{ completed: ColorSet }>>> => {
   return {
     bluegray: {
       fill: {
@@ -439,7 +441,9 @@ export const getColorSet = (theme: MDSTheme): Record<Color, Record<Variant, Reco
   };
 };
 
-export const getSize = (theme: MDSTheme): Record<
+export const getSize = (
+  theme: MDSTheme
+): Record<
   Size,
   {
     size?: BodySize;
@@ -451,11 +455,12 @@ export const getSize = (theme: MDSTheme): Record<
     radius: string;
     minHeight: string;
     spinnerSize: number;
+    tagLeftMargin?: string;
   }
 > => {
   return {
     small: {
-      size: 's',
+      size: 'xs',
       icon: theme.comp.button.iconSize.sm,
       padding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.sm}`,
       iconPadding: `${theme.comp.button.pddng.v.sm} ${theme.comp.button.pddng.h.icon.s}`,
@@ -464,9 +469,10 @@ export const getSize = (theme: MDSTheme): Record<
       radius: theme.comp.button.radius.sm,
       minHeight: theme.comp.button.minSize.sm,
       spinnerSize: 16,
+      tagLeftMargin: theme.comp.button.tagLeftMargin.sm,
     },
     medium: {
-      size: 'm',
+      size: 's',
       icon: theme.comp.button.iconSize.md,
       padding: `${theme.comp.button.pddng.v.md} ${theme.comp.button.pddng.h.md}`,
       iconPadding: `${theme.comp.button.pddng.v.md} ${theme.comp.button.pddng.h.icon.m}`,
@@ -475,9 +481,10 @@ export const getSize = (theme: MDSTheme): Record<
       radius: theme.comp.button.radius.md,
       minHeight: theme.comp.button.minSize.md,
       spinnerSize: 16,
+      tagLeftMargin: theme.comp.button.tagLeftMargin.md,
     },
     large: {
-      size: 'l',
+      size: 'm',
       icon: theme.comp.button.iconSize.lg,
       padding: `${theme.comp.button.pddng.v.lg} ${theme.comp.button.pddng.h.lg}`,
       iconPadding: `${theme.comp.button.pddng.v.lg} ${theme.comp.button.pddng.h.icon.l}`,
@@ -486,6 +493,7 @@ export const getSize = (theme: MDSTheme): Record<
       radius: theme.comp.button.radius.lg,
       minHeight: theme.comp.button.minSize.lg,
       spinnerSize: 20,
+      tagLeftMargin: theme.comp.button.tagLeftMargin.lg,
     },
     'x-large': {
       icon: theme.comp.button.iconSize.xl,

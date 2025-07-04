@@ -75,6 +75,21 @@ const Button = styled.button<StyledButtonProps>`
   }}
 `;
 
+const TagGap = styled.span<{ size: StyledButtonProps['size'] }>`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme, size }) => {
+    const sizeStyle = getSize(theme)[size];
+    return sizeStyle.tagLeftMargin;
+  }}}
+`;
+
+const TagWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 2px;
+`;
+
 export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'> | ButtonProps<'icon'>>) => {
   const {
     children: label,
@@ -150,22 +165,24 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
         startIcon && <Icon size={size} icon={startIcon} />
       )}
 
-      {isValidElement(label)
-        ? label
-        : label && (
-            <MDSTypography
-              variant="body"
-              weight="medium"
-              size={sizeStyle.size}
-              color="inherit"
-              lineClamp={1}
-              wordBreak="break-all"
-            >
-              {label}
-            </MDSTypography>
-          )}
+      <TagGap size={commonProps.size}>
+        {isValidElement(label)
+          ? label
+          : label && (
+              <MDSTypography
+                variant="body"
+                weight="medium"
+                size={sizeStyle.size}
+                color="inherit"
+                lineClamp={1}
+                wordBreak="break-all"
+              >
+                {label}
+              </MDSTypography>
+            )}
 
-      {Array.isArray(tags) ? tags.map((tag) => tag) : tags}
+        {tags && <TagWrapper>{Array.isArray(tags) ? tags.map((tag) => tag) : tags}</TagWrapper>}
+      </TagGap>
 
       {endIcon && <Icon size={size} icon={endIcon} />}
 

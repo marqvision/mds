@@ -22,16 +22,7 @@ const meta: Meta<typeof MDSButton> = {
   argTypes: {
     color: {
       control: 'select',
-      options: [
-        'bluegray',
-        'blue',
-        'red',
-        'green',
-        'yellow',
-        'purple',
-        'teal',
-        'white',
-      ],
+      options: ['bluegray', 'blue', 'red', 'green', 'yellow', 'purple', 'teal', 'white'],
     },
     width: {
       control: 'text',
@@ -286,7 +277,9 @@ export const ButtonWithTags: Story = {
       <MDSTypography>
         tags: 단일 태그 또는 태그들의 배열 형태로 전달합니다.
         <br />
-        label 과 endIcon 사이에 위치되며, Button 에서 설정한 gap 사이즈가 Tag 사이의 gap 으로 적용됩니다.
+        label 과 endIcon 사이에 위치되며, Tag 사이의 gap 은 항상 2px 이고,
+        <br />
+        Tag와 라벨 사이의 gap은 theme의 tagLeftMargin 값으로 사이즈에 따라 적용됩니다.
         <br />
         Tag 의 size, color 등의 스타일은 전적으로 사용처에서 결정하며, Button 에서는 어떠한 값도 전달하지 않습니다.
       </MDSTypography>
@@ -316,6 +309,12 @@ export const Buttons: Story = {
     color: 'bluegray',
     variant: 'fill',
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+  },
   render: ({ children, ...args }) => (
     <Wrapper>
       <MDSTypography>flat 속성으로 Button 을 연결해서 배치할 수 있습니다.</MDSTypography>
@@ -328,10 +327,17 @@ export const Buttons: Story = {
           startIcon={<MDSIcon.Calendar />}
           flat="right"
           onClick={() => {}}
+          size={args.size as 'small' | 'medium' | 'large'}
         >
           Filter
         </MDSButton>
-        <MDSButton color={args.color} variant={args.variant} flat="both" onClick={() => {}}>
+        <MDSButton
+          color={args.color}
+          variant={args.variant}
+          flat="both"
+          onClick={() => {}}
+          size={args.size as 'small' | 'medium' | 'large'}
+        >
           세개도 되지롱
         </MDSButton>
         <MDSButton
@@ -347,6 +353,7 @@ export const Buttons: Story = {
               +1
             </MDSTag>,
           ]}
+          size={args.size as 'small' | 'medium' | 'large'}
           endIcon={<MDSIcon.ArrowDown variant="outline" />}
         >
           Button
@@ -406,7 +413,7 @@ export const IconButton: Story = {
       <MDSTypography>flat 속성으로 복합 버튼과 연결이 가능합니다.</MDSTypography>
       <div>
         <MDSButton
-          {...args as MDSButtonProps<'composite'>}
+          {...(args as MDSButtonProps<'composite'>)}
           flat="right"
           onClick={() => {}}
           tags={[
@@ -421,7 +428,7 @@ export const IconButton: Story = {
           Filter
         </MDSButton>
         <MDSButton
-          {...args as MDSButtonProps<'icon'>}
+          {...(args as MDSButtonProps<'icon'>)}
           flat="left"
           onClick={() => {}}
           icon={<MDSIcon.ArrowDown variant="outline" />}

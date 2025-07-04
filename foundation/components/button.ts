@@ -2,14 +2,14 @@ export const BUTTON_THEME = {
   pddng: {
     v: {
       sm: '2px',
-      md: '4.5px',
-      lg: '6px',
+      md: '3px',
+      lg: '4px',
       xl: '6px',
     },
     h: {
       sm: '7px',
-      md: '11px',
-      lg: '13px',
+      md: '9px',
+      lg: '11px',
       icon: {
         s: '4px',
         m: '7px',
@@ -20,11 +20,16 @@ export const BUTTON_THEME = {
   },
   gap: {
     sm: '2px',
-    md: '4px',
+    md: '2px',
     lg: '4px',
     'sm-both': '8px',
-    'md-both': '12px',
-    'lg-both': '14px',
+    'md-both': '10px',
+    'lg-both': '12px',
+  },
+  tagLeftMargin: {
+    sm: '2px',
+    md: '4px',
+    lg: '4px',
   },
   radius: {
     sm: '8px',
@@ -33,15 +38,15 @@ export const BUTTON_THEME = {
     xl: '10px',
   },
   minSize: {
-    sm: '26px',
-    md: '32px',
-    lg: '38px',
+    sm: '24px',
+    md: '28px',
+    lg: '32px',
     xl: '44px',
   },
   iconSize: {
     sm: 16,
     md: 16,
-    lg: 20,
+    lg: 16,
     xl: 24,
   },
 };

@@ -94,7 +94,7 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
     size,
     color,
     as: onClick || props.type ? 'button' : 'div',
-    isClickable: !!(onClick || props.type),
+    isClickable: !!(onClick || props.type) && !isDisabled,
     onClick: handleClick,
     disabled: isDisabled || isCompleted,
     isDisabled,

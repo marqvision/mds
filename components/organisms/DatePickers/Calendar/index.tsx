@@ -4,7 +4,7 @@ import { MDSDivider } from '../../../atoms/Divider';
 import { CalendarLayout, CalendarGrid, DayCell, WeekdayHeader } from './styles';
 import { YearMonthSelector } from './YearMonthSelector';
 import { useCalendar } from './@hooks/useCalendar';
-import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from './@types';
+import { CalendarDay, CommonOptions, DateRangeValue, LastUpdatedDateKind, SingleDateValue } from './@types';
 import { WEEKDAYS } from './@constants';
 import { useDateRangeSelect } from './@hooks/useDateRangeSelect';
 
@@ -59,13 +59,13 @@ const CalendarContainer = (props: Props) => {
 const DateRangeCalendarContent = (props: {
   days: CalendarDay[];
   selectedDate: DateRangeValue['value'];
-  onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: 'start' | 'end') => void;
+  onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: LastUpdatedDateKind) => void;
   minDate?: Date;
   maxDate?: Date;
 }) => {
   const { days, selectedDate, minDate, maxDate, onChange } = props;
 
-  const { selectActionState, selectMove, selectStart, displayDate } = useDateRangeSelect({
+  const { selectActionState, selectMove, selectStart, selectEnd, displayDate } = useDateRangeSelect({
     startDate: selectedDate.startDate,
     endDate: selectedDate.endDate,
     minDate,
@@ -76,7 +76,7 @@ const DateRangeCalendarContent = (props: {
   });
 
   return (
-    <CalendarGrid onMouseMove={selectMove} onMouseDown={selectStart}>
+    <CalendarGrid onMouseMove={selectMove} onMouseDown={selectStart} onMouseUp={selectEnd}>
       {days.map((day, index) => {
         const dayDate = dayjs(day.date);
         const dateStr = day.isDisplayedMonth ? dayDate.format('YYYY-MM-DD') : '';

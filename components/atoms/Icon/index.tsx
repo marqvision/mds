@@ -173,6 +173,7 @@ export const MDSIcon = {
   Gavel: createIcon(Symbols.Gavel),
   Bank: createIcon(Symbols.Bank),
   CreditCard: createIcon(Symbols.CreditCard),
+  AddPayment: createIcon(Symbols.AddPayment),
   Note: createIcon(Symbols.Note),
   SiteMapTree: createIcon(Symbols.SiteMapTree),
   DragHandle: createIcon(Symbols.DragHandle),

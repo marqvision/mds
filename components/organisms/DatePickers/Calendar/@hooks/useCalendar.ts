@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { validateDateAndMinMaxRange } from '../../@utils';
-import { CalendarDay, CommonOptions, DateRangeValue, SingleDateValue } from '../@types';
+import { CalendarDay, CommonOptions, DateRangeValue, LastUpdatedDateKind, SingleDateValue } from '../@types';
 
 type Params = CommonOptions & (SingleDateValue | DateRangeValue);
 export const useCalendar = (params: Params) => {
-  const [_value, setValue] = useState<{ startDate?: Date; endDate?: Date; lastUpdatedDateType?: 'start' | 'end' }>(
-    isDateRange(params) ? params.value : { startDate: params.value, endDate: params.value }
+  const [_value, setValue] = useState<{
+    startDate?: Date;
+    endDate?: Date;
+    lastUpdatedDateType?: LastUpdatedDateKind;
+  }>(
+    isDateRange(params)
+      ? { ...params.value, lastUpdatedDateType: params.initialFocus }
+      : { startDate: params.value, endDate: params.value }
   );
 
   const [displayedDate, setDisplayedDate] = useState(
     dayjs(
       isDateRange(params)
-        ? _value.lastUpdatedDateType === 'start'
+        ? _value.lastUpdatedDateType === 'startDate'
           ? params.value.startDate
           : params.value.endDate
         : params.value
@@ -52,9 +58,9 @@ export const useCalendar = (params: Params) => {
           if (prevStartDateStr === injectedStartDateStr && prevEndDateStr === injectedEndDateStr) {
             return _value.lastUpdatedDateType;
           } else if (prevStartDateStr === injectedStartDateStr) {
-            return 'end';
+            return 'endDate';
           } else if (prevEndDateStr === injectedEndDateStr) {
-            return 'start';
+            return 'startDate';
           } else {
             return _value.lastUpdatedDateType;
           }
@@ -68,7 +74,7 @@ export const useCalendar = (params: Params) => {
       }
     } else {
       if (!params.value) {
-        setValue({ startDate: undefined, endDate: undefined, lastUpdatedDateType: 'start' });
+        setValue({ startDate: undefined, endDate: undefined, lastUpdatedDateType: 'startDate' });
       } else {
         const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
           date: params.value,
@@ -77,7 +83,7 @@ export const useCalendar = (params: Params) => {
         });
 
         if (isValid && !isOutOfRange) {
-          setValue({ startDate: params.value, endDate: params.value, lastUpdatedDateType: 'start' });
+          setValue({ startDate: params.value, endDate: params.value, lastUpdatedDateType: 'startDate' });
         }
       }
     }
@@ -90,7 +96,7 @@ export const useCalendar = (params: Params) => {
     setDisplayedDate(
       dayjs(
         isDateRange(params)
-          ? _value.lastUpdatedDateType === 'start'
+          ? _value.lastUpdatedDateType === 'startDate'
             ? params.value.startDate
             : params.value.endDate
           : params.value
@@ -104,7 +110,7 @@ export const useCalendar = (params: Params) => {
     return {
       ...commonProps,
       type: 'range' as const,
-      onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: 'start' | 'end') => {
+      onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: LastUpdatedDateKind) => {
         const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange({
           date: startDate,
           minDate: params.minDate,
@@ -137,7 +143,7 @@ export const useCalendar = (params: Params) => {
 
       if (!isValid || isOutOfRange) return;
 
-      setValue({ startDate: date, endDate: date, lastUpdatedDateType: 'start' });
+      setValue({ startDate: date, endDate: date, lastUpdatedDateType: 'startDate' });
       params.onChange(date);
     },
   };

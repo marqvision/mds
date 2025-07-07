@@ -48,6 +48,7 @@ export type DividerProps = {
   variant: Variant;
   size: Size;
   color: Color;
+  isDisabled?: boolean;
 };
 
 type CommonProps = {

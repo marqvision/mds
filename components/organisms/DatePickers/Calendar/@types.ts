@@ -14,6 +14,7 @@ export type DateRangeValue = {
 export type CommonOptions = {
   minDate?: Date;
   maxDate?: Date;
+  initialFocus?: LastUpdatedDateKind;
 };
 // models
 
@@ -23,4 +24,4 @@ export type CalendarDay = {
   isSelectable: boolean;
   weekIndex: number;
 };
-export type DateRangeSelectionMode = 'drag' | 'click'; // date input group으로 입력하는 것도 'click'과 동일한 모드로 처리한다.
+export type LastUpdatedDateKind = 'startDate' | 'endDate';

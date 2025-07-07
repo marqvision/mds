@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import throttle from 'lodash/throttle';
 import { validateDateAndMinMaxRange } from '../../@utils';
+import { LastUpdatedDateKind } from '../@types';
 
 type DateRangeSelectParams = {
   startDate?: Date;
   endDate?: Date;
   minDate?: Date;
   maxDate?: Date;
-  onDateRangeUpdate: (startDate: Date, lastDate: Date, lastUpdatedDateType: 'start' | 'end') => void;
+  onDateRangeUpdate: (startDate: Date, lastDate: Date, lastUpdatedDateType: 'startDate' | 'endDate') => void;
 };
 
 type SelectActionState = {
@@ -104,6 +105,24 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
     });
   };
 
+  const selectEnd = (e: React.MouseEvent) => {
+    const clickedDateStr = calculateCurrentDate(e);
+    if (!clickedDateStr) return;
+    if (selectActionState.actionState === 'in-progress') {
+      setSelectActionState((prev) => ({
+        actionState: 'in-progress',
+        startDateStr: prev.startDateStr,
+        endDateStr: clickedDateStr,
+      }));
+      targetDataRef.current = {
+        startDateStr: selectActionState.startDateStr,
+        endDateStr: clickedDateStr,
+        lastUpdatedDateType: 'endDate',
+      };
+      fireDateRangeUpdate();
+    }
+  };
+
   useEffect(() => {
     // 값에 대한 validation은 useCalendar에서 모두 처리하고 내려오니까 여기에서는 넘어온 값을 쓰기만 하면 된다!
     setSelectActionState((prev) => {
@@ -131,6 +150,7 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
     },
     selectStart,
     selectMove: throttle(selectMove, 30),
+    selectEnd,
   };
 };
 //#region helper functions &  hooks
@@ -165,19 +185,19 @@ const resolveDateRange = (params: {
   const currentDate = dayjs(params.currentDateStr);
   const anchorDate = dayjs(params.anchorDateStr);
 
-  let lastUpdatedDateType: 'start' | 'end' = 'start';
+  let lastUpdatedDateType: LastUpdatedDateKind = 'startDate';
   if (currentDate.isBefore(anchorDate, 'day')) {
     newStartDateStr = params.currentDateStr;
     newEndDateStr = params.anchorDateStr;
-    lastUpdatedDateType = 'start';
+    lastUpdatedDateType = 'startDate';
   } else if (currentDate.isAfter(anchorDate, 'day')) {
     newStartDateStr = params.anchorDateStr;
     newEndDateStr = params.currentDateStr;
-    lastUpdatedDateType = 'end';
+    lastUpdatedDateType = 'endDate';
   } else if (currentDate.isSame(anchorDate, 'day')) {
     newStartDateStr = params.anchorDateStr;
     newEndDateStr = params.anchorDateStr;
-    lastUpdatedDateType = 'end';
+    lastUpdatedDateType = 'endDate';
   }
 
   return { newStartDateStr, newEndDateStr, lastUpdatedDateType };
@@ -197,7 +217,7 @@ const useHandlerDateRangeUpdate = (externalCallback: (...args: any[]) => void) =
   const updateTargetData = useRef({
     startDateStr: '',
     endDateStr: '',
-    lastUpdatedDateType: 'start',
+    lastUpdatedDateType: 'startDate',
   });
   useEffect(() => {
     frozenExternalCallbackRef.current(

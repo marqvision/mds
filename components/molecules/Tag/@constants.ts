@@ -5,7 +5,7 @@ export const token = {
     v: {
       xs: '0',
       sm: '0',
-      md: '0.5px',
+      md: '0px',
     },
     h: {
       xs: '3px',
@@ -25,8 +25,8 @@ export const token = {
   },
   minSize: {
     xs: '16px',
-    sm: '20px',
-    md: '24px',
+    sm: '18px',
+    md: '22px',
   },
   iconSize: {
     xs: 12,
@@ -512,6 +512,7 @@ export const theme: TagTheme = {
       minHeight: token.minSize.xs,
       borderWidth: 1.5,
       clickAreaPadding: 0,
+      lineHeight: '14px',
     },
     small: {
       size: 'xs',
@@ -522,9 +523,10 @@ export const theme: TagTheme = {
       minHeight: token.minSize.sm,
       borderWidth: 1,
       clickAreaPadding: 4,
+      lineHeight: '16px',
     },
     medium: {
-      size: 'm',
+      size: 's',
       icon: token.iconSize.md,
       padding: `${token.pddng.v.md} ${token.pddng.h.md}`,
       gap: token.gap.md,
@@ -532,6 +534,7 @@ export const theme: TagTheme = {
       minHeight: token.minSize.md,
       borderWidth: 1,
       clickAreaPadding: 4,
+      lineHeight: '20px',
     },
   },
 };

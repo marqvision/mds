@@ -79,7 +79,7 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
   }}
 `;
 
-const Wrapper = <T extends string | string[] | number | number[] | undefined>({
+const Wrapper = <T extends string | string[] | number | number[] | undefined | null>({
   value,
   children,
   variant = 'left',

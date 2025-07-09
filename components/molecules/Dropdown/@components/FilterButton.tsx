@@ -1,5 +1,4 @@
 import { MouseEvent, ReactElement } from 'react';
-import styled from '@emotion/styled';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSButton } from '../../Button';
 import { MDSTag } from '../../Tag';
@@ -13,17 +12,13 @@ type Props = {
   onClick?: (e: MouseEvent) => void;
 } & Omit<FilterButtonModule, 'type'>;
 
-const StyledWrap = styled(MDSButton)`
-  align-self: flex-start;
-`;
-
 export const FilterButton = (props: Props) => {
   const { label, selectedLabel, isLoading, isDisabled, onClick, size = 'medium', color = 'bluegray', flat } = props;
 
   const isSelected = selectedLabel.length > 0;
 
   return (
-    <StyledWrap
+    <MDSButton
       variant={isSelected ? 'fill' : 'tint'}
       size={size}
       color={color}
@@ -48,6 +43,6 @@ export const FilterButton = (props: Props) => {
       onClick={onClick}
     >
       {label}
-    </StyledWrap>
+    </MDSButton>
   );
 };

@@ -106,9 +106,11 @@ const Wrapper = forwardRef<HTMLDivElement, MDSPanelProps>((props: MDSPanelProps,
     </StyledWrapper>
   );
 
+  const justifyContent = direction === 'left' ? 'flex-start' : direction === 'right' ? 'flex-end' : undefined;
+
   if (isDimmed)
     return (
-      <MDSDimmed isOpen={isOpen} onClose={onClose} style={{ padding: 0, justifyContent: 'flex-end' }}>
+      <MDSDimmed isOpen={isOpen} onClose={onClose} style={{ padding: 0, justifyContent, ...style }}>
         {wrapperElement}
       </MDSDimmed>
     );

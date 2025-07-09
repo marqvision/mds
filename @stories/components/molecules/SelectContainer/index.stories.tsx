@@ -45,6 +45,31 @@ export const DefaultPreview: StoryObj<typeof MDSSelectContainer.Wrapper> = {
   },
 };
 
+export const NoInitialSelection: StoryObj<typeof MDSSelectContainer.Wrapper> = {
+  render: function Render() {
+    const [selectedItem, setSelectedItem] = useState<ValueEnum | undefined>(undefined);
+
+    const handleSelect = useCallback((value: ValueEnum) => {
+      setSelectedItem(value);
+    }, []);
+
+    return (
+      <MDSSelectContainer.Wrapper value={selectedItem} orientation="horizontal" itemSizing="fit">
+        {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
+          (value) => (
+            <MDSSelectContainer.Item<ValueEnum>
+              key={value}
+              title={{ label: LABEL_MAP[value] }}
+              value={value}
+              onClick={() => handleSelect(value)}
+            />
+          )
+        )}
+      </MDSSelectContainer.Wrapper>
+    );
+  },
+};
+
 export const VerticalOrientation: StoryObj<typeof MDSSelectContainer.Wrapper> = {
   parameters: {
     controls: {

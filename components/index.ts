@@ -12,6 +12,7 @@ export * from './molecules/PlainButton';
 export * from './atoms/RadioButton';
 export * from './molecules/Popover';
 export * from './molecules/Input';
+export * from './molecules/DownloadPanel';
 export * from './atoms/Image';
 export * from './molecules/Dropdown';
 export * from './molecules/LoadingIndicator';

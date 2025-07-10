@@ -1,74 +1,59 @@
-import { useState } from 'react';
 import { MDSThemeColorPath } from '../../../types';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSTypography } from '../../atoms/Typography';
-import { MDSModal } from '../../organisms/Modal';
-import { MDSButton } from '../Button';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { MDSPlainButton } from '../PlainButton';
 import { MDSTooltip } from '../Tooltip';
-import { DownloadPanelProps, DownloadTask } from './@types';
+import { DisplayTask, DownloadPanelProps, Task } from './@types';
 import { Styles } from './styles';
+import { useManagePanel, useRemoveTask } from './useManagePanel';
+import { useManageTaskRunner } from './useManageTaskRunner';
 
-const DownloadPanel = (props: DownloadPanelProps) => {
-  const { displayQueue } = props;
+// storybook 에서 보여주기 위해 export
+type PanelContentProps = ReturnType<typeof useManagePanel>;
+export const PanelContent = ({ panel, tasks }: PanelContentProps) => {
+  return (
+    <>
+      <Styles.Title>
+        <MDSTypography variant="body" size="m" weight="medium">
+          {panel.panelLabel}
+        </MDSTypography>
+        <div className="actionButtonBox">
+          <MDSPlainButton
+            color="bluegray"
+            icon={
+              <Styles.FoldIconBox isFold={panel.panelStatus.isFold}>
+                <MDSIcon.ArrowDown variant="outline" />
+              </Styles.FoldIconBox>
+            }
+            onClick={panel.handleToggleFold}
+          />
+          <MDSPlainButton
+            color="bluegray"
+            icon={<MDSIcon.CloseDelete variant="outline" />}
+            onClick={panel.handleClickClose}
+          />
+        </div>
+      </Styles.Title>
+      <Styles.Content isFold={panel.panelStatus.isFold}>
+        {tasks.map((task) => (
+          <TaskItem key={task.taskId} task={task} />
+        ))}
+      </Styles.Content>
+    </>
+  );
+};
 
-  const [displayStatus, setDisplayStatus] = useState<{ isFold: boolean }>({ isFold: false });
-  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
-
-  const toggleFold = () => {
-    setDisplayStatus((prev) => ({ ...prev, isFold: !prev.isFold }));
-  };
-
-  const handleClickCloseMonitor = () => {};
-  const continueExport = () => {};
-  const closeMonitor = () => {};
-  const removeTask = (progressId: number, status: DownloadTask['status']) => {};
-
-  const label = 'Exporting';
+const DownloadPanel = () => {
+  const { panel, tasks } = useManagePanel();
+  useManageTaskRunner();
 
   return (
     <>
-      <Styles.Container isFold={displayStatus.isFold}>
-        <Styles.Title>
-          <MDSTypography variant="body" size="m" weight="medium">
-            {label}
-          </MDSTypography>
-          <div className="actionButtonBox">
-            <MDSPlainButton
-              color="bluegray"
-              icon={
-                <Styles.FoldIconBox isFold={displayStatus.isFold}>
-                  <MDSIcon.ArrowDown variant="outline" />
-                </Styles.FoldIconBox>
-              }
-              onClick={toggleFold}
-            />
-            <MDSPlainButton
-              color="bluegray"
-              icon={<MDSIcon.CloseDelete variant="outline" />}
-              onClick={handleClickCloseMonitor}
-            />
-          </div>
-        </Styles.Title>
-        <Styles.Content isFold={displayStatus.isFold}>
-          {displayQueue.map((task) => {
-            return (
-              <Styles.Item key={task.progressId}>
-                <FileIcon fileType={task.fileType} status={task.status} />
-                <FileName status={task.status} fileName={task.fileName} />
-                <ProgressIndicator
-                  status={task.status}
-                  progress={task.progress}
-                  onCancel={() => removeTask(task.progressId, task.status)}
-                />
-              </Styles.Item>
-            );
-          })}
-        </Styles.Content>
+      <Styles.Container isFold={panel.panelStatus.isFold}>
+        <PanelContent panel={panel} tasks={tasks} />
       </Styles.Container>
-
-      <MDSModal.Wrapper isOpen={showCancelConfirm}>
+      {/* <MDSModal.Wrapper isOpen={showCancelConfirm}>
         <MDSModal.Content>
           <MDSTypography variant="body" size="m" weight="medium">
             Are you sure you want to close this window? All exports in progress will be canceled.
@@ -82,8 +67,19 @@ const DownloadPanel = (props: DownloadPanelProps) => {
             Cancel export
           </MDSButton>
         </MDSModal.Action>
-      </MDSModal.Wrapper>
+      </MDSModal.Wrapper> */}
     </>
+  );
+};
+
+const TaskItem = ({ task }: { task: DisplayTask }) => {
+  const { remove } = useRemoveTask();
+  return (
+    <Styles.Item key={task.taskId}>
+      <FileIcon fileType={task.fileType} status={task.status} />
+      <FileName status={task.status} fileName={task.fileName} />
+      <ProgressIndicator status={task.status} progress={task.progress} onCancel={() => remove(task)} />
+    </Styles.Item>
   );
 };
 
@@ -91,7 +87,7 @@ const READY_STATUS_COLOR = 'color/content/neutral/default/disabled';
 const FAILED_STATUS_COLOR = 'color/content/critical/default/normal';
 const COMPLETED_STATUS_COLOR = 'color/content/success/default/normal';
 // todo-@jamie: shared의 ExtensionIcon 컴포넌트를 mds v2로 전한하면 ExtensionIcon로 교체하기
-const FileIcon = ({ status, fileType }: { status: DownloadTask['status']; fileType: DownloadTask['fileType'] }) => {
+const FileIcon = ({ status, fileType }: { status: Task['status']; fileType: Task['fileType'] }) => {
   switch (fileType) {
     case 'csv':
       return (
@@ -128,7 +124,7 @@ const FileIcon = ({ status, fileType }: { status: DownloadTask['status']; fileTy
       return null;
   }
 };
-const FileName = ({ status, fileName }: { status: DownloadTask['status']; fileName: DownloadTask['fileName'] }) => {
+const FileName = ({ status, fileName }: { status: Task['status']; fileName: Task['fileName'] }) => {
   const color: MDSThemeColorPath = status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal';
   return fileName.length > 40 ? (
     <MDSTooltip title={fileName} width="100%" size="small" style={{ marginBottom: 4 }}>
@@ -154,8 +150,8 @@ const ProgressIndicator = ({
   progress,
   onCancel,
 }: {
-  status: DownloadTask['status'];
-  progress: number;
+  status: Task['status'];
+  progress?: number;
   onCancel: () => void;
 }) => {
   const toolTipTitle = status === 'processing' ? 'Cancel export' : status === 'completed' ? 'Remove' : 'Remove';
@@ -164,7 +160,7 @@ const ProgressIndicator = ({
   return (
     <Styles.ProgressIndicatorBox status={status}>
       <div className="progress-indicator-default">
-        {status === 'ready' ? (
+        {status === 'ready' || typeof progress !== 'number' ? (
           <MDSLoadingIndicator isDeterminate backgroundColor progress={0} size={20} />
         ) : status === 'processing' ? (
           <MDSLoadingIndicator isDeterminate backgroundColor progress={progress} size={20} />
@@ -182,8 +178,6 @@ const ProgressIndicator = ({
     </Styles.ProgressIndicatorBox>
   );
 };
-
-
 
 export const MDSDownloadPanel = DownloadPanel;
 export type MDSDownloadPanelProps = DownloadPanelProps;

@@ -20,6 +20,7 @@ export * from './molecules/Tooltip';
 export * from './organisms/EmptyView';
 export * from './organisms/ImageViewer';
 export * from './organisms/LNB';
+export * from './organisms/Snackbar';
 export * from './atoms/Logo';
 export * from './organisms/GNB';
 export * from './organisms/PageHeader';

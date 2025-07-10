@@ -39,9 +39,9 @@ export const Preview: Story = {
   render: () => (
     <Wrapper>
       <MDSTypography>
-        토스트 알림 컴포넌트입니다.
+        스낵바 알림 컴포넌트입니다.
         <br />
-        버튼을 클릭하여 토스트를 확인해보세요.
+        버튼을 클릭하여 스낵바를 확인해보세요.
       </MDSTypography>
       <MDSButton
         onClick={() =>
@@ -61,14 +61,14 @@ export const Preview: Story = {
 export const SnackbarTypes: Story = {
   render: () => (
     <Wrapper>
-      <MDSTypography>토스트의 다양한 타입을 확인할 수 있습니다.</MDSTypography>
+      <MDSTypography>스낵바의 다양한 타입을 확인할 수 있습니다.</MDSTypography>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
         <MDSButton
           onClick={() =>
             MDSSnackbar({
               type: 'success',
               title: 'Success',
-              message: '성공 토스트',
+              message: '성공 스낵바',
             })
           }
         >
@@ -79,7 +79,7 @@ export const SnackbarTypes: Story = {
             MDSSnackbar({
               type: 'error',
               title: 'Error',
-              message: '오류 토스트',
+              message: '오류 스낵바',
             })
           }
         >
@@ -90,7 +90,7 @@ export const SnackbarTypes: Story = {
             MDSSnackbar({
               type: 'warning',
               title: 'Warning',
-              message: '워닝 토스트',
+              message: '워닝 스낵바',
             })
           }
         >
@@ -101,7 +101,7 @@ export const SnackbarTypes: Story = {
             MDSSnackbar({
               type: 'complete',
               title: 'Complete',
-              message: '완료 토스트',
+              message: '완료 스낵바',
             })
           }
         >
@@ -115,7 +115,7 @@ export const SnackbarTypes: Story = {
 export const WithActionButton: Story = {
   render: () => (
     <Wrapper>
-      <MDSTypography>액션 버튼이 포함된 토스트입니다.</MDSTypography>
+      <MDSTypography>액션 버튼이 포함된 스낵바입니다.</MDSTypography>
       <MDSButton
         onClick={() =>
           MDSSnackbar({
@@ -140,7 +140,7 @@ export const CustomDuration: Story = {
   render: () => (
     <Wrapper>
       <MDSTypography>
-        토스트의 표시 시간을 설정할 수 있습니다.
+        스낵바의 표시 시간을 설정할 수 있습니다.
         <br />
         짧은 시간(2초)과 긴 시간(10초)을 비교해보세요.
       </MDSTypography>
@@ -155,7 +155,7 @@ export const CustomDuration: Story = {
             })
           }
         >
-          2초 토스트
+          2초 스낵바
         </MDSButton>
         <MDSButton
           onClick={() =>
@@ -167,7 +167,7 @@ export const CustomDuration: Story = {
             })
           }
         >
-          10초 토스트
+          10초 스낵바
         </MDSButton>
       </div>
     </Wrapper>
@@ -177,7 +177,7 @@ export const CustomDuration: Story = {
 export const NoCloseButton: Story = {
   render: () => (
     <Wrapper>
-      <MDSTypography>닫기 버튼이 보여지는 토스트입니다.</MDSTypography>
+      <MDSTypography>닫기 버튼이 보여지는 스낵바입니다.</MDSTypography>
       <MDSButton
         onClick={() =>
           MDSSnackbar({
@@ -198,31 +198,31 @@ export const NoCloseButton: Story = {
 export const CustomWidth: Story = {
   render: () => (
     <Wrapper>
-      <MDSTypography>토스트의 너비를 커스텀할 수 있습니다.</MDSTypography>
+      <MDSTypography>스낵바의 너비를 커스텀할 수 있습니다.</MDSTypography>
       <div style={{ display: 'flex', gap: '12px' }}>
         <MDSButton
           onClick={() =>
             MDSSnackbar({
               type: 'success',
               title: 'Small Width',
-              message: '좁은 너비의 토스트입니다.',
+              message: '좁은 너비의 스낵바입니다.',
               width: 300,
             })
           }
         >
-          좁은 토스트
+          좁은 스낵바
         </MDSButton>
         <MDSButton
           onClick={() =>
             MDSSnackbar({
               type: 'warning',
               title: 'Large Width Snackbar',
-              message: '넓은 너비의 토스트입니다. 긴 메시지도 잘 표시됩니다.',
+              message: '넓은 너비의 스낵바입니다. 긴 메시지도 잘 표시됩니다.',
               width: 700,
             })
           }
         >
-          넓은 토스트
+          넓은 스낵바
         </MDSButton>
       </div>
     </Wrapper>
@@ -233,9 +233,9 @@ export const MultipleSnackbars: Story = {
   render: () => (
     <Wrapper>
       <MDSTypography>
-        여러 개의 토스트를 연속으로 표시할 수 있습니다.
+        여러 개의 스낵바를 연속으로 표시할 수 있습니다.
         <br />
-        스택 형태로 쌓이며, 가장 최근 토스트가 맨 앞에 표시됩니다.
+        스택 형태로 쌓이며, 가장 최근 스낵바가 맨 앞에 표시됩니다.
       </MDSTypography>
       <div style={{ display: 'flex', gap: '12px' }}>
         <MDSButton
@@ -243,14 +243,14 @@ export const MultipleSnackbars: Story = {
             MDSSnackbar({
               type: 'success',
               title: 'First Snackbar',
-              message: '첫 번째 토스트입니다.',
+              message: '첫 번째 스낵바입니다.',
               duration: 5000,
             });
             setTimeout(() => {
               MDSSnackbar({
                 type: 'warning',
                 title: 'Second Snackbar',
-                message: '조금 더 길어진 ------------------------------------------------ 두 번째 토스트입니다.',
+                message: '조금 더 길어진 ------------------------------------------------ 두 번째 스낵바입니다.',
                 duration: 5000,
               });
             }, 300);
@@ -258,7 +258,7 @@ export const MultipleSnackbars: Story = {
               MDSSnackbar({
                 type: 'error',
                 title: 'Third Snackbar',
-                message: '다시 작아진 세 번째 토스트입니다.',
+                message: '다시 작아진 세 번째 스낵바입니다.',
                 duration: 5000,
               });
             }, 600);
@@ -266,7 +266,7 @@ export const MultipleSnackbars: Story = {
               MDSSnackbar({
                 type: 'complete',
                 title: 'Fourth Snackbar',
-                message: '다시 작아진 네 번째 토스트입니다.',
+                message: '다시 작아진 네 번째 스낵바입니다.',
                 duration: 5000,
               });
             }, 900);
@@ -279,7 +279,7 @@ export const MultipleSnackbars: Story = {
             MDSSnackbar({
               type: 'success',
               title: 'Clear All',
-              message: '기존 토스트를 모두 제거하고 새로 표시합니다.',
+              message: '기존 스낵바를 모두 제거하고 새로 표시합니다.',
               dismissAllPreviousSnackbar: true,
               duration: 5000,
             })
@@ -295,7 +295,7 @@ export const MultipleSnackbars: Story = {
 export const WithImages: Story = {
   render: () => (
     <Wrapper>
-      <MDSTypography>이미지가 포함된 토스트입니다.</MDSTypography>
+      <MDSTypography>이미지가 포함된 스낵바입니다.</MDSTypography>
       <MDSButton
         onClick={() =>
           MDSSnackbar({

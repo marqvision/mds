@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSButton } from '../../molecules/Button';
@@ -20,13 +21,13 @@ const Wrapper = styled.header`
   }}
 `;
 
-const GNB = (props: GNBProps) => {
+const GNB = forwardRef<HTMLElement, GNBProps>((props, ref) => {
   const { isLNBOpen, onLNBToggle, LinkComponent, children } = props;
 
   const MenuIcon = isLNBOpen ? MDSIcon.MenuClose : MDSIcon.MenuOpen;
 
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <MDSButton variant="border" size="medium" color="bluegray" icon={<MenuIcon />} onClick={onLNBToggle} />
       {LinkComponent ? (
         <LinkComponent to="/">
@@ -38,7 +39,8 @@ const GNB = (props: GNBProps) => {
       {children}
     </Wrapper>
   );
-};
+});
+GNB.displayName = 'MDSGNB';
 
 export const MDSGNB = GNB;
 export type { GNBProps as MDSGNBProps } from './@types';

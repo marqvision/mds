@@ -1,4 +1,4 @@
-import React, { isValidElement } from 'react';
+import React, { forwardRef, isValidElement } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
@@ -61,7 +61,7 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
   }}
 `;
 
-export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>) => {
+export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChildren<PlainButtonProps>>((props, ref) => {
   const {
     children: label,
     size = 'medium',
@@ -89,8 +89,7 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
       }
     : undefined;
 
-  const commonProps: StyledPlainButtonProps &
-    React.ComponentProps<'button'> & { as: React.ElementType } = {
+  const commonProps: StyledPlainButtonProps & React.ComponentProps<'button'> & { as: React.ElementType } = {
     size,
     color,
     as: onClick || props.type ? 'button' : 'div',
@@ -104,7 +103,7 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
 
   if (icon) {
     return (
-      <PlainButton isIconButton {...commonProps}>
+      <PlainButton isIconButton {...commonProps} ref={ref}>
         <Icon type="standalone" size={size} icon={icon} />
       </PlainButton>
     );
@@ -113,7 +112,7 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
   const sizeStyle = resolveSize(theme, commonProps);
 
   return (
-    <PlainButton {...commonProps}>
+    <PlainButton {...commonProps} ref={ref}>
       {startIcon && <Icon type="withLabel" size={size} icon={startIcon} />}
 
       {isValidElement(label)
@@ -127,4 +126,5 @@ export const MDSPlainButton = (props: React.PropsWithChildren<PlainButtonProps>)
       {endIcon && <Icon type="withLabel" size={size} icon={endIcon} />}
     </PlainButton>
   );
-};
+});
+MDSPlainButton.displayName = 'MDSPlainButton';

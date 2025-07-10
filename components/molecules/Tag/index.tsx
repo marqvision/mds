@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { theme as TagTheme } from './@constants';
@@ -116,7 +116,7 @@ const Icon = (props: IconProps) => {
   return ResolvedIcon;
 };
 
-export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
+export const MDSTag = forwardRef<HTMLButtonElement, React.PropsWithChildren<TagProps>>((props, ref) => {
   const { children: label, size, icon, color, variant, startIcon, endIcon, isDisabled, onClick, ...restProps } = props;
 
   return (
@@ -129,6 +129,7 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
       onClick={onClick}
       disabled={isDisabled}
       {...restProps}
+      ref={ref}
     >
       {startIcon && <Icon size={size} icon={startIcon} />}
 
@@ -150,4 +151,5 @@ export const MDSTag = (props: React.PropsWithChildren<TagProps>) => {
       {endIcon && <Icon size={size} icon={endIcon} />}
     </Tag>
   );
-};
+});
+MDSTag.displayName = 'MDSTag';

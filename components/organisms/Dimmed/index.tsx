@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { keyframes } from '@emotion/react';
+import { composeRef } from '../../../utils';
 import { Props, StyledProps } from './@types';
 import { theme } from './@constants';
 
@@ -55,12 +56,14 @@ const clearBodyStyle = () => {
   document.body.style.paddingRight = '';
 };
 
-export const MDSDimmed = (props: Props) => {
+export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, forwardedRef) => {
   const { isOpen: _isOpen, padding = '20px', intensity = 'default', style, onClose, children } = props;
 
   const eleRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   const timeoutRef = useRef<number>();
+
+  const ref = composeRef(forwardedRef, eleRef);
 
   //@morgan: mui portal 의 createPortal 타이밍에 맞추기 위해 동일하게 mountNode state 추가함
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
@@ -139,7 +142,7 @@ export const MDSDimmed = (props: Props) => {
   return mountNode
     ? createPortal(
         <Wrapper
-          ref={eleRef}
+          ref={ref}
           className={clsx({ isOpen }, 'mds-dimmed')}
           onMouseMove={stopPropagation}
           onMouseDown={stopPropagation}
@@ -154,4 +157,5 @@ export const MDSDimmed = (props: Props) => {
         mountNode
       )
     : mountNode;
-};
+});
+MDSDimmed.displayName = 'MDSDimmed';

@@ -183,6 +183,9 @@ export const MDSInput = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLInputEleme
       )}
     </StyledWrapper>
   );
-}) as <T>(props: Props<T> & { ref?: Ref<HTMLInputElement | HTMLButtonElement> }) => JSX.Element;
+}) as (<T>(props: Props<T> & { ref?: Ref<HTMLInputElement | HTMLButtonElement> }) => JSX.Element) & {
+  displayName?: string;
+};
+MDSInput.displayName = 'MDSInput';
 
 export type MDSInputProps<T> = Props<T>;

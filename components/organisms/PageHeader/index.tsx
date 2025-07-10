@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../..';
 import { BackButton } from './@components/BackButton';
@@ -17,7 +18,7 @@ const Wrapper = styled.div<{ isCompact: boolean }>`
   }}
 `;
 
-const PageHeader = (props: PageHeaderProps) => {
+const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>((props, ref) => {
   const { backButton, pageTitle, isCompact = false, children } = props;
 
   return (
@@ -29,7 +30,8 @@ const PageHeader = (props: PageHeaderProps) => {
       {children}
     </Wrapper>
   );
-};
+});
+PageHeader.displayName = 'MDSPageHeader';
 
 export const MDSPageHeader = PageHeader;
 export type { PageHeaderProps as MDSPageHeaderProps } from './@types';

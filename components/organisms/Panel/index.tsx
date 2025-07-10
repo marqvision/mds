@@ -89,7 +89,7 @@ const StyledActions = styled.div`
  * - `isDimmed: false`: default: 50%
  */
 
-const Wrapper = forwardRef<HTMLDivElement, MDSPanelProps>((props: MDSPanelProps, ref) => {
+const Wrapper = forwardRef<HTMLDivElement, MDSPanelProps>((props, ref) => {
   const { style, width, onClose, children, isOpen = false, isDimmed = true, direction = 'right' } = props;
   const contentWidth = isDimmed ? width || '540px' : 'auto';
 
@@ -134,7 +134,7 @@ const Wrapper = forwardRef<HTMLDivElement, MDSPanelProps>((props: MDSPanelProps,
 
 Wrapper.displayName = 'MDSPanel.Wrapper';
 
-const Header = forwardRef<HTMLDivElement, MDSPanelHeaderProps>((props: MDSPanelHeaderProps, ref) => {
+const Header = forwardRef<HTMLDivElement, MDSPanelHeaderProps>((props, ref) => {
   const { children, onClose, style } = props;
 
   const isElement = isValidElement(children);
@@ -161,7 +161,7 @@ const Header = forwardRef<HTMLDivElement, MDSPanelHeaderProps>((props: MDSPanelH
 
 Header.displayName = 'MDSPanel.Header';
 
-const Content = forwardRef<HTMLDivElement, MDSPanelBodyProps>((props: MDSPanelBodyProps, ref) => {
+const Content = forwardRef<HTMLDivElement, MDSPanelBodyProps>((props, ref) => {
   const { children, style } = props;
 
   return (
@@ -173,7 +173,7 @@ const Content = forwardRef<HTMLDivElement, MDSPanelBodyProps>((props: MDSPanelBo
 
 Content.displayName = 'MDSPanel.Content';
 
-const Action = forwardRef<HTMLDivElement, MDSPanelActionProps>((props: MDSPanelActionProps, ref) => {
+const Action = forwardRef<HTMLDivElement, MDSPanelActionProps>((props, ref) => {
   const { children, justifyContent = 'flex-end', style } = props;
 
   return (

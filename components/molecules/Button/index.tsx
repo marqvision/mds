@@ -1,4 +1,4 @@
-import React, { isValidElement } from 'react';
+import React, { forwardRef, isValidElement } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
@@ -90,7 +90,10 @@ const TagWrapper = styled.span`
   gap: 2px;
 `;
 
-export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'> | ButtonProps<'icon'>>) => {
+export const MDSButton = forwardRef<
+  HTMLButtonElement,
+  React.PropsWithChildren<ButtonProps<'composite'> | ButtonProps<'icon'>>
+>((props, ref) => {
   const {
     children: label,
     size = 'medium',
@@ -145,7 +148,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
 
   if (icon) {
     return (
-      <Button isIconButton {...commonProps}>
+      <Button isIconButton {...commonProps} ref={ref}>
         {isLoading && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
 
         {icon && <Icon size={size} icon={icon} />}
@@ -156,7 +159,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
   }
 
   return (
-    <Button {...commonProps}>
+    <Button {...commonProps} ref={ref}>
       {isLoading === 'hideLabel' && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
 
       {isLoading === true ? (
@@ -189,7 +192,8 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
       {isDividerVisible && <Divider variant={variant} color={color} size={size} isDisabled={isDisabled} />}
     </Button>
   );
-};
+});
+MDSButton.displayName = 'MDSButton';
 
 /**
  * @deprecated

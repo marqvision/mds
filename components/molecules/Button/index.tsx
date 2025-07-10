@@ -134,7 +134,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
     width,
     as: onClick || props.type ? 'button' : 'div',
     isLoading: (isLoading && icon) || isLoading === 'hideLabel' ? 'hideLabel' : isLoading,
-    isClickable: !!(!isLoading && (onClick || props.type)),
+    isClickable: !!(!isLoading && (onClick || props.type) && !isDisabled),
     onClick: handleClick,
     disabled: isDisabled || isCompleted,
     isDisabled,

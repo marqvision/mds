@@ -1,4 +1,4 @@
-import { forwardRef, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Provider, useAtom } from 'jotai';
 import { MDSCheckbox } from '../../atoms/Checkbox';
@@ -482,7 +482,7 @@ const Dropdown = <T, SortT>(
   );
 };
 
-export const MDSDropdown = forwardRef((props, forwardedRef) => {
+export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>) => {
   const { renderAnchor, width, position, ...restProps } = props;
 
   const { value, list, isLoading, isDisabled } = restProps;
@@ -499,8 +499,7 @@ export const MDSDropdown = forwardRef((props, forwardedRef) => {
   const [fitWidth, setFitWidth] = useState<number>();
   const [isOpen, setIsOpen] = useState(false);
 
-  const innerRef = useRef<EventTarget & Element>(null);
-  const ref = forwardedRef || innerRef;
+  const ref = useRef<EventTarget & Element>(null);
 
   const filterButtonProps = restProps.modules?.find((v) => typeof v === 'object' && v.type === 'filter-button') as
     | FilterButtonModule
@@ -581,9 +580,6 @@ export const MDSDropdown = forwardRef((props, forwardedRef) => {
       }}
     </MDSPopover>
   );
-}) as (<T = unknown, SortT = unknown>(props: Props<T, SortT> & { ref?: React.Ref<HTMLDivElement> }) => JSX.Element) & {
-  displayName?: string;
 };
-MDSDropdown.displayName = 'MDSDropdown';
 
 export * from './@types';

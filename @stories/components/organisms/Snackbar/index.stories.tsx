@@ -1,10 +1,10 @@
 import React from 'react';
 import { Story } from '@storybook/blocks';
-import { MDSButton, MDSSnackbar, MDSTypography, SnackbarContainerV2 } from '../../../../components';
+import { MDSButton, MDSSnackbar, MDSTypography, MDSSnackbarContainer } from '../../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof SnackbarContainerV2> = {
-  component: SnackbarContainerV2,
+const meta: Meta<typeof MDSSnackbarContainer> = {
+  component: MDSSnackbarContainer,
   title: '2. Components/organisms/Snackbar',
   parameters: {
     docs: {
@@ -18,14 +18,14 @@ const meta: Meta<typeof SnackbarContainerV2> = {
     (Story) => (
       <div style={{ position: 'relative', height: '400px', width: '100%', overflow: 'hidden' }}>
         <Story />
-        <SnackbarContainerV2 />
+        <MDSSnackbarContainer />
       </div>
     ),
   ],
 };
 
 export default meta;
-type Story = StoryObj<typeof SnackbarContainerV2>;
+type Story = StoryObj<typeof MDSSnackbarContainer>;
 
 const Wrapper = ({ children }: React.PropsWithChildren) => {
   return (
@@ -173,7 +173,7 @@ export const CustomDuration: Story = {
   ),
 };
 
-export const NoCloseButton: Story = {
+export const WithCloseButton: Story = {
   render: () => (
     <Wrapper>
       <MDSTypography>닫기 버튼이 보여지는 스낵바입니다.</MDSTypography>

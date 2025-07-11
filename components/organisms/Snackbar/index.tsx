@@ -11,8 +11,7 @@ const SnackbarWrapper = styled.div`
   z-index: 9999;
 `;
 
-// change name after snackbar v1 -> v2 migration
-export const SnackbarContainerV2 = () => {
+export const MDSSnackbarContainer = () => {
   const { snackbars, removeSnackbar } = useSnackbarManager();
 
   if (snackbars.length === 0) {

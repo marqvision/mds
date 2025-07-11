@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { keyframes } from '@emotion/react';
-import { composeRef } from '../../../utils';
 import { Props, StyledProps } from './@types';
 import { theme } from './@constants';
+import { composeRef } from './@utils';
 
 const transition = 300; //TODO-@morgan: 디자인 팀 확인 필요
 

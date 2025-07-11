@@ -183,7 +183,7 @@ export const WithCloseButton: Story = {
             type: 'error',
             title: 'Critical Error',
             message: '닫기 버튼 보여지면 눌러주세요!',
-            hideCloseButton: false,
+            showCloseButton: true,
             duration: 5000,
           })
         }

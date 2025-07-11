@@ -45,9 +45,9 @@ export type SnackbarCommonProps = {
   images?: (string | ImageData)[];
 
   /*
-   * 스낵바 닫기 버튼을 숨길지 여부를 설정합니다.
+   * 스낵바 닫기 버튼을 보여줄지 여부를 설정합니다.
    */
-  hideCloseButton?: boolean;
+  showCloseButton?: boolean;
 
   /*
    * 새로운 스낵바를 가장 뒤에 추가할지 여부를 설정합니다.

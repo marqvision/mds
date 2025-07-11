@@ -27,7 +27,7 @@ const createSnackbarManager = () => {
       ...options,
       type: options.type || 'complete',
       duration: options.duration ?? SNACKBAR_TIMEOUTS.DEFAULT_SNACKBAR_DURATION,
-      hideCloseButton: options.hideCloseButton ?? true,
+      showCloseButton: options.showCloseButton === true,
     };
 
     if (options.pushToEnd) {

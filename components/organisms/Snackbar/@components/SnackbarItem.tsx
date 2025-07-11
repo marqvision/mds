@@ -12,7 +12,7 @@ import { SnackbarItemStyleProps, SnackbarProps } from '../@types';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
-import { SnackbarContentColor } from '../@constants';
+import { SNACKBAR_TIMEOUTS, SnackbarContentColor } from '../@constants';
 import { ImageGallery } from './ImageGallery';
 
 export const SnackbarItem = (props: SnackbarProps) => {
@@ -37,7 +37,7 @@ export const SnackbarItem = (props: SnackbarProps) => {
       const timer = setTimeout(() => {
         setShouldBlur(false);
         setIsBlurFadingOut(false);
-      }, 200);
+      }, SNACKBAR_TIMEOUTS.BLUR_FADE_DURATION);
 
       return () => clearTimeout(timer);
     }

@@ -1,6 +1,6 @@
 import { useState, useEffect, MouseEvent, useCallback, useSyncExternalStore } from 'react';
 import { SnackbarCommonProps, SnackbarData, SnackbarListener } from '../@types';
-import { MAX_SNACKBARS } from '../@constants';
+import { MAX_SNACKBARS, SNACKBAR_TIMEOUTS } from '../@constants';
 import { calculateSnackbarStackProperties } from '../@utils';
 
 const createSnackbarManager = () => {
@@ -26,7 +26,7 @@ const createSnackbarManager = () => {
       id,
       ...options,
       type: options.type || 'complete',
-      duration: options.duration ?? 7000,
+      duration: options.duration ?? SNACKBAR_TIMEOUTS.DEFAULT_SNACKBAR_DURATION,
       hideCloseButton: options.hideCloseButton ?? true,
     };
 
@@ -130,7 +130,7 @@ export const useSnackbar = (snackbar: SnackbarData, stackIndex: number, onRemove
   const { translateY, scale, opacity, zIndex } = calculateSnackbarStackProperties(stackIndex);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsEntering(false), 450);
+    const timer = setTimeout(() => setIsEntering(false), SNACKBAR_TIMEOUTS.ENTER_ANIMATION_DURATION);
     return () => clearTimeout(timer);
   }, []);
 
@@ -151,7 +151,7 @@ export const useSnackbar = (snackbar: SnackbarData, stackIndex: number, onRemove
     setIsExiting(true);
     setTimeout(() => {
       onRemove(snackbar.id);
-    }, 300);
+    }, SNACKBAR_TIMEOUTS.EXIT_ANIMATION_DURATION);
   }, [isExiting, onRemove, snackbar.id, stackIndex]);
 
   const handleCloseClick = useCallback(

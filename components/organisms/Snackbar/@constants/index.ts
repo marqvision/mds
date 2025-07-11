@@ -14,6 +14,14 @@ export const SNACKBAR_EXIT_CONFIG = {
   STACK_INCREMENT: 15, // 스택 인덱스당 추가 이동 거리
 } as const;
 
+// 스낵바 타임아웃 설정
+export const SNACKBAR_TIMEOUTS = {
+  BLUR_FADE_DURATION: 200, // 스낵바 블러 효과 페이드 지속 시간 (milliseconds)
+  ENTER_ANIMATION_DURATION: 450, // 스낵바 진입 애니메이션 지속 시간 (milliseconds)
+  EXIT_ANIMATION_DURATION: 300, // 스낵바 종료 애니메이션 지속 시간 (milliseconds)
+  DEFAULT_SNACKBAR_DURATION: 7000, // 스낵바 default 표시 시간 (milliseconds)
+} as const;
+
 export const MAX_SNACKBARS = 15;
 
 export const SnackbarContentColor: Record<

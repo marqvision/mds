@@ -109,6 +109,7 @@ const SnackbarItemStyles = styled.div<SnackbarItemStyleProps>`
     return css`
       position: fixed;
       bottom: 24px;
+      margin: 0 16px;
       padding: 12px 16px;
       border-radius: 8px;
       background-color: ${backgroundColor};

@@ -15,27 +15,33 @@ import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { SnackbarContentColor } from '../@constants';
 import { ImageGallery } from './ImageGallery';
 
-export const SnackbarItem = ({ snackbar, isHidden, onRemove }: SnackbarProps) => {
-  const { width, images, customIcon, hideCloseButton, type, title, message, actionButton, stackIndex } = snackbar;
+export const SnackbarItem = (props: SnackbarProps) => {
+  const { snackbar, isHidden, stackIndex, onRemove } = props;
+  const { width, images, customIcon, hideCloseButton, type, title, message, actionButton } = snackbar;
   const { isEntering, isExiting, translateY, scale, opacity, zIndex, handleCloseClick } = useSnackbar(
     snackbar,
+    stackIndex,
     onRemove
   );
 
-  const [forceUnblur, setForceUnblur] = useState(false);
+  const [shouldBlur, setShouldBlur] = useState(isHidden);
   const [isBlurFadingOut, setIsBlurFadingOut] = useState(false);
 
   useEffect(() => {
-    const handleFirstSnackbarExiting = () => {
-      if (stackIndex === 1) {
-        setIsBlurFadingOut(true);
-        setTimeout(() => setForceUnblur(true), 200);
-      }
-    };
+    if (isHidden && !shouldBlur) {
+      setShouldBlur(true);
+      setIsBlurFadingOut(false);
+    } else if (!isHidden && shouldBlur) {
+      setIsBlurFadingOut(true);
 
-    document.addEventListener('firstSnackbarExiting', handleFirstSnackbarExiting);
-    return () => document.removeEventListener('firstSnackbarExiting', handleFirstSnackbarExiting);
-  }, [stackIndex]);
+      const timer = setTimeout(() => {
+        setShouldBlur(false);
+        setIsBlurFadingOut(false);
+      }, 200);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isHidden, shouldBlur]);
 
   const mainColor = SnackbarContentColor[type].mainColor;
   const closeIconColor = SnackbarContentColor[type].closeIconColor;
@@ -43,7 +49,6 @@ export const SnackbarItem = ({ snackbar, isHidden, onRemove }: SnackbarProps) =>
   const undoButtonTextColor = SnackbarContentColor[type].undoButtonTextColor;
   const resolvedIcon = getSnackbarIconByType(type);
 
-  const shouldBeBlurred = isHidden && !forceUnblur;
   const className = `${isEntering ? 'snackbar-entering' : ''} ${isExiting ? 'snackbar-exiting' : ''}`.trim();
 
   return (
@@ -57,7 +62,7 @@ export const SnackbarItem = ({ snackbar, isHidden, onRemove }: SnackbarProps) =>
       stackIndex={stackIndex}
       className={className}
     >
-      <SnackbarInnerContainer isHidden={shouldBeBlurred} isBlurFadingOut={isBlurFadingOut}>
+      <SnackbarInnerContainer isHidden={shouldBlur} isBlurFadingOut={isBlurFadingOut}>
         <SnackbarContentWrapper>
           {images && <ImageGallery images={images} />}
           <SnackbarTextContainer>
@@ -90,7 +95,7 @@ export const SnackbarItem = ({ snackbar, isHidden, onRemove }: SnackbarProps) =>
           )}
         </SnackbarActionsContainer>
       </SnackbarInnerContainer>
-      {shouldBeBlurred && <BlurOverlay isBlurFadingOut={isBlurFadingOut} />}
+      {shouldBlur && <BlurOverlay isBlurFadingOut={isBlurFadingOut} />}
     </SnackbarItemStyles>
   );
 };
@@ -145,7 +150,6 @@ const BlurOverlay = styled.div<{ isBlurFadingOut?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
   transition: opacity 0.2s ease-out, backdrop-filter 0.2s ease-out, -webkit-backdrop-filter 0.2s ease-out;
 
   ${({ isBlurFadingOut }) =>

@@ -1,12 +1,17 @@
 import { ReactElement } from 'react';
+import { ImageProps as MDSImageProps } from '../../../atoms/Image/@types';
 
 export type SnackbarType = 'success' | 'error' | 'warning' | 'complete';
+
+export type ImageData = MDSImageProps & {
+  src: string;
+};
 
 export type SnackbarCommonProps = {
   /*
    * 스낵바의 타입입니다. ('success' | 'error' | 'warning' | 'complete')
    */
-  type: SnackbarType;
+  type?: SnackbarType;
 
   /*
    * 스낵바의 제목입니다.
@@ -34,9 +39,10 @@ export type SnackbarCommonProps = {
   customIcon?: ReactElement;
 
   /*
-   * 이미지 list 예: enforcement listing images 등
+   * 이미지 list - 문자열 또는 ImageData 객체 배열
+   * 예: enforcement listing images 등
    */
-  images?: string[];
+  images?: (string | ImageData)[];
 
   /*
    * 스낵바 닫기 버튼을 숨길지 여부를 설정합니다.
@@ -44,9 +50,9 @@ export type SnackbarCommonProps = {
   hideCloseButton?: boolean;
 
   /*
-   * 새로운 스낵바를 가장 앞에 추가할지 여부를 설정합니다.
+   * 새로운 스낵바를 가장 뒤에 추가할지 여부를 설정합니다.
    */
-  addToFront?: boolean;
+  pushToEnd?: boolean;
 
   /*
    * 기존에 큐에 쌓여 있는 모든 스낵바를 제거할지 여부를 설정합니다.
@@ -65,7 +71,6 @@ export type SnackbarCommonProps = {
 
 export type SnackbarData = SnackbarCommonProps & {
   id: number;
-  stackIndex: number;
   type: SnackbarType;
 };
 
@@ -81,20 +86,19 @@ export type SnackbarItemStyleProps = {
 
 export type SnackbarProps = {
   snackbar: SnackbarData;
+  stackIndex: number;
   isHidden: boolean;
   onRemove: (id: number) => void;
 };
 
-export type ImageProps = {
+export type ImageProps = MDSImageProps & {
   src: string;
-  size: {
-    width: number;
-    height: number;
-  };
+  width?: string;
+  height?: string;
 };
 
 export type ImageGalleryProps = {
-  images: string[];
+  images: (string | ImageData)[];
 };
 
 export type SnackbarListener = (snackbars: SnackbarData[]) => void;

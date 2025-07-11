@@ -1,17 +1,30 @@
 import styled from '@emotion/styled';
 import { MDSImage } from '../../../atoms/Image';
 import { MDSTypography } from '../../../atoms/Typography';
-import { ImageGalleryProps, ImageProps } from '../@types';
+import { ImageGalleryProps, ImageProps, ImageData } from '../@types';
 
 const Image = (props: ImageProps) => {
-  const { src, size } = props;
-  const isValidUrl = /^(http|https):\/\/[^ "]+$/.test(src);
+  const { src, width, children, ...restProps } = props;
+  const isValidUrl = /^(http|https):\/\/[^ "]+$/.test(src as string);
 
   return isValidUrl ? (
-    <MDSImage width={`${size.width}px`} height={`${size.height}px`} iconSize="small" aspectRatio="1" src={src} />
+    <MDSImage width={width} aspectRatio="1" src={src} {...restProps}>
+      {children}
+    </MDSImage>
   ) : (
-    <MDSImage width="64px" height="64px" iconSize="small" aspectRatio="1" src="" />
+    <MDSImage width="64px" iconSize="small" aspectRatio="1" src="" />
   );
+};
+
+const normalizeImageData = (image: string | ImageData, width: string): ImageProps => {
+  if (typeof image === 'string') {
+    return { src: image, width };
+  }
+
+  return {
+    width,
+    ...image,
+  };
 };
 
 export const ImageGallery = (props: ImageGalleryProps) => {
@@ -20,13 +33,12 @@ export const ImageGallery = (props: ImageGalleryProps) => {
 
   return (
     <ImageWrapper>
-      <Image src={images[0]} size={{ width: 66, height: 66 }} />
+      <Image {...normalizeImageData(images[0], '66px')} />
       {imageCount > 1 && (
         <ImageStack>
-          <Image src={images[1]} size={{ width: 32, height: 32 }} />
+          <Image {...normalizeImageData(images[1], '32px')} />
           {imageCount > 2 && (
-            <>
-              <Image src={images[2]} size={{ width: 32, height: 32 }} />
+            <Image {...normalizeImageData(images[2], '32px')}>
               {imageCount > 3 && (
                 <ImageOverlay>
                   <MDSTypography variant="body" size="l" weight="medium" color="color/content/on_default_color">
@@ -34,7 +46,7 @@ export const ImageGallery = (props: ImageGalleryProps) => {
                   </MDSTypography>
                 </ImageOverlay>
               )}
-            </>
+            </Image>
           )}
         </ImageStack>
       )}
@@ -45,13 +57,12 @@ export const ImageGallery = (props: ImageGalleryProps) => {
 const ImageOverlay = styled.div`
   position: absolute;
   bottom: 0;
-  border-radius: 4px;
-  width: 32px;
-  height: 32px;
   display: flex;
+  width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(Aux-Oiseaux_MOOD_Ay);
+  background: rgba(0, 0, 0, 0.6);
 `;
 
 const ImageWrapper = styled.div`
@@ -60,7 +71,6 @@ const ImageWrapper = styled.div`
 
 const ImageStack = styled.div`
   display: inline-grid;
-  min-width: 32px;
   margin-left: 2px;
   gap: 2px;
 `;

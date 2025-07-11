@@ -99,7 +99,6 @@ export const SnackbarTypes: Story = {
         <MDSButton
           onClick={() =>
             MDSSnackbar({
-              type: 'complete',
               title: 'Complete',
               message: '완료 스낵바',
             })
@@ -252,8 +251,9 @@ export const MultipleSnackbars: Story = {
                 title: 'Second Snackbar',
                 message: '조금 더 길어진 ------------------------------------------------ 두 번째 스낵바입니다.',
                 duration: 5000,
+                pushToEnd: true,
               });
-            }, 300);
+            }, 500);
             setTimeout(() => {
               MDSSnackbar({
                 type: 'error',
@@ -261,15 +261,15 @@ export const MultipleSnackbars: Story = {
                 message: '다시 작아진 세 번째 스낵바입니다.',
                 duration: 5000,
               });
-            }, 600);
+            }, 1000);
             setTimeout(() => {
               MDSSnackbar({
-                type: 'complete',
                 title: 'Fourth Snackbar',
                 message: '다시 작아진 네 번째 스낵바입니다.',
                 duration: 5000,
+                pushToEnd: true,
               });
-            }, 900);
+            }, 1500);
           }}
         >
           Multiple Snackbars
@@ -299,7 +299,6 @@ export const WithImages: Story = {
       <MDSButton
         onClick={() =>
           MDSSnackbar({
-            type: 'complete',
             title: 'Images Uploaded',
             message: '이미지 list 입니다.',
             images: [

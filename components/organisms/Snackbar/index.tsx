@@ -22,7 +22,13 @@ export const SnackbarContainerV2 = () => {
   return (
     <SnackbarWrapper>
       {snackbars.map((snackbar, index) => (
-        <SnackbarItem key={snackbar.id} snackbar={snackbar} onRemove={removeSnackbar} isHidden={index !== 0} />
+        <SnackbarItem
+          key={snackbar.id}
+          snackbar={snackbar}
+          stackIndex={index}
+          onRemove={removeSnackbar}
+          isHidden={index !== 0}
+        />
       ))}
     </SnackbarWrapper>
   );

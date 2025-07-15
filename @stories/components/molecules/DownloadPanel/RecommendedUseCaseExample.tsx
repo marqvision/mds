@@ -1,15 +1,32 @@
-import { useCallback, useRef } from 'react';
-import { MDSButton, MDSDownloadPanel } from '../../../../components';
+import { useCallback, useRef, useState } from 'react';
+import styled from '@emotion/styled';
+import { MDSButton, MDSDownloadPanel, MDSTypography } from '../../../../components';
 import { useMDSDownloadPanel } from '../../../../components/molecules/DownloadPanel/@hooks';
 
+type MockProgressResult = {
+  progress: number;
+  url: string | null;
+  completed: boolean;
+};
+type MockCancelResult = {
+  reason: string;
+};
 const useMockProgressResultApi = () => {
-  const mockProgressResult = useRef({
-    progress: 0,
-    completed: false,
-  });
-  const start = () => {
-    return new Promise((resolve) => {
-      if (mockProgressResult.current.progress === 100) {
+  const mockProgressResult = useRef(new Map<string, MockProgressResult>());
+  const start = (taskId: string) => {
+    return new Promise<MockProgressResult>((resolve) => {
+      console.log('>>>>>>> start 1');
+      if (!mockProgressResult.current.has(taskId)) {
+        console.log('>>>>>>> start 2');
+        mockProgressResult.current.set(taskId, {
+          progress: 0,
+          url: null,
+          completed: false,
+        });
+      }
+
+      if (mockProgressResult.current.get(taskId)?.progress === 100) {
+        console.log('>>>>>>> start 3');
         resolve({
           progress: 100,
           url: 'done',
@@ -17,18 +34,17 @@ const useMockProgressResultApi = () => {
         });
         return;
       }
-      mockProgressResult.current.progress += 10;
-      resolve({
-        progress: mockProgressResult.current.progress,
+      console.log('>>>>>>> start 4');
+      mockProgressResult.current.set(taskId, {
+        progress: mockProgressResult.current.get(taskId)?.progress ?? 0 + 10,
         url: null,
-        completed: mockProgressResult.current.completed,
+        completed: false,
       });
     });
   };
-  const stop = () => {
-    mockProgressResult.current.completed = false;
-    mockProgressResult.current.progress = 0;
-    return Promise.resolve({});
+  const stop = (taskId: string) => {
+    mockProgressResult.current.delete(taskId);
+    return Promise.resolve({ reason: 'canceled' });
   };
   return {
     start,
@@ -36,61 +52,76 @@ const useMockProgressResultApi = () => {
   };
 };
 
-const AddExcelExportTaskComponent = () => {
-  // 사용하는 쪽의 컴포넌트에서 hook을 이용하여 task를 추가한다.
-  const { addTask } = useMDSDownloadPanel();
-
-  const pollingFn = useCallback((taskId: string, signal: AbortSignal) => Promise.resolve({}), []);
-  const removeFn = useCallback((taskId: string) => Promise.resolve({}), []);
-
-  const handleClick = () => {
-    // 실제 케이스에서는 req api 의 response로 받은 progressId
-    const taskId = new Date().getTime().toString();
-
-    addTask({
-      taskId,
-      fileName: 'test.csv',
-      fileType: 'csv',
-      taskGroupKey: 'csv-export-from-some-page',
-      pollingFn,
-      removeFn,
-    });
-  };
-
-  return (
-    <div>
-      <MDSButton variant="tint" size="medium" color="bluegray" onClick={handleClick}>
-        Export Excel
-      </MDSButton>
-    </div>
-  );
-};
+const ProgressItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+`;
 
 const AddPptExportTaskComponent = () => {
+  const [localTaskMonitor, setLocalTaskMonitor] = useState<
+    {
+      taskId: string;
+      fileName: string;
+      taskStatus: 'ready' | 'processing' | 'completed' | 'failed' | 'removed';
+      taskGroupKey: string;
+      desc?: string;
+    }[]
+  >([]);
+
   // 사용하는 쪽의 컴포넌트에서 hook을 이용하여 task를 추가한다.
   const { addTask } = useMDSDownloadPanel();
 
   const { start, stop } = useMockProgressResultApi();
 
-  const pollingFn = useCallback((taskId: string, signal: AbortSignal) => {
-    return start();
+  const pollingFn = useCallback((taskId: string) => {
+    console.log('>>>> pollingFn', taskId);
+    return start(taskId);
   }, []);
-  const removeFn = useCallback((taskId: string) => {
-    return stop();
+  const removeFn = useCallback(async (taskId: string) => {
+    console.log('>>>> removeFn', taskId);
+    const res = await stop(taskId);
+    return res as MockCancelResult;
+  }, []);
+  const onCompleted = useCallback((taskId: string, res: MockProgressResult) => {
+    console.log('>>>> onCompleted', taskId);
+    setLocalTaskMonitor((prev) =>
+      prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'completed', desc: res?.url ?? '' } : task))
+    );
+  }, []);
+  const onFailed = useCallback((taskId: string, res: MockProgressResult) => {
+    console.log('>>>> onFailed', taskId);
+    setLocalTaskMonitor((prev) =>
+      prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'failed', desc: res?.url ?? '' } : task))
+    );
+  }, []);
+  const onRemoved = useCallback((taskId: string) => {
+    console.log('>>>> onRemoved', taskId);
+    setLocalTaskMonitor((prev) =>
+      prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'removed', desc: '취소' } : task))
+    );
   }, []);
 
   const handleClick = () => {
     // 실제 케이스에서는 req api 의 response로 받은 progressId
     const taskId = new Date().getTime().toString();
 
-    addTask({
+    addTask<MockProgressResult, unknown, MockProgressResult>({
       taskId,
       fileName: 'test.ppt',
       fileType: 'ppt',
       taskGroupKey: 'ppt-export-from-some-page',
       pollingFn,
       removeFn,
+      onCompleted,
+      onRemoved,
+      onFailed,
     });
+    setLocalTaskMonitor((prev) => [
+      ...prev,
+      { taskId, fileName: 'test.ppt', taskStatus: 'ready', taskGroupKey: 'ppt-export-from-some-page', desc: '준비' },
+    ]);
   };
 
   return (
@@ -98,6 +129,60 @@ const AddPptExportTaskComponent = () => {
       <MDSButton variant="tint" size="medium" color="bluegray" onClick={handleClick}>
         Export PPT
       </MDSButton>
+      <div style={{ marginTop: '32px' }}>
+        <ProgressItem>
+          <MDSTypography variant="title" size="m">
+            진행 중인 항목
+          </MDSTypography>
+          {localTaskMonitor
+            .filter((task) => task.taskStatus === 'processing' || task.taskStatus === 'ready')
+            .map((task) => (
+              <div key={task.taskId}>
+                <MDSTypography>{task.fileName}</MDSTypography>
+                <MDSTypography>{task.desc}</MDSTypography>
+              </div>
+            ))}
+        </ProgressItem>
+        <ProgressItem>
+          <MDSTypography variant="title" size="m">
+            취소된 항목
+          </MDSTypography>
+          {localTaskMonitor
+            .filter((task) => task.taskStatus === 'removed')
+            .map((task) => (
+              <div key={task.taskId}>
+                <MDSTypography>{task.fileName}</MDSTypography>
+                <MDSTypography>{task.desc}</MDSTypography>
+              </div>
+            ))}
+        </ProgressItem>
+        <ProgressItem>
+          <MDSTypography variant="title" size="m">
+            완료된 항목
+          </MDSTypography>
+          {localTaskMonitor
+            .filter((task) => task.taskStatus === 'completed')
+            .map((task) => (
+              <div key={task.taskId}>
+                <MDSTypography>{task.fileName}</MDSTypography>
+                <MDSTypography>{task.desc}</MDSTypography>
+              </div>
+            ))}
+        </ProgressItem>
+        <ProgressItem>
+          <MDSTypography variant="title" size="m">
+            오류 발생한 항목
+          </MDSTypography>
+          {localTaskMonitor
+            .filter((task) => task.taskStatus === 'failed')
+            .map((task) => (
+              <div key={task.taskId}>
+                <MDSTypography>{task.fileName}</MDSTypography>
+                <MDSTypography>{task.desc}</MDSTypography>
+              </div>
+            ))}
+        </ProgressItem>
+      </div>
     </div>
   );
 };

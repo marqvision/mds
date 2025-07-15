@@ -41,7 +41,9 @@ export const apiTaskAtom = atom((get) => {
       taskGroupKey: task.taskGroupKey,
       pollingFn: task.pollingFn,
       pollingInterval: task.pollingInterval,
-      cancelFn: task.removeFn,
+      removeFn: task.removeFn,
+      onCompleted: task.onCompleted,
+      onFailed: task.onFailed,
     }));
 });
 
@@ -79,12 +81,21 @@ export const labelAtom = atom<string>((get) => {
 //#endregion
 
 //#region - SETTERS
-export type AddTaskParams = Pick<
-  Task,
-  'taskId' | 'fileName' | 'fileType' | 'taskGroupKey' | 'pollingFn' | 'pollingInterval' | 'removeFn'
->;
-export const addTaskAtom = atom(null, (_, set, param: AddTaskParams) => {
-  const newTask: Task = {
+export type AddTaskParams<PollingRes = unknown, CancelRes = unknown, FailedRes = unknown> = Pick<
+  Task<PollingRes, CancelRes, FailedRes>,
+  | 'taskId'
+  | 'fileName'
+  | 'fileType'
+  | 'taskGroupKey'
+  | 'pollingFn'
+  | 'removeFn'
+  | 'onCompleted'
+  | 'onFailed'
+  | 'onRemoved'
+> &
+  Partial<Pick<Task<PollingRes, CancelRes, FailedRes>, 'pollingInterval'>>;
+export const addTaskAtom = atom(null, (_, set, param: AddTaskParams<any, any, any>) => {
+  const newTask: Task<any, any, any> = {
     ...param,
     pollingInterval: param.pollingInterval ?? 1000,
     progress: 0,
@@ -99,17 +110,6 @@ export const addTaskAtom = atom(null, (_, set, param: AddTaskParams) => {
   set(_displayAtom, { isOpen: true, isFold: false });
 });
 export const updateTaskStatusAtom = atom(null, (get, set, param: Pick<Task, 'taskId' | 'progress' | 'status'>) => {
-  // const prev = get(_tasksAtom);
-  // const newMap = new Map(prev);
-  // const newTasks = prev.map((task) => {
-  //   if (task.taskId === param.taskId) {
-  //     const newTask = { ...task, progress: param.progress, status: param.status };
-  //     newMap.set(newTask.taskId, newTask);
-  //   }
-  //   return task;
-  // });
-  // set(_tasksAtom, newTasks);
-  // return newTasks;
   set(_tasksAtom, (prev) => {
     const newTasks = new Map(prev);
     const task = prev.get(param.taskId);

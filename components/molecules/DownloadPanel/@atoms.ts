@@ -2,7 +2,7 @@ import { atom, createStore } from 'jotai';
 import { DisplayStatus, DisplayTask, Task } from './@types';
 
 //#region data store
-const _displayAtom = atom<DisplayStatus>({
+const _panelDisplayStatusAtom = atom<DisplayStatus>({
   isOpen: false,
   isFold: false,
 });
@@ -11,11 +11,11 @@ const _tasksAtom = atom<Map<string, Task>>(new Map());
 
 export const panelStatusAtom = atom(
   (get) => {
-    return get(_displayAtom);
+    return get(_panelDisplayStatusAtom);
   },
   (get, set, updateFn: (prev: DisplayStatus) => DisplayStatus) => {
-    const prev = get(_displayAtom);
-    set(_displayAtom, updateFn(prev));
+    const prev = get(_panelDisplayStatusAtom);
+    set(_panelDisplayStatusAtom, updateFn(prev));
   }
 );
 
@@ -108,7 +108,7 @@ export const addTaskAtom = atom(null, (_, set, param: AddTaskParams<any, any, an
     newTasks.set(newTask.taskId, newTask);
     return newTasks;
   });
-  set(_displayAtom, { isOpen: true, isFold: false });
+  set(_panelDisplayStatusAtom, { isOpen: true, isFold: false });
 });
 export const updateTaskStatusAtom = atom(null, (get, set, param: Pick<Task, 'taskId' | 'progress' | 'status'>) => {
   set(_tasksAtom, (prev) => {
@@ -127,7 +127,7 @@ export const removeTaskAtom = atom(null, (get, set, param: Pick<Task, 'taskId'>)
   set(_tasksAtom, newTasks);
 
   if (newTasks.size === 0) {
-    set(_displayAtom, { isOpen: false, isFold: false });
+    set(_panelDisplayStatusAtom, { isOpen: false, isFold: false });
   }
 
   return newTasks;
@@ -136,7 +136,7 @@ export const removeTaskAtom = atom(null, (get, set, param: Pick<Task, 'taskId'>)
 
 // Provider로 감싸여진 영역 대응을 위한 Store
 export const downloadTaskStore = createStore();
-downloadTaskStore.sub(_displayAtom, () => {
+downloadTaskStore.sub(_panelDisplayStatusAtom, () => {
   // const current = downloadMonitorStore.get(_internalDownloadTaskAtom);
   // console.log('>>>> downloadMonitorStore', current);
 });

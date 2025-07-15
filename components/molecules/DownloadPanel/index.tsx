@@ -1,16 +1,20 @@
+import { useAtomValue } from 'jotai';
 import { MDSThemeColorPath } from '../../../types';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSTypography } from '../../atoms/Typography';
+import { MDSModal } from '../../organisms/Modal';
+import { MDSButton } from '../Button';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { MDSPlainButton } from '../PlainButton';
 import { MDSTooltip } from '../Tooltip';
+import { panelStatusAtom } from './@atoms';
 import { DisplayTask, DownloadPanelProps, Task } from './@types';
 import { Styles } from './styles';
 import { useManagePanel, useRemoveTask } from './useManagePanel';
 import { useManageTaskRunner } from './useManageTaskRunner';
 
 // storybook 에서 보여주기 위해 export
-type PanelContentProps = ReturnType<typeof useManagePanel>;
+type PanelContentProps = Pick<ReturnType<typeof useManagePanel>, 'panel' | 'tasks'>;
 export const PanelContent = ({ panel, tasks }: PanelContentProps) => {
   return (
     <>
@@ -45,7 +49,7 @@ export const PanelContent = ({ panel, tasks }: PanelContentProps) => {
 };
 
 const DownloadPanel = () => {
-  const { panel, tasks } = useManagePanel();
+  const { panel, tasks, confirm } = useManagePanel();
   useManageTaskRunner();
 
   return (
@@ -53,21 +57,21 @@ const DownloadPanel = () => {
       <Styles.Container isFold={panel.panelStatus.isFold}>
         <PanelContent panel={panel} tasks={tasks} />
       </Styles.Container>
-      {/* <MDSModal.Wrapper isOpen={showCancelConfirm}>
+      <MDSModal.Wrapper isOpen={confirm.isOpen}>
         <MDSModal.Content>
           <MDSTypography variant="body" size="m" weight="medium">
             Are you sure you want to close this window? All exports in progress will be canceled.
           </MDSTypography>
         </MDSModal.Content>
         <MDSModal.Action>
-          <MDSButton variant="border" size="medium" color="bluegray" onClick={continueExport}>
-            Continue export
+          <MDSButton variant="border" size="medium" color="bluegray" onClick={confirm.continue}>
+            Continue
           </MDSButton>
-          <MDSButton variant="fill" size="medium" color="red" onClick={closeMonitor}>
-            Cancel export
+          <MDSButton variant="fill" size="medium" color="red" onClick={confirm.terminate}>
+            Cancel
           </MDSButton>
         </MDSModal.Action>
-      </MDSModal.Wrapper> */}
+      </MDSModal.Wrapper>
     </>
   );
 };
@@ -179,5 +183,9 @@ const ProgressIndicator = ({
   );
 };
 
-export const MDSDownloadPanel = DownloadPanel;
+export const MDSDownloadPanel = () => {
+  const panelStatus = useAtomValue(panelStatusAtom);
+
+  return panelStatus.isOpen ? <DownloadPanel /> : null;
+};
 export type MDSDownloadPanelProps = DownloadPanelProps;

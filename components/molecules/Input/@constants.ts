@@ -24,7 +24,7 @@ export const theme = {
   },
   size: {
     small: {
-      height: '26px',
+      height: '28px',
       maxWidth: '200px',
       mainLabelSize: 's',
       subLabelSize: 'xs',
@@ -32,7 +32,7 @@ export const theme = {
       fontSize: '13px',
       buttonFontSize: '13px',
       paddingX: '7px',
-      paddingY: '2px',
+      paddingY: '3.25px',
       gap: '4px',
       buttonPadding: '8px',
       chipSize: 'small',

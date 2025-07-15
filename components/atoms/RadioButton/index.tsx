@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../../utils';
 import { theme as RadioButtonTheme } from './@constants';
@@ -52,7 +53,7 @@ const Svg = styled.svg<{ isShow: boolean }>`
   transition: 0.3s;
 `;
 
-export const MDSRadioButton = <Value extends string | number>(props: Props<Value>) => {
+export const MDSRadioButton = forwardRef((props, ref) => {
   const { value, color = 'blue', selectedValue, onChange, isDisabled } = props;
 
   const type = isDisabled ? 'disabled' : 'normal';
@@ -63,7 +64,7 @@ export const MDSRadioButton = <Value extends string | number>(props: Props<Value
   };
 
   return (
-    <Wrapper color={color} type={type} checked={isChecked}>
+    <Wrapper ref={ref} color={color} type={type} checked={isChecked}>
       <input type="radio" checked={isChecked} disabled={isDisabled} onChange={handleChange} />
       <Svg
         xmlns="http://www.w3.org/2000/svg"
@@ -85,4 +86,7 @@ export const MDSRadioButton = <Value extends string | number>(props: Props<Value
       </Svg>
     </Wrapper>
   );
+}) as (<Value extends string | number>(props: Props<Value> & { ref?: React.Ref<HTMLLabelElement> }) => JSX.Element) & {
+  displayName?: string;
 };
+MDSRadioButton.displayName = 'MDSRadioButton';

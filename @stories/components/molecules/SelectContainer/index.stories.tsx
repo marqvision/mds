@@ -45,6 +45,52 @@ export const DefaultPreview: StoryObj<typeof MDSSelectContainer.Wrapper> = {
   },
 };
 
+export const NoInitialSelection: StoryObj<typeof MDSSelectContainer.Wrapper> = {
+  render: function Render() {
+    const [selectedItem, setSelectedItem] = useState<ValueEnum | undefined>(undefined);
+    const [selectedItemType2, setSelectedItemType2] = useState<ValueEnum | null>(null);
+
+    const handleSelect = useCallback((value: ValueEnum) => {
+      setSelectedItem(value);
+    }, []);
+
+    const handleSelectType2 = useCallback((value: ValueEnum) => {
+      setSelectedItemType2(value);
+    }, []);
+
+    return (
+      <>
+        <div>undefined case</div>
+        <MDSSelectContainer.Wrapper value={selectedItem} orientation="horizontal" itemSizing="fit">
+          {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
+            (value) => (
+              <MDSSelectContainer.Item<ValueEnum>
+                key={value}
+                title={{ label: LABEL_MAP[value] }}
+                value={value}
+                onClick={() => handleSelect(value)}
+              />
+            )
+          )}
+        </MDSSelectContainer.Wrapper>
+        <div>null case</div>
+        <MDSSelectContainer.Wrapper value={selectedItemType2} orientation="horizontal" itemSizing="fit">
+          {[ValueEnum.Lorem, ValueEnum.Xyz123, ValueEnum.StoragePlaceholder, ValueEnum.LongNameForTesting].map(
+            (value) => (
+              <MDSSelectContainer.Item<ValueEnum>
+                key={value}
+                title={{ label: LABEL_MAP[value] }}
+                value={value}
+                onClick={() => handleSelectType2(value)}
+              />
+            )
+          )}
+        </MDSSelectContainer.Wrapper>
+      </>
+    );
+  },
+};
+
 export const VerticalOrientation: StoryObj<typeof MDSSelectContainer.Wrapper> = {
   parameters: {
     controls: {

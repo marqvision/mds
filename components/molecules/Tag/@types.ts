@@ -30,7 +30,7 @@ export type TagTheme = {
   size: Record<
     Size,
     {
-      size: Extract<MDSTypographyProps['size'], 'xs' | 'm'>;
+      size: Extract<MDSTypographyProps['size'], 'xs' | 's'>;
       icon: number;
       padding: `${Token['pddng']['v'][keyof Token['pddng']['v']]} ${Token['pddng']['h'][keyof Token['pddng']['v']]}`; //h key type 고의로 v 로 지정함 (v 와 한 쌍으로 된 h 값 사용)
       gap: Token['gap'][keyof Token['gap']];
@@ -38,6 +38,7 @@ export type TagTheme = {
       minHeight: Token['minSize'][keyof Token['minSize']];
       borderWidth: number;
       clickAreaPadding: number;
+      lineHeight?: string;
     }
   >;
 };

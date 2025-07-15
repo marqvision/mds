@@ -1,4 +1,4 @@
-import { cloneElement, Children, ReactElement, HTMLAttributes } from 'react';
+import { cloneElement, Children, ReactElement, HTMLAttributes, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { MDSIcon } from '../../atoms/Icon';
@@ -79,75 +79,83 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
   }}
 `;
 
-const Wrapper = <T extends string | string[] | number | number[]>({
-  value,
-  children,
-  variant = 'left',
-  itemSizing,
-  orientation = 'horizontal',
-}: MDSSelectContainerProps<T>) => {
-  const modifiedChildrenWithProps = Children.map(
-    children,
-    (child: ReactElement<MDSSelectContainerItemProps<UnwrapArray<T>> & HTMLAttributes<HTMLDivElement>>) => {
-      const childValueProps = child.props.value;
-      const isSelected = Array.isArray(value)
-        ? value.some((item) => item === childValueProps)
-        : childValueProps === value;
+const Wrapper = forwardRef(
+  <T extends string | string[] | number | number[] | undefined | null>(
+    props: MDSSelectContainerProps<T>,
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const { value, children, variant = 'left', itemSizing, orientation = 'horizontal' } = props;
+    const modifiedChildrenWithProps = Children.map(
+      children,
+      (child: ReactElement<MDSSelectContainerItemProps<UnwrapArray<T>> & HTMLAttributes<HTMLDivElement>>) => {
+        const childValueProps = child.props.value;
+        const isSelected = Array.isArray(value)
+          ? value.some((item) => item === childValueProps)
+          : childValueProps === value;
 
-      return cloneElement(child, {
-        isSelected,
-        orientation,
-        itemSizing,
-        isVariantCenter: variant === 'center',
-      });
-    }
-  );
+        return cloneElement(child, {
+          isSelected,
+          orientation,
+          itemSizing,
+          isVariantCenter: variant === 'center',
+        });
+      }
+    );
 
-  return <SelectContainerStyles orientation={orientation}>{modifiedChildrenWithProps}</SelectContainerStyles>;
+    return (
+      <SelectContainerStyles ref={ref} orientation={orientation}>
+        {modifiedChildrenWithProps}
+      </SelectContainerStyles>
+    );
+  }
+) as (<T extends string | string[] | number | number[] | undefined | null>(
+  props: MDSSelectContainerProps<T> & { ref?: React.Ref<HTMLDivElement> }
+) => JSX.Element) & {
+  displayName?: string;
 };
+Wrapper.displayName = 'MDSSelectContainer.Wrapper';
 
-const Item = <T extends string | number>({
-  main,
-  value,
-  title,
-  content,
-  onClick,
-  disabled,
-  isSelected,
-  orientation,
-  isVariantCenter,
-  itemSizing,
-  ...props
-}: MDSSelectContainerItemProps<T>) => {
-  return (
-    <SelectContainerItemStyles
-      onClick={() => !disabled && onClick(value)}
-      disabled={disabled}
-      isSelected={isSelected}
-      isVariantCenter={isVariantCenter}
-      orientation={orientation}
-      itemSizing={itemSizing}
-      {...props}
-    >
-      {isSelected && (
-        <CheckedIconWrapperStyles className="checked-icon-wrapper">
-          <MDSIcon.Check variant="fill" size={16} />
-        </CheckedIconWrapperStyles>
-      )}
-      {!isVariantCenter && main?.icon && <MainIconWrapperStyles>{main.icon}</MainIconWrapperStyles>}
-      <SelectContainerItemContentStyles>
-        <SelectContainerTitleStyles>
-          {title.icon}
-          <MDSTypography variant="title" size="s" weight="semibold" color={title.color}>
-            {title.label}
-          </MDSTypography>
-          {title.tag}
-        </SelectContainerTitleStyles>
-        {content}
-      </SelectContainerItemContentStyles>
-    </SelectContainerItemStyles>
-  );
+const Item = forwardRef(
+  (
+    { main, value, title, content, onClick, disabled, isSelected, orientation, isVariantCenter, itemSizing, ...props },
+    ref
+  ) => {
+    return (
+      <SelectContainerItemStyles
+        onClick={() => !disabled && onClick(value)}
+        disabled={disabled}
+        isSelected={isSelected}
+        isVariantCenter={isVariantCenter}
+        orientation={orientation}
+        itemSizing={itemSizing}
+        {...props}
+        ref={ref}
+      >
+        {isSelected && (
+          <CheckedIconWrapperStyles className="checked-icon-wrapper">
+            <MDSIcon.Check variant="fill" size={16} />
+          </CheckedIconWrapperStyles>
+        )}
+        {!isVariantCenter && main?.icon && <MainIconWrapperStyles>{main.icon}</MainIconWrapperStyles>}
+        <SelectContainerItemContentStyles>
+          <SelectContainerTitleStyles>
+            {title.icon}
+            <MDSTypography variant="title" size="s" weight="semibold" color={title.color}>
+              {title.label}
+            </MDSTypography>
+            {title.tag}
+          </SelectContainerTitleStyles>
+          {content}
+        </SelectContainerItemContentStyles>
+      </SelectContainerItemStyles>
+    );
+  }
+) as (<T extends string | number>(
+  props: MDSSelectContainerItemProps<T> & { ref?: React.Ref<HTMLDivElement> }
+) => JSX.Element) & {
+  displayName?: string;
 };
+Item.displayName = 'MDSSelectContainer.Item';
 
 export const MDSSelectContainer = {
   Wrapper,

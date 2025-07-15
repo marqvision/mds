@@ -1,4 +1,4 @@
-import React, { isValidElement } from 'react';
+import React, { forwardRef, isValidElement } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
@@ -75,7 +75,25 @@ const Button = styled.button<StyledButtonProps>`
   }}
 `;
 
-export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'> | ButtonProps<'icon'>>) => {
+const TagGap = styled.span<{ size: StyledButtonProps['size'] }>`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme, size }) => {
+    const sizeStyle = getSize(theme)[size];
+    return sizeStyle.tagLeftMargin;
+  }}}
+`;
+
+const TagWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 2px;
+`;
+
+export const MDSButton = forwardRef<
+  HTMLButtonElement,
+  React.PropsWithChildren<ButtonProps<'composite'> | ButtonProps<'icon'>>
+>((props, ref) => {
   const {
     children: label,
     size = 'medium',
@@ -119,7 +137,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
     width,
     as: onClick || props.type ? 'button' : 'div',
     isLoading: (isLoading && icon) || isLoading === 'hideLabel' ? 'hideLabel' : isLoading,
-    isClickable: !!(!isLoading && (onClick || props.type)),
+    isClickable: !!(!isLoading && (onClick || props.type) && !isDisabled),
     onClick: handleClick,
     disabled: isDisabled || isCompleted,
     isDisabled,
@@ -130,7 +148,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
 
   if (icon) {
     return (
-      <Button isIconButton {...commonProps}>
+      <Button isIconButton {...commonProps} ref={ref}>
         {isLoading && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
 
         {icon && <Icon size={size} icon={icon} />}
@@ -141,7 +159,7 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
   }
 
   return (
-    <Button {...commonProps}>
+    <Button {...commonProps} ref={ref}>
       {isLoading === 'hideLabel' && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
 
       {isLoading === true ? (
@@ -150,29 +168,32 @@ export const MDSButton = (props: React.PropsWithChildren<ButtonProps<'composite'
         startIcon && <Icon size={size} icon={startIcon} />
       )}
 
-      {isValidElement(label)
-        ? label
-        : label && (
-            <MDSTypography
-              variant="body"
-              weight="medium"
-              size={sizeStyle.size}
-              color="inherit"
-              lineClamp={1}
-              wordBreak="break-all"
-            >
-              {label}
-            </MDSTypography>
-          )}
+      <TagGap size={commonProps.size}>
+        {isValidElement(label)
+          ? label
+          : label && (
+              <MDSTypography
+                variant="body"
+                weight="medium"
+                size={sizeStyle.size}
+                color="inherit"
+                lineClamp={1}
+                wordBreak="break-all"
+              >
+                {label}
+              </MDSTypography>
+            )}
 
-      {Array.isArray(tags) ? tags.map((tag) => tag) : tags}
+        {tags && <TagWrapper>{Array.isArray(tags) ? tags.map((tag) => tag) : tags}</TagWrapper>}
+      </TagGap>
 
       {endIcon && <Icon size={size} icon={endIcon} />}
 
       {isDividerVisible && <Divider variant={variant} color={color} size={size} isDisabled={isDisabled} />}
     </Button>
   );
-};
+});
+MDSButton.displayName = 'MDSButton';
 
 /**
  * @deprecated

@@ -27,7 +27,7 @@ export type Task<PollingRes = unknown, CancelRes = unknown, FailedRes = unknown>
 
 export type DisplayTask = Pick<
   Task,
-  'taskId' | 'fileName' | 'fileType' | 'progress' | 'status' | 'taskGroupKey' | 'removeFn'
+  'taskId' | 'fileName' | 'fileType' | 'progress' | 'status' | 'taskGroupKey' | 'removeFn' | 'onRemoved'
 >;
 
 export type DownloadPanelProps = {

@@ -37,6 +37,7 @@ export const useRemoveTask = () => {
         removeTask({ taskId: task.taskId });
       }
     }
+    task.onRemoved?.(task.taskId, null);
   };
 
   return {

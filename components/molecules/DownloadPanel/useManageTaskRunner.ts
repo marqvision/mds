@@ -14,30 +14,33 @@ export const useManageTaskRunner = () => {
     () =>
       apiQueue.map((task) => ({
         queryKey: ['mds-download-panel', task.taskGroupKey, task.taskId],
-        queryFn: async ({ signal }: { signal: AbortSignal }) => {
+        queryFn: async ({ signal }: { signal?: AbortSignal }) => {
           try {
             const res = await task.pollingFn(task.taskId, signal);
             return res as any;
           } catch (error) {
-            if (signal.aborted) {
+            if (signal?.aborted) {
               updateTaskStatus({
                 taskId: task.taskId,
                 status: 'removed',
               });
-              await task.cancelFn(task.taskId);
+              await task.removeFn(task.taskId);
+            } else {
+              task.onFailed?.(task.taskId, error);
             }
             throw error;
           }
         },
         refetchInterval: (data: any, query: Query) => {
+          // note-@jamie: queryFn 이 실행되기 전에 refetchInterval가 먼저 한번 실행된다
+
           if (query.state.error) {
             updateTaskStatus({
               taskId: task.taskId,
               status: 'failed',
             });
             return false;
-          }
-          if (data) {
+          } else if (data) {
             if (data.completed && data.url) {
               const [_, progressId] = query.queryKey as [string, string];
 
@@ -51,7 +54,8 @@ export const useManageTaskRunner = () => {
                 remainCount: stableIdsInProgressState.current.remainCount - 1,
               };
 
-              downloadFile(data.url, task.fileName);
+              task.onCompleted?.(task.taskId, data);
+              
               updateTaskStatus({
                 taskId: task.taskId,
                 status: 'completed',
@@ -66,8 +70,12 @@ export const useManageTaskRunner = () => {
                 progress: data.progress,
               });
             }
+            return task.pollingInterval;
           }
           return task.pollingInterval;
+        },
+        onError: (error: any) => {
+          task.onFailed?.(task.taskId, error);
         },
         staleTime: Infinity, // 데이터가 'stale'해지지 않도록 설정하여 불필요한 즉시 refetch 방지
       })),
@@ -75,7 +83,7 @@ export const useManageTaskRunner = () => {
   );
 
   useQueries({
-    queries: queries as any,
+    queries,
   });
 
   const tasks = useAtomValue(displayTasksAtom);
@@ -97,14 +105,4 @@ export const useManageTaskRunner = () => {
       remainCount: inProgress.length,
     };
   }, [tasks]);
-};
-
-
-const downloadFile = (url: string, fileName: string) => {
-  const a = document.createElement('a');
-  if (fileName) {
-    a.download = fileName;
-  }
-  a.href = url;
-  a.click();
 };

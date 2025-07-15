@@ -11,13 +11,12 @@ type MockProgressResult = {
 type MockCancelResult = {
   reason: string;
 };
+const STEP = 10;
 const useMockProgressResultApi = () => {
   const mockProgressResult = useRef(new Map<string, MockProgressResult>());
-  const start = (taskId: string) => {
+  const startApi = (taskId: string) => {
     return new Promise<MockProgressResult>((resolve) => {
-      console.log('>>>>>>> start 1');
       if (!mockProgressResult.current.has(taskId)) {
-        console.log('>>>>>>> start 2');
         mockProgressResult.current.set(taskId, {
           progress: 0,
           url: null,
@@ -26,7 +25,6 @@ const useMockProgressResultApi = () => {
       }
 
       if (mockProgressResult.current.get(taskId)?.progress === 100) {
-        console.log('>>>>>>> start 3');
         resolve({
           progress: 100,
           url: 'done',
@@ -34,21 +32,23 @@ const useMockProgressResultApi = () => {
         });
         return;
       }
-      console.log('>>>>>>> start 4');
-      mockProgressResult.current.set(taskId, {
-        progress: mockProgressResult.current.get(taskId)?.progress ?? 0 + 10,
+
+      const nextProgress = {
+        progress: (mockProgressResult.current.get(taskId)?.progress ?? 0) + STEP,
         url: null,
         completed: false,
-      });
+      };
+      mockProgressResult.current.set(taskId, nextProgress);
+      resolve(nextProgress);
     });
   };
-  const stop = (taskId: string) => {
+  const stopApi = (taskId: string) => {
     mockProgressResult.current.delete(taskId);
     return Promise.resolve({ reason: 'canceled' });
   };
   return {
-    start,
-    stop,
+    startApi,
+    stopApi,
   };
 };
 
@@ -72,17 +72,13 @@ const AddPptExportTaskComponent = () => {
 
   // 사용하는 쪽의 컴포넌트에서 hook을 이용하여 task를 추가한다.
   const { addTask } = useMDSDownloadPanel();
-
-  const { start, stop } = useMockProgressResultApi();
+  const { startApi, stopApi } = useMockProgressResultApi();
 
   const pollingFn = useCallback((taskId: string) => {
-    console.log('>>>> pollingFn', taskId);
-    return start(taskId);
+    return startApi(taskId);
   }, []);
   const removeFn = useCallback(async (taskId: string) => {
-    console.log('>>>> removeFn', taskId);
-    const res = await stop(taskId);
-    return res as MockCancelResult;
+    return await stopApi(taskId);
   }, []);
   const onCompleted = useCallback((taskId: string, res: MockProgressResult) => {
     console.log('>>>> onCompleted', taskId);
@@ -96,8 +92,8 @@ const AddPptExportTaskComponent = () => {
       prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'failed', desc: res?.url ?? '' } : task))
     );
   }, []);
-  const onRemoved = useCallback((taskId: string) => {
-    console.log('>>>> onRemoved', taskId);
+  const onRemoved = useCallback((taskId: string, res: MockCancelResult) => {
+    console.log('>>>> onRemoved', taskId, res);
     setLocalTaskMonitor((prev) =>
       prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'removed', desc: '취소' } : task))
     );
@@ -107,7 +103,7 @@ const AddPptExportTaskComponent = () => {
     // 실제 케이스에서는 req api 의 response로 받은 progressId
     const taskId = new Date().getTime().toString();
 
-    addTask<MockProgressResult, unknown, MockProgressResult>({
+    addTask<MockProgressResult, MockCancelResult, MockProgressResult>({
       taskId,
       fileName: 'test.ppt',
       fileType: 'ppt',

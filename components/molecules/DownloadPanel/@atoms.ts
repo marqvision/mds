@@ -29,6 +29,7 @@ export const displayTasksAtom = atom<DisplayTask[]>((get) => {
     status: task.status,
     taskGroupKey: task.taskGroupKey,
     removeFn: task.removeFn,
+    onRemoved: task.onRemoved,
   }));
 });
 

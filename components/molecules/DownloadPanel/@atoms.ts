@@ -9,6 +9,7 @@ const _panelDisplayStatusAtom = atom<DisplayStatus>({
 const _tasksAtom = atom<Map<TaskId, TaskDescription>>(new Map());
 //#endregion
 
+//#region - GETTERS
 export const panelStatusAtom = atom(
   (get) => {
     return get(_panelDisplayStatusAtom);
@@ -19,7 +20,6 @@ export const panelStatusAtom = atom(
   }
 );
 
-//#region - GETTERS
 export const displayTasksAtom = atom<DisplayTask[]>((get) => {
   return Array.from(get(_tasksAtom).values()).map((task) => ({
     taskId: task.taskId,
@@ -47,6 +47,14 @@ export const apiTaskAtom = atom((get) => {
       onCompleted: task.onCompleted,
       onFailed: task.onFailed,
     }));
+});
+
+export const tasksStatusAtom = atom((get) => {
+  return Array.from(get(_tasksAtom).values()).map((task) => ({
+    taskId: task.taskId,
+    status: task.status,
+    groupKey: task.taskGroupKey,
+  }));
 });
 
 export const labelAtom = atom<string>((get) => {

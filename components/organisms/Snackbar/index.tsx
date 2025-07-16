@@ -34,3 +34,4 @@ export const MDSSnackbarContainer = () => {
 };
 
 export const MDSSnackbar = (options: SnackbarCommonProps) => snackbarManager.addSnackbar(options);
+export const dismissToast = () => snackbarManager.clearAll();

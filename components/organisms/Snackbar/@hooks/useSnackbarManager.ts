@@ -6,7 +6,6 @@ import { calculateSnackbarStackProperties } from '../@utils';
 const createSnackbarManager = () => {
   const listeners: Set<SnackbarListener> = new Set();
   let snackbars: SnackbarData[] = [];
-  let isDismissingAll = false;
 
   const emit = () => {
     listeners.forEach((listener) => listener([...snackbars]));
@@ -61,14 +60,11 @@ const createSnackbarManager = () => {
   const clearAll = () => {
     if (snackbars.length === 0) return;
 
-    isDismissingAll = true;
-
     const event = new CustomEvent('dismissAllSnackbars');
     document.dispatchEvent(event);
 
     setTimeout(() => {
       snackbars = [];
-      isDismissingAll = false;
       emit();
     }, SNACKBAR_TIMEOUTS.EXIT_ANIMATION_DURATION);
   };
@@ -84,23 +80,13 @@ const createSnackbarManager = () => {
     return snackbars;
   };
 
-  const getSnackbars = () => {
-    return [...snackbars];
-  };
-
-  const isFirstSnackbarExiting = () => {
-    return false;
-  };
-
   return {
     clearAll,
     subscribe,
     getSnapshot,
     addSnackbar,
-    getSnackbars,
     removeSnackbar,
     setFirstSnackbarExiting,
-    isFirstSnackbarExiting,
   };
 };
 
@@ -109,28 +95,13 @@ export const snackbarManager = createSnackbarManager();
 export const useSnackbarManager = () => {
   const snackbars = useSyncExternalStore(snackbarManager.subscribe, snackbarManager.getSnapshot);
 
-  const addSnackbar = useCallback((options: SnackbarCommonProps) => {
-    return snackbarManager.addSnackbar(options);
-  }, []);
-
   const removeSnackbar = useCallback((id: number) => {
     snackbarManager.removeSnackbar(id);
   }, []);
 
-  const clearAllSnackbars = useCallback(() => {
-    snackbarManager.clearAll();
-  }, []);
-
-  const isFirstSnackbarExiting = useCallback(() => {
-    return snackbarManager.isFirstSnackbarExiting();
-  }, []);
-
   return {
     snackbars,
-    addSnackbar,
     removeSnackbar,
-    clearAllSnackbars,
-    isFirstSnackbarExiting,
   };
 };
 

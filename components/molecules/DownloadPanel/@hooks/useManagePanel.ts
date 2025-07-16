@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { panelStatusAtom, labelAtom, displayTasksAtom, removeTaskAtom } from './@atoms';
-import { DisplayTask } from './@types';
+import { panelStatusAtom, labelAtom, displayTasksAtom, removeTaskAtom } from '../@atoms';
+import { DisplayTask } from '../@types';
 
 export const useManagePanel = () => {
   const [panelStatus, setPanelStatus] = useAtom(panelStatusAtom);

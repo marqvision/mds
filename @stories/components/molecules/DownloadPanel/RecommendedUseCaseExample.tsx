@@ -11,10 +11,10 @@ type MockProgressResult = {
 type MockCancelResult = {
   reason: string;
 };
-const STEP = 10;
+const STEP = 1;
 const useMockProgressResultApi = () => {
-  const mockProgressResult = useRef(new Map<string, MockProgressResult>());
-  const startApi = (taskId: string) => {
+  const mockProgressResult = useRef(new Map<number, MockProgressResult>());
+  const startApi = (taskId: number) => {
     return new Promise<MockProgressResult>((resolve) => {
       if (!mockProgressResult.current.has(taskId)) {
         mockProgressResult.current.set(taskId, {
@@ -42,7 +42,7 @@ const useMockProgressResultApi = () => {
       resolve(nextProgress);
     });
   };
-  const stopApi = (taskId: string) => {
+  const stopApi = (taskId: number) => {
     mockProgressResult.current.delete(taskId);
     return Promise.resolve({ reason: 'canceled' });
   };
@@ -62,7 +62,7 @@ const ProgressItem = styled.div`
 const AddPptExportTaskComponent = () => {
   const [localTaskMonitor, setLocalTaskMonitor] = useState<
     {
-      taskId: string;
+      taskId: number;
       fileName: string;
       taskStatus: 'ready' | 'processing' | 'completed' | 'failed' | 'removed';
       taskGroupKey: string;
@@ -74,26 +74,26 @@ const AddPptExportTaskComponent = () => {
   const { addTask } = useMDSDownloadPanel();
   const { startApi, stopApi } = useMockProgressResultApi();
 
-  const pollingFn = useCallback((taskId: string) => {
+  const pollingFn = useCallback((taskId: number) => {
     return startApi(taskId);
   }, []);
-  const removeFn = useCallback(async (taskId: string) => {
+  const removeFn = useCallback(async (taskId: number) => {
     return await stopApi(taskId);
   }, []);
-  const onCompleted = useCallback((taskId: string, res: MockProgressResult) => {
-    console.log('>>>> onCompleted', taskId);
+  const onCompleted = useCallback((taskId: number, res: MockProgressResult) => {
+    console.log('>>>> onComplete callback', taskId);
     setLocalTaskMonitor((prev) =>
       prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'completed', desc: res?.url ?? '' } : task))
     );
   }, []);
-  const onFailed = useCallback((taskId: string, res: MockProgressResult) => {
-    console.log('>>>> onFailed', taskId);
+  const onFailed = useCallback((taskId: number, res: MockProgressResult) => {
+    console.log('>>>> onFailed callback', taskId);
     setLocalTaskMonitor((prev) =>
       prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'failed', desc: res?.url ?? '' } : task))
     );
   }, []);
-  const onRemoved = useCallback((taskId: string, res: MockCancelResult) => {
-    console.log('>>>> onRemoved', taskId, res);
+  const onRemoved = useCallback((taskId: number, res: MockCancelResult) => {
+    console.log('>>>> onRemoved callback', taskId, res);
     setLocalTaskMonitor((prev) =>
       prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'removed', desc: '취소' } : task))
     );
@@ -101,7 +101,7 @@ const AddPptExportTaskComponent = () => {
 
   const handleClick = () => {
     // 실제 케이스에서는 req api 의 response로 받은 progressId
-    const taskId = new Date().getTime().toString();
+    const taskId = new Date().getTime()
 
     addTask<MockProgressResult, MockCancelResult, MockProgressResult>({
       taskId,

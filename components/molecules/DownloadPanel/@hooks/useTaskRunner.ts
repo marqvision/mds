@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { Query, useQueries, useQueryClient } from '@tanstack/react-query';
-import { apiTaskAtom, displayTasksAtom, updateTaskStatusAtom } from './@atoms';
-import { TaskId } from './@types';
+import { apiTaskAtom, displayTasksAtom, updateTaskStatusAtom } from '../@atoms';
+import { TaskId } from '../@types';
 
-export const useManageTaskRunner = () => {
+export const useTaskRunner = () => {
   const apiQueue = useAtomValue(apiTaskAtom);
   const updateTaskStatus = useSetAtom(updateTaskStatusAtom);
 
@@ -28,6 +28,7 @@ export const useManageTaskRunner = () => {
             } else {
               task.onFailed?.(task.taskId, error);
             }
+
             throw error;
           }
         },
@@ -35,6 +36,7 @@ export const useManageTaskRunner = () => {
           // note-@jamie: queryFn 이 실행되기 전에 refetchInterval가 먼저 한번 실행된다
 
           if (query.state.error) {
+            console.log('>>>> query.state.error', query, query.state, query.state.error);
             updateTaskStatus({
               taskId: task.taskId,
               status: 'failed',
@@ -42,7 +44,7 @@ export const useManageTaskRunner = () => {
             return false;
           } else if (data) {
             if (data.completed && data.url) {
-              const [_, progressId] = query.queryKey as [string, string];
+              const [_, progressId] = query.queryKey as [string, TaskId];
 
               if (stableIdsInProgressState.current.completed.includes(progressId)) {
                 // 혹시모를 재호출 방지
@@ -55,7 +57,7 @@ export const useManageTaskRunner = () => {
               };
 
               task.onCompleted?.(task.taskId, data);
-              
+
               updateTaskStatus({
                 taskId: task.taskId,
                 status: 'completed',

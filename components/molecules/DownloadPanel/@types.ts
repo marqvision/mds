@@ -1,4 +1,4 @@
-export type TaskId = string; // progress를 추적하기 위한 task별 고유 아이디
+export type TaskId = number; // progress를 추적하기 위한 task별 고유 아이디
 
 export type DisplayStatus = {
   isOpen: boolean;
@@ -7,15 +7,17 @@ export type DisplayStatus = {
 
 type TaskFileType = 'csv' | 'pdf' | 'ppt' | 'zip';
 type TaskStatus = 'ready' | 'processing' | 'completed' | 'failed' | 'removed';
-export type Task<PollingRes = unknown, CancelRes = unknown, FailedRes = unknown> = {
+export type Task = {
   taskId: TaskId;
   fileName: string;
   fileType: TaskFileType;
-
   taskGroupKey: string;
-  pollingFn: (taskId: string, signal?: AbortSignal) => Promise<PollingRes>; // todo-@jamie: 요청 param type도 제네릭 타입 처리하기
+};
+
+export type TaskDescription<PollingRes = unknown, CancelRes = unknown, FailedRes = unknown> = Task & {
+  pollingFn: (taskId: TaskId, signal?: AbortSignal) => Promise<PollingRes>;
   pollingInterval: number; // 1000ms 기본값
-  removeFn: (taskId: string) => Promise<CancelRes>; // todo-@jamie: 요청 param type도 제네릭 타입 처리하기
+  removeFn: (taskId: TaskId) => Promise<CancelRes>;
 
   onCompleted?: (taskId: TaskId, res: PollingRes) => void;
   onRemoved?: (taskId: TaskId, res: CancelRes) => void;
@@ -26,10 +28,24 @@ export type Task<PollingRes = unknown, CancelRes = unknown, FailedRes = unknown>
 };
 
 export type DisplayTask = Pick<
-  Task,
+  TaskDescription,
   'taskId' | 'fileName' | 'fileType' | 'progress' | 'status' | 'taskGroupKey' | 'removeFn' | 'onRemoved'
 >;
 
 export type DownloadPanelProps = {
-  displayQueue: Task[];
+  tasks: TaskDescription[];
 };
+
+export type NewTaskParams<PollingRes = unknown, CancelRes = unknown, FailedRes = unknown> = Pick<
+  TaskDescription<PollingRes, CancelRes, FailedRes>,
+  | 'taskId'
+  | 'fileName'
+  | 'fileType'
+  | 'taskGroupKey'
+  | 'pollingFn'
+  | 'removeFn'
+  | 'onCompleted'
+  | 'onFailed'
+  | 'onRemoved'
+> &
+  Partial<Pick<TaskDescription<PollingRes, CancelRes, FailedRes>, 'pollingInterval'>>;

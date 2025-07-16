@@ -1,12 +1,12 @@
 import { atom, createStore } from 'jotai';
-import { DisplayStatus, DisplayTask, Task } from './@types';
+import { DisplayStatus, DisplayTask, TaskDescription, TaskId } from './@types';
 
 //#region data store
 const _panelDisplayStatusAtom = atom<DisplayStatus>({
   isOpen: false,
   isFold: false,
 });
-const _tasksAtom = atom<Map<string, Task>>(new Map());
+const _tasksAtom = atom<Map<TaskId, TaskDescription>>(new Map());
 //#endregion
 
 export const panelStatusAtom = atom(
@@ -82,45 +82,29 @@ export const labelAtom = atom<string>((get) => {
 //#endregion
 
 //#region - SETTERS
-export type AddTaskParams<PollingRes = unknown, CancelRes = unknown, FailedRes = unknown> = Pick<
-  Task<PollingRes, CancelRes, FailedRes>,
-  | 'taskId'
-  | 'fileName'
-  | 'fileType'
-  | 'taskGroupKey'
-  | 'pollingFn'
-  | 'removeFn'
-  | 'onCompleted'
-  | 'onFailed'
-  | 'onRemoved'
-> &
-  Partial<Pick<Task<PollingRes, CancelRes, FailedRes>, 'pollingInterval'>>;
-export const addTaskAtom = atom(null, (_, set, param: AddTaskParams<any, any, any>) => {
-  const newTask: Task<any, any, any> = {
-    ...param,
-    pollingInterval: param.pollingInterval ?? 1000,
-    progress: 0,
-    status: 'ready',
-  };
 
+export const addTaskAtom = atom(null, (_, set, param: TaskDescription<any, any, any>) => {
   set(_tasksAtom, (prev) => {
     const newTasks = new Map(prev);
-    newTasks.set(newTask.taskId, newTask);
+    newTasks.set(param.taskId, param);
     return newTasks;
   });
   set(_panelDisplayStatusAtom, { isOpen: true, isFold: false });
 });
-export const updateTaskStatusAtom = atom(null, (get, set, param: Pick<Task, 'taskId' | 'progress' | 'status'>) => {
-  set(_tasksAtom, (prev) => {
-    const newTasks = new Map(prev);
-    const task = prev.get(param.taskId);
-    if (task) {
-      newTasks.set(param.taskId, { ...task, status: param.status, progress: param.progress ?? task.progress });
-    }
-    return newTasks;
-  });
-});
-export const removeTaskAtom = atom(null, (get, set, param: Pick<Task, 'taskId'>) => {
+export const updateTaskStatusAtom = atom(
+  null,
+  (get, set, param: Pick<TaskDescription, 'taskId' | 'progress' | 'status'>) => {
+    set(_tasksAtom, (prev) => {
+      const newTasks = new Map(prev);
+      const task = prev.get(param.taskId);
+      if (task) {
+        newTasks.set(param.taskId, { ...task, status: param.status, progress: param.progress ?? task.progress });
+      }
+      return newTasks;
+    });
+  }
+);
+export const removeTaskAtom = atom(null, (get, set, param: Pick<TaskDescription, 'taskId'>) => {
   const prev = get(_tasksAtom);
   const newTasks = new Map(prev);
   newTasks.delete(param.taskId);
@@ -135,16 +119,7 @@ export const removeTaskAtom = atom(null, (get, set, param: Pick<Task, 'taskId'>)
 //#endregion
 
 // Provider로 감싸여진 영역 대응을 위한 Store
-export const downloadTaskStore = createStore();
-downloadTaskStore.sub(_panelDisplayStatusAtom, () => {
-  // const current = downloadMonitorStore.get(_internalDownloadTaskAtom);
-  // console.log('>>>> downloadMonitorStore', current);
-});
-downloadTaskStore.sub(_tasksAtom, () => {
-  // const current = downloadMonitorStore.get(_internalDownloadTaskAtom);
-  // console.log('>>>> downloadMonitorStore', current);
-});
-downloadTaskStore.sub(apiTaskAtom, () => {
-  // const current = downloadMonitorStore.get(_internalDownloadTaskAtom);
-  // console.log('>>>> downloadMonitorStore', current);
-});
+export const mdsDownloadPanelTaskStore = createStore();
+mdsDownloadPanelTaskStore.sub(_panelDisplayStatusAtom, () => {});
+mdsDownloadPanelTaskStore.sub(_tasksAtom, () => {});
+mdsDownloadPanelTaskStore.sub(apiTaskAtom, () => {});

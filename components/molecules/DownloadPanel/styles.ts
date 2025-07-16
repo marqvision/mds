@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Task } from './@types';
+import { TaskDescription } from './@types';
 
 const Z_INDEX_TOP_MOST = 1300 - 1; // note-@jamie: MDSTooltip보다 1 작은 zIndex
 const Container = styled.div<{ isFold: boolean }>`
@@ -49,7 +49,7 @@ const FoldIconBox = styled.div<{ isFold: boolean }>`
   transform: ${({ isFold }) => (isFold ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;
 
-const ProgressIndicatorBox = styled.div<{ status: Task['status'] }>`
+const ProgressIndicatorBox = styled.div<{ status: TaskDescription['status'] }>`
   .progress-indicator-default {
     display: block;
   }

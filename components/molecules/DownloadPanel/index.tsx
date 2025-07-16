@@ -8,10 +8,10 @@ import { MDSLoadingIndicator } from '../LoadingIndicator';
 import { MDSPlainButton } from '../PlainButton';
 import { MDSTooltip } from '../Tooltip';
 import { panelStatusAtom } from './@atoms';
-import { DisplayTask, DownloadPanelProps, Task } from './@types';
+import { DisplayTask, TaskDescription } from './@types';
 import { Styles } from './styles';
-import { useManagePanel, useRemoveTask } from './useManagePanel';
-import { useManageTaskRunner } from './useManageTaskRunner';
+import { useManagePanel, useRemoveTask } from './@hooks/useManagePanel';
+import { useTaskRunner } from './@hooks/useTaskRunner';
 
 // storybook 에서 보여주기 위해 export
 type PanelContentProps = Pick<ReturnType<typeof useManagePanel>, 'panel' | 'tasks'>;
@@ -50,7 +50,7 @@ export const PanelContent = ({ panel, tasks }: PanelContentProps) => {
 
 const DownloadPanel = () => {
   const { panel, tasks, confirm } = useManagePanel();
-  useManageTaskRunner();
+  useTaskRunner();
 
   return (
     <>
@@ -91,7 +91,7 @@ const READY_STATUS_COLOR = 'color/content/neutral/default/disabled';
 const FAILED_STATUS_COLOR = 'color/content/critical/default/normal';
 const COMPLETED_STATUS_COLOR = 'color/content/success/default/normal';
 // todo-@jamie: shared의 ExtensionIcon 컴포넌트를 mds v2로 전한하면 ExtensionIcon로 교체하기
-const FileIcon = ({ status, fileType }: { status: Task['status']; fileType: Task['fileType'] }) => {
+const FileIcon = ({ status, fileType }: { status: TaskDescription['status']; fileType: TaskDescription['fileType'] }) => {
   switch (fileType) {
     case 'csv':
       return (
@@ -128,7 +128,7 @@ const FileIcon = ({ status, fileType }: { status: Task['status']; fileType: Task
       return null;
   }
 };
-const FileName = ({ status, fileName }: { status: Task['status']; fileName: Task['fileName'] }) => {
+const FileName = ({ status, fileName }: { status: TaskDescription['status']; fileName: TaskDescription['fileName'] }) => {
   const color: MDSThemeColorPath = status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal';
   return fileName.length > 40 ? (
     <MDSTooltip title={fileName} width="100%" size="small" style={{ marginBottom: 4 }}>
@@ -154,7 +154,7 @@ const ProgressIndicator = ({
   progress,
   onCancel,
 }: {
-  status: Task['status'];
+  status: TaskDescription['status'];
   progress?: number;
   onCancel: () => void;
 }) => {
@@ -183,9 +183,15 @@ const ProgressIndicator = ({
   );
 };
 
+
+//#region EXPORT MODULES
 export const MDSDownloadPanel = () => {
   const panelStatus = useAtomValue(panelStatusAtom);
 
   return panelStatus.isOpen ? <DownloadPanel /> : null;
 };
-export type MDSDownloadPanelProps = DownloadPanelProps;
+export { useMDSDownloadPanel } from './@hooks';
+export type { Task as MDSDownloadPanelTask } from './@types';
+// jotai provider 내부에서 쓰이는 컴포넌트를 지원하기위한 jotai store
+export { mdsDownloadPanelTaskStore } from './@atoms';
+//#endregion

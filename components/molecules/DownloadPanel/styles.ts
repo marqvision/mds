@@ -33,7 +33,7 @@ const Title = styled.div`
 const Content = styled.div<{ isFold: boolean }>`
   padding: 0 20px;
   overflow: auto;
-  max-height: 460px;
+  max-height: 428px;
 `;
 const Item = styled.div`
   padding: 12px 8px 12px 0;

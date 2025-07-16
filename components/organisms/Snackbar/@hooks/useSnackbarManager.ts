@@ -6,6 +6,7 @@ import { calculateSnackbarStackProperties } from '../@utils';
 const createSnackbarManager = () => {
   const listeners: Set<SnackbarListener> = new Set();
   let snackbars: SnackbarData[] = [];
+  let isDismissingAll = false;
 
   const emit = () => {
     listeners.forEach((listener) => listener([...snackbars]));
@@ -58,8 +59,18 @@ const createSnackbarManager = () => {
   };
 
   const clearAll = () => {
-    snackbars = [];
-    emit();
+    if (snackbars.length === 0) return;
+
+    isDismissingAll = true;
+
+    const event = new CustomEvent('dismissAllSnackbars');
+    document.dispatchEvent(event);
+
+    setTimeout(() => {
+      snackbars = [];
+      isDismissingAll = false;
+      emit();
+    }, SNACKBAR_TIMEOUTS.EXIT_ANIMATION_DURATION);
   };
 
   const subscribe = (listener: SnackbarListener) => {
@@ -126,6 +137,7 @@ export const useSnackbarManager = () => {
 export const useSnackbar = (snackbar: SnackbarData, stackIndex: number, onRemove: (id: number) => void) => {
   const [isEntering, setIsEntering] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
+  const [isDismissingAll, setIsDismissingAll] = useState(false);
 
   const { translateY, scale, opacity, zIndex } = calculateSnackbarStackProperties(stackIndex);
 
@@ -141,8 +153,19 @@ export const useSnackbar = (snackbar: SnackbarData, stackIndex: number, onRemove
     return () => clearTimeout(timer);
   }, [snackbar.id, snackbar.duration]);
 
+  useEffect(() => {
+    const handleDismissAll = () => {
+      setIsDismissingAll(true);
+    };
+
+    document.addEventListener('dismissAllSnackbars', handleDismissAll);
+    return () => {
+      document.removeEventListener('dismissAllSnackbars', handleDismissAll);
+    };
+  }, []);
+
   const handleRemove = useCallback(() => {
-    if (isExiting) return;
+    if (isExiting || isDismissingAll) return;
 
     if (stackIndex === 0) {
       snackbarManager.setFirstSnackbarExiting();
@@ -152,7 +175,7 @@ export const useSnackbar = (snackbar: SnackbarData, stackIndex: number, onRemove
     setTimeout(() => {
       onRemove(snackbar.id);
     }, SNACKBAR_TIMEOUTS.EXIT_ANIMATION_DURATION);
-  }, [isExiting, onRemove, snackbar.id, stackIndex]);
+  }, [isExiting, isDismissingAll, onRemove, snackbar.id, stackIndex]);
 
   const handleCloseClick = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -167,7 +190,7 @@ export const useSnackbar = (snackbar: SnackbarData, stackIndex: number, onRemove
     scale,
     zIndex,
     opacity,
-    isExiting,
+    isExiting: isExiting || isDismissingAll,
     translateY,
     isEntering,
     handleCloseClick,

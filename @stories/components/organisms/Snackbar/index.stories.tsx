@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/blocks';
-import { MDSButton, MDSSnackbar, MDSTypography, MDSSnackbarContainer } from '../../../../components';
+import { MDSButton, MDSSnackbar, MDSTypography, MDSSnackbarContainer, dismissToast } from '../../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSSnackbarContainer> = {
@@ -314,6 +314,62 @@ export const WithImages: Story = {
       >
         Snackbar with Images
       </MDSButton>
+    </Wrapper>
+  ),
+};
+
+export const DismissToastInAction: Story = {
+  render: () => (
+    <Wrapper>
+      <MDSTypography>
+        dismissToast() 함수를 사용하여 화면에 렌더링된 모든 스낵바를 제거할 수 있습니다.
+        <br />
+        먼저 Create Multiple Toasts 버튼 클릭후 "Dismiss All Toasts" 버튼을 클릭해보세요.
+      </MDSTypography>
+      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <MDSButton
+          onClick={() => {
+            MDSSnackbar({
+              type: 'success',
+              title: 'Success Toast',
+              message: '성공 메시지입니다.',
+              duration: 15000,
+            });
+            setTimeout(() => {
+              MDSSnackbar({
+                type: 'warning',
+                title: 'Warning Toast',
+                message: '경고 메시지입니다.',
+                duration: 15000,
+              });
+            }, 300);
+            setTimeout(() => {
+              MDSSnackbar({
+                type: 'error',
+                title: 'Error Toast',
+                message: '오류 메시지입니다.',
+                duration: 15000,
+              });
+            }, 600);
+            setTimeout(() => {
+              MDSSnackbar({
+                title: 'Complete Toast',
+                message: '완료 메시지입니다.',
+                duration: 15000,
+              });
+            }, 900);
+          }}
+        >
+          Create Multiple Toasts
+        </MDSButton>
+        <MDSButton
+          onClick={() => {
+            dismissToast();
+          }}
+        >
+          Dismiss All Toasts
+        </MDSButton>
+      </div>
     </Wrapper>
   ),
 };

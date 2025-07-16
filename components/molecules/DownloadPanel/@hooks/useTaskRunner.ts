@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { Query, useQueries, useQueryClient } from '@tanstack/react-query';
-import { apiTaskAtom, displayTasksAtom, updateTaskStatusAtom } from '../@atoms';
+import { apiTaskAtom, tasksStatusAtom, updateTaskStatusAtom } from '../@atoms';
 import { Task, TaskId } from '../@types';
 
 export const useTaskRunner = () => {
@@ -109,23 +109,23 @@ export const useTaskRunner = () => {
     queries,
   });
 
-  const tasks = useAtomValue(displayTasksAtom);
+  const tasksStatus = useAtomValue(tasksStatusAtom);
   const queryClient = useQueryClient();
   useEffect(() => {
-    tasks.forEach((task) => {
+    tasksStatus.forEach((task) => {
       if (task.status === 'removed') {
-        queryClient.cancelQueries({ queryKey: ['mds-download-panel', task.taskGroupKey, task.taskId] });
+        queryClient.cancelQueries({ queryKey: ['mds-download-panel', task.groupKey, task.taskId] });
       }
     });
 
-    const inProgress = tasks
+    const inProgress = tasksStatus
       .filter((task) => task.status === 'processing' || task.status === 'ready')
       .map((task) => task.taskId);
-    const completed = tasks.filter((task) => task.status === 'completed').map((task) => task.taskId);
+    const completed = tasksStatus.filter((task) => task.status === 'completed').map((task) => task.taskId);
     stableIdsInProgressState.current = {
       inProgress,
       completed,
       remainCount: inProgress.length,
     };
-  }, [tasks]);
+  }, [JSON.stringify(tasksStatus)]);
 };

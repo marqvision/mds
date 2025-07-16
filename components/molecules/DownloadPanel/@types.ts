@@ -15,13 +15,13 @@ export type Task = {
 };
 
 export type TaskDescription<PollingRes = unknown, CancelRes = unknown, FailedRes = unknown> = Task & {
-  pollingFn: (taskId: TaskId, signal?: AbortSignal) => Promise<PollingRes>;
+  pollingFn: (task: Task, signal?: AbortSignal) => Promise<PollingRes>;
   pollingInterval: number; // 1000ms 기본값
-  removeFn: (taskId: TaskId) => Promise<CancelRes>;
+  removeFn: (task: Task) => Promise<CancelRes>;
 
-  onCompleted?: (taskId: TaskId, res: PollingRes) => void;
-  onRemoved?: (taskId: TaskId, res: CancelRes) => void;
-  onFailed?: (taskId: TaskId, res: FailedRes) => void;
+  onCompleted?: (task: Task, res: PollingRes) => void;
+  onRemoved?: (task: Task, res: CancelRes) => void;
+  onFailed?: (task: Task, res: FailedRes) => void;
 
   progress?: number;
   status: TaskStatus;

@@ -39,6 +39,7 @@ export const apiTaskAtom = atom((get) => {
     .map((task) => ({
       taskId: task.taskId,
       fileName: task.fileName,
+      fileType: task.fileType,
       taskGroupKey: task.taskGroupKey,
       pollingFn: task.pollingFn,
       pollingInterval: task.pollingInterval,

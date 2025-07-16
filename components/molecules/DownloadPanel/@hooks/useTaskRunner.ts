@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { Query, useQueries, useQueryClient } from '@tanstack/react-query';
 import { apiTaskAtom, displayTasksAtom, updateTaskStatusAtom } from '../@atoms';
-import { TaskId } from '../@types';
+import { Task, TaskId } from '../@types';
 
 export const useTaskRunner = () => {
   const apiQueue = useAtomValue(apiTaskAtom);
@@ -15,8 +15,15 @@ export const useTaskRunner = () => {
       apiQueue.map((task) => ({
         queryKey: ['mds-download-panel', task.taskGroupKey, task.taskId],
         queryFn: async ({ signal }: { signal?: AbortSignal }) => {
+          // callback 함수에 전달하기 위한 용도
+          const currentTaskParam: Task = {
+            taskId: task.taskId,
+            fileName: task.fileName,
+            fileType: task.fileType,
+            taskGroupKey: task.taskGroupKey,
+          };
           try {
-            const res = await task.pollingFn(task.taskId, signal);
+            const res = await task.pollingFn(currentTaskParam, signal);
             return res as any;
           } catch (error) {
             if (signal?.aborted) {
@@ -24,9 +31,9 @@ export const useTaskRunner = () => {
                 taskId: task.taskId,
                 status: 'removed',
               });
-              await task.removeFn(task.taskId);
+              await task.removeFn(currentTaskParam);
             } else {
-              task.onFailed?.(task.taskId, error);
+              task.onFailed?.(currentTaskParam, error);
             }
 
             throw error;
@@ -35,8 +42,15 @@ export const useTaskRunner = () => {
         refetchInterval: (data: any, query: Query) => {
           // note-@jamie: queryFn 이 실행되기 전에 refetchInterval가 먼저 한번 실행된다
 
+          // callback 함수에 전달하기 위한 용도
+          const currentTaskParam: Task = {
+            taskId: task.taskId,
+            fileName: task.fileName,
+            fileType: task.fileType,
+            taskGroupKey: task.taskGroupKey,
+          };
+
           if (query.state.error) {
-            console.log('>>>> query.state.error', query, query.state, query.state.error);
             updateTaskStatus({
               taskId: task.taskId,
               status: 'failed',
@@ -56,7 +70,7 @@ export const useTaskRunner = () => {
                 remainCount: stableIdsInProgressState.current.remainCount - 1,
               };
 
-              task.onCompleted?.(task.taskId, data);
+              task.onCompleted?.(currentTaskParam, data);
 
               updateTaskStatus({
                 taskId: task.taskId,
@@ -77,7 +91,14 @@ export const useTaskRunner = () => {
           return task.pollingInterval;
         },
         onError: (error: any) => {
-          task.onFailed?.(task.taskId, error);
+          // callback 함수에 전달하기 위한 용도
+          const currentTaskParam: Task = {
+            taskId: task.taskId,
+            fileName: task.fileName,
+            fileType: task.fileType,
+            taskGroupKey: task.taskGroupKey,
+          };
+          task.onFailed?.(currentTaskParam, error);
         },
         staleTime: Infinity, // 데이터가 'stale'해지지 않도록 설정하여 불필요한 즉시 refetch 방지
       })),

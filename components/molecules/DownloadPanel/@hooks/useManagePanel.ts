@@ -58,11 +58,24 @@ export const useRemoveTask = () => {
       removeTask({ taskId: task.taskId });
     } else {
       if (task) {
-        await task.removeFn(task.taskId);
+        await task.removeFn({
+          taskId: task.taskId,
+          fileName: task.fileName,
+          fileType: task.fileType,
+          taskGroupKey: task.taskGroupKey,
+        });
         removeTask({ taskId: task.taskId });
       }
     }
-    task.onRemoved?.(task.taskId, null);
+    task.onRemoved?.(
+      {
+        taskId: task.taskId,
+        fileName: task.fileName,
+        fileType: task.fileType,
+        taskGroupKey: task.taskGroupKey,
+      },
+      null
+    );
   };
 
   return {

@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { MDSButton, MDSDownloadPanel, MDSTypography } from '../../../../components';
+import { MDSButton, MDSDownloadPanel, MDSDownloadPanelTask, MDSTypography } from '../../../../components';
 import { useMDSDownloadPanel } from '../../../../components/molecules/DownloadPanel/@hooks';
 
 type MockProgressResult = {
@@ -74,28 +74,28 @@ const AddPptExportTaskComponent = () => {
   const { addTask } = useMDSDownloadPanel();
   const { startApi, stopApi } = useMockProgressResultApi();
 
-  const pollingFn = useCallback((taskId: number) => {
-    return startApi(taskId);
+  const pollingFn = useCallback((task: MDSDownloadPanelTask) => {
+    return startApi(task.taskId);
   }, []);
-  const removeFn = useCallback(async (taskId: number) => {
-    return await stopApi(taskId);
+  const removeFn = useCallback(async (task: MDSDownloadPanelTask) => {
+    return await stopApi(task.taskId);
   }, []);
-  const onCompleted = useCallback((taskId: number, res: MockProgressResult) => {
-    console.log('>>>> onComplete callback', taskId);
+  const onCompleted = useCallback((task: MDSDownloadPanelTask, res: MockProgressResult) => {
+    console.log('>>>> onComplete callback', task.taskId);
     setLocalTaskMonitor((prev) =>
-      prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'completed', desc: res?.url ?? '' } : task))
+      prev.map((task) => (task.taskId === task.taskId ? { ...task, taskStatus: 'completed', desc: res?.url ?? '' } : task))
     );
   }, []);
-  const onFailed = useCallback((taskId: number, res: MockProgressResult) => {
-    console.log('>>>> onFailed callback', taskId);
+  const onFailed = useCallback((task: MDSDownloadPanelTask, res: MockProgressResult) => {
+    console.log('>>>> onFailed callback', task.taskId);
     setLocalTaskMonitor((prev) =>
-      prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'failed', desc: res?.url ?? '' } : task))
+      prev.map((task) => (task.taskId === task.taskId ? { ...task, taskStatus: 'failed', desc: res?.url ?? '' } : task))
     );
   }, []);
-  const onRemoved = useCallback((taskId: number, res: MockCancelResult) => {
-    console.log('>>>> onRemoved callback', taskId, res);
+  const onRemoved = useCallback((task: MDSDownloadPanelTask, res: MockCancelResult) => {
+    console.log('>>>> onRemoved callback', task.taskId, res);
     setLocalTaskMonitor((prev) =>
-      prev.map((task) => (task.taskId === taskId ? { ...task, taskStatus: 'removed', desc: '취소' } : task))
+      prev.map((task) => (task.taskId === task.taskId ? { ...task, taskStatus: 'removed', desc: '취소' } : task))
     );
   }, []);
 

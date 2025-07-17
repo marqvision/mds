@@ -11,8 +11,8 @@ const Wrapper = styled.div<{ isCompact: boolean }>`
       display: flex;
       align-items: center;
       gap: 16px;
-      min-height: ${isCompact ? '44px' : '50px'};
-      padding: ${isCompact ? '7px 16px 3px' : '9px 16px 8px'};
+      max-height: ${isCompact ? '44px' : '48px'};
+      padding: ${isCompact ? '12px 16px 8px' : '12px 16px'};
       ${isCompact ? '' : `border-bottom: 1px solid ${theme.color.border.neutral.weak.normal};`}
     `;
   }}
@@ -22,7 +22,7 @@ const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>((props, ref) => {
   const { backButton, pageTitle, isCompact = false, children } = props;
 
   return (
-    <Wrapper isCompact={isCompact}>
+    <Wrapper ref={ref} isCompact={isCompact}>
       {backButton && <BackButton {...backButton} />}
       <MDSTypography variant="title" weight="semibold" size="l">
         {pageTitle}

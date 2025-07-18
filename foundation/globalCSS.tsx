@@ -13,6 +13,8 @@ const FONT_STYLE_VALUES = {
       --font-title-letter-spacing-l-medium: -0.27px;
       --font-title-letter-spacing-m-semibold: -0.24px;
       --font-title-letter-spacing-m-medium: -0.175px;
+      --font-title-letter-spacing-s-semibold: -0.175px;
+      --font-title-letter-spacing-s-medium: -0.13px;
     `,
     body: `
       --font-body-letter-spacing-l-medium: -0.28px;
@@ -27,6 +29,8 @@ const FONT_STYLE_VALUES = {
   },
   KO: {
     title: `
+      --font-title-letter-spacing-2xl-semibold: 0px;
+      --font-title-letter-spacing-2xl-medium: 0px;
       --font-title-letter-spacing-xl-semibold: 0px;
       --font-title-letter-spacing-xl-medium: 0px;
       --font-title-letter-spacing-l-semibold: 0px;
@@ -49,11 +53,7 @@ const FONT_STYLE_VALUES = {
     `,
   },
 };
-export const MDSFontCSS = ({
-  isDisplayTypographyDebug,
-}: {
-  isDisplayTypographyDebug?: boolean;
-}) => (
+export const MDSFontCSS = ({ isDisplayTypographyDebug }: { isDisplayTypographyDebug?: boolean }) => (
   <Global
     styles={css`
       // 기본 폰트 설정
@@ -79,13 +79,13 @@ export const MDSFontCSS = ({
        * 그래서 html[lang=]을 이용해서 영어폰트도 Pretendard로 리셋시켜버린다.
        */
       html[lang='ko'] {
-        font-family: "Pretendard Variable", "Noto Sans SC" !important;
+        font-family: 'Pretendard Variable', 'Noto Sans SC' !important;
         letter-spacing: 0;
         ${FONT_STYLE_VALUES.KO.title}
         ${FONT_STYLE_VALUES.KO.body}
       }
       html[lang='en'] {
-        font-family: "Inter", "Pretendard Variable", "Noto Sans SC" !important;
+        font-family: 'Inter', 'Pretendard Variable', 'Noto Sans SC' !important;
         ${FONT_STYLE_VALUES.EN.title}
         ${FONT_STYLE_VALUES.EN.body}
       }
@@ -97,7 +97,7 @@ export const MDSFontCSS = ({
       html[lang='ko'] svg,
       html[lang='ko'] text,
       html[lang='ko'] tspan {
-        font-family: "Pretendard Variable", "Noto Sans SC" !important;
+        font-family: 'Pretendard Variable', 'Noto Sans SC' !important;
       }
       html[lang='en'] button,
       html[lang='en'] input,
@@ -106,15 +106,15 @@ export const MDSFontCSS = ({
       html[lang='en'] svg,
       html[lang='en'] text,
       html[lang='en'] tspan {
-        font-family: "Inter", "Pretendard Variable", "Noto Sans SC" !important;
+        font-family: 'Inter', 'Pretendard Variable', 'Noto Sans SC' !important;
       }
 
       html[lang='en'] *[data-typography-new-font] {
-        font-family: "Inter", "Pretendard Variable", "Noto Sans SC" !important;
+        font-family: 'Inter', 'Pretendard Variable', 'Noto Sans SC' !important;
       }
 
       html[lang='ko'] *[data-typography-new-font] {
-        font-family: "Pretendard Variable", "Noto Sans SC" !important;
+        font-family: 'Pretendard Variable', 'Noto Sans SC' !important;
       }
 
       ${isDisplayTypographyDebug

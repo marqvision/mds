@@ -64,7 +64,7 @@ export const WithActionButton: Story = {
         message="You can add a CTA like this."
         actionButton={{
           text: 'Undo',
-          event: () => alert('Undo clicked!'),
+          onClick: () => alert('Undo clicked!'),
         }}
       />
     </Wrapper>
@@ -102,16 +102,16 @@ export const WithCTA: Story = {
         title="CTA box"
         titleCTA={{
           label: 'See detail >',
-          event: () => console.log('titleCTA clicked'),
+          onClick: () => console.log('titleCTA clicked'),
         }}
         message="‘Baccarat Crystal Vase Twinkle Candlestick Homestay Orna  Homestay Orna...’"
         messageCTA={{
           label: 'See detail >',
-          event: () => console.log('messageCTA clicked'),
+          onClick: () => console.log('messageCTA clicked'),
         }}
         actionButton={{
           text: 'Action',
-          event: () => console.log('Undo clicked!'),
+          onClick: () => console.log('Undo clicked!'),
         }}
       />
     </Wrapper>

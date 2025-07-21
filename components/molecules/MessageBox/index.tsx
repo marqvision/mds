@@ -43,7 +43,7 @@ export const MessageBox = (props: MessageBoxProps) => {
             {titleCTA &&
               (typeof titleCTA.label === 'string' ? (
                 <MessageBoxShrinkWrap>
-                  <MDSPlainButton onClick={titleCTA.event} color="blue">
+                  <MDSPlainButton onClick={titleCTA.onClick} color="blue">
                     {titleCTA.label}
                   </MDSPlainButton>
                 </MessageBoxShrinkWrap>
@@ -62,7 +62,7 @@ export const MessageBox = (props: MessageBoxProps) => {
             {messageCTA &&
               (typeof messageCTA.label === 'string' ? (
                 <MessageBoxShrinkWrap>
-                  <MDSPlainButton onClick={messageCTA.event}>{messageCTA.label}</MDSPlainButton>
+                  <MDSPlainButton onClick={messageCTA.onClick}>{messageCTA.label}</MDSPlainButton>
                 </MessageBoxShrinkWrap>
               ) : (
                 messageCTA.label
@@ -73,7 +73,7 @@ export const MessageBox = (props: MessageBoxProps) => {
 
       <MessageBoxActionsContainer>
         {actionButton && (
-          <MDSPlainButton size="large" color="blue" onClick={actionButton.event}>
+          <MDSPlainButton size="large" color="blue" onClick={actionButton.onClick}>
             {actionButton.text}
           </MDSPlainButton>
         )}

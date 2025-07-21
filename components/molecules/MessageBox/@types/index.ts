@@ -23,12 +23,12 @@ export type MessageBoxProps = {
   title: string;
   titleCTA?: {
     label: string | React.ReactElement;
-    event?: () => void;
+    onClick?: () => void;
   };
   message?: string;
   messageCTA?: {
     label: string | React.ReactElement;
-    event?: () => void;
+    onClick?: () => void;
   };
   width?: number;
   images?: (string | ImageData)[];
@@ -40,7 +40,7 @@ export type MessageBoxProps = {
   actionButton?: {
     dismissBefore?: boolean;
     text: string;
-    event: () => void;
+    onClick: () => void;
   };
 } & React.HTMLAttributes<HTMLDivElement>;
 

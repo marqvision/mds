@@ -14,7 +14,7 @@ type DownloadPanelProps = {
   };
   tasks: {
     list: Task[];
-    onCancel: (taskId: Task['taskId']) => void;
+    onRemove: (taskId: Task['taskId']) => void;
   };
 };
 export const DownloadPanel = (props: DownloadPanelProps) => {
@@ -40,7 +40,7 @@ export const DownloadPanel = (props: DownloadPanelProps) => {
       </Styles.Title>
       <Styles.Content isFold={panel.isFold}>
         {tasks.list.map((task) => (
-          <TaskItem key={task.taskId} task={task} onCancel={tasks.onCancel} />
+          <TaskItem key={task.taskId} task={task} onRemove={tasks.onRemove} />
         ))}
       </Styles.Content>
     </Styles.Container>

@@ -71,8 +71,8 @@ const FileName = (props: Pick<Task, 'status' | 'fileName'>) => {
     </MDSTypography>
   );
 };
-const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onCancel: () => void }) => {
-  const { status, progress, onCancel } = props;
+const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onRemove: () => void }) => {
+  const { status, progress, onRemove } = props;
 
   const toolTipTitle = status === 'processing' ? 'Cancel export' : status === 'completed' ? 'Remove' : 'Remove';
   const toolTipWidth = status === 'processing' ? '85px' : '97px';
@@ -92,21 +92,21 @@ const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onCancel
       </div>
       <div className="progress-indicator-hover">
         <MDSTooltip title={toolTipTitle} width={toolTipWidth} size="medium" style={{ textAlign: 'center' }}>
-          <MDSPlainButton color="bluegray" icon={<MDSIcon.CloseDelete variant="fill" size={20} />} onClick={onCancel} />
+          <MDSPlainButton color="bluegray" icon={<MDSIcon.CloseDelete variant="fill" size={20} />} onClick={onRemove} />
         </MDSTooltip>
       </div>
     </Styles.ProgressIndicatorBox>
   );
 };
 
-export const TaskItem = (props: { task: Task; onCancel: (taskId: Task['taskId']) => void }) => {
-  const { task, onCancel } = props;
-  const handleCancel = () => onCancel(task.taskId);
+export const TaskItem = (props: { task: Task; onRemove: (taskId: Task['taskId']) => void }) => {
+  const { task, onRemove } = props;
+  const handleRemove = () => onRemove(task.taskId);
   return (
     <Styles.Item key={task.taskId}>
       <FileIcon fileType={task.fileType} status={task.status} />
       <FileName status={task.status} fileName={task.fileName} />
-      <ProgressIndicator status={task.status} progress={task.progress} onCancel={handleCancel} />
+      <ProgressIndicator status={task.status} progress={task.progress} onRemove={handleRemove} />
     </Styles.Item>
   );
 };

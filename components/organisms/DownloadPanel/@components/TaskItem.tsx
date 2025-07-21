@@ -54,15 +54,17 @@ const FileName = (props: Pick<Task, 'status' | 'fileName'> & { onClick?: () => v
   const { status, fileName } = props;
   const color: MDSThemeColorPath = status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal';
 
-  const hasClickEvent = typeof props.onClick === 'function';
+  const hasClickEvent = status === 'completed' && typeof props.onClick === 'function';
   const [isHovered, setIsHovered] = useState(false);
-  const supportClickEventProps = {
-    style: hasClickEvent ? { cursor: 'pointer' } : undefined,
-    textDecoration: hasClickEvent ? 'underline' : 'none',
-    onClick: props.onClick,
-    onMouseEnter: () => hasClickEvent && setIsHovered(true),
-    onMouseLeave: () => hasClickEvent && setIsHovered(false),
-  };
+  const supportClickEventProps = hasClickEvent
+    ? {
+        style: { cursor: 'pointer' },
+        textDecoration: 'underline',
+        onClick: props.onClick,
+        onMouseEnter: () => setIsHovered(true),
+        onMouseLeave: () => setIsHovered(false),
+      }
+    : {};
 
   return fileName.length > 40 ? (
     <MDSTooltip title={fileName} width="100%" size="small" style={{ marginBottom: 4 }}>

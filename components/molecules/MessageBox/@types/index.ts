@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { MDSImageProps } from '../../../atoms/Image';
 import { MDSThemeColorPath } from '../../../../types';
+import { MDSPlainButtonProps } from '../../PlainButton';
 
 export type MessageBoxType = 'neutral' | 'default' | 'primary' | 'success' | 'warning' | 'critical';
+
+export type MessageBoxCTA = React.ReactElement | { label: string; onClick: () => void };
+
+export type MessageBoxActionButton = {
+  label: string | ReactNode;
+  dismissBefore?: boolean;
+} & Omit<MDSPlainButtonProps, 'children' | 'icon'>;
 
 export type ImageData = MDSImageProps & {
   src: string;
@@ -20,16 +28,12 @@ export type ImageGalleryProps = {
 
 export type MessageBoxProps = {
   type?: MessageBoxType;
+  titleIcon?: ReactNode;
+
   title: string;
-  titleCTA?: {
-    label: string | React.ReactElement;
-    onClick?: () => void;
-  };
   message?: string;
-  messageCTA?: {
-    label: string | React.ReactElement;
-    onClick?: () => void;
-  };
+  titleCTA?: MessageBoxCTA;
+  messageCTA?: MessageBoxCTA;
   width?: number;
   images?: (string | ImageData)[];
   closeControl?: {
@@ -37,11 +41,7 @@ export type MessageBoxProps = {
     isVisible: boolean;
     onClose: () => void;
   };
-  actionButton?: {
-    dismissBefore?: boolean;
-    text: string;
-    onClick: () => void;
-  };
+  actionButton?: MessageBoxActionButton;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export type MessageBoxStyleProps = {

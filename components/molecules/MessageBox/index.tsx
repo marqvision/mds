@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { MDSTypography } from '../../atoms/Typography';
@@ -15,6 +16,7 @@ export const MessageBox = (props: MessageBoxProps) => {
     images,
     message,
     titleCTA,
+    titleIcon,
     messageCTA,
     actionButton,
     type = 'default',
@@ -34,21 +36,21 @@ export const MessageBox = (props: MessageBoxProps) => {
           <MessageBoxTitleContainer>
             <TitleRow>
               <TitleIconWrapper>
-                <MDSIcon.Info size={20} variant="border" color={mainColor} />
+                {titleIcon ?? <MDSIcon.Info size={20} variant="border" color={mainColor} />}
               </TitleIconWrapper>
               <MDSTypography variant="title" weight="medium" color={mainColor} lineClamp={1} wordBreak="break-all">
-                {title} MDSTypography
+                {title}
               </MDSTypography>
             </TitleRow>
             {titleCTA &&
-              (typeof titleCTA.label === 'string' ? (
+              (React.isValidElement(titleCTA) ? (
+                titleCTA
+              ) : (
                 <MessageBoxShrinkWrap>
-                  <MDSPlainButton onClick={titleCTA.onClick} color="blue">
-                    {titleCTA.label}
+                  <MDSPlainButton onClick={(titleCTA as { label: string; onClick: () => void }).onClick} color="blue">
+                    {(titleCTA as { label: string; onClick: () => void }).label}
                   </MDSPlainButton>
                 </MessageBoxShrinkWrap>
-              ) : (
-                titleCTA.label
               ))}
           </MessageBoxTitleContainer>
 
@@ -60,23 +62,21 @@ export const MessageBox = (props: MessageBoxProps) => {
             )}
 
             {messageCTA &&
-              (typeof messageCTA.label === 'string' ? (
-                <MessageBoxShrinkWrap>
-                  <MDSPlainButton onClick={messageCTA.onClick}>{messageCTA.label}</MDSPlainButton>
-                </MessageBoxShrinkWrap>
+              (React.isValidElement(messageCTA) ? (
+                messageCTA
               ) : (
-                messageCTA.label
+                <MessageBoxShrinkWrap>
+                  <MDSPlainButton onClick={(messageCTA as { label: string; onClick: () => void }).onClick}>
+                    {(messageCTA as { label: string; onClick: () => void }).label}
+                  </MDSPlainButton>
+                </MessageBoxShrinkWrap>
               ))}
           </MessageBoxMessageContainer>
         </MessageBoxTextContainer>
       </MessageBoxContentWrapper>
 
       <MessageBoxActionsContainer>
-        {actionButton && (
-          <MDSPlainButton size="large" color="blue" onClick={actionButton.onClick}>
-            {actionButton.text}
-          </MDSPlainButton>
-        )}
+        {actionButton && <MDSPlainButton {...actionButton}>{actionButton.label}</MDSPlainButton>}
         {closeControl?.showButton && (
           <MDSPlainButton onClick={closeControl.onClose}>
             <MDSIcon.CloseDelete variant="border" size={20} />

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { MDSMessageBox } from '../../../components/molecules/MessageBox';
+import { MDSIcon } from '../../../components/atoms/Icon';
 
 const meta: Meta<typeof MDSMessageBox> = {
   title: '2. Components/molecules/MessageBox',
@@ -63,7 +64,7 @@ export const WithActionButton: Story = {
         title="With Action Button"
         message="You can add a CTA like this."
         actionButton={{
-          text: 'Undo',
+          label: 'Undo',
           onClick: () => alert('Undo clicked!'),
         }}
       />
@@ -104,13 +105,13 @@ export const WithCTA: Story = {
           label: 'See detail >',
           onClick: () => console.log('titleCTA clicked'),
         }}
-        message="‘Baccarat Crystal Vase Twinkle Candlestick Homestay Orna  Homestay Orna...’"
+        message="'Baccarat Crystal Vase Twinkle Candlestick Homestay Orna  Homestay Orna...'"
         messageCTA={{
           label: 'See detail >',
           onClick: () => console.log('messageCTA clicked'),
         }}
         actionButton={{
-          text: 'Action',
+          label: 'Action',
           onClick: () => console.log('Undo clicked!'),
         }}
       />
@@ -143,6 +144,123 @@ export const WithImages: Story = {
           'https://via.placeholder.com/64',
           'https://via.placeholder.com/64',
         ]}
+      />
+    </Wrapper>
+  ),
+};
+
+export const WithCustomTitleIcon: Story = {
+  render: () => (
+    <Wrapper>
+      <MDSMessageBox
+        type="success"
+        titleIcon={<MDSIcon.Check size={20} variant="border" />}
+        title="Success with Custom Icon"
+        message="This message box uses a custom check icon instead of the default info icon."
+      />
+      <MDSMessageBox
+        type="warning"
+        titleIcon={<MDSIcon.Info size={20} variant="border" />}
+        title="Warning with Custom Icon"
+        message="This message box uses a warning icon."
+      />
+      <MDSMessageBox
+        type="critical"
+        titleIcon={<MDSIcon.Info size={20} variant="border" />}
+        title="Error with Custom Icon"
+        message="This message box uses an error icon."
+      />
+    </Wrapper>
+  ),
+};
+
+export const WithCustomActionButtons: Story = {
+  render: () => (
+    <Wrapper>
+      <MDSMessageBox
+        type="success"
+        title="확인 버튼"
+        message="Custom action button with check icon and color."
+        actionButton={{
+          label: '확인',
+          onClick: () => alert('확인 clicked!'),
+          endIcon: <MDSIcon.Check variant="border" />,
+          color: 'green',
+        }}
+      />
+      <MDSMessageBox
+        type="warning"
+        title="삭제 확인"
+        message="Dangerous action with delete icon and red color."
+        actionButton={{
+          label: '삭제',
+          onClick: () => alert('삭제 clicked!'),
+          endIcon: <MDSIcon.Trash variant="fill" />,
+          color: 'red',
+        }}
+      />
+      <MDSMessageBox
+        type="primary"
+        title="다운로드"
+        message="Download action with download icon."
+        actionButton={{
+          label: '다운로드',
+          onClick: () => alert('다운로드 clicked!'),
+          endIcon: <MDSIcon.Download />,
+          color: 'blue',
+        }}
+      />
+      <MDSMessageBox
+        type="neutral"
+        title="설정"
+        message="Settings action with gear icon."
+        actionButton={{
+          label: '설정',
+          onClick: () => alert('설정 clicked!'),
+          endIcon: <MDSIcon.Edit />,
+        }}
+      />
+    </Wrapper>
+  ),
+};
+
+export const AdvancedConfiguration: Story = {
+  render: () => (
+    <Wrapper>
+      <MDSMessageBox
+        type="success"
+        titleIcon={<MDSIcon.Check size={16} variant="fill" />}
+        title="파일 업로드 완료"
+        message="파일이 성공적으로 업로드되었습니다."
+        titleCTA={{
+          label: '자세히 보기',
+          onClick: () => console.log('자세히 보기 clicked'),
+        }}
+        actionButton={{
+          label: '확인',
+          onClick: () => alert('확인 clicked!'),
+          endIcon: <MDSIcon.Check size={20} variant="fill" />,
+          color: 'green',
+        }}
+      />
+    </Wrapper>
+  ),
+};
+
+export const WithoutDefaultIcon: Story = {
+  render: () => (
+    <Wrapper>
+      <MDSMessageBox
+        type="neutral"
+        titleIcon={null}
+        title="No Icon Message"
+        message="This message box has no title icon at all."
+      />
+      <MDSMessageBox
+        type="primary"
+        titleIcon={<div>🎉</div>}
+        title="Emoji Icon"
+        message="You can even use emojis or custom elements as icons!"
       />
     </Wrapper>
   ),

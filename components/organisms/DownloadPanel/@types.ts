@@ -7,4 +7,5 @@ export type Task = {
   fileName: string;
   fileType: TaskFileType;
   progress?: number;
+  onClick?: (taskId: Task['taskId']) => void;
 };

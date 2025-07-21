@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { MDSThemeColorPath } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
@@ -49,24 +50,46 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return null;
   }
 };
-const FileName = (props: Pick<Task, 'status' | 'fileName'>) => {
+const FileName = (props: Pick<Task, 'status' | 'fileName'> & { onClick?: () => void }) => {
   const { status, fileName } = props;
   const color: MDSThemeColorPath = status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal';
+
+  const hasClickEvent = typeof props.onClick === 'function';
+  const [isHovered, setIsHovered] = useState(false);
+  const supportClickEventProps = {
+    style: hasClickEvent ? { cursor: 'pointer' } : undefined,
+    textDecoration: hasClickEvent ? 'underline' : 'none',
+    onClick: props.onClick,
+    onMouseEnter: () => hasClickEvent && setIsHovered(true),
+    onMouseLeave: () => hasClickEvent && setIsHovered(false),
+  };
+
   return fileName.length > 40 ? (
     <MDSTooltip title={fileName} width="100%" size="small" style={{ marginBottom: 4 }}>
       <MDSTypography
         variant="body"
         size="m"
+        weight={isHovered ? 'medium' : 'regular'}
         lineClamp={1}
         overflowWrap="break-word"
         wordBreak="break-all"
         color={color}
+        {...supportClickEventProps}
       >
         {fileName}
       </MDSTypography>
     </MDSTooltip>
   ) : (
-    <MDSTypography variant="body" size="m" lineClamp={1} overflowWrap="break-word" wordBreak="break-all" color={color}>
+    <MDSTypography
+      variant="body"
+      size="m"
+      weight={isHovered ? 'medium' : 'regular'}
+      lineClamp={1}
+      overflowWrap="break-word"
+      wordBreak="break-all"
+      color={color}
+      {...supportClickEventProps}
+    >
       {fileName}
     </MDSTypography>
   );
@@ -99,13 +122,19 @@ const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onRemove
   );
 };
 
-export const TaskItem = (props: { task: Task; onRemove: (taskId: Task['taskId']) => void }) => {
+type TaskItemProps = {
+  task: Task;
+  onRemove: (taskId: Task['taskId']) => void;
+};
+export const TaskItem = (props: TaskItemProps) => {
   const { task, onRemove } = props;
   const handleRemove = () => onRemove(task.taskId);
+  const handleClick = task.onClick ? () => task.onClick?.(task.taskId) : undefined;
+
   return (
     <Styles.Item key={task.taskId}>
       <FileIcon fileType={task.fileType} status={task.status} />
-      <FileName status={task.status} fileName={task.fileName} />
+      <FileName status={task.status} fileName={task.fileName} onClick={handleClick} />
       <ProgressIndicator status={task.status} progress={task.progress} onRemove={handleRemove} />
     </Styles.Item>
   );

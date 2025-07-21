@@ -1,4 +1,5 @@
-import { MDSDownloadPanel } from '../../../../components/organisms/DownloadPanel';
+import { useState } from '@storybook/preview-api';
+import { MDSCheckbox, MDSTypography, MDSDownloadPanel } from '../../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDownloadPanel> = {
@@ -51,7 +52,7 @@ export const PanelContent: Story = {
           fileName: 'Tiffany & Co._snapshots.zip',
           fileType: 'zip',
           progress: 28,
-          status: 'processing',
+          status: 'completed',
         },
         {
           taskId: 5,
@@ -68,13 +69,43 @@ export const PanelContent: Story = {
           status: 'processing',
         },
       ],
-      onCancel: () => {},
+      onRemove: () => {
+        console.log('>>> task removed');
+      },
     },
   },
-  render: (arg: any) => {
+  render: function Render(arg) {
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleRemove = (taskId: number) => {
+      console.log('>>> task removed', taskId);
+      arg.tasks.onRemove(taskId);
+    };
+    const handleClick = (taskId: number) => {
+      console.log('>>> task clicked', taskId);
+    };
+
+    const firstThreeTasks = arg.tasks.list.slice(0, 3).map((task) => ({
+      ...task,
+      onClick: isChecked ? handleClick : undefined,
+    }));
+    const lastThreeTasks = arg.tasks.list.slice(3);
+
     return (
       <div style={{ width: '500px' }}>
-        <MDSDownloadPanel panel={arg.panel} tasks={arg.tasks} />
+        <div>
+          <MDSTypography as="label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <MDSCheckbox value={isChecked} onChange={() => setIsChecked(!isChecked)} />
+            상위 3개 태스크에만 onClick handler를 사용
+          </MDSTypography>
+        </div>
+        <MDSDownloadPanel
+          panel={arg.panel}
+          tasks={{
+            list: [...firstThreeTasks, ...lastThreeTasks],
+            onRemove: handleRemove,
+          }}
+        />
       </div>
     );
   },

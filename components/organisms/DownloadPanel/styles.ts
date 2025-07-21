@@ -50,8 +50,12 @@ const FoldIconBox = styled.div<{ isFold: boolean }>`
 `;
 
 const ProgressIndicatorBox = styled.div<{ status: Task['status'] }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   .progress-indicator-default {
-    display: block;
+    display: flex;
   }
   .progress-indicator-hover {
     display: none;
@@ -61,7 +65,7 @@ const ProgressIndicatorBox = styled.div<{ status: Task['status'] }>`
       display: none;
     }
     .progress-indicator-hover {
-      display: block;
+      display: flex;
     }
   }
 `;

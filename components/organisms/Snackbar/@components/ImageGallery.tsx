@@ -7,13 +7,15 @@ const Image = (props: ImageProps) => {
   const { src, width, children, ...restProps } = props;
   const isValidUrl = /^(http|https):\/\/[^ "]+$/.test(src as string);
 
-  return isValidUrl ? (
-    <MDSImage width={width} aspectRatio="1" src={src} {...restProps}>
-      {children}
-    </MDSImage>
-  ) : (
-    <MDSImage width="64px" iconSize="small" aspectRatio="1" src="" />
-  );
+  if (isValidUrl) {
+    return (
+      <MDSImage width={width} aspectRatio="1" src={src} {...restProps}>
+        {children}
+      </MDSImage>
+    );
+  }
+
+  return <MDSImage width="64px" iconSize="small" aspectRatio="1" src="" />;
 };
 
 const normalizeImageData = (image: string | ImageData, width: string): ImageProps => {

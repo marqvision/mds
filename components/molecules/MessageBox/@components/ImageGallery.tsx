@@ -1,32 +1,20 @@
 import styled from '@emotion/styled';
 import { MDSImage } from '../../../atoms/Image';
 import { MDSTypography } from '../../../atoms/Typography';
-import { ImageGalleryProps, ImageProps, ImageData } from '../@types';
+import { ImageGalleryProps, ImageProps } from '../@types';
+import { normalizeImageData } from '../@utils';
 
 const Image = (props: ImageProps) => {
   const { src, width, children, ...restProps } = props;
   const isValidUrl = /^(http|https):\/\/[^ "]+$/.test(src as string);
 
-  if (isValidUrl) {
-    return (
-      <MDSImage width={width} aspectRatio="1" src={src} {...restProps}>
-        {children}
-      </MDSImage>
-    );
-  }
-
-  return <MDSImage width="64px" iconSize="small" aspectRatio="1" src="" />;
-};
-
-const normalizeImageData = (image: string | ImageData, width: string): ImageProps => {
-  if (typeof image === 'string') {
-    return { src: image, width };
-  }
-
-  return {
-    width,
-    ...image,
-  };
+  return isValidUrl ? (
+    <MDSImage width={width} aspectRatio="1" src={src} {...restProps}>
+      {children}
+    </MDSImage>
+  ) : (
+    <MDSImage width="64px" iconSize="small" aspectRatio="1" src="" />
+  );
 };
 
 export const ImageGallery = (props: ImageGalleryProps) => {

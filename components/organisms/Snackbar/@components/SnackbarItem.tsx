@@ -43,6 +43,16 @@ export const SnackbarItem = (props: SnackbarProps) => {
     }
   }, [isHidden, shouldBlur]);
 
+  const handleActionButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (actionButton?.dismissBefore) {
+      handleCloseClick(e);
+    }
+
+    if (actionButton?.event) {
+      actionButton.event();
+    }
+  };
+
   const mainColor = SnackbarContentColor[type].mainColor;
   const closeIconColor = SnackbarContentColor[type].closeIconColor;
   const messageTextColor = SnackbarContentColor[type].messageTextColor;
@@ -82,7 +92,7 @@ export const SnackbarItem = (props: SnackbarProps) => {
         </SnackbarContentWrapper>
         <SnackbarActionsContainer>
           {actionButton && (
-            <MDSPlainButton color="blue" onClick={actionButton.event}>
+            <MDSPlainButton color="blue" onClick={handleActionButtonClick}>
               <MDSTypography weight="medium" color={undoButtonTextColor}>
                 {actionButton.text}
               </MDSTypography>

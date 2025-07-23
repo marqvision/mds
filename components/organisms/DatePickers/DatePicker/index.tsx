@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import dayjs from 'dayjs';
 import styled from '@emotion/styled';
-import { MDSCalendar } from '../Calendar';
-import { SingleDateInput } from '../DateInputGroup/@types';
-import { MDSDateInput } from '../DateInput';
-import { MDSPlainButton } from '../../../molecules/PlainButton';
-import { MDSButton } from '../../../molecules/Button';
+import dayjs from 'dayjs';
 import { MDSDivider } from '../../../atoms/Divider';
-import { MDSPopover } from '../../../molecules/Popover';
+import { MDSButton } from '../../../molecules/Button';
 import { MDSInput, MDSInputProps } from '../../../molecules/Input';
+import { MDSPlainButton } from '../../../molecules/PlainButton';
+import { MDSPopover } from '../../../molecules/Popover';
 import { DEFAULT_PROPS } from '../@constants';
+import { MDSCalendar } from '../Calendar';
+import { MDSDateInput } from '../DateInput';
+import { SingleDateInput } from '../DateInputGroup/@types';
 import { AvailableDateFormat } from '../DateRangePicker/@types';
 
 const DatePickerContainer = styled.div`
@@ -42,7 +42,7 @@ type Props = {
   onClose?: () => void;
   anchorSelectProps?: Omit<
     MDSInputProps<string>,
-    'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
+    'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'onChange' | 'onBlur' | 'ref' // variant='input' 의 props 제거
   >;
 } & SingleDateInput;
 

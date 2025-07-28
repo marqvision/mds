@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { Task } from './@types';
 
 const Z_INDEX_TOP_MOST = 1300 - 1; // note-@jamie: MDSTooltip보다 1 작은 zIndex
@@ -7,13 +8,17 @@ const Container = styled.div<{ isFold: boolean }>`
   bottom: 72px;
   z-index: ${Z_INDEX_TOP_MOST};
   right: 16px;
-  width: ${({ isFold }) => (isFold ? '228px' : '412px')};
-  min-height: 52px;
-  max-height: ${({ isFold }) => (isFold ? '52px' : '500px')};
-  padding: 8px 0;
-  background-color: red;
 
+  min-height: 52px;
+
+  padding: 8px 0;
   border-radius: 8px;
+
+  ${({ isFold }) => css`
+    width: ${isFold ? '228px' : '412px'};
+    max-height: ${isFold ? '52px' : '500px'};
+  `}
+
   background: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
 
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.16), 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -40,8 +45,10 @@ const PanelLabelBox = styled.div<{ isFold: boolean }>`
   align-items: center;
 
   & .progressIconBox {
-    width: ${({ isFold }) => (isFold ? '20px' : '0')};
-    opacity: ${({ isFold }) => (isFold ? '1' : '0')};
+    ${({ isFold }) => css`
+      width: ${isFold ? '20px' : '0'};
+      opacity: ${isFold ? '1' : '0'};
+    `}
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0s cubic-bezier(0.4, 0, 0.2, 1);
 
     display: flex;
@@ -66,10 +73,13 @@ const Item = styled.div`
 `;
 
 const FileNameBox = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 16px;
+  display: flex;
   align-items: center;
   gap: 4px;
+
+  & svg {
+    flex-shrink: 0;
+  }
 `;
 
 const FoldIconBox = styled.div<{ isFold: boolean }>`

@@ -19,7 +19,10 @@ type Story = StoryObj<typeof MDSDownloadPanel>;
 export const PanelContent: Story = {
   args: {
     panel: {
-      label: 'Panel label',
+      label: {
+        title: 'Panel label',
+        status: 'processing',
+      },
       isFold: false,
       onToggleFold: () => {},
       onClose: () => {},
@@ -31,7 +34,7 @@ export const PanelContent: Story = {
           fileName: 'SJ Group Co., Ltd._Removed_Performance_250704.csv',
           fileType: 'csv',
           progress: 0,
-          status: 'ready',
+          status: 'prepare',
         },
         {
           taskId: 2,
@@ -59,7 +62,7 @@ export const PanelContent: Story = {
           fileName: 'IICOMBINED_snapshots.zip',
           fileType: 'zip',
           progress: 0,
-          status: 'ready',
+          status: 'prepare',
         },
         {
           taskId: 6,
@@ -67,6 +70,13 @@ export const PanelContent: Story = {
           fileType: 'zip',
           progress: 55,
           status: 'processing',
+        },
+        {
+          taskId: 7,
+          fileName: 'SJ Group Co., Ltd._Removed_Performance_250704.csv',
+          fileType: 'csv',
+          progress: 0,
+          status: 'prepare',
         },
       ],
       onRemove: () => {
@@ -103,6 +113,16 @@ export const PanelContent: Story = {
           panel={arg.panel}
           tasks={{
             list: [...firstThreeTasks, ...lastThreeTasks],
+            onRemove: handleRemove,
+          }}
+        />
+        <MDSDownloadPanel
+          panel={{
+            ...arg.panel,
+            isFold: true,
+          }}
+          tasks={{
+            list: [],
             onRemove: handleRemove,
           }}
         />

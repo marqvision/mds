@@ -18,7 +18,7 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
     case 'csv':
       return (
         <MDSIcon.ExcelSheet
-          color={status === 'ready' ? READY_STATUS_COLOR : 'color/content/success/default/normal'}
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/success/default/normal'}
           size={20}
         />
       );
@@ -26,7 +26,7 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return (
         <MDSIcon.Pdf
           variant="fill"
-          color={status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
           size={20}
         />
       );
@@ -34,7 +34,7 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return (
         <MDSIcon.Ppt
           variant="fill"
-          color={status === 'ready' ? READY_STATUS_COLOR : 'color/content/critical/default/normal'}
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/critical/default/normal'}
           size={20}
         />
       );
@@ -42,7 +42,7 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return (
         <MDSIcon.Archive
           variant="fill"
-          color={status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
           size={20}
         />
       );
@@ -50,13 +50,17 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return null;
   }
 };
+
+// note-@jamie: file name 영역에 대해 추가 요청 사항이 나오면, 그냥 전반적으로 file name prop 영역에 react element를 넣을 수 있는 형태로 재구현하기
 const FileName = (props: Pick<Task, 'status' | 'fileName'> & { onClick?: () => void }) => {
   const { status, fileName } = props;
-  const color: MDSThemeColorPath = status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal';
+  const color: MDSThemeColorPath = status === 'prepare' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal';
 
-  const hasClickEvent = status === 'completed' && typeof props.onClick === 'function';
+  const hasClickEvent = typeof props.onClick === 'function';
+  const activeClickEvent = status === 'completed' && hasClickEvent;
+
   const [isHovered, setIsHovered] = useState(false);
-  const supportClickEventProps = hasClickEvent
+  const supportClickEventProps = activeClickEvent
     ? {
         style: { cursor: 'pointer' },
         textDecoration: 'underline',
@@ -68,6 +72,24 @@ const FileName = (props: Pick<Task, 'status' | 'fileName'> & { onClick?: () => v
 
   return fileName.length > 40 ? (
     <MDSTooltip title={fileName} width="100%" size="small" style={{ marginBottom: 4 }}>
+      <Styles.FileNameBox>
+        <MDSTypography
+          variant="body"
+          size="m"
+          weight={isHovered ? 'medium' : 'regular'}
+          lineClamp={1}
+          overflowWrap="break-word"
+          wordBreak="break-all"
+          color={color}
+          {...supportClickEventProps}
+        >
+          {fileName}
+        </MDSTypography>
+        {hasClickEvent && <MDSIcon.OpenNew color={color} size={16} />}
+      </Styles.FileNameBox>
+    </MDSTooltip>
+  ) : (
+    <Styles.FileNameBox>
       <MDSTypography
         variant="body"
         size="m"
@@ -80,20 +102,8 @@ const FileName = (props: Pick<Task, 'status' | 'fileName'> & { onClick?: () => v
       >
         {fileName}
       </MDSTypography>
-    </MDSTooltip>
-  ) : (
-    <MDSTypography
-      variant="body"
-      size="m"
-      weight={isHovered ? 'medium' : 'regular'}
-      lineClamp={1}
-      overflowWrap="break-word"
-      wordBreak="break-all"
-      color={color}
-      {...supportClickEventProps}
-    >
-      {fileName}
-    </MDSTypography>
+      {hasClickEvent && <MDSIcon.OpenNew color={color} size={16} />}
+    </Styles.FileNameBox>
   );
 };
 const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onRemove: () => void }) => {
@@ -105,7 +115,7 @@ const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onRemove
   return (
     <Styles.ProgressIndicatorBox status={status}>
       <div className="progress-indicator-default">
-        {status === 'ready' || typeof progress !== 'number' ? (
+        {status === 'prepare' || typeof progress !== 'number' ? (
           <MDSLoadingIndicator isDeterminate backgroundColor progress={0} size={20} />
         ) : status === 'processing' ? (
           <MDSLoadingIndicator isDeterminate backgroundColor progress={progress} size={20} />

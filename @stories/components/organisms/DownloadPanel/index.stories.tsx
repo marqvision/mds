@@ -20,7 +20,7 @@ export const PanelContent: Story = {
   args: {
     panel: {
       label: {
-        title: 'Panel label',
+        title: 'Preparing export',
         status: 'processing',
       },
       isFold: false,
@@ -32,7 +32,7 @@ export const PanelContent: Story = {
         {
           taskId: 1,
           fileName: 'SJ Group Co., Ltd._Removed_Performance_250704.csv',
-          fileType: 'csv',
+          fileType: 'doc',
           progress: 0,
           status: 'prepare',
         },

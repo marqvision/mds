@@ -46,6 +46,14 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
           size={20}
         />
       );
+    case 'doc':
+      return (
+        <MDSIcon.Document
+          variant="outline"
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
+          size={20}
+        />
+      );
     default:
       return null;
   }
@@ -63,7 +71,7 @@ const FileName = (props: Pick<Task, 'status' | 'fileName'> & { onClick?: () => v
   const supportClickEventProps = activeClickEvent
     ? {
         style: { cursor: 'pointer' },
-        textDecoration: 'underline',
+        textDecoration: isHovered ? 'underline' : 'none',
         onClick: props.onClick,
         onMouseEnter: () => setIsHovered(true),
         onMouseLeave: () => setIsHovered(false),

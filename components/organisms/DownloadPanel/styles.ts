@@ -28,6 +28,7 @@ const Title = styled.div`
   padding: 4px 16px;
   height: 36px;
   display: flex;
+  gap: 12px;
   justify-content: space-between;
   align-items: center;
 
@@ -57,7 +58,7 @@ const PanelLabelBox = styled.div<{ isFold: boolean }>`
 `;
 
 const Content = styled.div<{ isFold: boolean }>`
-  padding: 12px 16px;
+  padding: 0 16px;
   overflow: auto;
 
   max-height: ${({ isFold }) => (isFold ? '0' : '428px')};
@@ -66,9 +67,9 @@ const Content = styled.div<{ isFold: boolean }>`
 const Item = styled.div`
   padding: 12px 0;
   display: grid;
-  grid-template-columns: 20px 1fr 20px;
+  grid-template-columns: 20px 1fr 28px;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   height: 46px;
 `;
 
@@ -83,7 +84,7 @@ const FileNameBox = styled.div`
 `;
 
 const FoldIconBox = styled.div<{ isFold: boolean }>`
-  height: 24px;
+  height: 18px;
   transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1) !important;
   transform: ${({ isFold }) => (isFold ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;
@@ -91,7 +92,7 @@ const FoldIconBox = styled.div<{ isFold: boolean }>`
 const ProgressIndicatorBox = styled.div<{ status: Task['status'] }>`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 
   .progress-indicator-default {
     display: flex;

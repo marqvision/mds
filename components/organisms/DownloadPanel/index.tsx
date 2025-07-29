@@ -32,14 +32,14 @@ export const DownloadPanel = (props: DownloadPanelProps) => {
             size="small"
             icon={
               <Styles.FoldIconBox isFold={panel.isFold}>
-                <MDSIcon.ArrowDown variant="outline" />
+                <MDSIcon.ArrowDown variant="outline" size={18} />
               </Styles.FoldIconBox>
             }
             onClick={panel.onToggleFold}
           />
           <MDSPlainButton
             color="bluegray"
-            icon={<MDSIcon.CloseDelete variant="outline" />}
+            icon={<MDSIcon.CloseDelete variant="outline" size={18} />}
             onClick={panel.onClose}
           />
         </div>

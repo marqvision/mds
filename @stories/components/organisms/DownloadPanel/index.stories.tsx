@@ -87,6 +87,8 @@ export const PanelContent: Story = {
   render: function Render(arg) {
     const [isChecked, setIsChecked] = useState(false);
 
+    const [isFold, setIsFold] = useState(false);
+
     const handleRemove = (taskId: number) => {
       console.log('>>> task removed', taskId);
       arg.tasks.onRemove(taskId);
@@ -109,20 +111,15 @@ export const PanelContent: Story = {
             상위 3개 태스크에만 onClick handler를 사용
           </MDSTypography>
         </div>
-        <MDSDownloadPanel
-          panel={arg.panel}
-          tasks={{
-            list: [...firstThreeTasks, ...lastThreeTasks],
-            onRemove: handleRemove,
-          }}
-        />
+        
         <MDSDownloadPanel
           panel={{
             ...arg.panel,
-            isFold: true,
+            isFold,
+            onToggleFold: () => setIsFold(!isFold),
           }}
           tasks={{
-            list: [],
+            list: [...firstThreeTasks, ...lastThreeTasks],
             onRemove: handleRemove,
           }}
         />

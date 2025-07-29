@@ -1,13 +1,16 @@
 import { MDSIcon } from '../../atoms/Icon';
-import { MDSTypography } from '../../atoms/Typography';
 import { MDSPlainButton } from '../../molecules/PlainButton';
+import { PanelLabel } from './@components/PanelLabel';
 import { TaskItem } from './@components/TaskItem';
-import { Task } from './@types';
+import { Task, TaskStatus } from './@types';
 import { Styles } from './styles';
 
 type DownloadPanelProps = {
   panel: {
-    label: string;
+    label: {
+      title: string;
+      status: TaskStatus;
+    };
     isFold: boolean;
     onToggleFold: () => void;
     onClose: () => void;
@@ -22,12 +25,11 @@ export const DownloadPanel = (props: DownloadPanelProps) => {
   return (
     <Styles.Container isFold={panel.isFold}>
       <Styles.Title>
-        <MDSTypography variant="body" size="m" weight="medium">
-          {panel.label}
-        </MDSTypography>
+        <PanelLabel value={panel.label} isFold={panel.isFold} />
         <div className="actionButtonBox">
           <MDSPlainButton
             color="bluegray"
+            size="small"
             icon={
               <Styles.FoldIconBox isFold={panel.isFold}>
                 <MDSIcon.ArrowDown variant="outline" />
@@ -35,7 +37,11 @@ export const DownloadPanel = (props: DownloadPanelProps) => {
             }
             onClick={panel.onToggleFold}
           />
-          <MDSPlainButton color="bluegray" icon={<MDSIcon.CloseDelete variant="outline" />} onClick={panel.onClose} />
+          <MDSPlainButton
+            color="bluegray"
+            icon={<MDSIcon.CloseDelete variant="outline" />}
+            onClick={panel.onClose}
+          />
         </div>
       </Styles.Title>
       <Styles.Content isFold={panel.isFold}>

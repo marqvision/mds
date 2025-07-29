@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { MDSThemeColorPath } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
@@ -10,14 +11,14 @@ import { Styles } from '../styles';
 const READY_STATUS_COLOR = 'color/content/neutral/default/disabled';
 const FAILED_STATUS_COLOR = 'color/content/critical/default/normal';
 const COMPLETED_STATUS_COLOR = 'color/content/success/default/normal';
-// todo-@jamie: shared의 ExtensionIcon 컴포넌트를 mds v2로 전한하면 ExtensionIcon로 교체하기
+
 const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
   const { status, fileType } = props;
   switch (fileType) {
     case 'csv':
       return (
         <MDSIcon.ExcelSheet
-          color={status === 'ready' ? READY_STATUS_COLOR : 'color/content/success/default/normal'}
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/success/default/normal'}
           size={20}
         />
       );
@@ -25,7 +26,7 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return (
         <MDSIcon.Pdf
           variant="fill"
-          color={status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
           size={20}
         />
       );
@@ -33,7 +34,7 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return (
         <MDSIcon.Ppt
           variant="fill"
-          color={status === 'ready' ? READY_STATUS_COLOR : 'color/content/critical/default/normal'}
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/critical/default/normal'}
           size={20}
         />
       );
@@ -41,7 +42,7 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return (
         <MDSIcon.Archive
           variant="fill"
-          color={status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
+          color={status === 'prepare' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal'}
           size={20}
         />
       );
@@ -49,26 +50,60 @@ const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
       return null;
   }
 };
-const FileName = (props: Pick<Task, 'status' | 'fileName'>) => {
+
+// note-@jamie: file name 영역에 대해 추가 요청 사항이 나오면, 그냥 전반적으로 file name prop 영역에 react element를 넣을 수 있는 형태로 재구현하기
+const FileName = (props: Pick<Task, 'status' | 'fileName'> & { onClick?: () => void }) => {
   const { status, fileName } = props;
-  const color: MDSThemeColorPath = status === 'ready' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal';
+  const color: MDSThemeColorPath = status === 'prepare' ? READY_STATUS_COLOR : 'color/content/neutral/default/normal';
+
+  const hasClickEvent = typeof props.onClick === 'function';
+  const activeClickEvent = status === 'completed' && hasClickEvent;
+
+  const [isHovered, setIsHovered] = useState(false);
+  const supportClickEventProps = activeClickEvent
+    ? {
+        style: { cursor: 'pointer' },
+        textDecoration: 'underline',
+        onClick: props.onClick,
+        onMouseEnter: () => setIsHovered(true),
+        onMouseLeave: () => setIsHovered(false),
+      }
+    : {};
+
   return fileName.length > 40 ? (
     <MDSTooltip title={fileName} width="100%" size="small" style={{ marginBottom: 4 }}>
+      <Styles.FileNameBox>
+        <MDSTypography
+          variant="body"
+          size="m"
+          weight={isHovered ? 'medium' : 'regular'}
+          lineClamp={1}
+          overflowWrap="break-word"
+          wordBreak="break-all"
+          color={color}
+          {...supportClickEventProps}
+        >
+          {fileName}
+        </MDSTypography>
+        {hasClickEvent && <MDSIcon.OpenNew color={color} size={16} />}
+      </Styles.FileNameBox>
+    </MDSTooltip>
+  ) : (
+    <Styles.FileNameBox>
       <MDSTypography
         variant="body"
         size="m"
+        weight={isHovered ? 'medium' : 'regular'}
         lineClamp={1}
         overflowWrap="break-word"
         wordBreak="break-all"
         color={color}
+        {...supportClickEventProps}
       >
         {fileName}
       </MDSTypography>
-    </MDSTooltip>
-  ) : (
-    <MDSTypography variant="body" size="m" lineClamp={1} overflowWrap="break-word" wordBreak="break-all" color={color}>
-      {fileName}
-    </MDSTypography>
+      {hasClickEvent && <MDSIcon.OpenNew color={color} size={16} />}
+    </Styles.FileNameBox>
   );
 };
 const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onRemove: () => void }) => {
@@ -80,7 +115,7 @@ const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onRemove
   return (
     <Styles.ProgressIndicatorBox status={status}>
       <div className="progress-indicator-default">
-        {status === 'ready' || typeof progress !== 'number' ? (
+        {status === 'prepare' || typeof progress !== 'number' ? (
           <MDSLoadingIndicator isDeterminate backgroundColor progress={0} size={20} />
         ) : status === 'processing' ? (
           <MDSLoadingIndicator isDeterminate backgroundColor progress={progress} size={20} />
@@ -99,13 +134,19 @@ const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onRemove
   );
 };
 
-export const TaskItem = (props: { task: Task; onRemove: (taskId: Task['taskId']) => void }) => {
+type TaskItemProps = {
+  task: Task;
+  onRemove: (taskId: Task['taskId']) => void;
+};
+export const TaskItem = (props: TaskItemProps) => {
   const { task, onRemove } = props;
   const handleRemove = () => onRemove(task.taskId);
+  const handleClick = task.onClick ? () => task.onClick?.(task.taskId) : undefined;
+
   return (
     <Styles.Item key={task.taskId}>
       <FileIcon fileType={task.fileType} status={task.status} />
-      <FileName status={task.status} fileName={task.fileName} />
+      <FileName status={task.status} fileName={task.fileName} onClick={handleClick} />
       <ProgressIndicator status={task.status} progress={task.progress} onRemove={handleRemove} />
     </Styles.Item>
   );

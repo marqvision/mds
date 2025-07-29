@@ -39,7 +39,6 @@ export const DownloadPanel = (props: DownloadPanelProps) => {
           />
           <MDSPlainButton
             color="bluegray"
-            // size="small"
             icon={<MDSIcon.CloseDelete variant="outline" />}
             onClick={panel.onClose}
           />

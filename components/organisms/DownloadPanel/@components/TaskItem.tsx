@@ -11,7 +11,7 @@ import { Styles } from '../styles';
 const READY_STATUS_COLOR = 'color/content/neutral/default/disabled';
 const FAILED_STATUS_COLOR = 'color/content/critical/default/normal';
 const COMPLETED_STATUS_COLOR = 'color/content/success/default/normal';
-// todo-@jamie: shared의 ExtensionIcon 컴포넌트를 mds v2로 전한하면 ExtensionIcon로 교체하기
+
 const FileIcon = (props: Pick<Task, 'status' | 'fileType'>) => {
   const { status, fileType } = props;
   switch (fileType) {

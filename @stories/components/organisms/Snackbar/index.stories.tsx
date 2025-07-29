@@ -131,6 +131,23 @@ export const WithActionButton: Story = {
       >
         Snackbar with Action
       </MDSButton>
+      <MDSButton
+        onClick={() =>
+          MDSSnackbar({
+            type: 'success',
+            title: 'File Deleted',
+            message: 'Designer Gm Gentles, Designer 파일이 삭제되었습니다.',
+            actionButton: {
+              dismissBefore: true,
+              text: 'Undo',
+              event: () => console.log('Undo action triggered'),
+            },
+            duration: 10000,
+          })
+        }
+      >
+        Snackbar with Action + snackbar dismiss 기능
+      </MDSButton>
     </Wrapper>
   ),
 };

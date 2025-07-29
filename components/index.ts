@@ -25,6 +25,7 @@ export * from './molecules/Popover';
 export * from './molecules/SelectContainer';
 export * from './molecules/Tag';
 export * from './molecules/Tooltip';
+export * from './molecules/MessageBox';
 
 // ORGANISMS
 export * from './organisms/DatePickers/Calendar';

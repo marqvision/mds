@@ -9,7 +9,7 @@ type DownloadPanelProps = {
   panel: {
     label: {
       title: string;
-      status: TaskStatus;
+      status: Omit<TaskStatus, 'removed'>;
     };
     isFold: boolean;
     onToggleFold: () => void;
@@ -32,14 +32,14 @@ export const DownloadPanel = (props: DownloadPanelProps) => {
             size="small"
             icon={
               <Styles.FoldIconBox isFold={panel.isFold}>
-                <MDSIcon.ArrowDown variant="outline" size={18} />
+                <MDSIcon.ArrowDown variant="outline" size={20} />
               </Styles.FoldIconBox>
             }
             onClick={panel.onToggleFold}
           />
           <MDSPlainButton
             color="bluegray"
-            icon={<MDSIcon.CloseDelete variant="outline" size={18} />}
+            icon={<MDSIcon.CloseDelete variant="outline" size={20} />}
             onClick={panel.onClose}
           />
         </div>

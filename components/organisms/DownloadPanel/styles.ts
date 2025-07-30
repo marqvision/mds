@@ -15,7 +15,7 @@ const Container = styled.div<{ isFold: boolean }>`
   border-radius: 8px;
 
   ${({ isFold }) => css`
-    width: ${isFold ? '228px' : '412px'};
+    width: ${isFold ? '232px' : '412px'};
     max-height: ${isFold ? '52px' : '500px'};
   `}
 
@@ -35,7 +35,7 @@ const Title = styled.div`
   & .actionButtonBox {
     display: flex;
     align-items: center;
-    height: 20px;
+    height: 22px;
     gap: 12px;
   }
 `;

@@ -134,7 +134,7 @@ const ProgressIndicator = (props: Pick<Task, 'status' | 'progress'> & { onRemove
         ) : null}
       </div>
       <div className="progress-indicator-hover">
-        <MDSTooltip title={toolTipTitle} width={toolTipWidth} popoverDelay={0} size="medium" style={{ textAlign: 'center' }}>
+        <MDSTooltip title={toolTipTitle} width={toolTipWidth} size="medium" style={{ textAlign: 'center' }}>
           <MDSPlainButton color="bluegray" icon={<MDSIcon.CloseDelete variant="fill" size={20} />} onClick={onRemove} />
         </MDSTooltip>
       </div>

@@ -41,7 +41,7 @@ const StyledIcon = styled(MDSIcon.Help)`
 `;
 
 export const MDSTooltip = (props: TooltipProps) => {
-  const { children, title, size = 'medium', position = 'top-center', width, style, anchorStyle, popoverDelay } = props;
+  const { children, title, size = 'medium', position = 'top-center', width, style, anchorStyle } = props;
   const { color } = useTheme();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -73,7 +73,6 @@ export const MDSTooltip = (props: TooltipProps) => {
         maxHeight: 'unset',
         ...style,
       }}
-      delay={popoverDelay}
     >
       {isValidElement(title) ? (
         title

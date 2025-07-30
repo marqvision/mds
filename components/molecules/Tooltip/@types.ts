@@ -9,7 +9,6 @@ export type TooltipProps = {
   width?: number | string;
   style?: CSSProperties;
   anchorStyle?: CSSProperties;
-  popoverDelay?: number;
 };
 
 export type MDSTooltipPosition = PopoverPosition;

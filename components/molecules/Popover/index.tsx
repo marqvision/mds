@@ -356,14 +356,10 @@ export const MDSPopover = (props: Props & StyleProps) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const focusRef = useRef(false);
   const timeoutRef = useRef<number>();
-  const popoverIdRef = useRef<string>();
 
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenPopover = (e: MouseEvent) => {
-    const popoverId = Date.now() + Math.random().toString(36);
-    popoverIdRef.current = popoverId;
-
     anchorRef.current = e.currentTarget;
     if (forwardRef) {
       forwardRef.current = e.currentTarget;
@@ -373,23 +369,17 @@ export const MDSPopover = (props: Props & StyleProps) => {
     if (timeoutRef.current) {
       window.clearTimeout(timeoutRef.current);
       timeoutRef.current = undefined;
-    }
 
-    if (isOpen) {
       setIsOpen(false);
       window.setTimeout(() => {
-        if (popoverIdRef.current === popoverId) {
-          setIsOpen(true);
-        }
-      }, 50);
+        setIsOpen(true);
+      }, 0);
     } else {
       setIsOpen(true);
     }
   };
 
   const handleClosePopover = useCallback(() => {
-    popoverIdRef.current = undefined;
-
     if (hasDim) {
       dialogRef.current?.close();
     } else {
@@ -403,9 +393,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
     }
 
     timeoutRef.current = window.setTimeout(() => {
-      if (popoverIdRef.current === undefined) {
-        setIsOpen(false);
-      }
+      setIsOpen(false);
       timeoutRef.current = undefined;
     }, delay);
   }, [delay, hasDim, onClose, onVisibleChange]);
@@ -491,14 +479,6 @@ export const MDSPopover = (props: Props & StyleProps) => {
       };
     }
   }, [hasDim, trigger, isOpen, handleClosePopover, blockAutoClose]);
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        window.clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <>

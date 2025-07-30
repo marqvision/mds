@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { MDSSegmentedButton } from '../../../components';
 import { MDSIcon } from '../../../components/atoms/Icon';
+import { SegmentedButtonProps } from '../../../components/molecules/SegmentedButton/@types';
 import type { Meta, StoryObj } from '@storybook/react';
+
+const SegmentedButtonWithState = (args: SegmentedButtonProps<string | number>) => {
+  const [selected, setSelected] = useState(args.value);
+  return <MDSSegmentedButton {...args} value={selected} onChange={setSelected} />;
+};
 
 const meta = {
   title: '2. Components/molecules/SegmentedButton',
@@ -22,36 +28,32 @@ export const Basic: Story = {
   args: {
     type: 'hug',
     variant: 'fill',
-    selectedValue: 0,
+    value: 0,
     buttonGroupList: [
       {
         label: 'Button 1',
         value: 0,
-        Icon: undefined,
-        SelectedIcon: undefined,
+        icon: undefined,
+        selectedIcon: undefined,
       },
       {
         label: 'Button 2',
         value: 1,
-        Icon: undefined,
-        SelectedIcon: undefined,
+        icon: undefined,
+        selectedIcon: undefined,
       },
     ],
     size: 'medium',
-    onClick: (value) => console.log(`Button clicked: ${value}`),
+    onChange: (value: string | number) => console.log(`Button clicked: ${value}`),
   },
-  render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [selected, setSelected] = useState(args.selectedValue);
-    return <MDSSegmentedButton {...args} selectedValue={selected} onClick={setSelected} />;
-  },
+  render: (args) => <SegmentedButtonWithState {...args} />,
 };
 
 export const TintVariant: Story = {
   args: {
     type: 'hug',
     variant: 'tint',
-    selectedValue: 0,
+    value: 0,
     buttonGroupList: [
       {
         label: 'Option 1',
@@ -67,13 +69,9 @@ export const TintVariant: Story = {
       },
     ],
     size: 'medium',
-    onClick: (value) => console.log(`Button clicked: ${value}`),
+    onChange: (value: string | number) => console.log(`Button clicked: ${value}`),
   },
-  render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [selected, setSelected] = useState(args.selectedValue);
-    return <MDSSegmentedButton {...args} selectedValue={selected} onClick={setSelected} />;
-  },
+  render: (args) => <SegmentedButtonWithState {...args} />,
 };
 
 export const Sizes = {
@@ -89,13 +87,13 @@ export const Sizes = {
           <MDSSegmentedButton
             type="hug"
             variant="fill"
-            selectedValue="small"
+            value="small"
             size="small"
             buttonGroupList={[
               { label: 'Small', value: 'small' },
               { label: 'Text', value: 'text' },
             ]}
-            onClick={handleClick}
+            onChange={handleClick}
           />
         </div>
         <div>
@@ -103,13 +101,13 @@ export const Sizes = {
           <MDSSegmentedButton
             type="hug"
             variant="fill"
-            selectedValue="medium"
+            value="medium"
             size="medium"
             buttonGroupList={[
               { label: 'Medium', value: 'medium' },
               { label: 'Text', value: 'text' },
             ]}
-            onClick={handleClick}
+            onChange={handleClick}
           />
         </div>
         <div>
@@ -117,13 +115,13 @@ export const Sizes = {
           <MDSSegmentedButton
             type="hug"
             variant="fill"
-            selectedValue="large"
+            value="large"
             size="large"
             buttonGroupList={[
               { label: 'Large', value: 'large' },
               { label: 'Text', value: 'text' },
             ]}
-            onClick={handleClick}
+            onChange={handleClick}
           />
         </div>
       </div>
@@ -144,13 +142,13 @@ export const TypeComparison = {
           <MDSSegmentedButton
             type="hug"
             variant="fill"
-            selectedValue="first"
+            value="first"
             buttonGroupList={[
               { label: 'First', value: 'first' },
               { label: 'Second', value: 'second' },
               { label: 'Third', value: 'third' },
             ]}
-            onClick={handleClick}
+            onChange={handleClick}
           />
         </div>
         <div>
@@ -158,13 +156,13 @@ export const TypeComparison = {
           <MDSSegmentedButton
             type="fit"
             variant="fill"
-            selectedValue="first"
+            value="first"
             buttonGroupList={[
               { label: 'First', value: 'first' },
               { label: 'Second', value: 'second' },
               { label: 'Third', value: 'third' },
             ]}
-            onClick={handleClick}
+            onChange={handleClick}
           />
         </div>
         <div>
@@ -173,13 +171,13 @@ export const TypeComparison = {
             type="fixed"
             fixedWidth="300px"
             variant="fill"
-            selectedValue="first"
+            value="first"
             buttonGroupList={[
               { label: 'First', value: 'first' },
               { label: 'Second', value: 'second' },
               { label: 'Third', value: 'third' },
             ]}
-            onClick={handleClick}
+            onChange={handleClick}
           />
         </div>
       </div>
@@ -198,38 +196,38 @@ const InteractiveExampleComponent = () => {
       <MDSSegmentedButton
         type="hug"
         variant="tint"
-        selectedValue={selectedTab}
+        value={selectedTab}
         buttonGroupList={[
           { label: '개요', value: 'overview' },
           { label: '상세정보', value: 'details' },
           { label: '설정', value: 'settings' },
         ]}
-        onClick={setSelectedTab}
+        onChange={setSelectedTab}
       />
 
       <h4>크기 선택</h4>
       <MDSSegmentedButton
         type="hug"
         variant="fill"
-        selectedValue={selectedSize}
+        value={selectedSize}
         buttonGroupList={[
           { label: 'S', value: 'small' },
           { label: 'M', value: 'medium' },
           { label: 'L', value: 'large' },
         ]}
-        onClick={setSelectedSize}
+        onChange={setSelectedSize}
       />
 
       <h4>스타일 선택</h4>
       <MDSSegmentedButton
         type="fit"
         variant={selectedVariant as 'fill' | 'tint'}
-        selectedValue={selectedVariant}
+        value={selectedVariant}
         buttonGroupList={[
           { label: 'Fill', value: 'fill' },
           { label: 'Tint', value: 'tint' },
         ]}
-        onClick={setSelectedVariant}
+        onChange={setSelectedVariant}
       />
 
       <div
@@ -266,13 +264,13 @@ export const LongTextExample = {
           <MDSSegmentedButton
             type="hug"
             variant="fill"
-            selectedValue="performance"
+            value="performance"
             buttonGroupList={[
               { label: 'Performance Reports', value: 'performance' },
               { label: 'Analytics Dashboard', value: 'analytics' },
               { label: 'User Management', value: 'users' },
             ]}
-            onClick={handleClick}
+            onChange={handleClick}
           />
         </div>
         <div style={{ width: '400px' }}>
@@ -280,13 +278,13 @@ export const LongTextExample = {
           <MDSSegmentedButton
             type="fit"
             variant="tint"
-            selectedValue="performance"
+            value="performance"
             buttonGroupList={[
               { label: 'Performance', value: 'performance' },
               { label: 'Analytics', value: 'analytics' },
               { label: 'Users', value: 'users' },
             ]}
-            onClick={handleClick}
+            onChange={handleClick}
           />
         </div>
       </div>
@@ -306,21 +304,21 @@ const IconOnlyComponent = () => {
           type="fit"
           buttonGroupList={[
             {
-              Icon: <MDSIcon.ChartTable />,
-              SelectedIcon: <MDSIcon.ChartTable />,
+              icon: <MDSIcon.ChartTable />,
+              selectedIcon: <MDSIcon.ChartTable />,
               label: '',
               value: 'table',
             },
             {
-              Icon: <MDSIcon.GridView />,
-              SelectedIcon: <MDSIcon.GridView />,
+              icon: <MDSIcon.GridView />,
+              selectedIcon: <MDSIcon.GridView />,
               label: '',
               value: 'grid',
             },
           ]}
-          selectedValue={viewMode}
+          value={viewMode}
           variant="tint"
-          onClick={setViewMode}
+          onChange={setViewMode}
         />
       </div>
 
@@ -331,21 +329,21 @@ const IconOnlyComponent = () => {
           type="hug"
           buttonGroupList={[
             {
-              Icon: <MDSIcon.ChartTable />,
-              SelectedIcon: <MDSIcon.ChartTable />,
+              icon: <MDSIcon.ChartTable />,
+              selectedIcon: <MDSIcon.ChartTable />,
               label: '',
               value: 'table',
             },
             {
-              Icon: <MDSIcon.GridView />,
-              SelectedIcon: <MDSIcon.GridView />,
+              icon: <MDSIcon.GridView />,
+              selectedIcon: <MDSIcon.GridView />,
               label: '',
               value: 'grid',
             },
           ]}
-          selectedValue={viewMode}
+          value={viewMode}
           variant="fill"
-          onClick={setViewMode}
+          onChange={setViewMode}
         />
       </div>
 
@@ -359,21 +357,21 @@ const IconOnlyComponent = () => {
               type="hug"
               buttonGroupList={[
                 {
-                  Icon: <MDSIcon.ChartTable />,
-                  SelectedIcon: <MDSIcon.ChartTable />,
+                  icon: <MDSIcon.ChartTable />,
+                  selectedIcon: <MDSIcon.ChartTable />,
                   label: '',
                   value: 'table',
                 },
                 {
-                  Icon: <MDSIcon.GridView />,
-                  SelectedIcon: <MDSIcon.GridView />,
+                  icon: <MDSIcon.GridView />,
+                  selectedIcon: <MDSIcon.GridView />,
                   label: '',
                   value: 'grid',
                 },
               ]}
-              selectedValue={viewMode}
+              value={viewMode}
               variant="tint"
-              onClick={setViewMode}
+              onChange={setViewMode}
             />
           </div>
           <div>
@@ -383,21 +381,21 @@ const IconOnlyComponent = () => {
               type="hug"
               buttonGroupList={[
                 {
-                  Icon: <MDSIcon.ChartTable />,
-                  SelectedIcon: <MDSIcon.ChartTable />,
+                  icon: <MDSIcon.ChartTable />,
+                  selectedIcon: <MDSIcon.ChartTable />,
                   label: '',
                   value: 'table',
                 },
                 {
-                  Icon: <MDSIcon.GridView />,
-                  SelectedIcon: <MDSIcon.GridView />,
+                  icon: <MDSIcon.GridView />,
+                  selectedIcon: <MDSIcon.GridView />,
                   label: '',
                   value: 'grid',
                 },
               ]}
-              selectedValue={viewMode}
+              value={viewMode}
               variant="tint"
-              onClick={setViewMode}
+              onChange={setViewMode}
             />
           </div>
         </div>

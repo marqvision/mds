@@ -2,9 +2,27 @@ import { Fragment } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
 import { MDSButton } from '../Button';
-import { SegmentedButtonProps } from './@types';
+import { SegmentedButtonProps, SegmentedButtonVariant } from './@types';
 
-const SegmentedButtonWrapper = styled.div<{ variant: string; fixedWidth?: string; tintHeight?: number }>`
+const SIZE_TO_HEIGHT_MAP: Record<NonNullable<SegmentedButtonProps<any>['size']>, number> = {
+  small: 24,
+  medium: 28,
+  large: 32,
+};
+
+type SegmentedButtonWrapperProps = {
+  variant: SegmentedButtonVariant;
+  fixedWidth?: string;
+  tintHeight?: number;
+};
+
+type StyledMDSButtonProps = {
+  isSelected?: boolean;
+  segmentVariant?: SegmentedButtonVariant;
+  tintHeight?: number;
+};
+
+const SegmentedButtonWrapper = styled.div<SegmentedButtonWrapperProps>`
   display: flex;
   border-radius: 8px;
   gap: 1px;
@@ -24,6 +42,12 @@ const SegmentedButtonWrapper = styled.div<{ variant: string; fixedWidth?: string
     }
   }
 
+  &.fixed {
+    & > button {
+      width: 100%;
+    }
+  }
+
   &.tint {
     background-color: ${({ theme }) => theme.color.bg.fill.neutral.default.normal};
     border: 1px solid ${({ theme }) => theme.color.border.neutral.default.normal};
@@ -35,7 +59,7 @@ const SegmentedButtonWrapper = styled.div<{ variant: string; fixedWidth?: string
   }
 `;
 
-const StyledMDSButton = styled(MDSButton)<{ isSelected?: boolean; segmentVariant?: string; tintHeight?: number }>`
+const StyledMDSButton = styled(MDSButton)<StyledMDSButtonProps>`
   cursor: pointer;
   user-select: none;
 
@@ -66,10 +90,30 @@ const StyledMDSButton = styled(MDSButton)<{ isSelected?: boolean; segmentVariant
     `}
 `;
 
-export const MDSSegmentedButton = <T extends string | number>(props: SegmentedButtonProps<T>) => {
-  const { buttonGroupList, selectedValue, variant, type, fixedWidth, onClick, size = 'medium' } = props;
+const getButtonProps = (variant: SegmentedButtonVariant, isSelected: boolean) => {
+  if (variant === 'fill') {
+    return {
+      color: isSelected ? 'blue' : 'bluegray',
+      variant: isSelected ? 'fill' : 'tint',
+    } as const;
+  }
 
-  const tintHeight = size === 'small' ? 24 : size === 'medium' ? 28 : 32;
+  return {
+    color: isSelected ? 'blue' : 'white',
+    variant: isSelected ? 'border' : 'fill',
+  } as const;
+};
+
+const getIcon = (isSelected: boolean, icon?: React.ReactElement, selectedIcon?: React.ReactElement) => {
+  if (isSelected && selectedIcon) return selectedIcon;
+  if (!isSelected && icon) return icon;
+  return undefined;
+};
+
+export const MDSSegmentedButton = <T extends string | number>(props: SegmentedButtonProps<T>) => {
+  const { buttonGroupList, value, variant, type, fixedWidth, onChange, size = 'medium' } = props;
+
+  const tintHeight = SIZE_TO_HEIGHT_MAP[size] || SIZE_TO_HEIGHT_MAP.medium;
 
   return (
     <SegmentedButtonWrapper
@@ -78,35 +122,24 @@ export const MDSSegmentedButton = <T extends string | number>(props: SegmentedBu
       fixedWidth={fixedWidth}
       tintHeight={variant === 'tint' ? tintHeight : undefined}
     >
-      {buttonGroupList.map(({ label, value, Icon, SelectedIcon }) => {
-        const isSelected = selectedValue === value;
+      {buttonGroupList.map(({ label, value: itemValue, icon, selectedIcon }) => {
+        const isSelected = value === itemValue;
+        const buttonProps = getButtonProps(variant, isSelected);
+        const iconElement = getIcon(isSelected, icon, selectedIcon);
 
         return (
-          <Fragment key={`Segmented_Button_Selection_${value}`}>
-            {variant === 'fill' ? (
-              <StyledMDSButton
-                size={size}
-                color={isSelected ? 'blue' : 'bluegray'}
-                variant={isSelected ? 'fill' : 'tint'}
-                startIcon={isSelected && SelectedIcon ? SelectedIcon : !isSelected && Icon ? Icon : undefined}
-                onClick={() => onClick(value)}
-              >
-                {label}
-              </StyledMDSButton>
-            ) : (
-              <StyledMDSButton
-                size={size}
-                color={isSelected ? 'blue' : 'white'}
-                variant={isSelected ? 'border' : 'fill'}
-                startIcon={isSelected && SelectedIcon ? SelectedIcon : !isSelected && Icon ? Icon : undefined}
-                onClick={() => onClick(value)}
-                isSelected={isSelected}
-                segmentVariant={variant}
-                tintHeight={tintHeight}
-              >
-                {label}
-              </StyledMDSButton>
-            )}
+          <Fragment key={`segmented-button-${itemValue}`}>
+            <StyledMDSButton
+              size={size}
+              {...buttonProps}
+              startIcon={iconElement}
+              onClick={() => onChange(itemValue)}
+              isSelected={isSelected}
+              segmentVariant={variant}
+              tintHeight={tintHeight}
+            >
+              {label}
+            </StyledMDSButton>
           </Fragment>
         );
       })}

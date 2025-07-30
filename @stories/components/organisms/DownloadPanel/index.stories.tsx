@@ -1,5 +1,7 @@
 import { useState } from '@storybook/preview-api';
-import { MDSCheckbox, MDSTypography, MDSDownloadPanel } from '../../../../components';
+import { MDSDownloadPanel, MDSDownloadPanelProps } from '../../../../components';
+import { NewTask, TaskForm } from './TaskForm';
+import { PanelLabelForm } from './PanelLabelForm';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSDownloadPanel> = {
@@ -18,15 +20,6 @@ type Story = StoryObj<typeof MDSDownloadPanel>;
 
 export const PanelContent: Story = {
   args: {
-    panel: {
-      label: {
-        title: 'Preparing export',
-        status: 'processing',
-      },
-      isFold: false,
-      onToggleFold: () => {},
-      onClose: () => {},
-    },
     tasks: {
       list: [
         {
@@ -85,41 +78,51 @@ export const PanelContent: Story = {
     },
   },
   render: function Render(arg) {
-    const [isChecked, setIsChecked] = useState(false);
-
     const [isFold, setIsFold] = useState(false);
+    const [tasks, setTasks] = useState(() => arg.tasks.list);
+    const [panelLabel, setPanelLabel] = useState<MDSDownloadPanelProps['panel']['label']>({
+      title: 'Preparing export',
+      status: 'prepare',
+    });
 
     const handleRemove = (taskId: number) => {
       console.log('>>> task removed', taskId);
+      setTasks(tasks.filter((task) => task.taskId !== taskId));
       arg.tasks.onRemove(taskId);
     };
+
     const handleClick = (taskId: number) => {
       console.log('>>> task clicked', taskId);
     };
 
-    const firstThreeTasks = arg.tasks.list.slice(0, 3).map((task) => ({
-      ...task,
-      onClick: isChecked ? handleClick : undefined,
-    }));
-    const lastThreeTasks = arg.tasks.list.slice(3);
+    const handleAddTask = (newTaskData: Omit<NewTask, 'taskId'>) => {
+      const newTask = {
+        taskId: Math.max(...tasks.map((t) => t.taskId), 0) + 1,
+        ...newTaskData,
+      };
+      setTasks([...tasks, newTask]);
+    };
+
+    const handleUpdatePanelLabel = (data: MDSDownloadPanelProps['panel']['label']) => {
+      setPanelLabel(data);
+    };
 
     return (
       <div style={{ width: '500px' }}>
-        <div>
-          <MDSTypography as="label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MDSCheckbox value={isChecked} onChange={() => setIsChecked(!isChecked)} />
-            상위 3개 태스크에만 onClick handler를 사용
-          </MDSTypography>
+        <div style={{ display: 'grid', gridTemplateColumns: '250px 250px', gap: '16px' }}>
+          <PanelLabelForm initialData={panelLabel.status} onUpdate={handleUpdatePanelLabel} />
+          <TaskForm onAddTask={handleAddTask} onClickHandler={handleClick} />
         </div>
-        
+
         <MDSDownloadPanel
           panel={{
             ...arg.panel,
+            label: panelLabel,
             isFold,
             onToggleFold: () => setIsFold(!isFold),
           }}
           tasks={{
-            list: [...firstThreeTasks, ...lastThreeTasks],
+            list: tasks,
             onRemove: handleRemove,
           }}
         />

@@ -25,7 +25,6 @@ type StyledMDSButtonProps = {
 const SegmentedButtonWrapper = styled.div<SegmentedButtonWrapperProps>`
   display: flex;
   border-radius: 8px;
-  gap: 1px;
   height: ${({ variant, tintHeight }) => (variant === 'tint' && tintHeight ? `${tintHeight}px` : 'auto')};
   min-height: ${({ variant, tintHeight }) => (variant === 'tint' && tintHeight ? `${tintHeight}px` : 'auto')};
   width: ${({ fixedWidth }) => fixedWidth || 'auto'};
@@ -51,6 +50,7 @@ const SegmentedButtonWrapper = styled.div<SegmentedButtonWrapperProps>`
   &.tint {
     background-color: ${({ theme }) => theme.color.bg.fill.neutral.default.normal};
     border: 1px solid ${({ theme }) => theme.color.border.neutral.default.normal};
+    gap: 1px;
   }
 
   &.fill {
@@ -69,11 +69,10 @@ const StyledMDSButton = styled(MDSButton)<StyledMDSButtonProps>`
 
   ${({ theme, isSelected, segmentVariant }) =>
     segmentVariant === 'tint' &&
-    isSelected &&
     `
-      outline: 1px solid ${theme.color.border.primary.default.normal};
-      border: none;
-    `}
+    outline: 1px solid ${isSelected ? theme.color.border.primary.default.normal : 'transparent'};
+    border: none;
+  `}
 
   ${({ isSelected, segmentVariant }) =>
     segmentVariant === 'tint' &&

@@ -99,7 +99,7 @@ const getButtonProps = (variant: SegmentedButtonVariant, isSelected: boolean) =>
 
   return {
     color: isSelected ? 'blue' : 'white',
-    variant: isSelected ? 'border' : 'fill',
+    variant: isSelected ? 'tint' : 'fill',
   } as const;
 };
 

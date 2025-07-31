@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 export type SegmentedButtonType = 'fit' | 'fixed' | 'hug';
-export type SegmentedButtonVariant = 'tint' | 'fill';
+export type SegmentedButtonVariant = 'border' | 'fill';
 
 export type ButtonGroupItem<T> = {
   label: string;

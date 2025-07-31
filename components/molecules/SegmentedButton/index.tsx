@@ -25,8 +25,8 @@ type StyledMDSButtonProps = {
 const SegmentedButtonWrapper = styled.div<SegmentedButtonWrapperProps>`
   display: flex;
   border-radius: 8px;
-  height: ${({ variant, tintHeight }) => (variant === 'tint' && tintHeight ? `${tintHeight}px` : 'auto')};
-  min-height: ${({ variant, tintHeight }) => (variant === 'tint' && tintHeight ? `${tintHeight}px` : 'auto')};
+  height: ${({ variant, tintHeight }) => (variant === 'border' && tintHeight ? `${tintHeight}px` : 'auto')};
+  min-height: ${({ variant, tintHeight }) => (variant === 'border' && tintHeight ? `${tintHeight}px` : 'auto')};
   width: ${({ fixedWidth }) => fixedWidth || 'auto'};
 
   &.hug {
@@ -47,7 +47,7 @@ const SegmentedButtonWrapper = styled.div<SegmentedButtonWrapperProps>`
     }
   }
 
-  &.tint {
+  &.border {
     background-color: ${({ theme }) => theme.color.bg.fill.neutral.default.normal};
     border: 1px solid ${({ theme }) => theme.color.border.neutral.default.normal};
     gap: 1px;
@@ -68,14 +68,14 @@ const StyledMDSButton = styled(MDSButton)<StyledMDSButtonProps>`
   }
 
   ${({ theme, isSelected, segmentVariant }) =>
-    segmentVariant === 'tint' &&
+    segmentVariant === 'border' &&
     `
     outline: 1px solid ${isSelected ? theme.color.border.primary.default.normal : 'transparent'};
     border: none;
   `}
 
   ${({ isSelected, segmentVariant }) =>
-    segmentVariant === 'tint' &&
+    segmentVariant === 'border' &&
     !isSelected &&
     `
       outline: none;
@@ -119,7 +119,7 @@ export const MDSSegmentedButton = <T extends string | number>(props: SegmentedBu
       className={clsx(variant, type)}
       variant={variant}
       fixedWidth={fixedWidth}
-      tintHeight={variant === 'tint' ? tintHeight : undefined}
+      tintHeight={variant === 'border' ? tintHeight : undefined}
     >
       {buttonGroupList.map(({ label, value: itemValue, icon, selectedIcon }) => {
         const isSelected = value === itemValue;

@@ -52,7 +52,7 @@ export const Basic: Story = {
 export const TintVariant: Story = {
   args: {
     type: 'hug',
-    variant: 'tint',
+    variant: 'border',
     value: 0,
     buttonGroupList: [
       {
@@ -195,7 +195,7 @@ const InteractiveExampleComponent = () => {
       <h4>탭 예제</h4>
       <MDSSegmentedButton
         type="hug"
-        variant="tint"
+        variant="border"
         value={selectedTab}
         buttonGroupList={[
           { label: '개요', value: 'overview' },
@@ -277,7 +277,7 @@ export const LongTextExample = {
           <h4>긴 텍스트 - Fit</h4>
           <MDSSegmentedButton
             type="fit"
-            variant="tint"
+            variant="border"
             value="performance"
             buttonGroupList={[
               { label: 'Performance', value: 'performance' },
@@ -317,7 +317,7 @@ const IconOnlyComponent = () => {
             },
           ]}
           value={viewMode}
-          variant="tint"
+          variant="border"
           onChange={setViewMode}
         />
       </div>
@@ -370,7 +370,7 @@ const IconOnlyComponent = () => {
                 },
               ]}
               value={viewMode}
-              variant="tint"
+              variant="border"
               onChange={setViewMode}
             />
           </div>
@@ -394,7 +394,7 @@ const IconOnlyComponent = () => {
                 },
               ]}
               value={viewMode}
-              variant="tint"
+              variant="border"
               onChange={setViewMode}
             />
           </div>

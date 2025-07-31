@@ -33,12 +33,10 @@ export const Basic: Story = {
       {
         label: 'Button 1',
         value: 0,
-        icon: undefined,
       },
       {
         label: 'Button 2',
         value: 1,
-        icon: undefined,
       },
     ],
     size: 'medium',
@@ -411,6 +409,3 @@ const IconOnlyComponent = () => {
 export const IconOnly = {
   render: () => <IconOnlyComponent />,
 };
-
-// 기존 스토리는 호환성을 위해 유지
-export const SegmentedButtonStories: Story = Basic;

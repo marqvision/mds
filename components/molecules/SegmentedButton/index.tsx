@@ -1,6 +1,6 @@
+import { Fragment } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
-import { Fragment } from 'react';
 import { MDSButton } from '../Button';
 import { SegmentedButtonProps, SegmentedButtonVariant } from './@types';
 
@@ -13,20 +13,20 @@ const SIZE_TO_HEIGHT_MAP: Record<NonNullable<SegmentedButtonProps<string | numbe
 type SegmentedButtonWrapperProps = {
   variant: SegmentedButtonVariant;
   fixedWidth?: string;
-  tintHeight?: number;
+  height: number;
 };
 
 type StyledMDSButtonProps = {
   isSelected?: boolean;
   segmentVariant?: SegmentedButtonVariant;
-  tintHeight?: number;
+  height: number;
 };
 
 const SegmentedButtonWrapper = styled.div<SegmentedButtonWrapperProps>`
   display: flex;
   border-radius: 8px;
-  height: ${({ variant, tintHeight }) => (variant === 'border' && tintHeight ? `${tintHeight}px` : 'auto')};
-  min-height: ${({ variant, tintHeight }) => (variant === 'border' && tintHeight ? `${tintHeight}px` : 'auto')};
+  height: ${({ height: tintHeight }) => `${tintHeight}px`};
+  min-height: ${({ height: tintHeight }) => `${tintHeight}px`};
   width: ${({ fixedWidth }) => fixedWidth || 'auto'};
 
   &.hug {
@@ -81,8 +81,8 @@ const StyledMDSButton = styled(MDSButton)<StyledMDSButtonProps>`
       outline: none;
     `}
 
-  ${({ tintHeight }) =>
-    tintHeight &&
+  ${({ segmentVariant, height: tintHeight }) =>
+    segmentVariant === 'border' &&
     `
       height: ${tintHeight - 2}px;
       min-height: ${tintHeight - 2}px;
@@ -115,15 +115,10 @@ const getIcon = (isSelected: boolean, icon?: React.ReactElement, selectedIcon?: 
 export const MDSSegmentedButton = <T extends string | number>(props: SegmentedButtonProps<T>) => {
   const { list: buttonGroupList, value, variant, type, fixedWidth, onChange, size = 'medium', selectedIcon } = props;
 
-  const tintHeight = SIZE_TO_HEIGHT_MAP[size] || SIZE_TO_HEIGHT_MAP.medium;
+  const height = SIZE_TO_HEIGHT_MAP[size] || SIZE_TO_HEIGHT_MAP.medium;
 
   return (
-    <SegmentedButtonWrapper
-      className={clsx(variant, type)}
-      variant={variant}
-      fixedWidth={fixedWidth}
-      tintHeight={variant === 'border' ? tintHeight : undefined}
-    >
+    <SegmentedButtonWrapper className={clsx(variant, type)} variant={variant} fixedWidth={fixedWidth} height={height}>
       {buttonGroupList.map(({ label, value: itemValue, icon }) => {
         const isSelected = value === itemValue;
         const buttonProps = getButtonProps(variant, isSelected);
@@ -138,7 +133,7 @@ export const MDSSegmentedButton = <T extends string | number>(props: SegmentedBu
               onClick={() => onChange(itemValue)}
               isSelected={isSelected}
               segmentVariant={variant}
-              tintHeight={tintHeight}
+              height={height}
             >
               {label}
             </StyledMDSButton>

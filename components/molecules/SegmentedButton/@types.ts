@@ -17,7 +17,7 @@ type CommonProps<T> = {
   variant: SegmentedButtonVariant;
   onChange: (value: T) => void;
   size?: 'small' | 'medium' | 'large';
-  selectedIcon?: ReactElement; // 전체 컴포넌트에 대한 selectedIcon 추가
+  selectedIcon?: ReactElement;
 };
 
 type WithoutWidth<T> = CommonProps<T> & {

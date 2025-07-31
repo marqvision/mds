@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
+import { Fragment } from 'react';
 import { MDSButton } from '../Button';
 import { SegmentedButtonProps, SegmentedButtonVariant } from './@types';
 
-const SIZE_TO_HEIGHT_MAP: Record<NonNullable<SegmentedButtonProps<any>['size']>, number> = {
+const SIZE_TO_HEIGHT_MAP: Record<NonNullable<SegmentedButtonProps<string | number>['size']>, number> = {
   small: 24,
   medium: 28,
   large: 32,
@@ -104,13 +104,16 @@ const getButtonProps = (variant: SegmentedButtonVariant, isSelected: boolean) =>
 };
 
 const getIcon = (isSelected: boolean, icon?: React.ReactElement, selectedIcon?: React.ReactElement) => {
-  if (isSelected && selectedIcon) return selectedIcon;
-  if (!isSelected && icon) return icon;
-  return undefined;
+  if (isSelected) {
+    // 개별 아이템의 selectedIcon이 있으면 우선 사용, 없으면 전체 selectedIcon 사용
+    return selectedIcon || icon;
+  }
+
+  return icon;
 };
 
 export const MDSSegmentedButton = <T extends string | number>(props: SegmentedButtonProps<T>) => {
-  const { buttonGroupList, value, variant, type, fixedWidth, onChange, size = 'medium' } = props;
+  const { list: buttonGroupList, value, variant, type, fixedWidth, onChange, size = 'medium', selectedIcon } = props;
 
   const tintHeight = SIZE_TO_HEIGHT_MAP[size] || SIZE_TO_HEIGHT_MAP.medium;
 
@@ -121,7 +124,7 @@ export const MDSSegmentedButton = <T extends string | number>(props: SegmentedBu
       fixedWidth={fixedWidth}
       tintHeight={variant === 'border' ? tintHeight : undefined}
     >
-      {buttonGroupList.map(({ label, value: itemValue, icon, selectedIcon }) => {
+      {buttonGroupList.map(({ label, value: itemValue, icon }) => {
         const isSelected = value === itemValue;
         const buttonProps = getButtonProps(variant, isSelected);
         const iconElement = getIcon(isSelected, icon, selectedIcon);

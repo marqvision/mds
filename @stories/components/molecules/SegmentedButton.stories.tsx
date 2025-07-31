@@ -29,18 +29,16 @@ export const Basic: Story = {
     type: 'hug',
     variant: 'fill',
     value: 0,
-    buttonGroupList: [
+    list: [
       {
         label: 'Button 1',
         value: 0,
         icon: undefined,
-        selectedIcon: undefined,
       },
       {
         label: 'Button 2',
         value: 1,
         icon: undefined,
-        selectedIcon: undefined,
       },
     ],
     size: 'medium',
@@ -54,7 +52,7 @@ export const TintVariant: Story = {
     type: 'hug',
     variant: 'border',
     value: 0,
-    buttonGroupList: [
+    list: [
       {
         label: 'Option 1',
         value: 0,
@@ -89,7 +87,7 @@ export const Sizes = {
             variant="fill"
             value="small"
             size="small"
-            buttonGroupList={[
+            list={[
               { label: 'Small', value: 'small' },
               { label: 'Text', value: 'text' },
             ]}
@@ -103,7 +101,7 @@ export const Sizes = {
             variant="fill"
             value="medium"
             size="medium"
-            buttonGroupList={[
+            list={[
               { label: 'Medium', value: 'medium' },
               { label: 'Text', value: 'text' },
             ]}
@@ -117,7 +115,7 @@ export const Sizes = {
             variant="fill"
             value="large"
             size="large"
-            buttonGroupList={[
+            list={[
               { label: 'Large', value: 'large' },
               { label: 'Text', value: 'text' },
             ]}
@@ -143,7 +141,7 @@ export const TypeComparison = {
             type="hug"
             variant="fill"
             value="first"
-            buttonGroupList={[
+            list={[
               { label: 'First', value: 'first' },
               { label: 'Second', value: 'second' },
               { label: 'Third', value: 'third' },
@@ -157,7 +155,7 @@ export const TypeComparison = {
             type="fit"
             variant="fill"
             value="first"
-            buttonGroupList={[
+            list={[
               { label: 'First', value: 'first' },
               { label: 'Second', value: 'second' },
               { label: 'Third', value: 'third' },
@@ -172,7 +170,7 @@ export const TypeComparison = {
             fixedWidth="300px"
             variant="fill"
             value="first"
-            buttonGroupList={[
+            list={[
               { label: 'First', value: 'first' },
               { label: 'Second', value: 'second' },
               { label: 'Third', value: 'third' },
@@ -197,7 +195,7 @@ const InteractiveExampleComponent = () => {
         type="hug"
         variant="border"
         value={selectedTab}
-        buttonGroupList={[
+        list={[
           { label: '개요', value: 'overview' },
           { label: '상세정보', value: 'details' },
           { label: '설정', value: 'settings' },
@@ -210,7 +208,7 @@ const InteractiveExampleComponent = () => {
         type="hug"
         variant="fill"
         value={selectedSize}
-        buttonGroupList={[
+        list={[
           { label: 'S', value: 'small' },
           { label: 'M', value: 'medium' },
           { label: 'L', value: 'large' },
@@ -221,9 +219,9 @@ const InteractiveExampleComponent = () => {
       <h4>스타일 선택</h4>
       <MDSSegmentedButton
         type="fit"
-        variant={selectedVariant as 'fill' | 'tint'}
+        variant={selectedVariant as 'fill' | 'border'}
         value={selectedVariant}
-        buttonGroupList={[
+        list={[
           { label: 'Fill', value: 'fill' },
           { label: 'Tint', value: 'tint' },
         ]}
@@ -265,7 +263,7 @@ export const LongTextExample = {
             type="hug"
             variant="fill"
             value="performance"
-            buttonGroupList={[
+            list={[
               { label: 'Performance Reports', value: 'performance' },
               { label: 'Analytics Dashboard', value: 'analytics' },
               { label: 'User Management', value: 'users' },
@@ -279,7 +277,7 @@ export const LongTextExample = {
             type="fit"
             variant="border"
             value="performance"
-            buttonGroupList={[
+            list={[
               { label: 'Performance', value: 'performance' },
               { label: 'Analytics', value: 'analytics' },
               { label: 'Users', value: 'users' },
@@ -302,16 +300,14 @@ const IconOnlyComponent = () => {
         <MDSSegmentedButton
           size="medium"
           type="fit"
-          buttonGroupList={[
+          list={[
             {
               icon: <MDSIcon.ChartTable />,
-              selectedIcon: <MDSIcon.ChartTable />,
               label: '',
               value: 'table',
             },
             {
               icon: <MDSIcon.GridView />,
-              selectedIcon: <MDSIcon.GridView />,
               label: '',
               value: 'grid',
             },
@@ -319,6 +315,7 @@ const IconOnlyComponent = () => {
           value={viewMode}
           variant="border"
           onChange={setViewMode}
+          selectedIcon={<MDSIcon.Check variant="outline" />}
         />
       </div>
 
@@ -327,16 +324,14 @@ const IconOnlyComponent = () => {
         <MDSSegmentedButton
           size="medium"
           type="hug"
-          buttonGroupList={[
+          list={[
             {
               icon: <MDSIcon.ChartTable />,
-              selectedIcon: <MDSIcon.ChartTable />,
               label: '',
               value: 'table',
             },
             {
               icon: <MDSIcon.GridView />,
-              selectedIcon: <MDSIcon.GridView />,
               label: '',
               value: 'grid',
             },
@@ -344,6 +339,7 @@ const IconOnlyComponent = () => {
           value={viewMode}
           variant="fill"
           onChange={setViewMode}
+          selectedIcon={<MDSIcon.Check variant="outline" />}
         />
       </div>
 
@@ -355,16 +351,14 @@ const IconOnlyComponent = () => {
             <MDSSegmentedButton
               size="small"
               type="hug"
-              buttonGroupList={[
+              list={[
                 {
                   icon: <MDSIcon.ChartTable />,
-                  selectedIcon: <MDSIcon.ChartTable />,
                   label: '',
                   value: 'table',
                 },
                 {
                   icon: <MDSIcon.GridView />,
-                  selectedIcon: <MDSIcon.GridView />,
                   label: '',
                   value: 'grid',
                 },
@@ -372,6 +366,7 @@ const IconOnlyComponent = () => {
               value={viewMode}
               variant="border"
               onChange={setViewMode}
+              selectedIcon={<MDSIcon.Check variant="outline" />}
             />
           </div>
           <div>
@@ -379,16 +374,14 @@ const IconOnlyComponent = () => {
             <MDSSegmentedButton
               size="large"
               type="hug"
-              buttonGroupList={[
+              list={[
                 {
                   icon: <MDSIcon.ChartTable />,
-                  selectedIcon: <MDSIcon.ChartTable />,
                   label: '',
                   value: 'table',
                 },
                 {
                   icon: <MDSIcon.GridView />,
-                  selectedIcon: <MDSIcon.GridView />,
                   label: '',
                   value: 'grid',
                 },
@@ -396,6 +389,7 @@ const IconOnlyComponent = () => {
               value={viewMode}
               variant="border"
               onChange={setViewMode}
+              selectedIcon={<MDSIcon.Check variant="outline" />}
             />
           </div>
         </div>

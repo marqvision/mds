@@ -7,17 +7,17 @@ export type ButtonGroupItem<T> = {
   label: string;
   value: T;
   icon?: ReactElement;
-  selectedIcon?: ReactElement;
 };
 
 type CommonProps<T> = {
-  buttonGroupList: ButtonGroupItem<T>[];
+  list: ButtonGroupItem<T>[];
   value: T;
   fixedWidth?: string;
   type: SegmentedButtonType;
   variant: SegmentedButtonVariant;
   onChange: (value: T) => void;
   size?: 'small' | 'medium' | 'large';
+  selectedIcon?: ReactElement; // 전체 컴포넌트에 대한 selectedIcon 추가
 };
 
 type WithoutWidth<T> = CommonProps<T> & {

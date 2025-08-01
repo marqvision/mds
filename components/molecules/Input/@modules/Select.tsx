@@ -2,11 +2,11 @@ import { forwardRef, JSX, MouseEvent, Ref } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
 import ReactHtmlParser from 'html-react-parser';
-import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { MDSIcon } from '../../../atoms/Icon';
+import { MDSTypography } from '../../../atoms/Typography';
 import { MDSButton } from '../../Button';
 import { theme } from '../@constants';
-import { MDSTypography } from '../../../atoms/Typography';
+import { CommonProps, ElementType, SelectProps, Size } from '../@types';
 import { flattenDropdown } from '../@utils';
 import { StyledBaseLabel, StyledIcon, StyledOutline } from './@styled';
 
@@ -97,7 +97,8 @@ export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElemen
     onChange?.(newValue);
   };
 
-  const label = valueList.map((item) => getLabelFromList(item)).join(', ');
+  const labels = valueList.map((item) => getLabelFromList(item));
+  const label = labels.every((item) => typeof item === 'string') ? labels.join(', ') : <>{labels}</>;
 
   const ChipList =
     custom?.withChip && valueList.length > 0 ? (
@@ -170,11 +171,11 @@ export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElemen
               ref={ref}
               className={isReadOnly ? 'readOnly' : undefined}
               customSize={size}
-              title={label}
+              title={typeof label === 'string' ? label : undefined}
               disabled={isDisabled}
             >
               {label ? (
-                ReactHtmlParser(label)
+                typeof label === 'string' ? ReactHtmlParser(label) : label
               ) : (
                 <Placeholder size={theme.size[size].typographySize} color="color/content/placeholder/normal">
                   {placeholder || '\u00A0'}

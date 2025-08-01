@@ -24,7 +24,7 @@ const getSelectedPathLabelsWithDivider = <T,>(list: MDSDropdownItem<T>[], select
             <MDSDivider
               key={`divider-${item.value as string}`}
               orientation="vertical"
-              length="unset"  // 상위 컴포넌트에서 align-items: stretch로 설정되어 있어 길이를 지정하지 않음
+              length="unset" // 상위 컴포넌트에서 align-items: stretch로 설정되어 있어 길이를 지정하지 않음
             />
           );
         }
@@ -50,7 +50,11 @@ export const getSelectedLabel = <T,>(list: MDSDropdownItem<T>[], selectedValue: 
   return (
     <Styled.label>
       {path.map((label, index) =>
-        typeof label === 'string' && index !== path.length - 1 ? <Styled.parent>{label}</Styled.parent> : label
+        typeof label === 'string' && index !== path.length - 1 ? (
+          <Styled.parent key={`selected-${index}`}>{label}</Styled.parent>
+        ) : (
+          label
+        )
       )}
     </Styled.label>
   );

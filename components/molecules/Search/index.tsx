@@ -23,7 +23,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
 
   const width = props.width ?? { default: '120px', focused: '200px' };
 
-  const handleSearchChange = () => {
+  const handleErrorReset = () => {
     setError(false);
   };
 
@@ -44,7 +44,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
   const inputProps: MDSInputProps<string> = {
     size,
     value,
-    onChange: trigger === 'change' ? handleSearch : handleSearchChange,
+    onChange: trigger === 'change' ? handleSearch : handleErrorReset,
     placeholder,
     width: typeof width === 'string' ? width : undefined,
     status: error ? 'error' : undefined,

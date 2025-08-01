@@ -1,4 +1,4 @@
-import { forwardRef, JSX, MouseEvent, Ref } from 'react';
+import { cloneElement, forwardRef, isValidElement, JSX, MouseEvent, Ref } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
 import ReactHtmlParser from 'html-react-parser';
@@ -98,7 +98,9 @@ export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElemen
   };
 
   const labels = valueList.map((item) => getLabelFromList(item));
-  const label = labels.every((item) => typeof item === 'string') ? labels.join(', ') : <>{labels}</>;
+  const label = labels.every((item) => typeof item === 'string')
+    ? labels.join(', ')
+    : labels.map((label, index) => (isValidElement(label) ? cloneElement(label, { key: `label-${index}` }) : label));
 
   const ChipList =
     custom?.withChip && valueList.length > 0 ? (
@@ -175,7 +177,11 @@ export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElemen
               disabled={isDisabled}
             >
               {label ? (
-                typeof label === 'string' ? ReactHtmlParser(label) : label
+                typeof label === 'string' ? (
+                  ReactHtmlParser(label)
+                ) : (
+                  label
+                )
               ) : (
                 <Placeholder size={theme.size[size].typographySize} color="color/content/placeholder/normal">
                   {placeholder || '\u00A0'}

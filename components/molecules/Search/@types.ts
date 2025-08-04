@@ -16,12 +16,12 @@ type WithOption<T> = {
    * 검색 이벤트 핸들러
    * 검색 옵션 전달 시 두번째 인자로 선택된 옵션이 전달됩니다.
    */
-  onSearch?: (value: string, option: T) => void;
+  onChange?: (value: string, option: T) => void;
 };
 
 type WithoutOption = {
   option?: never;
-  onSearch?: (value: string) => void;
+  onChange?: (value: string) => void;
 };
 
 /**

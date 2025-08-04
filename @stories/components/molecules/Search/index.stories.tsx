@@ -54,7 +54,7 @@ export const Preview: Story = {
         <MDSTypography variant="title">
           Search keyword: <strong>{value}</strong>
         </MDSTypography>
-        <MDSSearch {...props} value={value} onSearch={setValue} />
+        <MDSSearch {...props} value={value} onChange={setValue} />
       </Wrapper>
     );
   },
@@ -89,7 +89,7 @@ export const SearchOptions: Story = {
         <MDSTypography variant="title">
           Search keyword: <strong>{keyword}</strong>
         </MDSTypography>
-        <MDSSearch {...props} option={optionProps} value={keyword} onSearch={handleSearch} />
+        <MDSSearch {...props} option={optionProps} value={keyword} onChange={handleSearch} />
       </Wrapper>
     );
   },
@@ -146,7 +146,7 @@ export const MultiDepthSearchOptions: Story = {
         <MDSTypography variant="title">
           Search keyword: <strong>{keyword}</strong>
         </MDSTypography>
-        <MDSSearch {...props} option={optionProps} value={keyword} onSearch={handleSearch} />
+        <MDSSearch {...props} option={optionProps} value={keyword} onChange={handleSearch} />
       </Wrapper>
     );
   },
@@ -165,7 +165,7 @@ export const FullWidth: Story = {
         <MDSTypography variant="title">
           Search keyword: <strong>{value}</strong>
         </MDSTypography>
-        <MDSSearch {...props} value={value} onSearch={setValue} />
+        <MDSSearch {...props} value={value} onChange={setValue} />
       </Wrapper>
     );
   },

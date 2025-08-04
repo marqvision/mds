@@ -12,7 +12,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     size = 'small',
     option,
     value,
-    onSearch,
+    onChange,
     trigger = 'enter',
     placeholder = 'Search',
     minSearchLetters = 2,
@@ -35,9 +35,9 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     }
     setError(false);
     if (option) {
-      onSearch?.(trimmedValue, selectedOption);
+      onChange?.(trimmedValue, selectedOption);
     } else {
-      onSearch?.(trimmedValue);
+      onChange?.(trimmedValue);
     }
   };
 

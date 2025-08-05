@@ -136,7 +136,12 @@ export const TextField = forwardRef((props: Props, ref: Ref<HTMLInputElement>) =
     }
     setIsDebouncing(true);
     debounceRef.current = window.setTimeout(() => {
-      onChange?.(e.target.value);
+      const newValue = formatRef.current ? formatRef.current(e.target.value) : e.target.value;
+
+      onChange?.(newValue);
+      if (newValue !== e.target.value && inputRef.current) {
+        inputRef.current.value = newValue;
+      }
       setIsDebouncing(false);
     }, debounce);
   };

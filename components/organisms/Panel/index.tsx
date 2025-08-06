@@ -143,7 +143,7 @@ const Header = forwardRef<HTMLDivElement, MDSPanelHeaderProps>((props, ref) => {
     <StyledHeader ref={ref} style={{ ...style }}>
       <div style={{ flex: 'auto' }}>
         {!isElement ? (
-          <MDSTypography variant="title" size="xl" weight="semibold">
+          <MDSTypography variant="title" size="l" weight="semibold">
             {children}
           </MDSTypography>
         ) : (

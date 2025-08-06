@@ -1,31 +1,19 @@
 import React from 'react';
-import { MDSThemeColorPath } from '../../../types';
+import { MDSTypographyProps } from '../Typography';
 
-type Color = 'blue' | 'white' | 'bluegray';
+export type Color = 'blue' | 'white' | 'bluegray';
 type Size = 'small' | 'medium';
 
 export type Icon = Record<Size, React.ReactElement>;
 
+export type Status = 'default' | 'unChecked';
+export type ColorSet = {
+  normalBorder: string;
+  disabledBorder: string;
+  normalFill?: string;
+  disabledFill?: string;
+};
 export type Theme = {
-  color: Record<
-    Color,
-    {
-      default: {
-        normal: MDSThemeColorPath;
-        disabled: MDSThemeColorPath;
-      };
-      unChecked: {
-        border: {
-          normal: MDSThemeColorPath;
-          disabled: MDSThemeColorPath;
-        };
-        fill: {
-          normal?: MDSThemeColorPath;
-          disabled: MDSThemeColorPath;
-        };
-      };
-    }
-  >;
   size: Record<
     Size,
     {

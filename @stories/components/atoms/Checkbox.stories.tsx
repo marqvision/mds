@@ -32,8 +32,8 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
     <div
       style={{
         padding: '24px',
-        display: 'flex',
-        flexDirection: 'column',
+        display: 'grid',
+        justifyItems: 'flex-start',
         gap: '24px',
         backgroundColor: _raw_color.bluegray500,
       }}

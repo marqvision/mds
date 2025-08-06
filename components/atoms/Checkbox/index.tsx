@@ -1,46 +1,52 @@
 import React, { forwardRef } from 'react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../utils';
 import { Props, StyledWrapperProps } from './@types';
 import { Checked, Indeterminate, UnChecked } from './Icons';
-import { theme as CheckboxTheme } from './@constants';
+import { THEME as CHECKBOX_THEME } from './@constants';
+import { getColorSet } from './@utils';
+import { Label } from './Label';
 
-const Wrapper = styled.label<StyledWrapperProps>`
-  display: inline-block;
-  position: relative;
-  font-size: 0;
+const Wrapper = styled.label<{ isClickable: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  ${({ isClickable }) => (isClickable ? 'cursor: pointer;' : '')}
 
   & input {
     display: none;
   }
+`;
+
+const IconWrapper = styled.div<StyledWrapperProps>`
+  position: relative;
 
   ${({ size }) => `
-    width: ${CheckboxTheme.size[size].boxSize}px;
-    height: ${CheckboxTheme.size[size].boxSize}px;
+    width: ${CHECKBOX_THEME.size[size].boxSize}px;
+    height: ${CHECKBOX_THEME.size[size].boxSize}px;
   `}
 
-  ${({ color, type, value, isTranslucent }) => {
-    const mainColor =
-      value === false ? CheckboxTheme.color[color].unChecked.border[type] : CheckboxTheme.color[color].default[type];
-    const fill = CheckboxTheme.color[color].unChecked.fill[type];
+  ${({ color, type, value, isTranslucent, theme }) => {
+    const mainColor = getColorSet(theme)[color][value ? 'default' : 'unChecked'][`${type}Border`];
+    const fill = getColorSet(theme)[color][value ? 'default' : 'unChecked'][`${type}Fill`];
 
     return `
-      color: ${resolveColor(mainColor)};
-      ${fill ? `fill: ${resolveColor(fill)};` : 'fill: none'};
+      color: ${mainColor};
+      fill: ${fill || 'none'};
       ${isTranslucent ? `opacity: 0.5;` : ''};
     `;
   }}
-
+  
   &:after {
     position: absolute;
-    display: inline-block;
+    display: block;
     content: '';
-    width: ${({ size }) => `calc(100% + ${CheckboxTheme.size[size].padding * 2}px)`};
-    height: ${({ size }) => `calc(100% + ${CheckboxTheme.size[size].padding * 2}px)`};
+    width: ${({ size }) => `calc(100% + ${CHECKBOX_THEME.size[size].padding * 2}px)`};
+    height: ${({ size }) => `calc(100% + ${CHECKBOX_THEME.size[size].padding * 2}px)`};
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: ${({ size }) => `${CheckboxTheme.size[size].borderRadius}px`};
+    border-radius: ${({ size }) => `${CHECKBOX_THEME.size[size].borderRadius}px`};
     transition: 0.3s;
   }
 
@@ -58,10 +64,10 @@ const Svg = styled.svg<{ isShow: boolean }>`
 `;
 
 export const MDSCheckbox = forwardRef<HTMLLabelElement, Props>((props, ref) => {
-  const { value, color = 'blue', size = 'medium', onChange, isDisabled = false } = props;
+  const { value, color = 'blue', size = 'medium', onChange, isDisabled = false, label } = props;
 
   const type = isDisabled ? 'disabled' : 'normal';
-  const boxSize = CheckboxTheme.size[size].boxSize;
+  const boxSize = CHECKBOX_THEME.size[size].boxSize;
   const isTranslucent = isDisabled && !value && color === 'white';
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,44 +80,42 @@ export const MDSCheckbox = forwardRef<HTMLLabelElement, Props>((props, ref) => {
   };
 
   return (
-    <Wrapper
-      ref={ref}
-      color={color}
-      size={size}
-      type={type}
-      value={value}
-      isTranslucent={isTranslucent}
-      onClick={stopPropagation}
-    >
+    <Wrapper ref={ref} isClickable={!isDisabled} onClick={stopPropagation}>
       <input type="checkbox" checked={!!value} disabled={isDisabled} onChange={handleChange} />
-      <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={boxSize}
-        height={boxSize}
-        viewBox={`0 0 ${boxSize} ${boxSize}`}
-        isShow={value === true}
-      >
-        {Checked[size]}
-      </Svg>
-      <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={boxSize}
-        height={boxSize}
-        viewBox={`0 0 ${boxSize} ${boxSize}`}
-        isShow={value === 'indeterminate'}
-      >
-        {Indeterminate[size]}
-      </Svg>
-      <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={boxSize}
-        height={boxSize}
-        viewBox={`0 0 ${boxSize} ${boxSize}`}
-        isShow={!value}
-      >
-        {UnChecked[size]}
-      </Svg>
+      <IconWrapper size={size} type={type} color={color} value={value} isTranslucent={isTranslucent}>
+        <Svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={boxSize}
+          height={boxSize}
+          viewBox={`0 0 ${boxSize} ${boxSize}`}
+          isShow={value === true}
+        >
+          {Checked[size]}
+        </Svg>
+        <Svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={boxSize}
+          height={boxSize}
+          viewBox={`0 0 ${boxSize} ${boxSize}`}
+          isShow={value === 'indeterminate'}
+        >
+          {Indeterminate[size]}
+        </Svg>
+        <Svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={boxSize}
+          height={boxSize}
+          viewBox={`0 0 ${boxSize} ${boxSize}`}
+          isShow={!value}
+        >
+          {UnChecked[size]}
+        </Svg>
+      </IconWrapper>
+      {label && <Label label={label} size={size} isDisabled={isDisabled} />}
     </Wrapper>
   );
 });
+
+export type MDSCheckboxProps = Props;
+
 MDSCheckbox.displayName = 'MDSCheckbox';

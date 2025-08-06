@@ -17,6 +17,8 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     placeholder = 'Search',
     minSearchLetters = 2,
     isDisabled,
+    debounce,
+    inputProps,
   } = props;
 
   const [selectedOption, setSelectedOption] = useState<T>(option?.value ?? ('' as T));
@@ -42,7 +44,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     }
   };
 
-  const inputProps: MDSInputProps<string> = {
+  const searchBarProps: MDSInputProps<string> = {
     size,
     value,
     onChange: trigger === 'change' ? handleSearch : handleErrorReset,
@@ -65,11 +67,13 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
           <MDSIcon.ErrorWarning variant="fill" size={16} color="color/content/critical/default/normal" />
         </MDSTooltip>
       ) : undefined,
+      debounce,
     },
     isDisabled,
+    inputProps,
   };
 
-  if (!option) return <MDSInput {...inputProps} ref={ref as React.Ref<HTMLInputElement>} />;
+  if (!option) return <MDSInput {...searchBarProps} ref={ref as React.Ref<HTMLInputElement>} />;
 
   return (
     <Styled.wrapper ref={ref}>
@@ -95,8 +99,8 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
         }}
       />
       <MDSInput
-        {...inputProps}
-        custom={{ ...inputProps.custom, flatLeft: true }}
+        {...searchBarProps}
+        custom={{ ...searchBarProps.custom, flatLeft: true }}
         style={{ transform: 'translateX(-1px)' }}
       />
     </Styled.wrapper>

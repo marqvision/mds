@@ -1,3 +1,4 @@
+import { InputHTMLAttributes } from 'react';
 import { MDSDropdownItem, ValueType } from '../Dropdown';
 import { MDSInputProps } from '../Input';
 
@@ -54,4 +55,10 @@ export type SearchProps<T> = (WithOption<T> | WithoutOption) & {
    */
   minSearchLetters?: number;
   isDisabled?: boolean;
+  /**
+   * 검색어 입력 후 디바운스 시간 (ms)
+   * @default `300`
+   */
+  debounce?: number;
+  inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'size'>;
 };

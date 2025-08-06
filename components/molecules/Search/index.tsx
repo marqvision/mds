@@ -16,6 +16,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     trigger = 'enter',
     placeholder = 'Search',
     minSearchLetters = 2,
+    isDisabled,
   } = props;
 
   const [selectedOption, setSelectedOption] = useState<T>(option?.value ?? ('' as T));
@@ -65,6 +66,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
         </MDSTooltip>
       ) : undefined,
     },
+    isDisabled,
   };
 
   if (!option) return <MDSInput {...inputProps} ref={ref as React.Ref<HTMLInputElement>} />;
@@ -87,6 +89,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
               variant="select"
               value={value}
               list={[{ label: labels, value: value as ValueType<T> }]}
+              isDisabled={isDisabled}
             />
           );
         }}

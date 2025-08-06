@@ -53,4 +53,5 @@ export type SearchProps<T> = (WithOption<T> | WithoutOption) & {
    * @default `2`
    */
   minSearchLetters?: number;
+  isDisabled?: boolean;
 };

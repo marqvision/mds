@@ -6,12 +6,14 @@ import { THEME as CHECKBOX_THEME } from './@constants';
 import { getColorSet } from './@utils';
 import { Label } from './Label';
 
-const Wrapper = styled.label<{ isClickable: boolean }>`
+const Wrapper = styled.label<{ isClickable: boolean; gap: number }>`
   display: inline-flex;
   align-items: center;
-  gap: 4px;
 
-  ${({ isClickable }) => (isClickable ? 'cursor: pointer;' : '')}
+  ${({ isClickable, gap }) => `
+    gap: ${gap}px;
+    ${isClickable ? 'cursor: pointer;' : ''}
+  `}
 
   & input {
     display: none;
@@ -64,7 +66,7 @@ const Svg = styled.svg<{ isShow: boolean }>`
 `;
 
 export const MDSCheckbox = forwardRef<HTMLLabelElement, Props>((props, ref) => {
-  const { value, color = 'blue', size = 'medium', onChange, isDisabled = false, label } = props;
+  const { value, color = 'blue', size = 'medium', onChange, isDisabled = false, label, gap = 4 } = props;
 
   const type = isDisabled ? 'disabled' : 'normal';
   const boxSize = CHECKBOX_THEME.size[size].boxSize;
@@ -80,7 +82,7 @@ export const MDSCheckbox = forwardRef<HTMLLabelElement, Props>((props, ref) => {
   };
 
   return (
-    <Wrapper ref={ref} isClickable={!isDisabled} onClick={stopPropagation}>
+    <Wrapper ref={ref} gap={gap} isClickable={!isDisabled} onClick={stopPropagation}>
       <input type="checkbox" checked={!!value} disabled={isDisabled} onChange={handleChange} />
       <IconWrapper size={size} type={type} color={color} value={value} isTranslucent={isTranslucent}>
         <Svg

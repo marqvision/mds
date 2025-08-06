@@ -75,4 +75,9 @@ export type Props = {
    * disabled 상태에 color 가 변경되므로, MDSTypography 컴포넌트 전달 시 color="inherit" 으로 설정하는 것을 권장합니다.
    */
   label?: React.ReactNode | { main: string; sub: string };
+  /**
+   * 체크박스와 label 사이의 간격을 지정합니다.
+   * @default 4
+   */
+  gap?: number;
 };

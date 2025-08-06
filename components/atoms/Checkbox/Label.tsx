@@ -1,7 +1,14 @@
 import { isValidElement } from 'react';
+import styled from '@emotion/styled';
 import { MDSTypography } from '../Typography';
 import { THEME as CHECKBOX_THEME } from './@constants';
 import { LabelProps } from './@types';
+
+const TotalCountWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
 
 export const Label = (props: LabelProps) => {
   const { isDisabled = false, size, label } = props;
@@ -16,12 +23,12 @@ export const Label = (props: LabelProps) => {
 
   if (typeof label === 'object' && 'main' in label) {
     return (
-      <>
+      <TotalCountWrapper>
         <MDSTypography {...commonProps} weight="medium">
           {label.main}
         </MDSTypography>
         <MDSTypography {...commonProps}>{label.sub}</MDSTypography>
-      </>
+      </TotalCountWrapper>
     );
   }
 

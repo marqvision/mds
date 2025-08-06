@@ -18,8 +18,13 @@ export type Theme = {
     Size,
     {
       boxSize: number;
+      fontSize: MDSTypographyProps['size'];
       padding: number;
       borderRadius: number;
+      fontColor: {
+        default: MDSTypographyProps['color'];
+        disabled: MDSTypographyProps['color'];
+      };
     }
   >;
 };
@@ -30,6 +35,12 @@ export type StyledWrapperProps = {
   type: 'normal' | 'disabled';
   value: boolean | 'indeterminate';
   isTranslucent: boolean;
+};
+
+export type LabelProps = {
+  isDisabled?: boolean;
+  size: Size;
+  label: Exclude<Props['label'], undefined | null>;
 };
 
 export type Props = {
@@ -58,4 +69,10 @@ export type Props = {
    * @default false
    */
   isDisabled?: boolean;
+  /**
+   * 체크박스의 우측에 나타날 레이블을 지정합니다.
+   * 객체 형태로 전달할 경우 'main' 은 weight:medium, 'sub' 는 weight:regular 로 출력됩니다. (list total count 표시용)
+   * disabled 상태에 color 가 변경되므로, MDSTypography 컴포넌트 전달 시 color="inherit" 으로 설정하는 것을 권장합니다.
+   */
+  label?: React.ReactNode | { main: string; sub: string };
 };

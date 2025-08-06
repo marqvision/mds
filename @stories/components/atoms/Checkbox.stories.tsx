@@ -2,7 +2,7 @@ import React from 'react';
 import { useArgs } from '@storybook/preview-api';
 import { useTheme } from '@emotion/react';
 import { MDSCheckbox } from '../../../components/atoms/Checkbox';
-import { MDSTypography } from '../../../components';
+import { MDSTag, MDSTypography } from '../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSCheckbox> = {
@@ -10,6 +10,7 @@ const meta: Meta<typeof MDSCheckbox> = {
   title: '2. Components/atoms/Checkbox',
   args: {
     value: false,
+    label: '체크박스',
   },
   argTypes: {
     value: {
@@ -174,4 +175,60 @@ export const IndeterminateDisabled: Story = {
       <MDSCheckbox color="bluegray" {...props} />
     </Wrapper>
   ),
+};
+
+export const TotalCount: Story = {
+  args: {
+    label: {
+      main: '1,000',
+      sub: 'Listings',
+    },
+  },
+  render: function Render(props) {
+    const [{ value }, setArgs] = useArgs();
+
+    const handleChange = (value: boolean) => {
+      setArgs({ value });
+    };
+
+    return (
+      <Wrapper>
+        <MDSTypography>label 을 객체로 전달하면 weight medium + regular 혼합된 형태로 출력됩니다.</MDSTypography>
+        <MDSTypography>리스트 상단의 total count 를 편리하게 추가합니다.</MDSTypography>
+        <MDSCheckbox {...props} value={value} onChange={handleChange} />
+      </Wrapper>
+    );
+  },
+};
+
+export const Customize: Story = {
+  args: {
+    label: (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <MDSTypography variant="title" size="2xl" weight="semibold" color="inherit">
+          마음대로 넣기
+        </MDSTypography>
+        <MDSTag variant="fill" size="small" color="red">
+          N
+        </MDSTag>
+      </div>
+    ),
+  },
+  render: function Render(props) {
+    const [{ value }, setArgs] = useArgs();
+
+    const handleChange = (value: boolean) => {
+      setArgs({ value });
+    };
+
+    return (
+      <Wrapper>
+        <MDSTypography>
+          label 에 React Element 를 전달하면 자유롭게 구성할 수 있습니다. <br />
+          이 경우, MDSTypography 의 color 속성을 'inherit' 로 설정하여 disabled 상태의 색상까지 상속받는 것을 권장합니다.
+        </MDSTypography>
+        <MDSCheckbox {...props} value={value} onChange={handleChange} />
+      </Wrapper>
+    );
+  },
 };

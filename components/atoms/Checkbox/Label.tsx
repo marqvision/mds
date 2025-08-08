@@ -4,7 +4,7 @@ import { MDSTypography } from '../Typography';
 import { THEME as CHECKBOX_THEME } from './@constants';
 import { LabelProps } from './@types';
 
-const TotalCountWrapper = styled.div`
+const LabelWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -23,12 +23,12 @@ export const Label = (props: LabelProps) => {
 
   if (typeof label === 'object' && 'main' in label) {
     return (
-      <TotalCountWrapper>
+      <LabelWrapper>
         <MDSTypography {...commonProps} weight="medium">
           {label.main}
         </MDSTypography>
         <MDSTypography {...commonProps}>{label.sub}</MDSTypography>
-      </TotalCountWrapper>
+      </LabelWrapper>
     );
   }
 

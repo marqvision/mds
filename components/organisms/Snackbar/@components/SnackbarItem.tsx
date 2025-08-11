@@ -17,7 +17,7 @@ import { ImageGallery } from './ImageGallery';
 
 export const SnackbarItem = (props: SnackbarProps) => {
   const { snackbar, isHidden, stackIndex, onRemove } = props;
-  const { width, images, customIcon, showCloseButton, type, title, message, actionButton } = snackbar;
+  const { width, images, customIcon, hideCloseButton, type, title, message, actionButton } = snackbar;
   const { isEntering, isExiting, translateY, scale, opacity, zIndex, handleCloseClick } = useSnackbar(
     snackbar,
     stackIndex,
@@ -98,7 +98,7 @@ export const SnackbarItem = (props: SnackbarProps) => {
               </MDSTypography>
             </MDSPlainButton>
           )}
-          {showCloseButton && (
+          {!hideCloseButton && (
             <MDSPlainButton onClick={handleCloseClick}>
               <MDSIcon.CloseDelete variant="border" size={20} color={closeIconColor} />
             </MDSPlainButton>

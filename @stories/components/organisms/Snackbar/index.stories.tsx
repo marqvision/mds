@@ -190,17 +190,17 @@ export const CustomDuration: Story = {
   ),
 };
 
-export const WithCloseButton: Story = {
+export const WithoutCloseButton: Story = {
   render: () => (
     <Wrapper>
-      <MDSTypography>닫기 버튼이 보여지는 스낵바입니다.</MDSTypography>
+      <MDSTypography>닫기 버튼이 숨겨지는 스낵바입니다.</MDSTypography>
       <MDSButton
         onClick={() =>
           MDSSnackbar({
             type: 'error',
             title: 'Critical Error',
-            message: '닫기 버튼 보여지면 눌러주세요!',
-            showCloseButton: true,
+            message: '닫기 버튼이 없는 스낵바입니다.',
+            hideCloseButton: true,
             duration: 5000,
           })
         }

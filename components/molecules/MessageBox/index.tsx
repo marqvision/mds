@@ -28,11 +28,15 @@ export const MessageBox = (props: MessageBoxProps) => {
 
   const mainColor = MessageBoxContentColor[type].mainColor;
 
+  const hasTitle = Boolean(title) || Boolean(titleCTA);
+  const hasMessage = Boolean(message) || Boolean(messageCTA);
+  const shouldApplyGap = hasTitle && hasMessage;
+
   return (
     <StyledMessageBox width={width} type={type} {...restProps}>
       <MessageBoxContentWrapper>
         {images && <ImageGallery images={images} />}
-        <MessageBoxTextContainer>
+        <MessageBoxTextContainer shouldApplyGap={shouldApplyGap}>
           <MessageBoxTitleContainer>
             <TitleRow>
               <TitleIconWrapper>
@@ -114,10 +118,10 @@ const MessageBoxContentWrapper = styled.div`
   flex: 1;
 `;
 
-const MessageBoxTextContainer = styled.div`
+const MessageBoxTextContainer = styled.div<{ shouldApplyGap: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ shouldApplyGap }) => (shouldApplyGap ? '4px' : '0')};
   flex: 1;
 `;
 

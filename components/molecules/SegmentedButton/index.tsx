@@ -2,23 +2,23 @@ import { Fragment } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
 import { MDSButton } from '../Button';
-import { SegmentedButtonProps, SegmentedButtonVariant } from './@types';
+import { MDSSegmentedButtonProps, MDSSegmentedButtonVariant } from './@types';
 
-const SIZE_TO_HEIGHT_MAP: Record<NonNullable<SegmentedButtonProps<string | number>['size']>, number> = {
+const SIZE_TO_HEIGHT_MAP: Record<NonNullable<MDSSegmentedButtonProps<string | number>['size']>, number> = {
   small: 24,
   medium: 28,
   large: 32,
 };
 
 type SegmentedButtonWrapperProps = {
-  variant: SegmentedButtonVariant;
+  variant: MDSSegmentedButtonVariant;
   fixedWidth?: string;
   height: number;
 };
 
 type StyledMDSButtonProps = {
   isSelected?: boolean;
-  segmentVariant?: SegmentedButtonVariant;
+  segmentVariant?: MDSSegmentedButtonVariant;
   height: number;
 };
 
@@ -90,7 +90,7 @@ const StyledMDSButton = styled(MDSButton)<StyledMDSButtonProps>`
     `}
 `;
 
-const getButtonProps = (variant: SegmentedButtonVariant, isSelected: boolean) => {
+const getButtonProps = (variant: MDSSegmentedButtonVariant, isSelected: boolean) => {
   if (variant === 'fill') {
     return {
       color: isSelected ? 'blue' : 'bluegray',
@@ -113,7 +113,7 @@ const getIcon = (isSelected: boolean, icon?: React.ReactElement, selectedIcon?: 
   return icon;
 };
 
-export const MDSSegmentedButton = <T extends string | number>(props: SegmentedButtonProps<T>) => {
+export const MDSSegmentedButton = <T extends string | number>(props: MDSSegmentedButtonProps<T>) => {
   const { list: buttonGroupList, value, variant, type, fixedWidth, onChange, size = 'medium', selectedIcon } = props;
 
   const height = SIZE_TO_HEIGHT_MAP[size] || SIZE_TO_HEIGHT_MAP.medium;

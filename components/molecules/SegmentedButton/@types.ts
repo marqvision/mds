@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 
-export type SegmentedButtonType = 'fit' | 'fixed' | 'hug';
-export type SegmentedButtonVariant = 'border' | 'fill';
+type SegmentedButtonType = 'fit' | 'fixed' | 'hug';
+type SegmentedButtonVariant = 'border' | 'fill';
 
-export type ButtonGroupItem<T> = {
+type ButtonGroupItem<T> = {
   label: string;
   value: T;
   icon?: ReactElement;
@@ -30,4 +30,5 @@ type WithWidth<T> = CommonProps<T> & {
   fixedWidth: string;
 };
 
-export type SegmentedButtonProps<T> = WithoutWidth<T> | WithWidth<T>;
+export type MDSSegmentedButtonProps<T> = WithoutWidth<T> | WithWidth<T>;
+export type MDSSegmentedButtonVariant = SegmentedButtonVariant;

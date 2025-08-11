@@ -1,10 +1,10 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { MDSSegmentedButton } from '../../../components';
 import { MDSIcon } from '../../../components/atoms/Icon';
-import { SegmentedButtonProps } from '../../../components/molecules/SegmentedButton/@types';
-import type { Meta, StoryObj } from '@storybook/react';
+import { MDSSegmentedButtonProps } from '../../../components/molecules/SegmentedButton/@types';
 
-const SegmentedButtonWithState = (args: SegmentedButtonProps<string | number>) => {
+const SegmentedButtonWithState = (args: MDSSegmentedButtonProps<string | number>) => {
   const [selected, setSelected] = useState(args.value);
   return <MDSSegmentedButton {...args} value={selected} onChange={setSelected} />;
 };

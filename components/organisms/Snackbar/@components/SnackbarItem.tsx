@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
+import { MDSIcon } from '../../../atoms/Icon';
+import { MDSTypography } from '../../../atoms/Typography';
+import { MDSPlainButton } from '../../../molecules/PlainButton';
+import { SNACKBAR_TIMEOUTS, SnackbarContentColor } from '../@constants';
 import { useSnackbar } from '../@hooks/useSnackbarManager';
+import { SnackbarItemStyleProps, SnackbarProps } from '../@types';
 import {
   createSnackbarEnterAnimation,
   createSnackbarExitAnimation,
   getSnackbarIconByType,
   resolveSnackbarBackgroundColor,
 } from '../@utils';
-import { SnackbarItemStyleProps, SnackbarProps } from '../@types';
-import { MDSTypography } from '../../../atoms/Typography';
-import { MDSIcon } from '../../../atoms/Icon';
-import { MDSPlainButton } from '../../../molecules/PlainButton';
-import { SNACKBAR_TIMEOUTS, SnackbarContentColor } from '../@constants';
 import { ImageGallery } from './ImageGallery';
 
 export const SnackbarItem = (props: SnackbarProps) => {
@@ -99,9 +99,10 @@ export const SnackbarItem = (props: SnackbarProps) => {
             </MDSPlainButton>
           )}
           {!hideCloseButton && (
-            <MDSPlainButton onClick={handleCloseClick}>
-              <MDSIcon.CloseDelete variant="border" size={20} color={closeIconColor} />
-            </MDSPlainButton>
+            <MDSPlainButton
+              icon={<MDSIcon.CloseDelete variant="border" size={20} color={closeIconColor} />}
+              onClick={handleCloseClick}
+            />
           )}
         </SnackbarActionsContainer>
       </SnackbarInnerContainer>
@@ -123,7 +124,9 @@ const SnackbarItemStyles = styled.div<SnackbarItemStyleProps>`
       padding: 12px 16px;
       border-radius: 8px;
       background-color: ${backgroundColor};
-      box-shadow: 0px 8px 16px 0px #00000033, 0px 0px 2px 0px #00000029;
+      box-shadow:
+        0px 8px 16px 0px #00000033,
+        0px 0px 2px 0px #00000029;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -161,7 +164,10 @@ const BlurOverlay = styled.div<{ isBlurFadingOut?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s ease-out, backdrop-filter 0.2s ease-out, -webkit-backdrop-filter 0.2s ease-out;
+  transition:
+    opacity 0.2s ease-out,
+    backdrop-filter 0.2s ease-out,
+    -webkit-backdrop-filter 0.2s ease-out;
 
   ${({ isBlurFadingOut }) =>
     isBlurFadingOut &&

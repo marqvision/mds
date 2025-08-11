@@ -27,55 +27,56 @@ export const MessageBox = (props: MessageBoxProps) => {
   if (closeControl?.isVisible === false) return null;
 
   const mainColor = MessageBoxContentColor[type].mainColor;
-
-  const hasTitle = Boolean(title) || Boolean(titleCTA);
-  const hasMessage = Boolean(message) || Boolean(messageCTA);
-  const shouldApplyGap = hasTitle && hasMessage;
+  const hasTitle = Boolean(title);
+  const hasMessage = Boolean(message);
 
   return (
     <StyledMessageBox width={width} type={type} {...restProps}>
       <MessageBoxContentWrapper>
         {images && <ImageGallery images={images} />}
-        <MessageBoxTextContainer shouldApplyGap={shouldApplyGap}>
-          <MessageBoxTitleContainer>
-            <TitleRow>
-              <TitleIconWrapper>
-                {titleIcon ?? <MDSIcon.Info size={20} variant="border" color={mainColor} />}
-              </TitleIconWrapper>
-              <MDSTypography variant="title" weight="medium" color={mainColor} lineClamp={1} wordBreak="break-all">
-                {title}
-              </MDSTypography>
-            </TitleRow>
-            {titleCTA &&
-              (React.isValidElement(titleCTA) ? (
-                titleCTA
-              ) : (
-                <MessageBoxShrinkWrap>
-                  <MDSPlainButton onClick={(titleCTA as { label: string; onClick: () => void }).onClick} color="blue">
-                    {(titleCTA as { label: string; onClick: () => void }).label}
-                  </MDSPlainButton>
-                </MessageBoxShrinkWrap>
-              ))}
-          </MessageBoxTitleContainer>
+        <MessageBoxTextContainer>
+          {hasTitle && (
+            <MessageBoxTitleContainer>
+              <TitleRow>
+                <TitleIconWrapper>
+                  {titleIcon ?? <MDSIcon.Info size={20} variant="border" color={mainColor} />}
+                </TitleIconWrapper>
+                <MDSTypography variant="title" weight="medium" color={mainColor} lineClamp={1} wordBreak="break-all">
+                  {title}
+                </MDSTypography>
+              </TitleRow>
 
-          <MessageBoxMessageContainer>
-            {message && (
+              {titleCTA &&
+                (React.isValidElement(titleCTA) ? (
+                  titleCTA
+                ) : (
+                  <MessageBoxShrinkWrap>
+                    <MDSPlainButton onClick={(titleCTA as { label: string; onClick: () => void }).onClick} color="blue">
+                      {(titleCTA as { label: string; onClick: () => void }).label}
+                    </MDSPlainButton>
+                  </MessageBoxShrinkWrap>
+                ))}
+            </MessageBoxTitleContainer>
+          )}
+
+          {hasMessage && (
+            <MessageBoxMessageContainer>
               <MDSTypography variant="body" lineClamp={1} wordBreak="break-all">
                 {message}
               </MDSTypography>
-            )}
 
-            {messageCTA &&
-              (React.isValidElement(messageCTA) ? (
-                messageCTA
-              ) : (
-                <MessageBoxShrinkWrap>
-                  <MDSPlainButton onClick={(messageCTA as { label: string; onClick: () => void }).onClick}>
-                    {(messageCTA as { label: string; onClick: () => void }).label}
-                  </MDSPlainButton>
-                </MessageBoxShrinkWrap>
-              ))}
-          </MessageBoxMessageContainer>
+              {messageCTA &&
+                (React.isValidElement(messageCTA) ? (
+                  messageCTA
+                ) : (
+                  <MessageBoxShrinkWrap>
+                    <MDSPlainButton onClick={(messageCTA as { label: string; onClick: () => void }).onClick}>
+                      {(messageCTA as { label: string; onClick: () => void }).label}
+                    </MDSPlainButton>
+                  </MessageBoxShrinkWrap>
+                ))}
+            </MessageBoxMessageContainer>
+          )}
         </MessageBoxTextContainer>
       </MessageBoxContentWrapper>
 
@@ -118,10 +119,10 @@ const MessageBoxContentWrapper = styled.div`
   flex: 1;
 `;
 
-const MessageBoxTextContainer = styled.div<{ shouldApplyGap: boolean }>`
+const MessageBoxTextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ shouldApplyGap }) => (shouldApplyGap ? '4px' : '0')};
+  gap: 4px;
   flex: 1;
 `;
 

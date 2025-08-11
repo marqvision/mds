@@ -62,6 +62,7 @@ const SegmentedButtonWrapper = styled.div<SegmentedButtonWrapperProps>`
 const StyledMDSButton = styled(MDSButton)<StyledMDSButtonProps>`
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
 
   &:hover {
     transition: background-color 150ms ease-in-out;

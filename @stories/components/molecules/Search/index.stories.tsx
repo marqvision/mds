@@ -1,6 +1,6 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { MDSDropdownItem, MDSSearch, MDSTypography } from '../../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSSearch> = {
   component: MDSSearch,
@@ -68,13 +68,10 @@ export const SearchOptions: Story = {
     const [option, setOption] = useState('listing_id');
     const [keyword, setKeyword] = useState<string>('');
 
-    const optionProps = {
-      list: [
-        { label: 'Listing ID', value: 'listing_id' },
-        { label: 'Listing title', value: 'listing_title' },
-      ],
-      value: option,
-    };
+    const list = [
+      { label: 'Listing ID', value: 'listing_id' },
+      { label: 'Listing title', value: 'listing_title' },
+    ];
 
     const handleSearch = (value: string, selectedOption: string) => {
       setKeyword(value);
@@ -89,7 +86,10 @@ export const SearchOptions: Story = {
         <MDSTypography variant="title">
           Search keyword: <strong>{keyword}</strong>
         </MDSTypography>
-        <MDSSearch {...props} option={optionProps} value={keyword} onChange={handleSearch} />
+        <MDSTypography>option 에 list 만 전달하면 기본적으로 첫번째 아이템이 선택됩니다.</MDSTypography>
+        <MDSSearch {...props} option={list} value={keyword} onChange={handleSearch} />
+        <MDSTypography>option 에 list 와 함께 value 를 전달하면 해당 아이템이 선택됩니다.</MDSTypography>
+        <MDSSearch {...props} option={{ list, value: 'listing_title' }} value={keyword} onChange={handleSearch} />
       </Wrapper>
     );
   },
@@ -130,7 +130,6 @@ export const MultiDepthSearchOptions: Story = {
     const optionProps = {
       width: '290px',
       list,
-      value: option,
     };
 
     const handleSearch = (value: string, selectedOption: string) => {

@@ -8,10 +8,10 @@ type WithOption<T> = {
    * @param option.list - 드롭다운에 표시될 목록
    * @param option.value - 드롭다운에서 선택된 값
    */
-  option: {
+  option: MDSDropdownItem<ValueType<T>>[] | {
     width?: string;
     list: MDSDropdownItem<ValueType<T>>[];
-    value: T;
+    value?: T;
   };
   /**
    * 검색 이벤트 핸들러

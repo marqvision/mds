@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDSDivider } from '../../atoms/Divider';
-import { MDSDropdownItem } from '../Dropdown';
+import { MDSDropdownItem, ValueType } from '../Dropdown';
 import { Styled } from './@components/Styled';
 
 /**
@@ -58,4 +58,15 @@ export const getSelectedLabel = <T,>(list: MDSDropdownItem<T>[], selectedValue: 
       )}
     </Styled.label>
   );
+};
+
+export const getFirstValue = <T,>(list: MDSDropdownItem<ValueType<T>>[]): T | undefined => {
+  if (list.length === 0) return undefined;
+  const firstItem = list[0];
+  if ('value' in firstItem) {
+    return firstItem.value;
+  } else if ('children' in firstItem && firstItem.children?.length) {
+    return getFirstValue(firstItem.children);
+  }
+  return undefined;
 };

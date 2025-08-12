@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 
 export const Styled = {
-  wrapper: styled.div`
-    display: inline-flex;
+  wrapper: styled.div<{ width?: string }>`
+    display: inline-grid;
+    grid-template-columns: auto 1fr;
+    ${({ width }) => (width ? `width: ${width};` : '')};
   `,
   label: styled.div`
     display: flex;

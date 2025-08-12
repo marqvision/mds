@@ -3,9 +3,9 @@ import { MDSIcon } from '../../atoms/Icon';
 import { MDSDropdown, ValueType } from '../Dropdown';
 import { MDSInput, MDSInputProps } from '../Input';
 import { MDSTooltip } from '../Tooltip';
-import { SearchProps } from './@types';
-import { getSelectedLabel } from './@utils';
 import { Styled } from './@components/Styled';
+import { SearchProps } from './@types';
+import { getFirstValue, getSelectedLabel } from './@utils';
 
 export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInputElement | HTMLDivElement>) => {
   const {
@@ -21,10 +21,21 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     inputProps,
   } = props;
 
-  const [selectedOption, setSelectedOption] = useState<T>(option?.value ?? ('' as T));
+  const optionWidth = option && 'width' in option ? option?.width : undefined;
+  const optionList = option && 'list' in option ? option?.list : option || [];
+  const optionValue: T | undefined = option && 'value' in option ? option?.value : getFirstValue(optionList);
+
+  const [selectedOption, setSelectedOption] = useState<T>(optionValue ?? ('' as T));
   const [error, setError] = useState<boolean>(false);
 
-  const width = props.width ?? { default: '120px', focused: '200px' };
+  const width = typeof props.width === 'string' ? props.width : undefined;
+  const expandWidth =
+    typeof props.width !== 'string'
+      ? {
+          defaultWidth: props.width?.default || '120px',
+          focusWidth: props.width?.focused || '200px',
+        }
+      : undefined;
 
   const handleErrorReset = () => {
     setError(false);
@@ -49,19 +60,12 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     value,
     onChange: trigger === 'change' ? handleSearch : handleErrorReset,
     placeholder,
-    width: typeof width === 'string' ? width : undefined,
     status: error ? 'error' : undefined,
     custom: {
       alwaysShowDelete: true,
       onEnter: trigger === 'enter' ? handleSearch : undefined,
       prefix: <MDSIcon.Search size={16} />,
-      expandOnFocus:
-        typeof width === 'object'
-          ? {
-              defaultWidth: width.default,
-              focusWidth: width.focused,
-            }
-          : undefined,
+      expandOnFocus: expandWidth,
       suffix: error ? (
         <MDSTooltip title={`Search more than ${minSearchLetters - 1} letters`}>
           <MDSIcon.ErrorWarning variant="fill" size={16} color="color/content/critical/default/normal" />
@@ -73,13 +77,13 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     inputProps,
   };
 
-  if (!option) return <MDSInput {...searchBarProps} ref={ref as React.Ref<HTMLInputElement>} />;
+  if (!option) return <MDSInput {...searchBarProps} width={width} ref={ref as React.Ref<HTMLInputElement>} />;
 
   return (
-    <Styled.wrapper ref={ref}>
+    <Styled.wrapper width={width} ref={ref}>
       <MDSDropdown
-        width={option.width}
-        list={option.list}
+        width={optionWidth}
+        list={optionList}
         value={selectedOption}
         onChange={(value) => setSelectedOption(value as T)}
         renderAnchor={(value, _, list) => {
@@ -100,6 +104,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
       />
       <MDSInput
         {...searchBarProps}
+        width={width ? '100%' : undefined}
         custom={{ ...searchBarProps.custom, flatLeft: true }}
         style={{ transform: 'translateX(-1px)' }}
       />

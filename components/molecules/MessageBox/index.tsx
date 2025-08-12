@@ -27,51 +27,56 @@ export const MessageBox = (props: MessageBoxProps) => {
   if (closeControl?.isVisible === false) return null;
 
   const mainColor = MessageBoxContentColor[type].mainColor;
+  const hasTitle = Boolean(title);
+  const hasMessage = Boolean(message);
 
   return (
     <StyledMessageBox width={width} type={type} {...restProps}>
       <MessageBoxContentWrapper>
         {images && <ImageGallery images={images} />}
         <MessageBoxTextContainer>
-          <MessageBoxTitleContainer>
-            <TitleRow>
-              <TitleIconWrapper>
-                {titleIcon ?? <MDSIcon.Info size={20} variant="border" color={mainColor} />}
-              </TitleIconWrapper>
-              <MDSTypography variant="title" weight="medium" color={mainColor} lineClamp={1} wordBreak="break-all">
-                {title}
-              </MDSTypography>
-            </TitleRow>
-            {titleCTA &&
-              (React.isValidElement(titleCTA) ? (
-                titleCTA
-              ) : (
-                <MessageBoxShrinkWrap>
-                  <MDSPlainButton onClick={(titleCTA as { label: string; onClick: () => void }).onClick} color="blue">
-                    {(titleCTA as { label: string; onClick: () => void }).label}
-                  </MDSPlainButton>
-                </MessageBoxShrinkWrap>
-              ))}
-          </MessageBoxTitleContainer>
+          {hasTitle && (
+            <MessageBoxTitleContainer>
+              <TitleRow>
+                <TitleIconWrapper>
+                  {titleIcon ?? <MDSIcon.Info size={20} variant="border" color={mainColor} />}
+                </TitleIconWrapper>
+                <MDSTypography variant="title" weight="medium" color={mainColor} lineClamp={1} wordBreak="break-all">
+                  {title}
+                </MDSTypography>
+              </TitleRow>
 
-          <MessageBoxMessageContainer>
-            {message && (
+              {titleCTA &&
+                (React.isValidElement(titleCTA) ? (
+                  titleCTA
+                ) : (
+                  <MessageBoxShrinkWrap>
+                    <MDSPlainButton onClick={(titleCTA as { label: string; onClick: () => void }).onClick} color="blue">
+                      {(titleCTA as { label: string; onClick: () => void }).label}
+                    </MDSPlainButton>
+                  </MessageBoxShrinkWrap>
+                ))}
+            </MessageBoxTitleContainer>
+          )}
+
+          {hasMessage && (
+            <MessageBoxMessageContainer>
               <MDSTypography variant="body" lineClamp={1} wordBreak="break-all">
                 {message}
               </MDSTypography>
-            )}
 
-            {messageCTA &&
-              (React.isValidElement(messageCTA) ? (
-                messageCTA
-              ) : (
-                <MessageBoxShrinkWrap>
-                  <MDSPlainButton onClick={(messageCTA as { label: string; onClick: () => void }).onClick}>
-                    {(messageCTA as { label: string; onClick: () => void }).label}
-                  </MDSPlainButton>
-                </MessageBoxShrinkWrap>
-              ))}
-          </MessageBoxMessageContainer>
+              {messageCTA &&
+                (React.isValidElement(messageCTA) ? (
+                  messageCTA
+                ) : (
+                  <MessageBoxShrinkWrap>
+                    <MDSPlainButton onClick={(messageCTA as { label: string; onClick: () => void }).onClick}>
+                      {(messageCTA as { label: string; onClick: () => void }).label}
+                    </MDSPlainButton>
+                  </MessageBoxShrinkWrap>
+                ))}
+            </MessageBoxMessageContainer>
+          )}
         </MessageBoxTextContainer>
       </MessageBoxContentWrapper>
 

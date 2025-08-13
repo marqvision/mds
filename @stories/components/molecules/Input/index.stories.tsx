@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MDSInput, MDSTypography } from '../../../../components';
+import { MDSInput, MDSTypography, MDSButton } from '../../../../components';
 import { SelectProps, TextFieldProps } from '../../../../components/molecules/Input/@types';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -222,7 +222,7 @@ export const Select: Story = {
 
     return (
       <Wrapper>
-        <button onClick={() => setList((ps) => [...ps, `${ps.length}`])}>아이템 추가</button>
+        <MDSButton onClick={() => setList((ps) => [...ps, `${ps.length}`])}>아이템 추가</MDSButton>
         <MDSInput {...(props as SelectProps)} value={list} list={allList} onChange={setList} />
       </Wrapper>
     );
@@ -248,8 +248,171 @@ export const SelectWithChip: Story = {
 
     return (
       <Wrapper>
-        <button onClick={() => setList((ps) => [...ps, `${ps.length}`])}>아이템 추가</button>
+        <MDSButton onClick={() => setList((ps) => [...ps, `${ps.length}`])}>아이템 추가</MDSButton>
         <MDSInput {...(props as SelectProps)} value={list} list={allList} onChange={setList} />
+      </Wrapper>
+    );
+  },
+};
+
+export const NumberInputAmount: Story = {
+  args: {
+    placeholder: '0',
+    inputProps: {
+      type: 'number',
+      onKeyDown: (e: React.KeyboardEvent) => {
+        // e, E, +, -, 등의 문자 입력 방지
+        if (['e', 'E', '+', '-'].includes(e.key)) {
+          e.preventDefault();
+        }
+      },
+    },
+    custom: {
+      suffix: '$',
+    },
+    fullWidth: true,
+    label: 'Amount',
+    guide: 'Enter amount in dollars (numbers and decimal only)',
+    format: (value: string) => {
+      // 숫자와 소수점만 허용하는 정규식으로 필터링
+      const numericValue = value.replace(/[^0-9.]/g, '');
+      // 소수점이 여러 개인 경우 첫 번째만 유지
+      const parts = numericValue.split('.');
+      return parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : numericValue;
+    },
+  },
+  render: function Render(props) {
+    const [amount, setAmount] = useState<string>('');
+
+    const handleChangeAmount = (value: string) => {
+      setAmount(value);
+    };
+
+    return (
+      <Wrapper>
+        <div>Current amount: {amount ? `$${amount}` : 'Not set'}</div>
+        <MDSInput {...(props as TextFieldProps)} value={amount} onChange={handleChangeAmount} />
+      </Wrapper>
+    );
+  },
+};
+
+export const NumberInputPercent: Story = {
+  args: {
+    placeholder: '0',
+    inputProps: {
+      type: 'number',
+      onKeyDown: (e: React.KeyboardEvent) => {
+        // e, E, + 등의 문자 입력 방지: -20% 입력 가능
+        if (['e', 'E', '+'].includes(e.key)) {
+          e.preventDefault();
+        }
+      },
+    },
+    custom: {
+      suffix: '%',
+    },
+    fullWidth: true,
+    label: 'Percentage',
+    guide: 'Enter percentage (max 100%, numbers and decimal only)',
+    format: (value: string) => {
+      // 숫자와 소수점만 허용하는 정규식으로 필터링
+      let numericValue = value.replace(/[^0-9.-]/g, '');
+      // 소수점이 여러 개인 경우 첫 번째만 유지
+      const parts = numericValue.split('.');
+      numericValue = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : numericValue;
+      // 100 초과 시 100으로 제한
+      return Number(numericValue) > 100 ? '100' : numericValue;
+    },
+  },
+  render: function Render(props) {
+    const [percent, setPercent] = useState<string>('');
+
+    const handleChangePercent = (value: string) => {
+      setPercent(value);
+    };
+
+    return (
+      <Wrapper>
+        <div>Current percentage: {percent ? `${percent}%` : 'Not set'}</div>
+        <MDSInput {...(props as TextFieldProps)} value={percent} onChange={handleChangePercent} />
+      </Wrapper>
+    );
+  },
+};
+
+export const NumberInputDiscountDemo: Story = {
+  args: {},
+  render: function Render() {
+    const [discountType, setDiscountType] = useState<'amount' | 'percent'>('amount');
+    const [discountAmount, setDiscountAmount] = useState<string>('');
+    const [discountPercent, setDiscountPercent] = useState<string>('');
+
+    const handleChangeDiscount = (value: string) => {
+      if (discountType === 'amount') {
+        setDiscountAmount(value);
+      } else {
+        setDiscountPercent(value);
+      }
+    };
+
+    const currentValue = discountType === 'amount' ? discountAmount : discountPercent;
+
+    return (
+      <Wrapper>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+          <MDSButton
+            variant={discountType === 'amount' ? 'fill' : 'border'}
+            onClick={() => setDiscountType('amount')}
+          >
+            Amount ($)
+          </MDSButton>
+          <MDSButton
+            variant={discountType === 'percent' ? 'fill' : 'border'}
+            onClick={() => setDiscountType('percent')}
+          >
+            Percentage (%)
+          </MDSButton>
+        </div>
+        <div>
+          Current discount:{' '}
+          {discountType === 'amount'
+            ? discountAmount
+              ? `$${discountAmount}`
+              : 'Not set'
+            : discountPercent
+            ? `${discountPercent}%`
+            : 'Not set'}
+        </div>
+        <MDSInput
+          placeholder="0"
+          value={currentValue}
+          inputProps={{
+            type: 'number',
+            onKeyDown: (e: React.KeyboardEvent) => {
+              // e, E, +, -, 등의 문자 입력 방지
+              if (['e', 'E', '+', '-'].includes(e.key)) {
+                e.preventDefault();
+              }
+            },
+          }}
+          custom={{
+            suffix: discountType === 'amount' ? '$' : '%',
+          }}
+          fullWidth
+          label={`Discount ${discountType === 'amount' ? 'Amount' : 'Percentage'}`}
+          guide="Numbers and decimal only"
+          format={(value: string) => {
+            // 숫자와 소수점만 허용하는 정규식으로 필터링
+            let numericValue = value.replace(/[^0-9.]/g, '');
+            // 소수점이 여러 개인 경우 첫 번째만 유지
+            const parts = numericValue.split('.');
+            numericValue = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : numericValue;
+            // 퍼센트 타입일 때 100 초과 시 100으로 제한
+            return discountType === 'percent' && Number(numericValue) > 100 ? '100' : numericValue;
+          }}
+          onChange={handleChangeDiscount}
+        />
       </Wrapper>
     );
   },

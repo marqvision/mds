@@ -1,4 +1,4 @@
-import React, { forwardRef, JSX, Ref, useState } from 'react';
+import React, { forwardRef, JSX, Ref, useEffect, useState } from 'react';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSDropdown, ValueType } from '../Dropdown';
 import { MDSInput, MDSInputProps } from '../Input';
@@ -55,10 +55,27 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     }
   };
 
+  const [_searchKeyword, setSearchKeyword] = useState<string>(value || '');
+  const handleChange = (value: string) => {
+    setSearchKeyword(value);
+    if (trigger === 'change') {
+      handleSearch(value);
+    } else {
+      handleErrorReset();
+    }
+  };
+  useEffect(() => {
+    // reset filter로 keyword query parameter를 날렸을 때 화면에 보이는 keyword도 같이 초기화한다.
+    // -> query parameter가 react-router의 내부 state로 관리 되고 있기 때문에 query parameter가 변했을 때 effect를 이용하여 뒤이어 state 싱크를 맞춰야한다.
+    if (!props.value) {
+      setSearchKeyword('');
+    }
+  }, [props.value]);
+
   const searchBarProps: MDSInputProps<string> = {
     size,
-    value,
-    onChange: trigger === 'change' ? handleSearch : handleErrorReset,
+    value: _searchKeyword,
+    onChange: handleChange,
     placeholder,
     status: error ? 'error' : undefined,
     custom: {

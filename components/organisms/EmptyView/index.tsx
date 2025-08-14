@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
-import { resolveColor } from '../../../utils';
 import { EmptyViewProps, StyledWrapperProps } from './@types';
 
 const Wrapper = styled.div<StyledWrapperProps>`
@@ -10,7 +9,6 @@ const Wrapper = styled.div<StyledWrapperProps>`
   padding: 40px 0;
   display: grid;
   grid-template-rows: 1fr auto 2fr;
-  background-color: ${({ backgroundColor }) => (backgroundColor ? resolveColor(backgroundColor) : '')};
   &:before,
   &:after {
     content: '';
@@ -30,10 +28,10 @@ const TextBox = styled.div`
 `;
 
 export const MDSEmptyView = forwardRef<HTMLDivElement, EmptyViewProps>((props, ref) => {
-  const { title, description, children, height = '100%' } = props;
+  const { title, description, children, height = '100%', ...restProps } = props;
 
   return (
-    <Wrapper ref={ref} height={height}>
+    <Wrapper ref={ref} height={height} {...restProps}>
       <Content>
         <TextBox>
           <MDSTypography variant="title" size="l" weight="medium">

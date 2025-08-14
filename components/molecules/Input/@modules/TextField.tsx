@@ -39,6 +39,19 @@ const StyledInput = styled.input<{ customSize: Size; typographySize: MDSTypograp
     -webkit-appearance: none;
     margin: 0;
   }
+
+  @keyframes onAutoFillStart {}
+  @keyframes onAutoFillCancel {}
+
+  &:-webkit-autofill {
+    animation-name: onAutoFillStart;
+    animation-duration: 0.001s;
+  }
+
+  &:not(:-webkit-autofill) {
+    animation-name: onAutoFillCancel;
+    animation-duration: 0.001s;
+  }
 ,
 `;
 

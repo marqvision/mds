@@ -1,8 +1,6 @@
-import { MDSThemeColorPath } from "../../../types";
-
+import React from 'react';
 
 export type StyledWrapperProps = {
-  backgroundColor?: MDSThemeColorPath;
   height: string;
 };
 
@@ -13,9 +11,10 @@ export type StyledWrapperProps = {
  * @property {string} [height] - EmptyView 의 높이. CSS 호환 문자열로 선택적으로 정의.
  * @property {React.ReactNode} children - description 하단에 렌더링될 내용. (버튼 등)
  */
-export type EmptyViewProps = React.PropsWithChildren<{
-  title: string;
-  description?: string;
-  backgroundColor?: MDSThemeColorPath;
-  height?: string;
-}>;
+export type EmptyViewProps = React.PropsWithChildren<
+  {
+    title: string;
+    description?: string;
+    height?: string;
+  } & React.HTMLAttributes<HTMLDivElement>
+>;

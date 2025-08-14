@@ -301,6 +301,9 @@ export const TextField = forwardRef((props: Props, ref: Ref<HTMLInputElement>) =
               if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
                 handleEnter();
               }
+              if (inputProps?.onKeyDown) {
+                inputProps.onKeyDown(e);
+              }
             }}
             style={{
               overflow: isMultiline ? (isOverflowed ? 'scroll' : 'hidden') : undefined,

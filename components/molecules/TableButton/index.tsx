@@ -54,4 +54,4 @@ export const MDSTableButton = (props: TableButtonProps) => {
 
 MDSTableButton.displayName = 'MDSTableButton';
 
-export type { TableButtonProps } from './@types';
+export type { TableButtonProps as MDSTableButtonProps } from './@types';

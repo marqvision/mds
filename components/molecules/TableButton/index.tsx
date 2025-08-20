@@ -44,7 +44,7 @@ export const MDSTableButton = (props: TableButtonProps) => {
   return (
     <StyledButton isClickable={isClickable} disabled={isDisabled} onClick={handleClick}>
       {renderSortIcon(icon, 20)}
-      <MDSTypography variant="body" size="s" weight="medium" color="inherit" style={{ marginLeft: '2px' }}>
+      <MDSTypography variant="body" size="s" weight="medium" color="inherit" style={{ marginLeft: icon ? '2px' : '0' }}>
         {label}
       </MDSTypography>
       {isChangeable && <MDSIcon.ArrowDown size={20} variant="outline" />}

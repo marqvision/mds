@@ -42,7 +42,7 @@ export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonPro
       }
     : undefined;
 
-  const isClickable = !!onClick && !isDisabled;
+  const isClickable = !!onClick && !isDisabled && isChangeable;
 
   return (
     <StyledButton ref={ref} isClickable={isClickable} disabled={isDisabled} onClick={handleClick}>

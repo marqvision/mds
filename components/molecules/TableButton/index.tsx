@@ -25,7 +25,7 @@ const StyledButton = styled.button<{
   }
 `;
 
-export const MDSTableButton = (props: TableButtonProps) => {
+export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonProps>((props, ref) => {
   const { label, icon = 'Sort', isDisabled = false, onClick, isChangeable = true, color = 'color/content/neutral/default/normal' } = props;
 
   const handleClick = onClick
@@ -38,7 +38,7 @@ export const MDSTableButton = (props: TableButtonProps) => {
   const isClickable = !!onClick && !isDisabled;
 
   return (
-    <StyledButton isClickable={isClickable} disabled={isDisabled} onClick={handleClick}>
+    <StyledButton ref={ref} isClickable={isClickable} disabled={isDisabled} onClick={handleClick}>
       {renderSortIcon(icon, 20, isDisabled, color)}
       <MDSTypography variant="body" size="s" weight="medium" color={isDisabled ? 'color/content/neutral/default/disabled' : color} style={{ marginLeft: icon ? '2px' : '0' }}>
         {label}
@@ -46,7 +46,7 @@ export const MDSTableButton = (props: TableButtonProps) => {
       {isChangeable && <MDSIcon.ArrowDown size={20} variant="outline" color={isDisabled ? 'color/content/neutral/default/disabled' : color} />}
     </StyledButton>
   );
-};
+});
 
 MDSTableButton.displayName = 'MDSTableButton';
 

@@ -10,10 +10,10 @@ export type TableButtonProps = {
 
   /**
    * 앞쪽에 표시할 아이콘
-   * - 문자열: MDSIcon의 키 (예: 'Sort', 'Calendar', 'Flag')
+   * - ReactElement: 커스텀 아이콘 컴포넌트 (size, color는 TableButton에서 자동 설정)
    * - null: 아이콘 표시하지 않음
    */
-  icon?: keyof typeof MDSIcon | null;
+  icon?: React.ReactElement | null;
 
   /**
    * 클릭 이벤트 핸들러
@@ -36,4 +36,4 @@ export type TableButtonProps = {
   color?: MDSThemeColorPath;
 }
 
-export type SortIconType = TableButtonProps['icon'];
+export type IconType = TableButtonProps['icon'];

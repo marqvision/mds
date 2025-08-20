@@ -1,9 +1,9 @@
-import React from 'react';
 import styled from '@emotion/styled';
+import React from 'react';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSTypography } from '../../atoms/Typography';
 import { TableButtonProps } from './@types';
-import { renderSortIcon } from './@utils';
+import { renderIcon } from './@utils';
 
 const StyledButton = styled.button<{
   isClickable: boolean;
@@ -26,7 +26,14 @@ const StyledButton = styled.button<{
 `;
 
 export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonProps>((props, ref) => {
-  const { label, icon = 'Sort', isDisabled = false, onClick, isChangeable = true, color = 'color/content/neutral/default/normal' } = props;
+  const {
+    label,
+    icon = <MDSIcon.Sort size={20} />,
+    isDisabled = false,
+    onClick,
+    isChangeable = true,
+    color = 'color/content/neutral/default/normal',
+  } = props;
 
   const handleClick = onClick
     ? (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,11 +46,23 @@ export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonPro
 
   return (
     <StyledButton ref={ref} isClickable={isClickable} disabled={isDisabled} onClick={handleClick}>
-      {renderSortIcon(icon, 20, isDisabled, color)}
-      <MDSTypography variant="body" size="s" weight="medium" color={isDisabled ? 'color/content/neutral/default/disabled' : color} style={{ marginLeft: icon ? '2px' : '0' }}>
+      {renderIcon(icon, 20, isDisabled, color)}
+      <MDSTypography
+        variant="body"
+        size="s"
+        weight="medium"
+        color={isDisabled ? 'color/content/neutral/default/disabled' : color}
+        style={{ marginLeft: icon ? '2px' : '0' }}
+      >
         {label}
       </MDSTypography>
-      {isChangeable && <MDSIcon.ArrowDown size={20} variant="outline" color={isDisabled ? 'color/content/neutral/default/disabled' : color} />}
+      {isChangeable && (
+        <MDSIcon.ArrowDown
+          size={20}
+          variant="outline"
+          color={isDisabled ? 'color/content/neutral/default/disabled' : color}
+        />
+      )}
     </StyledButton>
   );
 });

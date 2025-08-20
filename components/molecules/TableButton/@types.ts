@@ -1,7 +1,7 @@
 import React from 'react';
 import { MDSIcon } from '../../atoms/Icon';
 
-export interface TableButtonProps {
+export type TableButtonProps = {
   /**
    * 라벨 텍스트 (문자열만 허용, 필수)
    */

@@ -23,18 +23,10 @@ const StyledButton = styled.button<{
   &:hover:not(:disabled) {
     opacity: 0.8;
   }
-
-  &:disabled {
-    color: ${({ theme }) => theme.color.content.neutral.default.disabled};
-
-    & svg path {
-      fill: ${({ theme }) => theme.color.content.neutral.default.disabled};
-    }
-  }
 `;
 
 export const MDSTableButton = (props: TableButtonProps) => {
-  const { label, icon = 'Sort', isDisabled = false, onClick, isChangeable = true } = props;
+  const { label, icon = 'Sort', isDisabled = false, onClick, isChangeable = true, color = 'color/content/neutral/default/normal' } = props;
 
   const handleClick = onClick
     ? (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -47,11 +39,11 @@ export const MDSTableButton = (props: TableButtonProps) => {
 
   return (
     <StyledButton isClickable={isClickable} disabled={isDisabled} onClick={handleClick}>
-      {renderSortIcon(icon, 20)}
-      <MDSTypography variant="body" size="s" weight="medium" color="inherit" style={{ marginLeft: icon ? '2px' : '0' }}>
+      {renderSortIcon(icon, 20, isDisabled, color)}
+      <MDSTypography variant="body" size="s" weight="medium" color={isDisabled ? 'color/content/neutral/default/disabled' : color} style={{ marginLeft: icon ? '2px' : '0' }}>
         {label}
       </MDSTypography>
-      {isChangeable && <MDSIcon.ArrowDown size={20} variant="outline" />}
+      {isChangeable && <MDSIcon.ArrowDown size={20} variant="outline" color={isDisabled ? 'color/content/neutral/default/disabled' : color} />}
     </StyledButton>
   );
 };

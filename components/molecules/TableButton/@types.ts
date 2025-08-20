@@ -1,5 +1,6 @@
 import React from 'react';
 import { MDSIcon } from '../../atoms/Icon';
+import type { MDSThemeColorPath } from '../../types';
 
 export type TableButtonProps = {
   /**
@@ -28,6 +29,11 @@ export type TableButtonProps = {
    * 변경 가능 여부
    */
   isChangeable?: boolean;
+
+  /**
+   * 텍스트 및 아이콘 색상
+   */
+  color?: MDSThemeColorPath;
 }
 
 export type SortIconType = TableButtonProps['icon'];

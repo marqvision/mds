@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { MDSTypography } from '../../../components';
+import { MDSIcon, MDSTypography } from '../../../components';
 import { MDSTableButton } from '../../../components/molecules/TableButton';
 
 const meta: Meta<typeof MDSTableButton> = {
@@ -23,22 +23,8 @@ const meta: Meta<typeof MDSTableButton> = {
       description: '버튼에 표시될 텍스트',
     },
     icon: {
-      control: 'select',
-      options: {
-        'Sort (기본값)': 'Sort',
-        Calendar: 'Calendar',
-        Flag: 'Flag',
-        Priority: 'Priority',
-        AccountProfile: 'AccountProfile',
-        Star: 'Star',
-        Timer: 'Timer',
-        Settings: 'Settings',
-        ChartBar: 'ChartBar',
-        TrendingUp: 'TrendingUp',
-        TrendingDown: 'TrendingDown',
-        'None (null)': null,
-      },
-      description: 'MDSIcon 키를 문자열로 전달할 수 있습니다.',
+      control: false, // ReactElement는 컨트롤에서 제어하지 않음
+      description: 'React 아이콘 컴포넌트를 전달합니다. size와 color는 TableButton에서 자동으로 설정됩니다.',
     },
     isDisabled: {
       control: 'boolean',
@@ -71,11 +57,11 @@ export const Preview: Story = {
       <MDSTypography>
         주로 정렬 버튼에 사용하는 컴포넌트입니다.
         <br />
-        icon은 MDSIcon 키를 문자열로 전달합니다.
+        icon은 React 아이콘 컴포넌트를 전달합니다. (예: {`<MDSIcon.Sort />`})
         <br />
         isChangeable이 true일 때만 화살표 아이콘이 표시됩니다.
         <br />
-        정렬 아이콘은 20px, 화살표 아이콘은 24px 크기로 표시됩니다.
+        아이콘의 size와 color는 TableButton에서 자동으로 설정됩니다.
         <br />
         텍스트 크기는 S size(13px)로 고정입니다.
       </MDSTypography>
@@ -100,7 +86,7 @@ export const WithoutSortIcon: Story = {
 export const CustomSortIcon: Story = {
   args: {
     label: 'Date',
-    icon: 'Calendar',
+    icon: <MDSIcon.Calendar />,
   },
   render: (args) => (
     <Wrapper>
@@ -113,7 +99,7 @@ export const CustomSortIcon: Story = {
 export const Clickable: Story = {
   args: {
     label: 'Status',
-    icon: 'Flag',
+    icon: <MDSIcon.Settings variant="outline" />,
     onClick: () => alert('Table button clicked!'),
   },
   render: (args) => (
@@ -131,7 +117,7 @@ export const Clickable: Story = {
 export const Disabled: Story = {
   args: {
     label: 'Disabled',
-    icon: 'Sort',
+    icon: <MDSIcon.Sort />,
     isDisabled: true,
     onClick: () => alert('This should not fire'),
   },
@@ -153,13 +139,18 @@ export const ChangeableStates: Story = {
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               정렬 가능 (기본값)
             </MDSTypography>
-            <MDSTableButton label="Name" icon="Sort" isChangeable={true} onClick={() => alert('정렬 변경!')} />
+            <MDSTableButton
+              label="Name"
+              icon={<MDSIcon.Sort />}
+              isChangeable={true}
+              onClick={() => alert('정렬 변경!')}
+            />
           </div>
           <div style={{ textAlign: 'center' }}>
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               정렬 불가
             </MDSTypography>
-            <MDSTableButton label="ID" icon="Sort" isChangeable={false} />
+            <MDSTableButton label="ID" icon={<MDSIcon.Sort />} isChangeable={false} />
           </div>
         </div>
         <MDSTypography variant="body" size="s">
@@ -181,19 +172,24 @@ export const ClickableStates: Story = {
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               클릭 불가 (onClick 없음)
             </MDSTypography>
-            <MDSTableButton label="Name" icon="Sort" />
+            <MDSTableButton label="Name" icon={<MDSIcon.Sort />} />
           </div>
           <div style={{ textAlign: 'center' }}>
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               클릭 가능 (onClick 있음)
             </MDSTypography>
-            <MDSTableButton label="Date" icon="Calendar" onClick={() => alert('Clicked!')} />
+            <MDSTableButton label="Date" icon={<MDSIcon.Calendar />} onClick={() => alert('Clicked!')} />
           </div>
           <div style={{ textAlign: 'center' }}>
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               비활성화 상태
             </MDSTypography>
-            <MDSTableButton label="Status" icon="Flag" onClick={() => {}} isDisabled />
+            <MDSTableButton
+              label="Status"
+              icon={<MDSIcon.Settings variant="outline" />}
+              onClick={() => {}}
+              isDisabled
+            />
           </div>
         </div>
         <MDSTypography variant="body" size="s">
@@ -212,14 +208,14 @@ export const VariousIcons: Story = {
     <Wrapper>
       <MDSTypography>다양한 아이콘을 사용한 TableButton 예시입니다.</MDSTypography>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
-        <MDSTableButton label="Name" icon="Sort" onClick={() => {}} />
-        <MDSTableButton label="Date" icon="Calendar" onClick={() => {}} />
-        <MDSTableButton label="Status" icon="Flag" onClick={() => {}} />
-        <MDSTableButton label="Priority" icon="Priority" onClick={() => {}} />
-        <MDSTableButton label="User" icon="AccountProfile" onClick={() => {}} />
-        <MDSTableButton label="Rating" icon="Star" onClick={() => {}} />
-        <MDSTableButton label="Duration" icon="Timer" onClick={() => {}} />
-        <MDSTableButton label="Config" icon="Settings" onClick={() => {}} />
+        <MDSTableButton label="Name" icon={<MDSIcon.Sort />} onClick={() => {}} />
+        <MDSTableButton label="Date" icon={<MDSIcon.Calendar />} onClick={() => {}} />
+        <MDSTableButton label="Status" icon={<MDSIcon.Settings variant="outline" />} onClick={() => {}} />
+        <MDSTableButton label="Priority" icon={<MDSIcon.Priority variant="outline" />} onClick={() => {}} />
+        <MDSTableButton label="User" icon={<MDSIcon.AccountProfile variant="outline" />} onClick={() => {}} />
+        <MDSTableButton label="Rating" icon={<MDSIcon.Star variant="outline" />} onClick={() => {}} />
+        <MDSTableButton label="Duration" icon={<MDSIcon.Timer />} onClick={() => {}} />
+        <MDSTableButton label="Config" icon={<MDSIcon.Settings variant="outline" />} onClick={() => {}} />
       </div>
     </Wrapper>
   ),

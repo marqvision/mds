@@ -30,9 +30,9 @@ const meta: Meta<typeof MDSTableButton> = {
       control: 'boolean',
       description: '버튼 비활성화 상태',
     },
-    isChangeable: {
+    isReadOnly: {
       control: 'boolean',
-      description: '정렬 변경 가능 여부 (화살표 아이콘 표시)',
+      description: '읽기 전용 상태 (화살표 아이콘 표시 및 클릭 가능 여부 제어)',
     },
     onClick: {
       action: 'clicked',
@@ -59,7 +59,7 @@ export const Preview: Story = {
         <br />
         icon은 React 아이콘 컴포넌트를 전달합니다. (예: {`<MDSIcon.Sort />`})
         <br />
-        isChangeable이 true일 때만 화살표 아이콘이 표시됩니다.
+        isReadOnly이 false일 때만 화살표 아이콘이 표시됩니다.
         <br />
         아이콘의 size와 color는 TableButton에서 자동으로 설정됩니다.
         <br />
@@ -129,32 +129,32 @@ export const Disabled: Story = {
   ),
 };
 
-export const ChangeableStates: Story = {
+export const ReadOnlyStates: Story = {
   render: () => (
     <Wrapper>
-      <MDSTypography>isChangeable 속성에 따른 화살표 아이콘 표시 여부를 확인할 수 있습니다.</MDSTypography>
+      <MDSTypography>isReadOnly 속성에 따른 화살표 아이콘 표시 여부를 확인할 수 있습니다.</MDSTypography>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
           <div style={{ textAlign: 'center' }}>
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               정렬 가능 (기본값)
             </MDSTypography>
-            <MDSTableButton icon={<MDSIcon.Sort />} isChangeable={true} onClick={() => alert('정렬 변경!')}>
+            <MDSTableButton icon={<MDSIcon.Sort />} isReadOnly={false} onClick={() => alert('정렬 변경!')}>
               Name
             </MDSTableButton>
           </div>
           <div style={{ textAlign: 'center' }}>
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
-              정렬 불가
+              읽기 전용
             </MDSTypography>
-            <MDSTableButton icon={<MDSIcon.Sort />} isChangeable={false}>
+            <MDSTableButton icon={<MDSIcon.Sort />} isReadOnly={true}>
               ID
             </MDSTableButton>
           </div>
         </div>
         <MDSTypography variant="body" size="s">
-          • isChangeable=true: 화살표 아이콘 표시, 정렬 기능 활성
-          <br />• isChangeable=false: 화살표 아이콘 숨김, 정렬 기능 비활성
+          • isReadOnly=false: 화살표 아이콘 표시, 정렬 기능 활성 (기본값)
+          <br />• isReadOnly=true: 화살표 아이콘 숨김, 정렬 기능 비활성
         </MDSTypography>
       </div>
     </Wrapper>

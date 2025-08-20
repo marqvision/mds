@@ -27,11 +27,11 @@ export type TableButtonProps = {
   isDisabled?: boolean;
 
   /**
-   * 변경 가능 여부 (드롭다운 화살표 표시 및 클릭 가능 여부 제어)
-   * - true: 오른쪽에 ArrowDown 아이콘이 표시되며 클릭 가능한 상태입니다
-   * - false: 화살표 아이콘이 숨겨지고 클릭이 불가능한 정적 표시 버튼이 됩니다 (disabled와는 다름)
+   * 읽기 전용 상태 (changeable, 드롭다운 화살표 표시 및 클릭 가능 여부 제어)
+   * - true: 화살표 아이콘이 숨겨지고 클릭이 불가능한 정적 표시 버튼이 됩니다 (disabled와는 다름)
+   * - false: 오른쪽에 ArrowDown 아이콘이 표시되며 클릭 가능한 상태입니다 (기본값)
    */
-  isChangeable?: boolean;
+  isReadOnly?: boolean;
 
   /**
    * 텍스트 및 아이콘 색상

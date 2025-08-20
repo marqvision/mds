@@ -18,7 +18,7 @@ const meta: Meta<typeof MDSTableButton> = {
     onClick: undefined,
   },
   argTypes: {
-    label: {
+    children: {
       control: 'text',
       description: '버튼에 표시될 텍스트',
     },
@@ -50,7 +50,7 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
 
 export const Preview: Story = {
   args: {
-    label: 'Name',
+    children: 'Name',
   },
   render: (args) => (
     <Wrapper>
@@ -72,7 +72,7 @@ export const Preview: Story = {
 
 export const WithoutSortIcon: Story = {
   args: {
-    label: 'Created Date',
+    children: 'Created Date',
     icon: null,
   },
   render: (args) => (
@@ -85,7 +85,7 @@ export const WithoutSortIcon: Story = {
 
 export const CustomSortIcon: Story = {
   args: {
-    label: 'Date',
+    children: 'Date',
     icon: <MDSIcon.Calendar />,
   },
   render: (args) => (
@@ -98,7 +98,7 @@ export const CustomSortIcon: Story = {
 
 export const Clickable: Story = {
   args: {
-    label: 'Status',
+    children: 'Status',
     icon: <MDSIcon.Settings variant="outline" />,
     onClick: () => alert('Table button clicked!'),
   },
@@ -116,7 +116,7 @@ export const Clickable: Story = {
 
 export const Disabled: Story = {
   args: {
-    label: 'Disabled',
+    children: 'Disabled',
     icon: <MDSIcon.Sort />,
     isDisabled: true,
     onClick: () => alert('This should not fire'),
@@ -139,18 +139,17 @@ export const ChangeableStates: Story = {
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               정렬 가능 (기본값)
             </MDSTypography>
-            <MDSTableButton
-              label="Name"
-              icon={<MDSIcon.Sort />}
-              isChangeable={true}
-              onClick={() => alert('정렬 변경!')}
-            />
+            <MDSTableButton icon={<MDSIcon.Sort />} isChangeable={true} onClick={() => alert('정렬 변경!')}>
+              Name
+            </MDSTableButton>
           </div>
           <div style={{ textAlign: 'center' }}>
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               정렬 불가
             </MDSTypography>
-            <MDSTableButton label="ID" icon={<MDSIcon.Sort />} isChangeable={false} />
+            <MDSTableButton icon={<MDSIcon.Sort />} isChangeable={false}>
+              ID
+            </MDSTableButton>
           </div>
         </div>
         <MDSTypography variant="body" size="s">
@@ -172,24 +171,23 @@ export const ClickableStates: Story = {
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               클릭 불가 (onClick 없음)
             </MDSTypography>
-            <MDSTableButton label="Name" icon={<MDSIcon.Sort />} />
+            <MDSTableButton icon={<MDSIcon.Sort />}>Name</MDSTableButton>
           </div>
           <div style={{ textAlign: 'center' }}>
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               클릭 가능 (onClick 있음)
             </MDSTypography>
-            <MDSTableButton label="Date" icon={<MDSIcon.Calendar />} onClick={() => alert('Clicked!')} />
+            <MDSTableButton icon={<MDSIcon.Calendar />} onClick={() => alert('Clicked!')}>
+              Date
+            </MDSTableButton>
           </div>
           <div style={{ textAlign: 'center' }}>
             <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
               비활성화 상태
             </MDSTypography>
-            <MDSTableButton
-              label="Status"
-              icon={<MDSIcon.Settings variant="outline" />}
-              onClick={() => {}}
-              isDisabled
-            />
+            <MDSTableButton icon={<MDSIcon.Settings variant="outline" />} onClick={() => {}} isDisabled>
+              Status
+            </MDSTableButton>
           </div>
         </div>
         <MDSTypography variant="body" size="s">
@@ -208,14 +206,30 @@ export const VariousIcons: Story = {
     <Wrapper>
       <MDSTypography>다양한 아이콘을 사용한 TableButton 예시입니다.</MDSTypography>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
-        <MDSTableButton label="Name" icon={<MDSIcon.Sort />} onClick={() => {}} />
-        <MDSTableButton label="Date" icon={<MDSIcon.Calendar />} onClick={() => {}} />
-        <MDSTableButton label="Status" icon={<MDSIcon.Settings variant="outline" />} onClick={() => {}} />
-        <MDSTableButton label="Priority" icon={<MDSIcon.Priority variant="outline" />} onClick={() => {}} />
-        <MDSTableButton label="User" icon={<MDSIcon.AccountProfile variant="outline" />} onClick={() => {}} />
-        <MDSTableButton label="Rating" icon={<MDSIcon.Star variant="outline" />} onClick={() => {}} />
-        <MDSTableButton label="Duration" icon={<MDSIcon.Timer />} onClick={() => {}} />
-        <MDSTableButton label="Config" icon={<MDSIcon.Settings variant="outline" />} onClick={() => {}} />
+        <MDSTableButton icon={<MDSIcon.Sort />} onClick={() => {}}>
+          Name
+        </MDSTableButton>
+        <MDSTableButton icon={<MDSIcon.Calendar />} onClick={() => {}}>
+          Date
+        </MDSTableButton>
+        <MDSTableButton icon={<MDSIcon.Settings variant="outline" />} onClick={() => {}}>
+          Status
+        </MDSTableButton>
+        <MDSTableButton icon={<MDSIcon.Priority variant="outline" />} onClick={() => {}}>
+          Priority
+        </MDSTableButton>
+        <MDSTableButton icon={<MDSIcon.AccountProfile variant="outline" />} onClick={() => {}}>
+          User
+        </MDSTableButton>
+        <MDSTableButton icon={<MDSIcon.Star variant="outline" />} onClick={() => {}}>
+          Rating
+        </MDSTableButton>
+        <MDSTableButton icon={<MDSIcon.Timer />} onClick={() => {}}>
+          Duration
+        </MDSTableButton>
+        <MDSTableButton icon={<MDSIcon.Settings variant="outline" />} onClick={() => {}}>
+          Config
+        </MDSTableButton>
       </div>
     </Wrapper>
   ),

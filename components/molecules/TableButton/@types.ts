@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import type { MDSThemeColorPath } from '../../../types';
 
 export type TableButtonProps = {
   /**
-   * 라벨 텍스트 (문자열만 허용, 필수)
+   * 버튼에 표시될 내용 (문자열만 허용, 필수)
    */
-  label: string;
+  children: ReactNode;
 
   /**
    * 앞쪽에 표시할 아이콘
@@ -37,6 +37,6 @@ export type TableButtonProps = {
    * 텍스트 및 아이콘 색상
    */
   color?: MDSThemeColorPath;
-}
+};
 
 export type IconType = TableButtonProps['icon'];

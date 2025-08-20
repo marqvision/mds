@@ -1,5 +1,5 @@
-import React from 'react';
 import styled from '@emotion/styled';
+import React from 'react';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSTypography } from '../../atoms/Typography';
 import { TableButtonProps } from './@types';
@@ -27,7 +27,7 @@ const StyledButton = styled.button<{
 
 export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonProps>((props, ref) => {
   const {
-    label,
+    children,
     icon = <MDSIcon.Sort size={20} />,
     isDisabled = false,
     onClick,
@@ -54,7 +54,7 @@ export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonPro
         color={isDisabled ? 'color/content/neutral/default/disabled' : color}
         style={{ marginLeft: icon ? '2px' : '0' }}
       >
-        {label}
+        {children}
       </MDSTypography>
       {isChangeable && (
         <MDSIcon.ArrowDown

@@ -1,7 +1,7 @@
 import React from 'react';
 import { MDSIcon } from '../../atoms/Icon';
 import { SortIconType } from './@types';
-import type { MDSThemeColorPath } from '../../types';
+import type { MDSThemeColorPath } from '../../../types';
 
 /**
  * sortIcon prop을 기반으로 적절한 아이콘 엘리먼트를 렌더링합니다.

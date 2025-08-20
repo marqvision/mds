@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDSIcon } from '../../atoms/Icon';
-import type { MDSThemeColorPath } from '../../types';
+import type { MDSThemeColorPath } from '../../../types';
 
 export type TableButtonProps = {
   /**

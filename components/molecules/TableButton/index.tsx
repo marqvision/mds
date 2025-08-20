@@ -26,7 +26,6 @@ const StyledButton = styled.button<{
 
   &:disabled {
     color: ${({ theme }) => theme.color.content.neutral.default.disabled};
-    cursor: default;
 
     & svg path {
       fill: ${({ theme }) => theme.color.content.neutral.default.disabled};

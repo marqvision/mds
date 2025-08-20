@@ -151,7 +151,7 @@ export type IconButtonProps = {
   width?: never;
   startIcon?: never;
   endIcon?: never;
-  tags?: never;
+  tags?: React.ReactElement | React.ReactElement[];
   children?: never;
 };
 

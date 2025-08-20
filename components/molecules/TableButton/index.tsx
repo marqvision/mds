@@ -18,6 +18,11 @@ const StyledButton = styled.button<{
   height: 24px;
   padding: 0;
   cursor: ${({ isClickable }) => (isClickable ? 'pointer' : 'default')};
+  transition: opacity 0.2s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.8;
+  }
 
   &:disabled {
     color: ${({ theme }) => theme.color.content.neutral.default.disabled};

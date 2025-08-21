@@ -21,6 +21,7 @@ const Wrapper = styled.label<{ isClickable: boolean; gap: number }>`
 `;
 
 const IconWrapper = styled.div<StyledWrapperProps>`
+  flex-shrink: 0;
   position: relative;
 
   ${({ size }) => `

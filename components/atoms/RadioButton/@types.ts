@@ -1,30 +1,26 @@
-import { MDSThemeColorPath } from '../../../types';
+import React from 'react';
+import { MDSTypographyProps } from '../Typography';
 
-type Color = 'blue' | 'bluegray';
+export type Color = 'blue' | 'bluegray';
+export type Status = 'selected' | 'unSelected';
 
-type ColorList = {
-  border: {
-    normal: MDSThemeColorPath;
-    disabled: MDSThemeColorPath;
-  };
-  fill: {
-    normal?: MDSThemeColorPath;
-    disabled: MDSThemeColorPath;
-  };
+export type ColorSet = {
+  normalBorder: string;
+  disabledBorder: string;
+  normalFill?: string;
+  disabledFill?: string;
 };
 
 export type Theme = {
-  color: Record<
-    Color,
-    {
-      selected: ColorList;
-      unSelected: ColorList;
-    }
-  >;
   size: {
     boxSize: number;
     padding: number;
     borderRadius: number;
+    fontSize: MDSTypographyProps['size'];
+    fontColor: {
+      default: MDSTypographyProps['color'];
+      disabled: MDSTypographyProps['color'];
+    };
   };
 };
 
@@ -32,6 +28,11 @@ export type StyledWrapperProps = {
   color: Color;
   type: 'normal' | 'disabled';
   checked: boolean;
+};
+
+export type LabelProps = {
+  isDisabled?: boolean;
+  label: Exclude<Props<string>['label'], undefined | null>;
 };
 
 export type Props<Value extends string | number> = {
@@ -59,4 +60,14 @@ export type Props<Value extends string | number> = {
    * 동일한 selectedValue 값을 가진 라디오 버튼들은 하나의 그룹으로 취급됩니다.
    */
   selectedValue: Value;
+  /**
+   * 라디오 버튼 우측에 나타날 레이블을 지정합니다.
+   * disabled 상태에 color 가 변경되므로, MDSTypography 컴포넌트를 전달한다면 color="inherit" 으로 설정하는 것을 권장합니다.
+   */
+  label?: React.ReactNode;
+  /**
+   * 라디오 버튼과 label 사이의 간격을 지정합니다.
+   * @default 4
+   */
+  gap?: number;
 };

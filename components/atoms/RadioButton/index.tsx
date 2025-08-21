@@ -1,29 +1,40 @@
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import styled from '@emotion/styled';
-import { resolveColor } from '../../../utils';
-import { theme as RadioButtonTheme } from './@constants';
+import { THEME as RADIO_BUTTON_THEME } from './@constants';
 import { Props, StyledWrapperProps } from './@types';
+import { getColorSet } from './@utils';
 import { Selected, Unselected } from './Icons';
+import { Label } from './Label';
 
-const Wrapper = styled.label<StyledWrapperProps>`
-  display: inline-block;
-  position: relative;
-  font-size: 0;
-  width: ${RadioButtonTheme.size.boxSize}px;
-  height: ${RadioButtonTheme.size.boxSize}px;
+const Wrapper = styled.label<{ isClickable: boolean; gap: number }>`
+  display: inline-flex;
+  align-items: center;
+
+  ${({ isClickable, gap }) => `
+    gap: ${gap}px;
+    ${isClickable ? 'cursor: pointer;' : ''}
+  `}
 
   & input {
     display: none;
   }
+`;
 
-  ${({ color, type, checked }) => {
+const IconWrapper = styled.div<StyledWrapperProps>`
+  flex-shrink: 0;
+  position: relative;
+  font-size: 0;
+  width: ${RADIO_BUTTON_THEME.size.boxSize}px;
+  height: ${RADIO_BUTTON_THEME.size.boxSize}px;
+
+  ${({ color, type, checked, theme }) => {
     const buttonStatus = checked ? 'selected' : 'unSelected';
-    const mainColor = RadioButtonTheme.color[color][buttonStatus].border[type];
-    const fill = RadioButtonTheme.color[color][buttonStatus].fill[type];
+    const mainColor = getColorSet(theme)[color][buttonStatus][`${type}Border`];
+    const fill = getColorSet(theme)[color][buttonStatus][`${type}Fill`];
 
     return `
-      color: ${resolveColor(mainColor)};
-      ${fill ? `fill: ${resolveColor(fill)};` : 'fill: none'};
+      color: ${mainColor};
+      fill: ${fill || 'none'};
     `;
   }}
 
@@ -31,12 +42,12 @@ const Wrapper = styled.label<StyledWrapperProps>`
     position: absolute;
     display: inline-block;
     content: '';
-    width: calc(100% + ${RadioButtonTheme.size.padding * 2}px);
-    height: calc(100% + ${RadioButtonTheme.size.padding * 2}px);
+    width: calc(100% + ${RADIO_BUTTON_THEME.size.padding * 2}px);
+    height: calc(100% + ${RADIO_BUTTON_THEME.size.padding * 2}px);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: ${RadioButtonTheme.size.borderRadius}px;
+    border-radius: ${RADIO_BUTTON_THEME.size.borderRadius}px;
     transition: 0.3s;
   }
 
@@ -54,7 +65,7 @@ const Svg = styled.svg<{ isShow: boolean }>`
 `;
 
 export const MDSRadioButton = forwardRef((props, ref) => {
-  const { value, color = 'blue', selectedValue, onChange, isDisabled } = props;
+  const { value, color = 'blue', selectedValue, onChange, isDisabled, label, gap = 4 } = props;
 
   const type = isDisabled ? 'disabled' : 'normal';
   const isChecked = selectedValue === value;
@@ -63,27 +74,34 @@ export const MDSRadioButton = forwardRef((props, ref) => {
     onChange(value);
   };
 
+  const stopPropagation = (event: React.MouseEvent<HTMLLabelElement>) => {
+    event.stopPropagation();
+  };
+
   return (
-    <Wrapper ref={ref} color={color} type={type} checked={isChecked}>
+    <Wrapper ref={ref} gap={gap} isClickable={!isDisabled} onClick={stopPropagation}>
       <input type="radio" checked={isChecked} disabled={isDisabled} onChange={handleChange} />
-      <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={RadioButtonTheme.size.boxSize}
-        height={RadioButtonTheme.size.boxSize}
-        viewBox={`0 0 ${RadioButtonTheme.size.boxSize} ${RadioButtonTheme.size.boxSize}`}
-        isShow={isChecked}
-      >
-        {Selected}
-      </Svg>
-      <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={RadioButtonTheme.size.boxSize}
-        height={RadioButtonTheme.size.boxSize}
-        viewBox={`0 0 ${RadioButtonTheme.size.boxSize} ${RadioButtonTheme.size.boxSize}`}
-        isShow={!isChecked}
-      >
-        {Unselected}
-      </Svg>
+      <IconWrapper color={color} type={type} checked={isChecked}>
+        <Svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={RADIO_BUTTON_THEME.size.boxSize}
+          height={RADIO_BUTTON_THEME.size.boxSize}
+          viewBox={`0 0 ${RADIO_BUTTON_THEME.size.boxSize} ${RADIO_BUTTON_THEME.size.boxSize}`}
+          isShow={isChecked}
+        >
+          {Selected}
+        </Svg>
+        <Svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={RADIO_BUTTON_THEME.size.boxSize}
+          height={RADIO_BUTTON_THEME.size.boxSize}
+          viewBox={`0 0 ${RADIO_BUTTON_THEME.size.boxSize} ${RADIO_BUTTON_THEME.size.boxSize}`}
+          isShow={!isChecked}
+        >
+          {Unselected}
+        </Svg>
+      </IconWrapper>
+      {label && <Label isDisabled={isDisabled} label={label} />}
     </Wrapper>
   );
 }) as (<Value extends string | number>(props: Props<Value> & { ref?: React.Ref<HTMLLabelElement> }) => JSX.Element) & {

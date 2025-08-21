@@ -177,6 +177,8 @@ export const TextField = forwardRef((props: Props, ref: Ref<HTMLInputElement>) =
       enter('');
     } else if (onChange) {
       onChange('');
+    } else if (onBlur) {
+      onBlur('');
     }
     setIsShowDelete(false);
 

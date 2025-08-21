@@ -36,13 +36,9 @@ type Parameters<T extends KeywordObject> = {
   splitType?: SplitType | RegExp;
 } & (StringKeywordParameters | ObjectKeywordParameters<T>);
 
-export const useChipTextField = <T extends KeywordObject>({
-  type,
-  value,
-  onChange,
-  initialValue,
-  splitType = 'linebreak',
-}: Parameters<T>) => {
+export const useChipTextField = <T extends KeywordObject>(params: Parameters<T>) => {
+  const { type, value, onChange, initialValue, splitType = 'linebreak' } = params;
+
   const [inputValue, setInputValue] = useState<string>('');
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -55,7 +51,7 @@ export const useChipTextField = <T extends KeywordObject>({
 
   // 전달받은 텍스트 리스트를 중복확인 후 키워드 목록에 추가
   const add = (textList: string[]) => {
-    const keywordList = type === 'object' ? value.map((item) => item.keyword) : value;
+    const keywordList = parseKeywordList(params);
     const newKeywords = textList.filter((text) => !isKeywordExists(text, keywordList));
     if (!newKeywords.length) return;
 
@@ -75,7 +71,7 @@ export const useChipTextField = <T extends KeywordObject>({
     if (!trimmedValue) return;
     setIsError(false);
 
-    const keywordList = type === 'object' ? value.map((item) => item.keyword) : value;
+    const keywordList = parseKeywordList(params);
     if (isKeywordExists(trimmedValue, keywordList)) {
       setIsError(true);
       return;
@@ -123,6 +119,11 @@ export const useChipTextField = <T extends KeywordObject>({
       remove: removeKeyword,
     },
   };
+};
+
+// 키워드 목록을 문자열 목록으로 변환
+const parseKeywordList = <T extends KeywordObject>({ type, value }: Parameters<T>): string[] => {
+  return type === 'object' ? value.map((item) => item.keyword) : value;
 };
 
 // 클립보드의 텍스트를 정규 표현식에 따라 분할하여 배열로 변환

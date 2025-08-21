@@ -12,7 +12,7 @@ export const getColorSet = (
         normalFill: theme.color.bg.fill.inverse.default.normal,
         disabledFill: theme.color.bg.fill.inverse.default.normal,
       },
-      unSelected: {
+      default: {
         normalBorder: theme.color.bg.fill.neutral.weak.normal,
         disabledBorder: theme.color.bg.fill.neutral.weak.disabled,
         disabledFill: theme.color.bg.surface.neutral.secondary.disabled,
@@ -25,7 +25,7 @@ export const getColorSet = (
         normalFill: theme.color.bg.fill.inverse.default.normal,
         disabledFill: theme.color.bg.fill.inverse.default.normal,
       },
-      unSelected: {
+      default: {
         normalBorder: theme.color.bg.fill.neutral.weak.normal,
         disabledBorder: theme.color.bg.fill.neutral.weak.disabled,
         disabledFill: theme.color.bg.surface.neutral.secondary.disabled,

@@ -30,8 +30,8 @@ const IconWrapper = styled.div<StyledWrapperProps>`
   `}
 
   ${({ color, type, value, isTranslucent, theme }) => {
-    const mainColor = getColorSet(theme)[color][value ? 'default' : 'unChecked'][`${type}Border`];
-    const fill = getColorSet(theme)[color][value ? 'default' : 'unChecked'][`${type}Fill`];
+    const mainColor = getColorSet(theme)[color][value ? 'checked' : 'default'][`${type}Border`];
+    const fill = getColorSet(theme)[color][value ? 'checked' : 'default'][`${type}Fill`];
 
     return `
       color: ${mainColor};

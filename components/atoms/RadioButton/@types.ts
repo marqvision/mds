@@ -2,7 +2,7 @@ import React from 'react';
 import { MDSTypographyProps } from '../Typography';
 
 export type Color = 'blue' | 'bluegray';
-export type Status = 'selected' | 'unSelected';
+export type Status = 'selected' | 'default';
 
 export type ColorSet = {
   normalBorder: string;

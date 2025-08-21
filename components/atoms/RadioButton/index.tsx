@@ -28,7 +28,7 @@ const IconWrapper = styled.div<StyledWrapperProps>`
   height: ${RADIO_BUTTON_THEME.size.boxSize}px;
 
   ${({ color, type, checked, theme }) => {
-    const buttonStatus = checked ? 'selected' : 'unSelected';
+    const buttonStatus = checked ? 'selected' : 'default';
     const mainColor = getColorSet(theme)[color][buttonStatus][`${type}Border`];
     const fill = getColorSet(theme)[color][buttonStatus][`${type}Fill`];
 

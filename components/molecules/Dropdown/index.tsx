@@ -54,8 +54,8 @@ const StyledStickyTrigger = styled.div`
 
 const StyledSticky = styled.div<{ isScrollTop: boolean }>`
   transition: 0.3s ease box-shadow;
-  box-shadow: ${({ isScrollTop }) => (isScrollTop ? '0 1px 8px 0 #0000001f, 1px 2px 0 #0000000a;' : 'none')};
-  border-bottom: 1px solid ${({ theme }) => theme._raw_color.bluegray100};
+  box-shadow: ${({ isScrollTop }) => (isScrollTop ? '0 1px 8px 0 #0000001f, 0 1px 2px 0 #0000000a;' : 'none')};
+  border-bottom: ${({ isScrollTop, theme }) => `${isScrollTop ? 0 : 1}px solid ${theme._raw_color.bluegray100}`};
   background-color: white;
   position: relative;
   z-index: 10;
@@ -199,8 +199,8 @@ const Dropdown = <T, SortT>(
     (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-      ? 'indeterminate'
-      : false;
+        ? 'indeterminate'
+        : false;
   const isEmpty = list.length === 0 && !infinite?.isLoading && !isLoading;
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;

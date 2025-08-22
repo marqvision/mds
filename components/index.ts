@@ -28,6 +28,7 @@ export * from './molecules/Tooltip';
 export * from './molecules/MessageBox';
 export * from './molecules/SegmentedButton';
 export * from './molecules/Search';
+export * from './molecules/TableButton';
 
 // ORGANISMS
 export * from './organisms/DatePickers/Calendar';

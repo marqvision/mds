@@ -3,7 +3,8 @@ import { MDSImageProps } from '../../../atoms/Image';
 import { MDSThemeColorPath } from '../../../../types';
 import { MDSPlainButtonProps } from '../../PlainButton';
 
-export type MessageBoxType = 'neutral' | 'default' | 'primary' | 'success' | 'warning' | 'critical';
+export type MessageColorType = 'white' | 'bluegray' | 'blue' | 'green' | 'yellow' | 'red' | 'purple' | 'teal';
+export type MessageVariantType = 'default' | 'small';
 
 export type MessageBoxCTA = React.ReactElement | { label: string; onClick: () => void };
 
@@ -24,13 +25,21 @@ export type ImageProps = MDSImageProps & {
 
 export type ImageGalleryProps = {
   images: (string | ImageData)[];
+  size?: MessageVariantType;
+};
+
+export type ImageSizesType = {
+  readonly [K in MessageVariantType]: {
+    readonly big: string;
+    readonly small: string;
+  };
 };
 
 export type MessageBoxProps = {
-  type?: MessageBoxType;
+  color?: MessageColorType;
   titleIcon?: ReactNode;
-
-  title: string;
+  size?: MessageVariantType;
+  title: string | React.ReactElement;
   message?: string;
   titleCTA?: MessageBoxCTA;
   messageCTA?: MessageBoxCTA;
@@ -45,12 +54,13 @@ export type MessageBoxProps = {
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export type MessageBoxStyleProps = {
-  type?: MessageBoxType;
+  color?: MessageColorType;
   width?: number;
+  size?: MessageVariantType;
 };
 
 export type MessageBoxContentColorMap = {
-  [key in MessageBoxType]: {
+  [key in MessageColorType]: {
     mainColor: MDSThemeColorPath;
   };
 };

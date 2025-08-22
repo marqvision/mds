@@ -175,7 +175,6 @@ export const TextField = forwardRef((props: Props, ref: Ref<HTMLInputElement>) =
     if (enter) {
       e.preventDefault();
       enter('');
-      onBlur?.('');
     } else if (onChange) {
       onChange('');
     } else if (onBlur) {
@@ -316,9 +315,7 @@ export const TextField = forwardRef((props: Props, ref: Ref<HTMLInputElement>) =
           color={isDisabled || isReadOnly ? 'color/content/neutral/default/disabled' : undefined}
           variant="border"
           size={theme.size[size].iconSize}
-          onClick={(e) => {
-            handleDelete(e);
-          }}
+          onClick={handleDelete}
           className={isShowDelete ? 'show' : undefined}
           onMouseEnter={() => (preventResizeRef.current = true)}
           onMouseLeave={() => (preventResizeRef.current = false)}

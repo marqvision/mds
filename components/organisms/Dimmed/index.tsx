@@ -34,8 +34,10 @@ const Wrapper = styled.div<StyledProps>`
   z-index: 1300; //Mui Popper 의 z-index 1300 으로 맞춤 (MuiPopper > Modal > MuiPopper 사용 가능)
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100vw; // fallback
+  height: 100vh; // fallback
+  width: 100dvw;
+  height: 100dvh;
   padding: ${({ padding }) => padding};
   background-color: ${({ intensity }) => theme.color[intensity].backgroundColor};
   overflow: hidden;

@@ -7,7 +7,7 @@ import { MDSPlainButton } from '../PlainButton';
 import { ImageGallery } from './@components/ImageGallery';
 import { MessageBoxStyleProps, MessageBoxProps } from './@types';
 import { resolveMessageBoxBackgroundColor } from './@utils';
-import { MessageBoxContentColor } from './@constants';
+import { ButtonSizes, IconSizes, MessageBoxContentColor, TypographySizes } from './@constants';
 
 export const MessageBox = (props: MessageBoxProps) => {
   const {
@@ -19,31 +19,47 @@ export const MessageBox = (props: MessageBoxProps) => {
     titleIcon,
     messageCTA,
     actionButton,
-    type = 'default',
+    color = 'bluegray',
+    size = 'default',
     closeControl,
     ...restProps
   } = props;
 
   if (closeControl?.isVisible === false) return null;
 
-  const mainColor = MessageBoxContentColor[type].mainColor;
+  const mainColor = MessageBoxContentColor[color].mainColor;
   const hasTitle = Boolean(title);
   const hasMessage = Boolean(message);
 
+  const iconConfig = IconSizes[size];
+  const typographyConfig = TypographySizes[size];
+  const buttonConfig = ButtonSizes[size];
+
   return (
-    <StyledMessageBox width={width} type={type} {...restProps}>
+    <StyledMessageBox width={width} color={color} size={size} {...restProps}>
       <MessageBoxContentWrapper>
-        {images && <ImageGallery images={images} />}
+        {images && <ImageGallery size={size} images={images} />}
         <MessageBoxTextContainer>
           {hasTitle && (
             <MessageBoxTitleContainer>
               <TitleRow>
                 <TitleIconWrapper>
-                  {titleIcon ?? <MDSIcon.Info size={20} variant="border" color={mainColor} />}
+                  {titleIcon ?? <MDSIcon.Info size={iconConfig.info} variant="border" color={mainColor} />}
                 </TitleIconWrapper>
-                <MDSTypography variant="title" weight="medium" color={mainColor} lineClamp={1} wordBreak="break-all">
-                  {title}
-                </MDSTypography>
+                {React.isValidElement(title) ? (
+                  title
+                ) : (
+                  <MDSTypography
+                    variant="body"
+                    size={typographyConfig.title.fontSize}
+                    weight="medium"
+                    color={mainColor}
+                    lineClamp={1}
+                    wordBreak="break-all"
+                  >
+                    {title}
+                  </MDSTypography>
+                )}
               </TitleRow>
 
               {titleCTA &&
@@ -51,7 +67,11 @@ export const MessageBox = (props: MessageBoxProps) => {
                   titleCTA
                 ) : (
                   <MessageBoxShrinkWrap>
-                    <MDSPlainButton onClick={(titleCTA as { label: string; onClick: () => void }).onClick} color="blue">
+                    <MDSPlainButton
+                      size={buttonConfig.titleCTA}
+                      onClick={(titleCTA as { label: string; onClick: () => void }).onClick}
+                      color="blue"
+                    >
                       {(titleCTA as { label: string; onClick: () => void }).label}
                     </MDSPlainButton>
                   </MessageBoxShrinkWrap>
@@ -61,7 +81,12 @@ export const MessageBox = (props: MessageBoxProps) => {
 
           {hasMessage && (
             <MessageBoxMessageContainer>
-              <MDSTypography variant="body" lineClamp={1} wordBreak="break-all">
+              <MDSTypography
+                variant="body"
+                size={typographyConfig.message.fontSize}
+                lineClamp={1}
+                wordBreak="break-all"
+              >
                 {message}
               </MDSTypography>
 
@@ -70,7 +95,10 @@ export const MessageBox = (props: MessageBoxProps) => {
                   messageCTA
                 ) : (
                   <MessageBoxShrinkWrap>
-                    <MDSPlainButton onClick={(messageCTA as { label: string; onClick: () => void }).onClick}>
+                    <MDSPlainButton
+                      size={buttonConfig.messageCTA}
+                      onClick={(messageCTA as { label: string; onClick: () => void }).onClick}
+                    >
                       {(messageCTA as { label: string; onClick: () => void }).label}
                     </MDSPlainButton>
                   </MessageBoxShrinkWrap>
@@ -81,10 +109,14 @@ export const MessageBox = (props: MessageBoxProps) => {
       </MessageBoxContentWrapper>
 
       <MessageBoxActionsContainer>
-        {actionButton && <MDSPlainButton {...actionButton}>{actionButton.label}</MDSPlainButton>}
+        {actionButton && (
+          <MDSPlainButton size={buttonConfig.action} {...actionButton}>
+            {actionButton.label}
+          </MDSPlainButton>
+        )}
         {closeControl?.showButton && (
           <MDSPlainButton onClick={closeControl.onClose}>
-            <MDSIcon.CloseDelete variant="border" size={20} />
+            <MDSIcon.CloseDelete variant="border" size={iconConfig.close} />
           </MDSPlainButton>
         )}
       </MessageBoxActionsContainer>
@@ -93,9 +125,9 @@ export const MessageBox = (props: MessageBoxProps) => {
 };
 
 const StyledMessageBox = styled.div<MessageBoxStyleProps>`
-  ${({ theme, width, type }) => {
-    const resolvedType = type ?? 'default';
-    const backgroundColor = resolveMessageBoxBackgroundColor(theme, resolvedType);
+  ${({ theme, width, color }) => {
+    const resolvedColor = color ?? 'bluegray';
+    const backgroundColor = resolveMessageBoxBackgroundColor(theme, resolvedColor);
     const defaultWidth = width ? `${width}px` : '100%';
 
     return css`
@@ -106,7 +138,7 @@ const StyledMessageBox = styled.div<MessageBoxStyleProps>`
       align-items: center;
       gap: 12px;
       width: ${defaultWidth};
-      ${resolvedType === 'neutral' ? `border: 1px solid ${theme.color.border.neutral.default.normal};` : ''}
+      ${resolvedColor === 'white' ? `border: 1px solid ${theme.color.border.neutral.default.normal};` : ''}
     `;
   }}
 `;

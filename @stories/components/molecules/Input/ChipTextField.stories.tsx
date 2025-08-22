@@ -166,3 +166,49 @@ export const CustomRegExp: Story = {
     );
   },
 };
+
+export const WithoutPaste: Story = {
+  args: {},
+  render: function Render(props) {
+    const [value, setValue] = useState<string[]>([]);
+
+    const { inputProps: { inputProps, ...restProps}, handlers } = useMDSInputKeywordManager({
+      value,
+      onChange: setValue,
+      splitType: /\|+/g,
+    });
+    void inputProps;
+
+    return (
+      <Wrapper>
+        <MDSTypography>
+          paste 를 사용하지 않고 키워드 입력만 허용합니다.
+        </MDSTypography>
+
+        <ValueWrapper>{JSON.stringify(value, null, 2)}</ValueWrapper>
+
+        <MDSInput {...(props as TextFieldProps)} {...restProps} />
+
+        <ChipWrapper>
+          {value.map((item, index) => (
+            <MDSButton
+              key={index}
+              variant="tint"
+              color="bluegray"
+              endIcon={
+                <MDSPlainButton
+                  size="small"
+                  color="bluegray"
+                  icon={<MDSIcon.CloseDelete size={16} variant="border" />}
+                  onClick={() => handlers.remove(item)}
+                />
+              }
+            >
+              {item}
+            </MDSButton>
+          ))}
+        </ChipWrapper>
+      </Wrapper>
+    );
+  },
+};

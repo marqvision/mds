@@ -3,6 +3,7 @@ import { MDSImage } from '../../../atoms/Image';
 import { MDSTypography } from '../../../atoms/Typography';
 import { ImageGalleryProps, ImageProps } from '../@types';
 import { normalizeImageData } from '../@utils';
+import { ImageSizes } from '../@constants';
 
 const Image = (props: ImageProps) => {
   const { src, width, children, ...restProps } = props;
@@ -18,17 +19,18 @@ const Image = (props: ImageProps) => {
 };
 
 export const ImageGallery = (props: ImageGalleryProps) => {
-  const { images } = props;
+  const { images, size = 'default' } = props;
   const imageCount = images.length;
+  const currentSizes = ImageSizes[size];
 
   return (
     <ImageWrapper>
-      <Image {...normalizeImageData(images[0], '66px')} />
+      <Image {...normalizeImageData(images[0], currentSizes.big)} />
       {imageCount > 1 && (
         <ImageStack>
-          <Image {...normalizeImageData(images[1], '32px')} />
+          <Image {...normalizeImageData(images[1], currentSizes.small)} />
           {imageCount > 2 && (
-            <Image {...normalizeImageData(images[2], '32px')}>
+            <Image {...normalizeImageData(images[2], currentSizes.small)}>
               {imageCount > 3 && (
                 <ImageOverlay>
                   <MDSTypography variant="body" size="l" weight="medium" color="color/content/on_default_color">

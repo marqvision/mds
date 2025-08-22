@@ -150,7 +150,7 @@ export const MDSButton = forwardRef<
     return (
       <Button isIconButton {...commonProps} ref={ref}>
         {isLoading && <LoadingSpinner size={sizeStyle.spinnerSize} color="inherit" isCenter />}
-
+        {tags && <TagWrapper>{Array.isArray(tags) ? tags.map((tag) => tag) : tags}</TagWrapper>}
         {icon && <Icon size={size} icon={icon} />}
 
         {isDividerVisible && <Divider variant={variant} color={color} size={size} isDisabled={isDisabled} />}

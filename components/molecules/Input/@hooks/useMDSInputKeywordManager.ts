@@ -36,7 +36,7 @@ type Parameters<T extends KeywordObject> = {
   splitType?: SplitType | RegExp;
 } & (StringKeywordParameters | ObjectKeywordParameters<T>);
 
-export const useChipTextField = <T extends KeywordObject>(params: Parameters<T>) => {
+export const useMDSInputKeywordManager = <T extends KeywordObject>(params: Parameters<T>) => {
   const { type, value, onChange, initialValue, splitType = 'linebreak' } = params;
 
   const [inputValue, setInputValue] = useState<string>('');

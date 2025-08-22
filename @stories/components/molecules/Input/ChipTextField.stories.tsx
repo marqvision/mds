@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { MDSButton, MDSIcon, MDSInput, MDSPlainButton, MDSTypography } from '../../../../components';
 import { TextFieldProps } from '../../../../components/molecules/Input/@types';
-import { useChipTextField } from '../../../../components/molecules/Input/@hooks/useChipTextField';
+import { useMDSInputKeywordManager } from '../../../../components/molecules/Input/@hooks/useMDSInputKeywordManager';
 import { Story, Wrapper } from './index.stories';
 import type { Meta } from '@storybook/react';
 
 const meta: Meta<typeof MDSInput> = {
   component: MDSInput,
-  title: '2. Components/molecules/Input/useChipTextField',
+  title: '2. Components/molecules/Input/useMDSInputKeywordManager',
   args: {
     value: '',
   },
@@ -45,7 +45,7 @@ export const StringKeywords: Story = {
   render: function Render(props) {
     const [value, setValue] = useState<string[]>([]);
 
-    const { inputProps, handlers } = useChipTextField({
+    const { inputProps, handlers } = useMDSInputKeywordManager({
       value,
       onChange: setValue,
     });
@@ -85,7 +85,7 @@ export const ObjectKeywords: Story = {
   render: function Render(props) {
     const [value, setValue] = useState<{ keyword: string; id?: number; isPrimary: boolean }[]>([]);
 
-    const { inputProps, handlers } = useChipTextField({
+    const { inputProps, handlers } = useMDSInputKeywordManager({
       type: 'object',
       value,
       onChange: setValue,
@@ -127,7 +127,7 @@ export const CustomRegExp: Story = {
   render: function Render(props) {
     const [value, setValue] = useState<string[]>([]);
 
-    const { inputProps, handlers } = useChipTextField({
+    const { inputProps, handlers } = useMDSInputKeywordManager({
       value,
       onChange: setValue,
       splitType: /\|+/g,

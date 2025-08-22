@@ -133,6 +133,7 @@ const IconVariant = {
   Group: VariantSet['OutlineFill'],
   ServerDNS: VariantSet['OutlineFill'],
   CommentAdd: ['left', 'right'],
+  Comment: ['fill_left', 'fill_right', 'outline_left', 'outline_right'],
   SiteMapTree: VariantSet['OutlineFill'],
   DragHandle: VariantSet['Orientation'],
   AddPayment: VariantSet['OutlineFill'],

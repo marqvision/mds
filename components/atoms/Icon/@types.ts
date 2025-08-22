@@ -62,6 +62,7 @@ export type IconVariant = {
   SellerPerson: VariantSet['OutlineFill'];
   Group: VariantSet['OutlineFill'];
   ServerDNS: VariantSet['OutlineFill'];
+  Comment: 'fill_left' | 'fill_right' | 'outline_left' | 'outline_right';
   CommentAdd: 'left' | 'right';
   SiteMapTree: VariantSet['OutlineFill'];
   DragHandle: VariantSet['Orientation'];

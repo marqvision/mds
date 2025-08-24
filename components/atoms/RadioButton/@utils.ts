@@ -6,9 +6,11 @@ export const getColorSet = (
 ): Record<Color, Record<Status, ColorSet>> => {
   return {
     blue: {
-      checked: {
+      selected: {
         normalBorder: theme.color.bg.fill.primary.default.normal,
         disabledBorder: theme.color.bg.fill.primary.default.disabled,
+        normalFill: theme.color.bg.fill.inverse.default.normal,
+        disabledFill: theme.color.bg.fill.inverse.default.normal,
       },
       default: {
         normalBorder: theme.color.bg.fill.neutral.weak.normal,
@@ -16,21 +18,12 @@ export const getColorSet = (
         disabledFill: theme.color.bg.surface.neutral.secondary.disabled,
       },
     },
-    white: {
-      checked: {
-        normalBorder: theme.color.bg.fill.inverse.default.normal,
-        disabledBorder: theme.color.bg.fill.inverse.default.disabled,
-      },
-      default: {
-        normalBorder: theme.color.bg.fill.inverse.default.normal,
-        disabledBorder: theme.color.bg.fill.inverse.default.normal,
-        disabledFill: theme.color.content.inverse.default.disabled,
-      },
-    },
     bluegray: {
-      checked: {
+      selected: {
         normalBorder: theme.color.content.neutral.default.normal,
         disabledBorder: theme.color.content.neutral.default.disabled,
+        normalFill: theme.color.bg.fill.inverse.default.normal,
+        disabledFill: theme.color.bg.fill.inverse.default.normal,
       },
       default: {
         normalBorder: theme.color.bg.fill.neutral.weak.normal,

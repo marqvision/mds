@@ -112,13 +112,7 @@ export const SmallSize: Story = {
         message="This is a small warning message box."
       />
 
-      <MDSMessageBox
-        size="small"
-        color="red"
-        title="Red message!"
-        message="This is a small error message box."
-        titleIcon={<MDSIcon.Info size={18} variant="border" />}
-      />
+      <MDSMessageBox size="small" color="red" title="Red message!" message="This is a small error message box." />
 
       <MDSMessageBox
         size="small"
@@ -265,22 +259,11 @@ export const WithCustomTitleIcon: Story = {
     <Wrapper>
       <MDSMessageBox
         color="green"
-        titleIcon={<MDSIcon.Check size={20} variant="border" />}
         title="Success with Custom Icon"
         message="This message box uses a custom check icon instead of the default info icon."
       />
-      <MDSMessageBox
-        color="yellow"
-        titleIcon={<MDSIcon.Info size={20} variant="border" />}
-        title="Warning with Custom Icon"
-        message="This message box uses a warning icon."
-      />
-      <MDSMessageBox
-        color="red"
-        titleIcon={<MDSIcon.Info size={20} variant="border" />}
-        title="Error with Custom Icon"
-        message="This message box uses an error icon."
-      />
+      <MDSMessageBox color="yellow" title="Warning with Custom Icon" message="This message box uses a warning icon." />
+      <MDSMessageBox color="red" title="Error with Custom Icon" message="This message box uses an error icon." />
     </Wrapper>
   ),
 };

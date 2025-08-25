@@ -29,6 +29,7 @@ export const TYPOGRAPHY_THEME = {
       m: 16,
       s: 14,
     },
+    lineHeight: 1.2,
   },
   body: {
     weight: {
@@ -57,5 +58,6 @@ export const TYPOGRAPHY_THEME = {
       s: 13,
       xs: 12,
     },
+    lineHeight: 1.5,
   },
 };

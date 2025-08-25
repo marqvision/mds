@@ -48,3 +48,14 @@ export const resolveFontSize = (
     return theme.comp.typography.body.size[size];
   }
 };
+
+/**
+ * Typography props 로 line-height 를 반환합니다.
+ */
+export const resolveLineHeight = (
+  theme: MDSTheme,
+  features: Pick<MDSTypographyProps, 'variant'>
+) => {
+  if (!features.variant) return;
+  return theme.comp.typography[features.variant].lineHeight;
+};

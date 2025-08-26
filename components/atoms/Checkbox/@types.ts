@@ -6,7 +6,7 @@ type Size = 'small' | 'medium';
 
 export type Icon = Record<Size, React.ReactElement>;
 
-export type Status = 'default' | 'unChecked';
+export type Status = 'checked' | 'default';
 export type ColorSet = {
   normalBorder: string;
   disabledBorder: string;

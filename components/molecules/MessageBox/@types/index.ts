@@ -10,7 +10,6 @@ export type MessageBoxCTA = React.ReactElement | { label: string; onClick: () =>
 
 export type MessageBoxActionButton = {
   label: string | ReactNode;
-  dismissBefore?: boolean;
 } & Omit<MDSPlainButtonProps, 'children' | 'icon'>;
 
 export type ImageData = MDSImageProps & {
@@ -35,12 +34,12 @@ export type ImageSizesType = {
   };
 };
 
-export type MessageBoxProps = {
+export type MessageBoxProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> & {
   color?: MessageColorType;
   titleIcon?: ReactNode;
   size?: MessageVariantType;
-  title: string | React.ReactElement;
-  message?: string;
+  title: string | React.ReactNode;
+  message?: string | React.ReactNode;
   titleCTA?: MessageBoxCTA;
   messageCTA?: MessageBoxCTA;
   width?: number;
@@ -51,7 +50,7 @@ export type MessageBoxProps = {
     onClose: () => void;
   };
   actionButton?: MessageBoxActionButton;
-} & React.HTMLAttributes<HTMLDivElement>;
+};
 
 export type MessageBoxStyleProps = {
   color?: MessageColorType;

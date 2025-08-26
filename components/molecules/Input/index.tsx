@@ -189,3 +189,4 @@ export const MDSInput = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLInputEleme
 MDSInput.displayName = 'MDSInput';
 
 export type MDSInputProps<T> = Props<T>;
+export { useMDSInputKeywordManager } from './@hooks/useMDSInputKeywordManager';

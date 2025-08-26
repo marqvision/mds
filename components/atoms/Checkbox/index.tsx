@@ -21,6 +21,7 @@ const Wrapper = styled.label<{ isClickable: boolean; gap: number }>`
 `;
 
 const IconWrapper = styled.div<StyledWrapperProps>`
+  flex-shrink: 0;
   position: relative;
 
   ${({ size }) => `
@@ -29,8 +30,8 @@ const IconWrapper = styled.div<StyledWrapperProps>`
   `}
 
   ${({ color, type, value, isTranslucent, theme }) => {
-    const mainColor = getColorSet(theme)[color][value ? 'default' : 'unChecked'][`${type}Border`];
-    const fill = getColorSet(theme)[color][value ? 'default' : 'unChecked'][`${type}Fill`];
+    const mainColor = getColorSet(theme)[color][value ? 'checked' : 'default'][`${type}Border`];
+    const fill = getColorSet(theme)[color][value ? 'checked' : 'default'][`${type}Fill`];
 
     return `
       color: ${mainColor};

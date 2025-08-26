@@ -21,7 +21,7 @@ export const renderIcon = (
 
   // ReactElement인 경우 size와 color props를 덮어써서 복제
   if (React.isValidElement(icon)) {
-    return React.cloneElement(icon as React.ReactElement<Record<string, unknown>>, {
+    return React.cloneElement(icon as React.ReactElement, {
       ...(icon.props || {}),
       size,
       color: isDisabled ? 'color/content/neutral/default/disabled' : color,
@@ -30,3 +30,4 @@ export const renderIcon = (
 
   return null;
 };
+  

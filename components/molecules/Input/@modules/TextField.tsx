@@ -31,17 +31,20 @@ const StyledInput = styled.input<{ customSize: Size; typographySize: MDSTypograp
   word-break: break-word;
   font-weight: ${`var(--font-body-regular)`};
   letter-spacing: ${({ typographySize }) => `var(--font-body-letter-spacing-${typographySize}-regular)`};
-  &[type=number] {
+  &[type='number'] {
     -moz-appearance: textfield;
   }
 
-  &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
 
-  @keyframes onAutoFillStart {}
-  @keyframes onAutoFillCancel {}
+  @keyframes onAutoFillStart {
+  }
+  @keyframes onAutoFillCancel {
+  }
 
   &:-webkit-autofill {
     animation-name: onAutoFillStart;
@@ -52,7 +55,6 @@ const StyledInput = styled.input<{ customSize: Size; typographySize: MDSTypograp
     animation-name: onAutoFillCancel;
     animation-duration: 0.001s;
   }
-,
 `;
 
 const StyledPrefix = styled(MDSTypography)`

@@ -1,12 +1,12 @@
 import React, { ElementType, forwardRef } from 'react';
 import styled from '@emotion/styled';
-import { resolveColor, resolveFontSize } from '../../../utils';
+import { resolveColor, resolveFontSize, resolveLineHeight } from '../../../utils';
 import { resolveFontWeightLetterSpacing, resolveLineClamp, resolveTagName } from './@utils';
 import { MDSTypographyProps, InnerTypographyStyleProps } from './@types';
 
 const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
   ${(features) => {
-    const { variant, color, lineClamp, wordBreak, whiteSpace, textDecoration, char, overflowWrap, theme } = features;
+    const { color, lineClamp, wordBreak, whiteSpace, textDecoration, char, overflowWrap, theme } = features;
     const fontSize = resolveFontSize(theme, features);
     const { fontWeight, letterSpacing } = resolveFontWeightLetterSpacing(theme, features);
     const fontColor = color === 'inherit' ? 'inherit' : resolveColor(color!);
@@ -16,6 +16,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const whiteSpaceStyles = whiteSpace ? `white-space: ${whiteSpace};` : '';
     const textDecorationStyles = textDecoration ? `text-decoration: ${textDecoration};` : '';
     const numberStyles = char === 'number' ? 'font-variant-numeric: tabular-nums;' : '';
+    const lineHeight = `line-height: ${resolveLineHeight(theme, features)};`;
 
     return `
       font-size: ${fontSize}px;
@@ -28,7 +29,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
       ${whiteSpaceStyles};
       ${textDecorationStyles};
       ${numberStyles};
-      line-height: ${variant === 'title' ? 1.2 : 1.5};
+      ${lineHeight};
     `;
   }}
 `;

@@ -11,13 +11,18 @@ import type { MDSThemeColorPath } from '../../../types';
  * @param color - 아이콘 색상
  * @returns React 엘리먼트 또는 null
  */
-export const renderIcon = (icon: IconType, size: number, isDisabled?: boolean, color?: MDSThemeColorPath): React.ReactElement | null => {
+export const renderIcon = (
+  icon: IconType,
+  size: number,
+  isDisabled?: boolean,
+  color?: MDSThemeColorPath
+): React.ReactElement | null => {
   if (!icon) return null;
 
   // ReactElement인 경우 size와 color props를 덮어써서 복제
   if (React.isValidElement(icon)) {
-    return React.cloneElement(icon, {
-      ...icon.props,
+    return React.cloneElement(icon as React.ReactElement<Record<string, unknown>>, {
+      ...(icon.props || {}),
       size,
       color: isDisabled ? 'color/content/neutral/default/disabled' : color,
     });

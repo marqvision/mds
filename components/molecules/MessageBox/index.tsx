@@ -109,11 +109,14 @@ export const MessageBox = (props: MessageBoxProps) => {
       </MessageBoxContentWrapper>
 
       <MessageBoxActionsContainer>
-        {actionButton && (
-          <MDSPlainButton size={buttonConfig.action} {...actionButton}>
-            {actionButton.label}
-          </MDSPlainButton>
-        )}
+        {actionButton &&
+          (React.isValidElement(actionButton.label) ? (
+            actionButton.label
+          ) : (
+            <MDSPlainButton size={buttonConfig.action} {...actionButton}>
+              {actionButton.label}
+            </MDSPlainButton>
+          ))}
         {closeControl?.showButton && (
           <MDSPlainButton onClick={closeControl.onClose}>
             <MDSIcon.CloseDelete variant="border" size={iconConfig.close} />

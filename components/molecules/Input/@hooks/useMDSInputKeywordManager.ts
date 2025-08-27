@@ -56,7 +56,7 @@ export const useMDSInputKeywordManager = <T extends KeywordObject>(params: Param
     if (!newKeywords.length) return;
 
     if (type === 'object') {
-      const newKeywordObjects = newKeywords.map((text) => ({ ...initialValue, keyword: text }) as T);
+      const newKeywordObjects = newKeywords.map((text) => ({ ...initialValue, keyword: text } as T));
       onChange([...value, ...newKeywordObjects]);
     } else {
       onChange([...value, ...newKeywords]);

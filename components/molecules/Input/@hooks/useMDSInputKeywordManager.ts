@@ -34,10 +34,12 @@ type ObjectKeywordParameters<T extends KeywordObject> = {
 type Parameters<T extends KeywordObject> = {
   /** 붙여넣기 시 텍스트 분할 방식 (기본값: 'linebreak') */
   splitType?: SplitType | RegExp;
+  /** 새 키워드 추가 시 위치 (기본값: 'end') */
+  addDirection?: 'prepend' | 'append';
 } & (StringKeywordParameters | ObjectKeywordParameters<T>);
 
 export const useMDSInputKeywordManager = <T extends KeywordObject>(params: Parameters<T>) => {
-  const { type, value, onChange, initialValue, splitType = 'linebreak' } = params;
+  const { type, value, onChange, initialValue, splitType = 'linebreak', addDirection = 'append' } = params;
 
   const [inputValue, setInputValue] = useState<string>('');
   const [isError, setIsError] = useState<boolean>(false);
@@ -56,10 +58,13 @@ export const useMDSInputKeywordManager = <T extends KeywordObject>(params: Param
     if (!newKeywords.length) return;
 
     if (type === 'object') {
-      const newKeywordObjects = newKeywords.map((text) => ({ ...initialValue, keyword: text } as T));
-      onChange([...value, ...newKeywordObjects]);
+      const newKeywordObjects = newKeywords.map((text) => ({ ...initialValue, keyword: text }) as T);
+      const newValues =
+        addDirection === 'prepend' ? [...newKeywordObjects, ...value] : [...value, ...newKeywordObjects];
+      onChange(newValues);
     } else {
-      onChange([...value, ...newKeywords]);
+      const newValues = addDirection === 'prepend' ? [...newKeywords, ...value] : [...value, ...newKeywords];
+      onChange(newValues);
     }
 
     setInputValue('');

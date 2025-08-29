@@ -160,7 +160,12 @@ const Popover = (
     const [direction, sort] = positionRef.current.split('-');
 
     const checkIsInverted = (value: Coordinates) => {
-      return (direction === 'top' && value.y < 0) || (direction === 'bottom' && value.y > innerHeight - dialogHeight);
+      return (
+        (direction === 'top' && value.y < 0) ||
+        (direction === 'bottom' && value.y > innerHeight - dialogHeight) ||
+        (direction === 'left' && value.x < 0) ||
+        (direction === 'right' && value.x > innerWidth - dialogWidth)
+      );
     };
 
     const getCoords = () => {
@@ -240,6 +245,10 @@ const Popover = (
           positionRef.current = `bottom-${sort}` as PopoverPosition;
         } else if (direction === 'bottom') {
           positionRef.current = `top-${sort}` as PopoverPosition;
+        } else if (direction === 'left') {
+          positionRef.current = `right-${sort}` as PopoverPosition;
+        } else if (direction === 'right') {
+          positionRef.current = `left-${sort}` as PopoverPosition;
         }
         invertedRef.current = true;
 

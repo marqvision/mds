@@ -170,8 +170,8 @@ const Popover = (
       );
     };
 
-    const getCoords = () => {
-      let temp;
+    const getCurrentCoordinates = () => {
+      let coords;
 
       const verticalX =
         sort === 'left'
@@ -189,28 +189,28 @@ const Popover = (
 
       switch (direction) {
         case 'bottom': {
-          temp = {
+          coords = {
             x: verticalX,
             y: rect.top + rect.height,
           };
           break;
         }
         case 'top': {
-          temp = {
+          coords = {
             x: verticalX,
             y: rect.top - dialogHeight,
           };
           break;
         }
         case 'left': {
-          temp = {
+          coords = {
             x: rect.x - dialogWidth,
             y: horizontalY,
           };
           break;
         }
         case 'right': {
-          temp = {
+          coords = {
             x: rect.x + rect.width,
             y: horizontalY,
           };
@@ -218,7 +218,7 @@ const Popover = (
         }
       }
 
-      return temp;
+      return coords;
     };
 
     if (!init) {
@@ -227,7 +227,7 @@ const Popover = (
       return;
     }
 
-    const temp = getCoords();
+    const currentCoordinates = getCurrentCoordinates();
 
     const reposition = (value: { x: number; y: number }) => {
       const { innerWidth, innerHeight } = window;
@@ -241,8 +241,8 @@ const Popover = (
       };
     };
 
-    if (temp) {
-      if (!invertedRef.current && checkIsInverted(temp)) {
+    if (currentCoordinates) {
+      if (!invertedRef.current && checkIsInverted(currentCoordinates)) {
         if (direction === 'top') {
           positionRef.current = `bottom-${sort}` as PopoverPosition;
         } else if (direction === 'bottom') {
@@ -257,7 +257,7 @@ const Popover = (
         updateCoordinates();
         return;
       }
-      setCoordinates(reposition(temp));
+      setCoordinates(reposition(currentCoordinates));
       updateArrowPosition();
     }
   }, [init, anchorRef, dialogRef, margin, updateArrowPosition]);

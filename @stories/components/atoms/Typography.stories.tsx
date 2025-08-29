@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { MDSTypography } from '../../../components/atoms/Typography';
 import { MDSCheckbox } from '../../../components';
+import { MDSTypography } from '../../../components/atoms/Typography';
 import { MDSTHEME_COLORS } from '../../@helper';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -75,6 +75,7 @@ const meta: Meta<typeof MDSTypography> = {
       options: ['en', 'ko'],
       defaultValue: 'en',
     },
+    textAlign: { control: 'inline-radio', options: ['left', 'center', 'right', 'justify'] },
   },
 };
 
@@ -162,6 +163,27 @@ export const TextDecoration: Story = {
           califragilisticexpialidocious
           Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
           グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+        </MDSTypography>
+      </div>
+    );
+  },
+};
+
+export const TextAlign: Story = {
+  args: {
+    // lineClamp: 1,
+  },
+  parameters: {
+    controls: { include: ['textAlign'] },
+  },
+  render: ({ textAlign }) => {
+    return (
+      <div>
+        <MDSTypography textAlign={textAlign}>마크비전</MDSTypography>
+        <MDSTypography textAlign={textAlign}>
+          아이코닉한 '베이비페이스 프린트'로 폭발적인 인기와 인지도를 얻으며 아시아 최고의 스트리트 스타일 브랜드로
+          급부상했습니다. 현재 중국, 호주, 베트남, 말레이시아 등에서 30개 이상의 매장을 운영하고 있으며, 지속적으로
+          아시아 이외의 지역에도 추가 매장을 오픈할 계획입니다.
         </MDSTypography>
       </div>
     );
@@ -576,14 +598,7 @@ export const Showcase: Story = {
                       >
                         MARQVISION 20 Semibold 1234567890
                       </MDSTypography>
-                      <MDSTypography
-                        variant="title"
-                        size="xl"
-                        weight="medium"
-                        char="number"
-                        color={color}
-                        __useNewFont
-                      >
+                      <MDSTypography variant="title" size="xl" weight="medium" char="number" color={color} __useNewFont>
                         MARQVISION 20 Medium 1234567890
                       </MDSTypography>
                     </div>
@@ -666,14 +681,7 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography
-                          variant="body"
-                          size="l"
-                          weight="medium"
-                          char="number"
-                          color={color}
-                          __useNewFont
-                        >
+                        <MDSTypography variant="body" size="l" weight="medium" char="number" color={color} __useNewFont>
                           MARQVISION 16 Medium 1234567890
                         </MDSTypography>
                         <MDSTypography
@@ -694,14 +702,7 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography
-                          variant="body"
-                          size="m"
-                          weight="medium"
-                          char="number"
-                          color={color}
-                          __useNewFont
-                        >
+                        <MDSTypography variant="body" size="m" weight="medium" char="number" color={color} __useNewFont>
                           MARQVISION 14 Medium 1234567890
                         </MDSTypography>
                         <MDSTypography
@@ -721,14 +722,7 @@ export const Showcase: Story = {
                   <tr>
                     <td>
                       <div>
-                        <MDSTypography
-                          variant="body"
-                          size="s"
-                          weight="medium"
-                          char="number"
-                          color={color}
-                          __useNewFont
-                        >
+                        <MDSTypography variant="body" size="s" weight="medium" char="number" color={color} __useNewFont>
                           MARQVISION 13 Medium 1234567890
                         </MDSTypography>
                         <MDSTypography

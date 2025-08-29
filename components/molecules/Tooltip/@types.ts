@@ -8,7 +8,11 @@ export type TooltipProps = {
   size?: 'small' | 'medium';
   width?: number | string;
   style?: CSSProperties;
-  anchorStyle?: CSSProperties;
+  /**
+   * Whether to dismiss the tooltip when the user leaves the anchor element.
+   * @default false
+   */
+  dismissOnLeave?: boolean;
 };
 
 export type MDSTooltipPosition = PopoverPosition;

@@ -1,14 +1,16 @@
 import { useRef, MouseEvent, useState, useEffect, useCallback, cloneElement, MutableRefObject, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
+import clsx from 'clsx';
 import { MDSLoadingIndicator } from '../LoadingIndicator';
-import { Props, StyleProps, Coordinates } from './@type';
+import { Props, StyleProps, Coordinates, PopoverPosition } from './@type';
+import { Theme } from './@constants';
 import { findScrollOffset } from './@utils';
 
 const MIN_PADDING = 4;
 const TRANSITION = '300ms ease-out';
 
-const Dialog = styled.dialog<{ margin?: number }>`
+const Dialog = styled.dialog<{ margin?: number; arrowPosition?: string }>`
   border: none;
   padding: ${({ margin }) => (margin === undefined ? MIN_PADDING : margin)}px;
   margin: 0;
@@ -41,6 +43,19 @@ const Dialog = styled.dialog<{ margin?: number }>`
   ::backdrop {
     background-color: transparent;
   }
+  &.withArrow:after {
+    width: 8px;
+    height: 6px;
+    content: '';
+    position: absolute;
+    background-image: url('data:image/svg+xml,%3Csvg%20width%3D%228%22%20height%3D%226%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%2C0%20L3.5%2C5%20Q4%2C5.5%204.5%2C5%20L8%2C0%20Z%22%20fill%3D%22${({
+      theme,
+    }) => theme.color.bg.surface.inverse.light.replace('#', '%23')}%22%20/%3E%3C/svg%3E');
+    ${({ arrowPosition }) => arrowPosition}
+  }
+  &.dismissOnLeave {
+    pointer-events: none;
+  }
 `;
 
 const DialogContent = styled.div<StyleProps>`
@@ -65,8 +80,8 @@ const Popover = (
       anchorRef: MutableRefObject<(EventTarget & Element) | null>;
       dialogRef: MutableRefObject<HTMLDialogElement | null>;
       focusRef: MutableRefObject<boolean>;
-      onMouseEnter: (e: MouseEvent) => void;
-      onMouseLeave: ((e: MouseEvent) => void) | undefined;
+      onMouseEnter?: (e: MouseEvent) => void;
+      onMouseLeave?: (e: MouseEvent) => void;
       onClosePopover: () => void;
     }
 ) => {
@@ -84,7 +99,9 @@ const Popover = (
     dialogRef,
     focusRef,
     style,
+    interactive = true,
     margin: _margin,
+    withArrow,
     onMouseEnter,
     onMouseLeave,
     onClosePopover,
@@ -97,94 +114,142 @@ const Popover = (
   const [init, setInit] = useState(false);
   const [coordinates, setCoordinates] = useState<Coordinates>();
 
-  const scrollOffsetRef = useRef<HTMLElement | Window>();
-  const coordinatesRef = useRef<Coordinates>();
+  const positionRef = useRef(position);
   const closeRef = useRef(onClosePopover);
+  const invertedRef = useRef(false);
+  const scrollOffsetRef = useRef<HTMLElement | Window>();
+  const debounceRef = useRef<number>();
 
-  const setPosition = useCallback(() => {
-    if (!init) {
-      setInit(true);
-      return;
-    }
-    const target = anchorRef.current;
-
-    if (!target) {
+  const updateArrowPosition = useCallback(() => {
+    if (!withArrow) {
       return;
     }
 
-    const rect = target.getBoundingClientRect();
+    if (debounceRef.current) {
+      window.clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = window.setTimeout(() => {
+      const tooltip = dialogRef.current;
+      const anchor = anchorRef.current;
+      if (tooltip && anchor) {
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const anchorRect = anchor.getBoundingClientRect();
+
+        const leftOffset = anchorRect.left + anchorRect.width / 2 - tooltipRect.left;
+        const topOffset = anchorRect.top + anchorRect.height / 2 - tooltipRect.top;
+
+        tooltip.style.setProperty('--arrow-left', `${leftOffset}px`);
+        tooltip.style.setProperty('--arrow-top', `${topOffset}px`);
+      }
+    }, 0);
+  }, [anchorRef, dialogRef, withArrow]);
+
+  const updateCoordinates = useCallback(() => {
+    const anchor = anchorRef.current;
+
+    if (!anchor) {
+      return;
+    }
+
+    const rect = anchor.getBoundingClientRect();
 
     const dialogWidth = dialogRef.current?.clientWidth || 0;
     const dialogHeight = dialogRef.current?.clientHeight || 0;
-
     const contentWidth = dialogRef.current?.children[0]?.clientWidth || 0;
 
-    const reposition = (value: Coordinates) => {
+    const [direction, sort] = positionRef.current.split('-');
+
+    const checkIsInverted = (value: Coordinates) => {
+      return (direction === 'top' && value.y < 0) || (direction === 'bottom' && value.y > innerHeight - dialogHeight);
+    };
+
+    const getCoords = () => {
+      let temp;
+
+      const verticalX =
+        sort === 'left'
+          ? rect.left + rect.width - contentWidth - margin
+          : sort === 'center'
+          ? rect.left + (rect.width - contentWidth) / 2 - margin
+          : rect.left - margin;
+
+      const horizontalY =
+        sort === 'top'
+          ? rect.top + rect.height - dialogHeight + margin
+          : sort === 'center'
+          ? rect.top - dialogHeight / 2 + rect.height / 2
+          : rect.top - margin;
+
+      switch (direction) {
+        case 'bottom': {
+          temp = {
+            x: verticalX,
+            y: rect.top + rect.height,
+          };
+          break;
+        }
+        case 'top': {
+          temp = {
+            x: verticalX,
+            y: rect.top - dialogHeight,
+          };
+          break;
+        }
+        case 'left': {
+          temp = {
+            x: rect.x - dialogWidth,
+            y: horizontalY,
+          };
+          break;
+        }
+        case 'right': {
+          temp = {
+            x: rect.x + rect.width,
+            y: horizontalY,
+          };
+          break;
+        }
+      }
+
+      return temp;
+    };
+
+    if (!init) {
+      setInit(true);
+
+      return;
+    }
+
+    const temp = getCoords();
+
+    const reposition = (value: { x: number; y: number }) => {
       const { innerWidth, innerHeight } = window;
 
       const x = Math.min(Math.max(value.x, 0), innerWidth - dialogWidth);
       const y = Math.min(Math.max(value.y, 0), innerHeight - dialogHeight);
 
       return {
-        x: x > 0 ? x : value.x,
-        y: y > 0 ? y : value.y,
+        x,
+        y,
       };
     };
 
-    const [anchor, direction] = position.split('-');
+    if (temp) {
+      if (!invertedRef.current && checkIsInverted(temp)) {
+        if (direction === 'top') {
+          positionRef.current = `bottom-${sort}` as PopoverPosition;
+        } else if (direction === 'bottom') {
+          positionRef.current = `top-${sort}` as PopoverPosition;
+        }
+        invertedRef.current = true;
 
-    if (!coordinatesRef.current) {
-      setTimeout(() => {
-        setPosition();
-      }, 0);
+        updateCoordinates();
+        return;
+      }
+      setCoordinates(reposition(temp));
+      updateArrowPosition();
     }
-
-    const verticalX =
-      direction === 'left'
-        ? rect.left + rect.width - contentWidth - margin
-        : direction === 'center'
-        ? rect.left + (rect.width - contentWidth) / 2 - margin
-        : rect.left - margin;
-
-    const horizontalY =
-      direction === 'top'
-        ? rect.top + rect.height - dialogHeight + margin
-        : direction === 'center'
-        ? rect.top - dialogHeight / 2 + rect.height / 2
-        : rect.top - margin;
-
-    switch (anchor) {
-      case 'bottom': {
-        coordinatesRef.current = reposition({
-          x: verticalX,
-          y: rect.top + rect.height,
-        });
-        break;
-      }
-      case 'top': {
-        coordinatesRef.current = reposition({
-          x: verticalX,
-          y: rect.top - dialogHeight,
-        });
-        break;
-      }
-      case 'left': {
-        coordinatesRef.current = reposition({
-          x: rect.x - dialogWidth,
-          y: horizontalY,
-        });
-        break;
-      }
-      case 'right': {
-        coordinatesRef.current = reposition({
-          x: rect.x + rect.width,
-          y: horizontalY,
-        });
-        break;
-      }
-    }
-    setCoordinates(coordinatesRef.current);
-  }, [init, position, anchorRef, dialogRef, margin]);
+  }, [init, anchorRef, dialogRef, margin, updateArrowPosition]);
 
   const children = useMemo(() => {
     return isLoading ? (
@@ -203,9 +268,11 @@ const Popover = (
     );
   }, [isLoading, _children, isOpen, onClosePopover]);
 
+  const getPositionKey = () => positionRef.current?.split('-')[0] as 'top' | 'bottom' | 'left' | 'right';
+
   const dialog = (
     <Dialog
-      className="mds-popover"
+      className={clsx('mds-popover', { withArrow, dismissOnLeave: !interactive })}
       as={!hasDim ? 'div' : undefined}
       ref={dialogRef}
       margin={margin}
@@ -216,15 +283,17 @@ const Popover = (
         transform: `translate(${Math.round(Math.max(coordinates?.x || 0, 0))}px, ${Math.round(
           Math.max(coordinates?.y || 0, 0)
         )}px)`,
+        visibility: init ? 'visible' : 'hidden',
         zIndex,
       }}
+      arrowPosition={Theme.position[getPositionKey()]}
     >
-      {coordinates && (
+      {init && (
         <DialogContent
           width={typeof width === 'string' ? width : `${width}px`}
           maxHeight={`${maxHeight}px`}
           padding={padding}
-          style={{ display: init ? 'block' : 'none', ...style }}
+          style={{ ...style }}
           onClick={(e) => e.stopPropagation()}
         >
           {children}
@@ -232,6 +301,49 @@ const Popover = (
       )}
     </Dialog>
   );
+
+  useEffect(() => {
+    if (isOpen) {
+      focusRef.current = true;
+      if (hasDim) {
+        dialogRef.current?.showModal();
+      } else if (anchorRef.current) {
+        dialogRef.current?.setAttribute('open', 'true');
+        scrollOffsetRef.current?.addEventListener('scroll', updateCoordinates);
+      }
+    } else {
+      scrollOffsetRef.current?.removeEventListener('scroll', updateCoordinates);
+    }
+  }, [isOpen, hasDim, anchorRef, dialogRef, focusRef, updateCoordinates]);
+
+  useEffect(() => {
+    closeRef.current = onClosePopover;
+  }, [onClosePopover]);
+
+  useEffect(() => {
+    positionRef.current = position;
+  }, [position, isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      invertedRef.current = false;
+      updateCoordinates();
+    }
+  }, [isOpen, updateCoordinates]);
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      updateCoordinates();
+    });
+    observer.observe(document.body);
+    if (dialogRef.current) {
+      observer.observe(dialogRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [updateCoordinates, dialogRef]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -276,57 +388,10 @@ const Popover = (
   }, [anchorRef, isOpen]);
 
   useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      setPosition();
-    });
-    if (dialogRef.current) {
-      observer.observe(dialogRef.current);
-    }
-    return () => {
-      observer.disconnect();
-    };
-  }, [isOpen, dialogRef, setPosition]);
-
-  useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      setPosition();
-    });
-    observer.observe(document.body);
-    return () => {
-      observer.disconnect();
-    };
-  }, [setPosition]);
-
-  useEffect(() => {
     if (isOpen && anchorRef.current) {
       scrollOffsetRef.current = findScrollOffset(anchorRef.current);
     }
   }, [anchorRef, isOpen]);
-
-  useEffect(() => {
-    if (isOpen) {
-      focusRef.current = true;
-      if (hasDim) {
-        dialogRef.current?.showModal();
-      } else if (anchorRef.current) {
-        scrollOffsetRef.current?.addEventListener('scroll', setPosition);
-        dialogRef.current?.toggleAttribute('open');
-      }
-      setPosition();
-    } else {
-      scrollOffsetRef.current?.removeEventListener('scroll', setPosition);
-    }
-  }, [isOpen, setPosition, hasDim, anchorRef, dialogRef, focusRef, scrollOffsetRef]);
-
-  useEffect(() => {
-    return () => {
-      scrollOffsetRef.current?.removeEventListener('scroll', setPosition);
-    };
-  }, [setPosition]);
-
-  useEffect(() => {
-    closeRef.current = onClosePopover;
-  }, [onClosePopover]);
 
   return isOpen ? (hasDim ? dialog : createPortal(dialog, document.body)) : undefined;
 };
@@ -339,6 +404,7 @@ const Popover = (
  * @param {boolean} [props.hasDim] 배경 dim 의 유/무
  * @param {number} [props.zIndex] <code>hasDim: false</code> 인 경우 zIndex 추가 가능
  * @param props.children ReactElement | (onClose) => ReactElement
+ * @param {boolean} props.interactive mouse leave 기준에 children 영역 포함 여부 (default: true)
  */
 export const MDSPopover = (props: Props & StyleProps) => {
   const {
@@ -346,6 +412,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
     forwardRef,
     hasDim = false,
     trigger = 'click',
+    interactive = true,
     delay = 300,
     blockAutoClose,
     onClose,
@@ -490,8 +557,8 @@ export const MDSPopover = (props: Props & StyleProps) => {
         dialogRef={dialogRef}
         focusRef={focusRef}
         onClosePopover={handleClosePopover}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={interactive ? handleMouseEnter : undefined}
+        onMouseLeave={interactive ? handleMouseLeave : undefined}
       >
         {props.children}
       </Popover>

@@ -20,28 +20,40 @@ export type Coordinates = {
   y: number;
 };
 
-type ClickPropsDimmed = {
+type ClickWithDimmedProps = {
   /**
    * @default false
    * @true Popover 이외 영역 스크롤 제한, dim 클릭시 onClose 실행
    * @false Popover 이외 영역 스크롤 가능, Popover 영약 밖 클릭시 onClose 실행
    */
   hasDim: true;
+  /**
+   * @default z-index: 1300
+   */
   zIndex?: never;
   /**
    * @default click
    * @hover hasDim = false 인 경우만 trigger: hover 가능
    */
   trigger?: 'click';
+  /**
+   * @default true
+   * @description interactive 모드인 경우 anchor 영역을 벗어나면 팝업이 닫힘.
+   */
+  interactive?: never;
+  /**
+   * @default false
+   * @description 팝오버에 화살표를 추가합니다. (현재는 Tooltip 전용)
+   */
+  withArrow?: never;
 };
 
-type ClickPropsNoDimmed = {
+type NoDimmedProps = {
   hasDim?: false;
-  /**
-   * @default z-index: 1300
-   */
   zIndex?: number;
   trigger?: PopoverTrigger;
+  interactive?: boolean;
+  withArrow?: boolean;
 };
 
 export type Props = {
@@ -68,7 +80,7 @@ export type Props = {
   onClose?: () => void;
   onVisibleChange?: (isOpen: boolean) => void;
   blockAutoClose?: boolean;
-} & (ClickPropsDimmed | ClickPropsNoDimmed);
+} & (ClickWithDimmedProps | NoDimmedProps);
 
 export type StyleProps = {
   /**

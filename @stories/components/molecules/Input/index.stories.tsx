@@ -259,10 +259,14 @@ export const NumberInputAmount: Story = {
   args: {
     placeholder: '0',
     inputProps: {
-      type: 'number',
+      type: 'text',
       onKeyDown: (e: React.KeyboardEvent) => {
-        // e, E, +, -, 등의 문자 입력 방지
-        if (['e', 'E', '+', '-'].includes(e.key)) {
+        // 숫자, 소수점, 제어키만 허용
+        const allowedKeys = ['Backspace', 'Delete'];
+        const isNumber = /^[0-9]$/.test(e.key);
+        const isDecimal = e.key === '.' && !(e.target as HTMLInputElement).value.includes('.');
+
+        if (!isNumber && !isDecimal && !allowedKeys.includes(e.key)) {
           e.preventDefault();
         }
       },
@@ -301,10 +305,15 @@ export const NumberInputPercent: Story = {
   args: {
     placeholder: '0',
     inputProps: {
-      type: 'number',
+      type: 'text',
       onKeyDown: (e: React.KeyboardEvent) => {
-        // e, E, + 등의 문자 입력 방지: -20% 입력 가능
-        if (['e', 'E', '+'].includes(e.key)) {
+        // 숫자, 소수점, 마이너스, 제어키만 허용
+        const allowedKeys = ['Backspace', 'Delete'];
+        const isNumber = /^[0-9]$/.test(e.key);
+        const isDecimal = e.key === '.' && !(e.target as HTMLInputElement).value.includes('.');
+        const isMinus = e.key === '-' && !(e.target as HTMLInputElement).value.includes('-');
+
+        if (!isNumber && !isDecimal && !isMinus && !allowedKeys.includes(e.key)) {
           e.preventDefault();
         }
       },
@@ -361,10 +370,7 @@ export const NumberInputDiscountDemo: Story = {
     return (
       <Wrapper>
         <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-          <MDSButton
-            variant={discountType === 'amount' ? 'fill' : 'border'}
-            onClick={() => setDiscountType('amount')}
-          >
+          <MDSButton variant={discountType === 'amount' ? 'fill' : 'border'} onClick={() => setDiscountType('amount')}>
             Amount ($)
           </MDSButton>
           <MDSButton
@@ -388,10 +394,14 @@ export const NumberInputDiscountDemo: Story = {
           placeholder="0"
           value={currentValue}
           inputProps={{
-            type: 'number',
+            type: 'text',
             onKeyDown: (e: React.KeyboardEvent) => {
-              // e, E, +, -, 등의 문자 입력 방지
-              if (['e', 'E', '+', '-'].includes(e.key)) {
+              // 숫자, 소수점, 제어키만 허용
+              const allowedKeys = ['Backspace', 'Delete'];
+              const isNumber = /^[0-9]$/.test(e.key);
+              const isDecimal = e.key === '.' && !(e.target as HTMLInputElement).value.includes('.');
+
+              if (!isNumber && !isDecimal && !allowedKeys.includes(e.key)) {
                 e.preventDefault();
               }
             },

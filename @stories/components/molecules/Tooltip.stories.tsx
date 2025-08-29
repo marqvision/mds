@@ -179,7 +179,7 @@ export const CustomWidth: Story = {
   },
 };
 
-export const Ineteractive: Story = {
+export const Interactive: Story = {
   args: {
     interactive: false,
     position: 'bottom-center',

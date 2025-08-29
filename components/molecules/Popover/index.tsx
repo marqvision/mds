@@ -160,6 +160,8 @@ const Popover = (
     const [direction, sort] = positionRef.current.split('-');
 
     const checkIsInverted = (value: Coordinates) => {
+      const { innerWidth, innerHeight } = window;
+
       return (
         (direction === 'top' && value.y < 0) ||
         (direction === 'bottom' && value.y > innerHeight - dialogHeight) ||

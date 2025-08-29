@@ -9,7 +9,7 @@ export type TooltipProps = {
   width?: number | string;
   style?: CSSProperties;
   /**
-   * Whether to dismiss the tooltip when the user leaves the anchor element.
+   * Whether to dismiss the tooltip when the user leaves the dialog element.
    * @default true
    */
   interactive?: boolean;

@@ -14,7 +14,7 @@ const StyledIcon = styled(MDSIcon.Help)`
 `;
 
 export const MDSTooltip = (props: TooltipProps) => {
-  const { children, title, size = 'medium', position = 'top-center', width, dismissOnLeave = false, style } = props;
+  const { children, title, size = 'medium', position = 'top-center', width, interactive = true, style } = props;
   const { color } = useTheme();
 
   const elRef = useRef<HTMLDivElement>(null);
@@ -28,7 +28,7 @@ export const MDSTooltip = (props: TooltipProps) => {
       position={position}
       hasDim={false}
       trigger="hover"
-      interactive={!dismissOnLeave}
+      interactive={interactive}
       anchor={children || <StyledIcon variant="border" size={16} color="color/content/neutral/secondary/normal" />}
       onVisibleChange={size === 'medium' ? handleChangeVisible : undefined}
       width="auto"

@@ -77,7 +77,7 @@ export const Preview: Story = {
             Long text
           </MDSButton>
         </MDSTooltip>
-        <MDSTooltip position="right-center" title={LONG_TEXT} anchorStyle={{ flex: 1 }}>
+        <MDSTooltip position="right-center" title={LONG_TEXT}>
           <MDSButton variant="fill" color="green" size="medium" width="fill">
             Anchor right center
           </MDSButton>
@@ -181,7 +181,7 @@ export const CustomWidth: Story = {
 
 export const Ineteractive: Story = {
   args: {
-    dismissOnLeave: true,
+    interactive: false,
     position: 'bottom-center',
     size: 'medium',
   },
@@ -215,7 +215,7 @@ export const Ineteractive: Story = {
         >
           <div>
             <MDSTooltip {...args}>
-              <MDSTypography style={{ textDecoration: 'underline' }}>dismissOnLeave: true / false</MDSTypography>
+              <MDSTypography style={{ textDecoration: 'underline' }}>interactive: true / false</MDSTypography>
             </MDSTooltip>
           </div>
         </div>

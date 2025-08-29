@@ -10,9 +10,9 @@ export type TooltipProps = {
   style?: CSSProperties;
   /**
    * Whether to dismiss the tooltip when the user leaves the anchor element.
-   * @default false
+   * @default true
    */
-  dismissOnLeave?: boolean;
+  interactive?: boolean;
 };
 
 export type MDSTooltipPosition = PopoverPosition;

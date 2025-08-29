@@ -1,5 +1,6 @@
 import React from 'react';
-import { MDSButton, MDSIcon, MDSTooltip, MDSTypography } from '../../../components';
+import { useState } from '@storybook/preview-api';
+import { MDSButton, MDSDropdown, MDSIcon, MDSTooltip, MDSTypography } from '../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const LONG_TEXT =
@@ -172,6 +173,51 @@ export const CustomWidth: Story = {
           <MDSTooltip {...args} title={ele}>
             <MDSTypography style={{ textDecoration: 'underline' }}>width를 고정하는 케이스</MDSTypography>
           </MDSTooltip>
+        </div>
+      </Wrapper>
+    );
+  },
+};
+
+export const Ineteractive: Story = {
+  args: {
+    dismissOnLeave: true,
+    position: 'bottom-center',
+    size: 'medium',
+  },
+  render: function Render(args) {
+    const [anchor, setAnchor] = useState('flex-start|center');
+
+    return (
+      <Wrapper>
+        <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+          앵커위치
+          <MDSDropdown
+            value={anchor}
+            list={[
+              { value: 'flex-start|center', label: '위쪽' },
+              { value: 'center|flex-start', label: '왼쪽' },
+              { value: 'flex-end|center', label: '아래쪽' },
+              { value: 'center|flex-end', label: '오른쪽' },
+            ]}
+            onChange={setAnchor}
+          />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            gap: '4px',
+            flex: 1,
+            width: '100%',
+            justifyContent: anchor.split('|')[1],
+            alignItems: anchor.split('|')[0],
+          }}
+        >
+          <div>
+            <MDSTooltip {...args}>
+              <MDSTypography style={{ textDecoration: 'underline' }}>dismissOnLeave: true / false</MDSTypography>
+            </MDSTooltip>
+          </div>
         </div>
       </Wrapper>
     );

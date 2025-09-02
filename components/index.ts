@@ -7,6 +7,7 @@ export * from './atoms/Logo';
 export * from './atoms/RadioButton';
 export * from './atoms/Typography';
 export * from './atoms/Skeleton';
+export * from './atoms/Toggle';
 
 // MOLECULES
 export * from './molecules/Button';

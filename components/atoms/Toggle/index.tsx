@@ -1,14 +1,13 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSIcon } from '../Icon';
 import { MDSTypography } from '../Typography';
-import { IconWrapperProps, Props, StyledToggleProps, ToggleTrackProps, WrapperProps } from './@types';
+import { IconWrapperProps, Props, StyledToggleProps, WrapperProps } from './@types';
 import { TOGGLE_CONFIG } from './@constants';
 import { resolveToggleTrackColor, resolveToggleTrackHoverColor } from './@utils';
 
 export const MDSToggle = forwardRef<HTMLLabelElement, Props>((props, ref) => {
   const { value, size = 'medium', onChange, isDisabled = false, label, ...restProps } = props;
-  const [isHovered, setIsHovered] = useState(false);
 
   const config = TOGGLE_CONFIG[size];
 
@@ -20,16 +19,6 @@ export const MDSToggle = forwardRef<HTMLLabelElement, Props>((props, ref) => {
 
   const stopPropagation = (event: React.MouseEvent<HTMLLabelElement>) => {
     event.stopPropagation();
-  };
-
-  const handleMouseEnter = () => {
-    if (!isDisabled) {
-      setIsHovered(true);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
   };
 
   const renderLabel = () => {
@@ -50,14 +39,13 @@ export const MDSToggle = forwardRef<HTMLLabelElement, Props>((props, ref) => {
     <Wrapper
       ref={ref}
       size={size}
-      hasLabel={!!label}
       isClickable={!isDisabled}
+      value={value}
+      isDisabled={isDisabled}
       onClick={stopPropagation}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <input type="checkbox" checked={value} disabled={isDisabled} onChange={handleChange} {...restProps} />
-      <ToggleTrack size={size} value={value} isDisabled={isDisabled} isHovered={isHovered}>
+      <ToggleTrack size={size} value={value} isDisabled={isDisabled}>
         <ToggleThumb size={size} value={value} isDisabled={isDisabled}>
           <IconWrapper isVisible={value}>
             <MDSIcon.Check color="color/bg/fill/inverse/default/normal" size={config.iconSize} variant="fill" />
@@ -72,13 +60,19 @@ export const MDSToggle = forwardRef<HTMLLabelElement, Props>((props, ref) => {
   );
 });
 
+const ToggleTrack = styled.div<StyledToggleProps>`
+  position: relative;
+  width: ${({ size }) => TOGGLE_CONFIG[size].width}px;
+  height: ${({ size }) => TOGGLE_CONFIG[size].height}px;
+  border-radius: 10px;
+  background-color: ${({ value, isDisabled, theme }) => resolveToggleTrackColor(theme, value, isDisabled)};
+  transition: background-color 0.15s ease;
+`;
+
 const Wrapper = styled.label<WrapperProps>`
   display: inline-flex;
   align-items: center;
-  gap: ${({ hasLabel, size }) => {
-    if (!hasLabel) return '0px';
-    return size === 'medium' ? '4px' : '2px';
-  }};
+  gap: ${({ size }) => (size === 'medium' ? '4px' : '2px')};
   margin: 0;
   padding: 2px;
   cursor: ${({ isClickable }) => (isClickable ? 'pointer' : 'default')};
@@ -86,18 +80,16 @@ const Wrapper = styled.label<WrapperProps>`
   & input {
     display: none;
   }
-`;
 
-const ToggleTrack = styled.div<ToggleTrackProps>`
-  position: relative;
-  width: ${({ size }) => TOGGLE_CONFIG[size].width}px;
-  height: ${({ size }) => TOGGLE_CONFIG[size].height}px;
-  border-radius: 10px;
-  background-color: ${({ value, isDisabled, isHovered, theme }) =>
-    !isDisabled && isHovered
-      ? resolveToggleTrackHoverColor(theme, value, isDisabled)
-      : resolveToggleTrackColor(theme, value, isDisabled)};
-  transition: background-color 0.15s ease;
+  ${({ isClickable, value, isDisabled, theme }) =>
+    isClickable &&
+    `
+    &:hover {
+      & ${ToggleTrack} {
+        background-color: ${resolveToggleTrackHoverColor(theme, value, isDisabled)};
+      }
+    }
+  `}
 `;
 
 const ToggleThumb = styled.div<StyledToggleProps>`

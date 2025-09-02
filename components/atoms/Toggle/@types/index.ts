@@ -16,12 +16,9 @@ export type StyledToggleProps = {
 
 export type WrapperProps = {
   isClickable: boolean;
-  hasLabel: boolean;
   size?: 'small' | 'medium';
-};
-
-export type ToggleTrackProps = StyledToggleProps & {
-  isHovered: boolean;
+  value: boolean;
+  isDisabled: boolean;
 };
 
 export type IconWrapperProps = {

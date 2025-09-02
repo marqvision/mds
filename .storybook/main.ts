@@ -1,4 +1,5 @@
 import { join, dirname } from 'path';
+import react from '@vitejs/plugin-react';
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -20,6 +21,18 @@ const config = {
   framework: {
     name: getAbsolutePath('@storybook/react-vite'),
     options: {},
+  },
+
+  async viteFinal(config) {
+    config.plugins.push(
+      react({
+        jsxImportSource: '@emotion/react',
+        babel: {
+          plugins: ['@emotion/babel-plugin'],
+        },
+      })
+    );
+    return config;
   },
 };
 export default config;

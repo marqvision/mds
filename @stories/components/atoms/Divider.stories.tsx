@@ -122,3 +122,21 @@ export const CustomColor: Story = {
     );
   },
 };
+
+export const Margin: Story = {
+  args: {
+    orientation: 'vertical',
+    length: 20,
+    margin: '0 8px',
+  },
+  render: (props) => (
+    <Wrapper>
+      <MDSTypography>margin 속성으로 바깥 여백을 조절할 수 있습니다.</MDSTypography>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <MDSDivider {...props} />
+        <MDSDivider {...props} />
+        <MDSDivider {...props} />
+      </div>
+    </Wrapper>
+  ),
+};

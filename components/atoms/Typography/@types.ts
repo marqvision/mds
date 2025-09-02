@@ -56,6 +56,12 @@ type BaseFeatures<T extends ElementType = 'p'> = {
    */
   overflowWrap?: CSSProperties['overflowWrap'];
 
+  /**
+   * 타이포그래피의 text-align 속성.
+   * 기본값은 left입니다.
+   */
+  textAlign?: CSSProperties['textAlign'];
+
   // PROD-12587 에서 새로운 font를 적용하는 케이스를 위한 속성
   __useNewFont?: boolean;
 };

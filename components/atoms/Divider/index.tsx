@@ -1,42 +1,43 @@
 import { forwardRef } from 'react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { resolveColor } from '../../../utils';
-import { Props, StyledProps } from './@types';
 import { theme } from './@constants';
+import { Props, StyledProps } from './@types';
 
 const Divider = styled.hr<StyledProps>`
   display: block;
   border-style: none;
 
-  ${({ intensity, variant, color }) => `
+  margin: ${({ margin }) => margin};
+
+  ${({ intensity, variant, color }) => css`
     background-color: ${color ? resolveColor(color) : theme.color[variant][intensity]};
   `}
 
   ${({ variant, orientation, length, thickness }) => {
     if (variant === 'line')
-      return `
-      width: ${orientation === 'vertical' ? thickness : length};
-      height: ${orientation === 'vertical' ? length : thickness};
-    `;
+      return css`
+        width: ${orientation === 'vertical' ? thickness : length};
+        height: ${orientation === 'vertical' ? length : thickness};
+      `;
 
     if (variant === 'dot')
-      return `
-      border-radius: 50%;
-      width: ${thickness};
-      height: ${thickness};
-      
-      ${
-        orientation === 'horizontal'
-          ? `
-        margin-left: 50%;
-        transform: translateX(-50%);
-      `
-          : `
-        display: inline-block;
-        vertical-align: middle;
-      `
-      }
-    `;
+      return css`
+        border-radius: 50%;
+        width: ${thickness};
+        height: ${thickness};
+
+        ${orientation === 'horizontal'
+          ? css`
+              margin-left: 50%;
+              transform: translateX(-50%);
+            `
+          : css`
+              display: inline-block;
+              vertical-align: middle;
+            `}
+      `;
   }}
 `;
 
@@ -49,6 +50,7 @@ export const MDSDivider = forwardRef<HTMLHRElement, Props>((props, ref) => {
     color,
     variant = 'line',
     style,
+    margin = '0',
   } = props;
 
   const stringLength = typeof length === 'string' ? length : `${length}px`;
@@ -65,6 +67,7 @@ export const MDSDivider = forwardRef<HTMLHRElement, Props>((props, ref) => {
       thickness={stringThickness}
       length={stringLength}
       style={style}
+      margin={margin}
     />
   );
 });

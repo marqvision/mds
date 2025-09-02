@@ -14,6 +14,7 @@ export type StyledProps = {
   length: string;
   thickness: string;
   color?: MDSThemeColorPath;
+  margin: string;
 };
 
 type BaseProps = {
@@ -28,6 +29,12 @@ type BaseProps = {
    * @default 1
    */
   thickness?: number;
+  /**
+   * * margin 은 Divider 의 바깥 여백을 설정합니다.
+   * * CSS 의 margin 과 동일하게 동작합니다.
+   * @default 0
+   */
+  margin?: string;
   style?: CSSProperties;
 };
 

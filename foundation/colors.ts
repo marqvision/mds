@@ -179,6 +179,7 @@ export const COLOR_TOKENS = {
         },
         weak: {
           normal: RAW_COLORS.bluegray300,
+          hover: RAW_COLORS.bluegray400,
           disabled: RAW_COLORS.bluegray150,
         },
       },

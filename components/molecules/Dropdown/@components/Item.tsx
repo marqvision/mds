@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useEffect, cloneElement, useRef, isValidElement } from 'react';
+import { useState, MouseEvent, cloneElement, useRef, isValidElement, useEffect } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
 import { foldedItemIndexAtom } from '../@atoms';
@@ -100,7 +100,7 @@ const StyledDivider = styled(MDSTypography)`
 `;
 
 const StyledBlank = styled.div`
-  min-height: ${MIN_ITEM_HEIGHT}px;
+  height: ${MIN_ITEM_HEIGHT}px;
 `;
 
 const COLOR_DEPTH = ['default', 'secondary', 'tertiary'] as const;
@@ -112,19 +112,18 @@ const BlankComponent = <T,>(props: Props<T>) => {
   const isFolded = foldedIndex.includes(parentIndex) || item.isDisabled;
 
   return (
-    <div id={item.value && depth ? `mds-drop-item-${CSS.escape(item.value)}` : undefined}>
+    <>
       <StyledBlank></StyledBlank>
       {!isFolded &&
         props.item.children?.map((child, index) => (
-          <BlankComponent
+          <div
             key={`dropItem_${depth}_${child.value ?? `${child.label}_${parentIndex}_${index}`}`}
-            {...props}
-            parentIndex={`${parentIndex}_${index}`}
-            item={child}
-            depth={depth + 1}
-          />
+            id={child.value && depth ? `mds-drop-item-${CSS.escape(child.value)}` : undefined}
+          >
+            <BlankComponent {...props} parentIndex={`${parentIndex}_${index}`} item={child} depth={depth + 1} />
+          </div>
         ))}
-    </div>
+    </>
   );
 };
 
@@ -317,8 +316,8 @@ const ItemInnerComponent = <T,>(props: Props<T>) => {
             >
               {typeof item.label === 'string' ? <HighLightLabel searchText={search} label={item.label} /> : item.label}
               {subLabel?.position === 'tooltip' && (
-                <MDSTooltip title={subLabel.label} anchorStyle={{ display: 'inline', marginLeft: '4px' }}>
-                  <MDSIcon.Help variant="fill" size={12} />
+                <MDSTooltip title={subLabel.label}>
+                  <MDSIcon.Help variant="fill" size={12} style={{ display: 'inline', marginLeft: '4px' }} />
                 </MDSTooltip>
               )}
               {subLabel?.position === 'bracket' && subLabelEl}

@@ -171,7 +171,7 @@ const Dropdown = <T, SortT>(
   });
 
   const [isScrollTop, setIsScrollTop] = useState(false);
-  const [minWidth, setMinWidth] = useState<number>();
+  const [minWidth, setMinWidth] = useState<number>(30);
   const [foldedItemIndex, setFoldedItemIndex] = useAtom(foldedItemIndexAtom);
 
   const infiniteRef = useRef<HTMLDivElement>(null);
@@ -199,8 +199,8 @@ const Dropdown = <T, SortT>(
     (selectableValues.length === selectedValues.length || selectedValues[0]?.value === -1)
       ? true
       : selectedValues.length
-        ? 'indeterminate'
-        : false;
+      ? 'indeterminate'
+      : false;
   const isEmpty = list.length === 0 && !infinite?.isLoading && !isLoading;
   const allCount = (infinite?.total || selectableValues.length).toLocaleString();
   const isInfiniteAll = selectedValues.length === 1 && selectedValues[0].value === -1;
@@ -551,7 +551,6 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
       position={position}
       style={{
         ...props.style,
-        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
       }}

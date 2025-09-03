@@ -31,13 +31,17 @@ export const useDropdown = <T>({
   );
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!Array.isArray(value) && !!value) {
-        document.getElementById(`mds-drop-item-${CSS.escape(`${value}`)}`)?.scrollIntoView({
-          block: 'center',
-        });
-      }
-    }, 0);
+    if (!value || Array.isArray(value)) return;
+    const el = document.getElementById(`mds-drop-item-${CSS.escape(String(value))}`);
+    if (!el) return;
+
+    const raf = requestAnimationFrame(() => {
+      el.scrollIntoView({ block: 'center', inline: 'center' });
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+    };
   }, [value]);
 
   return {

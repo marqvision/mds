@@ -39,7 +39,7 @@ export const MDSPagination = forwardRef<HTMLDivElement, Props>((props, ref) => {
   };
 
   const handleClickNext = () => {
-    onChange(Math.min(value + pageSize, totalCount));
+    onChange(Math.min(value + pageSize, Math.max(0, totalCount - pageSize)));
   };
 
   return (

@@ -120,6 +120,8 @@ const Popover = (
   const scrollOffsetRef = useRef<HTMLElement | Window>();
   const debounceRef = useRef<number>();
 
+  const dialogWidth = dialogRef.current?.clientWidth || 0;
+
   const updateArrowPosition = useCallback(() => {
     if (!withArrow) {
       return;
@@ -153,7 +155,6 @@ const Popover = (
 
     const rect = anchor.getBoundingClientRect();
 
-    const dialogWidth = dialogRef.current?.clientWidth || 0;
     const dialogHeight = dialogRef.current?.clientHeight || 0;
     const contentWidth = dialogRef.current?.children[0]?.clientWidth || 0;
 
@@ -260,7 +261,7 @@ const Popover = (
       setCoordinates(reposition(currentCoordinates));
       updateArrowPosition();
     }
-  }, [init, anchorRef, dialogRef, margin, updateArrowPosition]);
+  }, [init, anchorRef, dialogRef, dialogWidth, margin, updateArrowPosition]);
 
   const children = useMemo(() => {
     return isLoading ? (
@@ -322,9 +323,10 @@ const Popover = (
         dialogRef.current?.setAttribute('open', 'true');
         scrollOffsetRef.current?.addEventListener('scroll', updateCoordinates);
       }
-    } else {
-      scrollOffsetRef.current?.removeEventListener('scroll', updateCoordinates);
     }
+    return () => {
+      scrollOffsetRef.current?.removeEventListener('scroll', updateCoordinates);
+    };
   }, [isOpen, hasDim, anchorRef, dialogRef, focusRef, updateCoordinates]);
 
   useEffect(() => {

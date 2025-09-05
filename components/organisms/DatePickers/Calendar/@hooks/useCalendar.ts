@@ -27,8 +27,6 @@ export const useCalendar = (params: Params) => {
 
   const calendarDays = getCalendarDays(displayedDate.toDate(), params.minDate, params.maxDate);
 
-  console.log('>>>>> calendarDays', displayedDate.format('YYYY-MM-DD'));
-
   const commonProps = {
     value: _value,
     calendarDays,

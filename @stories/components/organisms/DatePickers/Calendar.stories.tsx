@@ -16,15 +16,6 @@ const meta: Meta<typeof MDSCalendar> = {
     },
   },
   tags: ['autodocs'],
-  args: {
-    value: new Date(),
-    onChange: () => {},
-  },
-  argTypes: {
-    value: {
-      control: 'date',
-    },
-  },
 };
 
 export default meta;
@@ -49,6 +40,65 @@ const dataBoxStyle = css`
 `;
 
 export const SingleDate: Story = {
+  render: function Render() {
+    const onChange = (date: Date) => {
+      console.log('date', date);
+    };
+    return <MDSCalendar value={new Date('2024-01-01')} onChange={onChange} />;
+  },
+};
+export const DateRange: Story = {
+  render: function Render() {
+    const onChange = (startDate: Date, endDate: Date) => {
+      console.log('startDate', startDate);
+      console.log('endDate', endDate);
+    };
+    return <MDSCalendar value={{ startDate: new Date(), endDate: new Date() }} onChange={onChange} />;
+  },
+};
+export const SingleDateWithMinMax: Story = {
+  args: {
+    minDate: dayjs().subtract(5, 'day').toDate(),
+    maxDate: dayjs().add(5, 'day').toDate(),
+  },
+  argTypes: {
+    minDate: {
+      control: 'date',
+    },
+    maxDate: {
+      control: 'date',
+    },
+  },
+  render: function Render(args) {
+    const onChange = (date: Date) => {
+      console.log('date', date);
+    };
+    return <MDSCalendar value={new Date()} onChange={onChange} minDate={args.minDate} maxDate={args.maxDate} />;
+  },
+};
+export const DateRangeWithMinMax: Story = {
+  args: {
+    minDate: dayjs().subtract(8, 'day').toDate(),
+    maxDate: dayjs().add(8, 'day').toDate(),
+  },
+  render: function Render(args) {
+    const onChange = (startDate: Date, endDate: Date) => {
+      console.log('startDate', startDate);
+      console.log('endDate', endDate);
+    };
+
+    return (
+      <MDSCalendar
+        value={{ startDate: new Date(), endDate: new Date() }}
+        onChange={onChange}
+        minDate={args.minDate}
+        maxDate={args.maxDate}
+      />
+    );
+  },
+};
+
+export const SingleDateWithDefaultValue: Story = {
   render: function Render() {
     const DEFAULT_VALUE = {
       format: 'MM/DD/YYYY',
@@ -177,7 +227,7 @@ export const SingleDateWithMinMaxAndDefaultValue: Story = {
     );
   },
 };
-export const DateRange: Story = {
+export const DateRangeWithDefaultValue: Story = {
   render: function Render() {
     const DEFAULT_VALUE = {
       format: 'YYYY-MM-DD',
@@ -270,7 +320,6 @@ export const DateRange: Story = {
     );
   },
 };
-
 export const DateRangeWithMinMaxAndDefaultValue: Story = {
   render: function Render() {
     const DEFAULT_VALUE = {

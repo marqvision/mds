@@ -1,6 +1,7 @@
 import React from 'react';
 import { MDSThemeProvider } from '../foundation';
 import { Global, css } from '@emotion/react';
+import './preview.css';
 
 const globalStyles = css`
   *::-webkit-scrollbar {

@@ -28,7 +28,7 @@ const CalendarContainer = (props: Props) => {
             <MDSTypography
               key={`weekday-${index}`}
               variant="body"
-              size="s"
+              size="m"
               color="color/content/neutral/secondary/normal"
             >
               {weekday}
@@ -79,7 +79,7 @@ const DateRangeCalendarContent = (props: {
     <CalendarGrid onMouseMove={selectMove} onMouseDown={selectStart} onMouseUp={selectEnd}>
       {days.map((day, index) => {
         const dayDate = dayjs(day.date);
-        const dateStr = day.isDisplayedMonth ? dayDate.format('YYYY-MM-DD') : '';
+        const dateStr = dayDate.format('YYYY-MM-DD');
         const isToday = dayDate.isSame(dayjs(), 'day');
         const isStartDate = displayDate.startDate ? dayDate.isSame(dayjs(displayDate.startDate), 'day') : false;
         const isEndDate = displayDate.endDate ? dayDate.isSame(dayjs(displayDate.endDate), 'day') : false;
@@ -99,7 +99,7 @@ const DateRangeCalendarContent = (props: {
             data-date={dateStr}
             isDisplayedMonth={day.isDisplayedMonth}
             isToday={isToday}
-            isSelectable={day.isSelectable && day.isDisplayedMonth}
+            isSelectable={day.isSelectable}
             isStartDate={isStartDate}
             isEndDate={isEndDate}
             isStartAndEndSame={isStartAndEndSame}
@@ -107,7 +107,9 @@ const DateRangeCalendarContent = (props: {
             isAnchorDate={selectActionState.anchorDateStr === dateStr}
             isSelectionInProgress={selectActionState.actionState === 'in-progress'}
           >
-            {day.isDisplayedMonth && <MDSTypography as="span">{dayDate.date()}</MDSTypography>}
+            <MDSTypography size="l" as="span">
+              {dayDate.date()}
+            </MDSTypography>
           </DayCell>
         );
       })}
@@ -115,7 +117,11 @@ const DateRangeCalendarContent = (props: {
   );
 };
 
-const SingleDateCalendarContent = (props: { days: CalendarDay[]; value?: Date; onChange: (date: Date) => void }) => {
+const SingleDateCalendarContent = (props: {
+  days: CalendarDay[];
+  value?: Date;
+  onChange: (date: Date, isDisplayedMonth: boolean) => void;
+}) => {
   const { days, value, onChange } = props;
 
   return (
@@ -136,9 +142,11 @@ const SingleDateCalendarContent = (props: { days: CalendarDay[]; value?: Date; o
             isStartDate={isSelectedDate}
             isEndDate={isSelectedDate}
             isStartAndEndSame={true}
-            onClick={() => day.isDisplayedMonth && onChange(day.date)}
+            onClick={() => onChange(day.date, day.isDisplayedMonth)}
           >
-            {day.isDisplayedMonth && <MDSTypography as="span">{dayDate.date()}</MDSTypography>}
+            <MDSTypography size="l" as="span">
+              {dayDate.date()}
+            </MDSTypography>
           </DayCell>
         );
       })}

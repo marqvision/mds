@@ -20,6 +20,14 @@ const Wrapper = styled.nav<LNBProps>`
       
       width: ${width};
       padding: 12px 11px 12px 12px;
+      
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 100%;
+
+      & > * {
+        flex-shrink: 0;
+      }
     `;
   }}
 `;

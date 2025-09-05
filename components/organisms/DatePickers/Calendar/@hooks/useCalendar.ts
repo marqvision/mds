@@ -134,7 +134,7 @@ export const useCalendar = (params: Params) => {
   return {
     ...commonProps,
     type: 'single' as const,
-    onChange: (date: Date) => {
+    onChange: (date: Date, isDisplayedMonth: boolean) => {
       const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
         date,
         minDate: params.minDate,
@@ -142,6 +142,10 @@ export const useCalendar = (params: Params) => {
       });
 
       if (!isValid || isOutOfRange) return;
+
+      if(!isDisplayedMonth) {
+        setDisplayedDate(dayjs(date));
+      }
 
       setValue({ startDate: date, endDate: date, lastUpdatedDateType: 'startDate' });
       params.onChange(date);
@@ -196,23 +200,9 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   const totalDays = prevMonthDays.length + currentMonthDays.length;
   const remainingDays = 42 - totalDays;
 
-  // 마지막 주가 다음 달의 날짜로만 구성되어 있는지 확인
-  const lastWeekStartIndex = Math.floor((firstDayOfWeek + currentMonthDays.length - 1) / 7) * 7;
-  const isLastWeekNextMonthOnly = lastWeekStartIndex >= currentMonthDays.length;
-
   const nextMonthDays = Array.from({ length: remainingDays }, (_, i) => {
     const nextMonthDate = lastDayOfMonth.add(i + 1, 'day').toDate();
     const weekIndex = Math.floor((firstDayOfWeek + currentMonthDays.length + i) / 7);
-
-    // 마지막 주가 다음 달의 날짜로만 구성된 경우
-    if (isLastWeekNextMonthOnly && weekIndex === 5) {
-      return {
-        date: nextMonthDate,
-        isDisplayedMonth: false,
-        isSelectable: false,
-        weekIndex,
-      };
-    }
 
     return {
       date: nextMonthDate,
@@ -225,7 +215,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   return [
     ...(prevMonthDays.length < 7 ? prevMonthDays : []),
     ...currentMonthDays,
-    ...(nextMonthDays.length < 7 ? nextMonthDays : []),
+    ...(nextMonthDays.length < 14 ? nextMonthDays : []),
   ];
 };
 //#endregion

@@ -48,7 +48,7 @@ export const DayCell = styled.div<{
   cursor: ${({ isSelectable }) => (isSelectable ? 'pointer' : 'default')};
 
   background: ${({
-    isDisplayedMonth,
+    isSelectable,
     isInRange,
     isStartDate,
     isEndDate,
@@ -56,7 +56,9 @@ export const DayCell = styled.div<{
     isStartAndEndSame,
     theme,
   }) => {
-    if (!isDisplayedMonth || isSelectionInProgress || isStartAndEndSame) {
+    if (!isSelectable) {
+      return theme.color.bg.surface.neutral.tertiary.normal;
+    } else if (isSelectionInProgress || isStartAndEndSame) {
       return 'transparent';
     } else if (isStartDate) {
       return `linear-gradient(90deg, transparent 50%, ${theme.color.bg.fill.primary.tint.normal} 50%)`;
@@ -70,8 +72,8 @@ export const DayCell = styled.div<{
   }};
 
   //#region border style
-  ${({  isDisplayedMonth, isStartAndEndSame, isInRange, isSelectionInProgress, isStartDate, isEndDate, theme }) => {
-    if (!isDisplayedMonth || isStartAndEndSame) return;
+  ${({ isStartAndEndSame, isInRange, isSelectionInProgress, isStartDate, isEndDate, theme }) => {
+    if (isStartAndEndSame) return;
     else {
       const startDateBorderStyle =
         isSelectionInProgress &&
@@ -104,7 +106,7 @@ export const DayCell = styled.div<{
 
   //#region today marker style
   ${({ isDisplayedMonth, isToday, isStartDate, isEndDate, isInRange, isAnchorDate, isSelectionInProgress, theme }) => {
-    if (!isDisplayedMonth) return;
+    // if (!isDisplayedMonth) return;
 
     const markerStyles = {
       top: '4px',
@@ -142,7 +144,7 @@ export const DayCell = styled.div<{
 
   //#region selection progress style
   ${({ isDisplayedMonth, isStartDate, isEndDate, isSelectionInProgress, isAnchorDate, theme }) => {
-    if (!isDisplayedMonth) return;
+    // if (!isDisplayedMonth) return;
 
     let bgColor = 'transparent';
 
@@ -186,11 +188,11 @@ export const DayCell = styled.div<{
         isStartDate,
         isEndDate,
         isSelectionInProgress,
-        isDisplayedMonth,
+
         isSelectable,
         theme,
       }) => {
-        if (!isDisplayedMonth || !isSelectable) return 'transparent';
+        if (!isSelectable) return 'transparent';
         else if (isAnchorDate) return theme.color.bg.fill.primary.default.hover;
         else if (isSelectionInProgress) return theme.color.bg.fill.primary.tint.hover;
         else if (isStartDate || isEndDate) return theme.color.bg.fill.primary.default.hover;
@@ -204,11 +206,20 @@ export const DayCell = styled.div<{
   & > span {
     user-select: none;
     z-index: 1;
-    color: ${({ isAnchorDate, isStartDate, isEndDate, isSelectionInProgress, isSelectable, theme }) => {
+    color: ${({
+      isAnchorDate,
+      isDisplayedMonth,
+      isStartDate,
+      isEndDate,
+      isSelectionInProgress,
+      isSelectable,
+      theme,
+    }) => {
       if (isAnchorDate) return theme.color.content.on_default_color;
       else if (!isSelectable) return theme.color.content.neutral.default.disabled;
       else if (isSelectionInProgress) return theme.color.content.neutral.default.normal;
       else if (isStartDate || isEndDate) return theme.color.content.on_default_color;
+      else if (!isDisplayedMonth) return theme.color.content.neutral.default.completed;
       return theme.color.content.neutral.default.normal;
     }};
   }

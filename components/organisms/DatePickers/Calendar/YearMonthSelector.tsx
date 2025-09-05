@@ -44,24 +44,6 @@ export const YearMonthSelector = (props: Props) => {
       />
       <YearMonth>
         <MDSDropdown
-          list={list.years}
-          value={props.displayedDate.year()}
-          isDisabled={isDisabled.year}
-          onChange={handlers.handleYearChange}
-          renderAnchor={(value) =>
-            isDisabled.year ? (
-              <MDSTypography variant="body" size="l" weight="medium">
-                {value}
-              </MDSTypography>
-            ) : (
-              <MDSPlainButton color="bluegray" size="large" endIcon={<MDSIcon.ArrowDown variant="outline" size={20} />}>
-                {value}
-              </MDSPlainButton>
-            )
-          }
-        />
-
-        <MDSDropdown
           list={list.months}
           value={props.displayedDate.month()}
           isDisabled={isDisabled.month}
@@ -74,6 +56,24 @@ export const YearMonthSelector = (props: Props) => {
             ) : (
               <MDSPlainButton color="bluegray" size="large" endIcon={<MDSIcon.ArrowDown variant="outline" size={20} />}>
                 {typeof value === 'number' ? MONTH_LABELS[value] : ''}
+              </MDSPlainButton>
+            )
+          }
+        />
+
+        <MDSDropdown
+          list={list.years}
+          value={props.displayedDate.year()}
+          isDisabled={isDisabled.year}
+          onChange={handlers.handleYearChange}
+          renderAnchor={(value) =>
+            isDisabled.year ? (
+              <MDSTypography variant="body" size="l" weight="medium">
+                {value}
+              </MDSTypography>
+            ) : (
+              <MDSPlainButton color="bluegray" size="large" endIcon={<MDSIcon.ArrowDown variant="outline" size={20} />}>
+                {value}
               </MDSPlainButton>
             )
           }

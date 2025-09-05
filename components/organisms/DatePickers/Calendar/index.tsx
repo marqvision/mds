@@ -79,7 +79,7 @@ const DateRangeCalendarContent = (props: {
     <CalendarGrid onMouseMove={selectMove} onMouseDown={selectStart} onMouseUp={selectEnd}>
       {days.map((day, index) => {
         const dayDate = dayjs(day.date);
-        const dateStr = day.isDisplayedMonth ? dayDate.format('YYYY-MM-DD') : '';
+        const dateStr = dayDate.format('YYYY-MM-DD');
         const isToday = dayDate.isSame(dayjs(), 'day');
         const isStartDate = displayDate.startDate ? dayDate.isSame(dayjs(displayDate.startDate), 'day') : false;
         const isEndDate = displayDate.endDate ? dayDate.isSame(dayjs(displayDate.endDate), 'day') : false;
@@ -99,7 +99,7 @@ const DateRangeCalendarContent = (props: {
             data-date={dateStr}
             isDisplayedMonth={day.isDisplayedMonth}
             isToday={isToday}
-            isSelectable={day.isSelectable && day.isDisplayedMonth}
+            isSelectable={day.isSelectable}
             isStartDate={isStartDate}
             isEndDate={isEndDate}
             isStartAndEndSame={isStartAndEndSame}

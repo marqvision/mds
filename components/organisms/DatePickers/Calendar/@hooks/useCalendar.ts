@@ -27,6 +27,8 @@ export const useCalendar = (params: Params) => {
 
   const calendarDays = getCalendarDays(displayedDate.toDate(), params.minDate, params.maxDate);
 
+  console.log('>>>>> calendarDays', displayedDate.format('YYYY-MM-DD'));
+
   const commonProps = {
     value: _value,
     calendarDays,
@@ -93,15 +95,16 @@ export const useCalendar = (params: Params) => {
 
   useEffect(() => {
     // 마지막으로 설정된 날짜와 실제 보이는 캘린더 월을 동기화 한다. (date input으로 입력하는 경우 필요)
-    setDisplayedDate(
-      dayjs(
-        isDateRange(params)
-          ? _value.lastUpdatedDateType === 'startDate'
-            ? params.value.startDate
-            : params.value.endDate
-          : params.value
-      )
-    );
+    // setDisplayedDate(
+    //   dayjs(
+    //     isDateRange(params)
+    //       ? _value.lastUpdatedDateType === 'startDate'
+    //         ? params.value.startDate
+    //         : params.value.endDate
+    //       : params.value
+    //   )
+    // );
+
     // note-@jamie: 의도된 exhaustive-deps -- params.onChange 함수의 참조를 얼려야 해결될듯..
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_value.lastUpdatedDateType, params.value]);
@@ -125,6 +128,13 @@ export const useCalendar = (params: Params) => {
         });
 
         if (!isEndValid || isEndOutOfRange) return;
+
+        if (lastUpdatedDateType === 'startDate') {
+          setDisplayedDate(dayjs(startDate));
+        } else {
+          setDisplayedDate(dayjs(endDate));
+        }
+
         setValue({ startDate, endDate, lastUpdatedDateType });
         params.onChange(startDate, endDate);
       },
@@ -143,7 +153,7 @@ export const useCalendar = (params: Params) => {
 
       if (!isValid || isOutOfRange) return;
 
-      if(!isDisplayedMonth) {
+      if (!isDisplayedMonth) {
         setDisplayedDate(dayjs(date));
       }
 

@@ -40,6 +40,7 @@ export type AnchorProps =
       children:
         | React.ReactNode
         | ((props: {
+            selectedDates: { startDate: Date | null; endDate: Date | null };
             open?: (e?: React.MouseEvent<Element, MouseEvent>) => void;
             close?: (e?: SyntheticEvent) => void;
           }) => React.ReactNode);

@@ -5,7 +5,7 @@ export const MarVisionLogo = (props: LogoTypeProps & Required<Pick<LogoTypeProps
   const { color, size } = props;
 
   return (
-    <Wrapper size={size} color={color} viewBox="0 0 664 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Wrapper size={size} color={color} viewBox="0 0 836 140" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M582.058 108.339H569.028V31.6852H582.058V108.345V108.339Z" fill="currentColor" />
       <path
         d="M293.216 31.6852L264.957 108.339H278.648L285.33 89.5075H315.998L322.572 108.339H336.485L308.446 31.6852H293.216ZM313.387 79.1027H289.717L294.647 65.1939C297.055 58.3289 298.897 52.0359 300.327 46.2495H302.568C304.255 52.7868 306.044 58.3348 308.452 65.1939L313.381 79.1027H313.387Z"

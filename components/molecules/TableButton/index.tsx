@@ -52,7 +52,7 @@ const StyledButton = styled.button<{
 export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonProps>((props, ref) => {
   const {
     children,
-    icon = <MDSIcon.Sort size={20} />,
+    icon = <MDSIcon.Sort size={16} />,
     isDisabled = false,
     onClick,
     isReadOnly = false,
@@ -86,7 +86,7 @@ export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonPro
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {renderIcon(icon, 20, isDisabled, getTextColor())}
+      {renderIcon(icon, 16, isDisabled, getTextColor())}
       <MDSTypography
         variant="body"
         size="s"

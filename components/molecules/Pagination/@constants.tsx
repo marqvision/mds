@@ -6,16 +6,16 @@ export const PAGINATION_LABELS: Record<Language, (start: number, end: number, to
   en: (start, end, total) => (
     <>
       <MDSTypography as="span" weight="medium" size="s">
-        {start} - {end}
+        {start.toLocaleString()} - {end.toLocaleString()}
       </MDSTypography>
-      of {total}
+      of {total.toLocaleString()}
     </>
   ),
   ko: (start, end, total) => (
     <>
-      {total} 중{' '}
+      {total.toLocaleString()} 중{' '}
       <MDSTypography as="span" weight="medium" size="s">
-        {start} - {end}
+        {start.toLocaleString()} - {end.toLocaleString()}
       </MDSTypography>
     </>
   ),

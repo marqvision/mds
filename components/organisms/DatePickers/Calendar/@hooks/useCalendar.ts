@@ -93,15 +93,16 @@ export const useCalendar = (params: Params) => {
 
   useEffect(() => {
     // 마지막으로 설정된 날짜와 실제 보이는 캘린더 월을 동기화 한다. (date input으로 입력하는 경우 필요)
-    setDisplayedDate(
-      dayjs(
-        isDateRange(params)
-          ? _value.lastUpdatedDateType === 'startDate'
-            ? params.value.startDate
-            : params.value.endDate
-          : params.value
-      )
-    );
+    // setDisplayedDate(
+    //   dayjs(
+    //     isDateRange(params)
+    //       ? _value.lastUpdatedDateType === 'startDate'
+    //         ? params.value.startDate
+    //         : params.value.endDate
+    //       : params.value
+    //   )
+    // );
+
     // note-@jamie: 의도된 exhaustive-deps -- params.onChange 함수의 참조를 얼려야 해결될듯..
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_value.lastUpdatedDateType, params.value]);
@@ -125,6 +126,13 @@ export const useCalendar = (params: Params) => {
         });
 
         if (!isEndValid || isEndOutOfRange) return;
+
+        if (lastUpdatedDateType === 'startDate') {
+          setDisplayedDate(dayjs(startDate));
+        } else {
+          setDisplayedDate(dayjs(endDate));
+        }
+
         setValue({ startDate, endDate, lastUpdatedDateType });
         params.onChange(startDate, endDate);
       },
@@ -134,7 +142,7 @@ export const useCalendar = (params: Params) => {
   return {
     ...commonProps,
     type: 'single' as const,
-    onChange: (date: Date) => {
+    onChange: (date: Date, isDisplayedMonth: boolean) => {
       const { isValid, isOutOfRange } = validateDateAndMinMaxRange({
         date,
         minDate: params.minDate,
@@ -142,6 +150,10 @@ export const useCalendar = (params: Params) => {
       });
 
       if (!isValid || isOutOfRange) return;
+
+      if (!isDisplayedMonth) {
+        setDisplayedDate(dayjs(date));
+      }
 
       setValue({ startDate: date, endDate: date, lastUpdatedDateType: 'startDate' });
       params.onChange(date);
@@ -196,23 +208,9 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   const totalDays = prevMonthDays.length + currentMonthDays.length;
   const remainingDays = 42 - totalDays;
 
-  // 마지막 주가 다음 달의 날짜로만 구성되어 있는지 확인
-  const lastWeekStartIndex = Math.floor((firstDayOfWeek + currentMonthDays.length - 1) / 7) * 7;
-  const isLastWeekNextMonthOnly = lastWeekStartIndex >= currentMonthDays.length;
-
   const nextMonthDays = Array.from({ length: remainingDays }, (_, i) => {
     const nextMonthDate = lastDayOfMonth.add(i + 1, 'day').toDate();
     const weekIndex = Math.floor((firstDayOfWeek + currentMonthDays.length + i) / 7);
-
-    // 마지막 주가 다음 달의 날짜로만 구성된 경우
-    if (isLastWeekNextMonthOnly && weekIndex === 5) {
-      return {
-        date: nextMonthDate,
-        isDisplayedMonth: false,
-        isSelectable: false,
-        weekIndex,
-      };
-    }
 
     return {
       date: nextMonthDate,
@@ -225,7 +223,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   return [
     ...(prevMonthDays.length < 7 ? prevMonthDays : []),
     ...currentMonthDays,
-    ...(nextMonthDays.length < 7 ? nextMonthDays : []),
+    ...(nextMonthDays.length < 14 ? nextMonthDays : []),
   ];
 };
 //#endregion

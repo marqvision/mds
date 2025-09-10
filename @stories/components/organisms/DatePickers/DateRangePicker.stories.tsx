@@ -454,9 +454,10 @@ export const AnchorCustom: Story = {
           <MDSDateRangePicker
             anchor={{
               variant: 'custom',
-              children: ({ open, close }) => (
+              children: ({ open, close, selectedDates }) => (
                 <div onClick={open}>
                   <div>🚧 In progress - function style</div>
+                  <div>selectedDates: {JSON.stringify(selectedDates)}</div>
                 </div>
               ),
             }}

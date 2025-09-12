@@ -118,7 +118,7 @@ export const useInitDropdown = <T, SortT>(
       return [];
     }
 
-    return values.flatMap((v) => storedItemsRef.current.find((v1) => v1.value === v)?.label || (v as string));
+    return values.flatMap((v) => storedItemsRef.current.find((v1) => v1.value === v)?.label || `${v}`);
   })();
 
   const handleClose = () => {
@@ -149,7 +149,9 @@ export const useInitDropdown = <T, SortT>(
         newValues,
         selectedItems.flatMap((v) => v.value),
         isSelected
-      ).map((v) => flatItems.find((v2) => v2.value === v) || selectedItems.find((v2) => v2.value === v)!);
+      )
+        .map((v) => flatItems.find((v2) => v2.value === v) || selectedItems.find((v2) => v2.value === v))
+        .filter((item): item is DropdownItem<ValueType<T>> => !!item);
 
       setSelectedItems(adaptedValue);
       return;
@@ -212,7 +214,9 @@ export const useInitDropdown = <T, SortT>(
         selectedItems.flatMap((v) => v.value),
         selectedItems.flatMap((v) => v.value),
         false
-      ).map((v) => flatItems.find((v2) => v2.value === v) || selectedItems.find((v2) => v2.value === v)!);
+      )
+        .map((v) => flatItems.find((v2) => v2.value === v) || selectedItems.find((v2) => v2.value === v))
+        .filter((item): item is DropdownItem<ValueType<T>> => !!item);
       setSelectedItems(adaptedValue);
     } else {
       setSelectedItems([]);

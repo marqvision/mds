@@ -111,12 +111,12 @@ const Popover = (
 
   const maxHeight = typeof _maxHeight === 'number' ? _maxHeight : Number(_maxHeight.replace(/\D/g, ''));
 
-  const [init, setInit] = useState(false);
   const [coordinates, setCoordinates] = useState<Coordinates>();
 
   const positionRef = useRef(position);
   const closeRef = useRef(onClosePopover);
   const invertedRef = useRef(false);
+  const blockInvertRef = useRef(false);
   const scrollOffsetRef = useRef<HTMLElement | Window>();
   const debounceRef = useRef<number>();
 
@@ -222,12 +222,6 @@ const Popover = (
       return coords;
     };
 
-    if (!init) {
-      setInit(true);
-
-      return;
-    }
-
     const currentCoordinates = getCurrentCoordinates();
 
     const reposition = (value: { x: number; y: number }) => {
@@ -243,25 +237,31 @@ const Popover = (
     };
 
     if (currentCoordinates) {
-      if (!invertedRef.current && checkIsInverted(currentCoordinates)) {
-        if (direction === 'top') {
-          positionRef.current = `bottom-${sort}` as PopoverPosition;
-        } else if (direction === 'bottom') {
-          positionRef.current = `top-${sort}` as PopoverPosition;
-        } else if (direction === 'left') {
-          positionRef.current = `right-${sort}` as PopoverPosition;
-        } else if (direction === 'right') {
-          positionRef.current = `left-${sort}` as PopoverPosition;
-        }
-        invertedRef.current = true;
+      if (!blockInvertRef.current) {
+        if (!invertedRef.current && checkIsInverted(currentCoordinates)) {
+          if (direction === 'top') {
+            positionRef.current = `bottom-${sort}` as PopoverPosition;
+          } else if (direction === 'bottom') {
+            positionRef.current = `top-${sort}` as PopoverPosition;
+          } else if (direction === 'left') {
+            positionRef.current = `right-${sort}` as PopoverPosition;
+          } else if (direction === 'right') {
+            positionRef.current = `left-${sort}` as PopoverPosition;
+          }
+          invertedRef.current = true;
 
-        updateCoordinates();
-        return;
+          updateCoordinates();
+          return;
+        } else if (invertedRef.current && checkIsInverted(currentCoordinates)) {
+          blockInvertRef.current = true;
+          positionRef.current = position;
+          invertedRef.current = false;
+        }
       }
       setCoordinates(reposition(currentCoordinates));
       updateArrowPosition();
     }
-  }, [init, anchorRef, dialogRef, dialogWidth, margin, updateArrowPosition]);
+  }, [anchorRef, dialogRef, dialogWidth, margin, updateArrowPosition, position]);
 
   const children = useMemo(() => {
     return isLoading ? (
@@ -295,22 +295,20 @@ const Popover = (
         transform: `translate(${Math.round(Math.max(coordinates?.x || 0, 0))}px, ${Math.round(
           Math.max(coordinates?.y || 0, 0)
         )}px)`,
-        visibility: init ? 'visible' : 'hidden',
         zIndex,
+        visibility: coordinates ? 'visible' : 'hidden',
       }}
       arrowPosition={Theme.position[getPositionKey()]}
     >
-      {init && (
-        <DialogContent
-          width={typeof width === 'string' ? width : `${width}px`}
-          maxHeight={`${maxHeight}px`}
-          padding={padding}
-          style={{ ...style }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {children}
-        </DialogContent>
-      )}
+      <DialogContent
+        width={typeof width === 'string' ? width : `${width}px`}
+        maxHeight={`${maxHeight}px`}
+        padding={padding}
+        style={{ ...style }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </DialogContent>
     </Dialog>
   );
 
@@ -359,6 +357,7 @@ const Popover = (
   }, [updateCoordinates, dialogRef]);
 
   useEffect(() => {
+    blockInvertRef.current = false;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         closeRef.current();
@@ -435,7 +434,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
   const anchorRef = useRef<(EventTarget & Element) | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const focusRef = useRef(false);
-  const timeoutRef = useRef<number>();
+  const delayCloseRef = useRef<number>();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -446,9 +445,9 @@ export const MDSPopover = (props: Props & StyleProps) => {
     }
     onVisibleChange?.(true);
 
-    if (timeoutRef.current) {
-      window.clearTimeout(timeoutRef.current);
-      timeoutRef.current = undefined;
+    if (delayCloseRef.current) {
+      window.clearTimeout(delayCloseRef.current);
+      delayCloseRef.current = undefined;
 
       setIsOpen(false);
       window.setTimeout(() => {
@@ -468,13 +467,13 @@ export const MDSPopover = (props: Props & StyleProps) => {
     onClose?.();
     onVisibleChange?.(false);
 
-    if (timeoutRef.current) {
-      window.clearTimeout(timeoutRef.current);
+    if (delayCloseRef.current) {
+      window.clearTimeout(delayCloseRef.current);
     }
 
-    timeoutRef.current = window.setTimeout(() => {
+    delayCloseRef.current = window.setTimeout(() => {
       setIsOpen(false);
-      timeoutRef.current = undefined;
+      delayCloseRef.current = undefined;
     }, delay);
   }, [delay, hasDim, onClose, onVisibleChange]);
 
@@ -503,7 +502,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
       : {
           onClick: (e: MouseEvent) => {
             if (trigger === 'click') {
-              if (isOpen) {
+              if (isOpen && !delayCloseRef.current) {
                 handleClosePopover();
               } else {
                 handleOpenPopover(e);
@@ -532,7 +531,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
         const currentPopover = target.closest?.('.mds-popover');
         const isNotDelete = !!target.closest?.('.mds-delete-icon');
 
-        if ((!isIn && !isDimmed && !currentPopover) || (isIn && isNotDelete)) {
+        if (((!isIn && !isDimmed && !currentPopover) || (isIn && isNotDelete)) && !delayCloseRef.current) {
           handleClosePopover();
           return;
         }

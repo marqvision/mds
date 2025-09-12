@@ -2,7 +2,7 @@ import { useState, MouseEvent, cloneElement, useRef, isValidElement, useEffect }
 import { useAtom, useAtomValue } from 'jotai';
 import styled from '@emotion/styled';
 import { foldedItemIndexAtom } from '../@atoms';
-import { DropdownItem, SelectedType } from '../@types';
+import { DropdownItem } from '../@types';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSCheckbox } from '../../../atoms/Checkbox';
 import { MDSIcon } from '../../../atoms/Icon';
@@ -13,7 +13,7 @@ import { HighLightLabel } from './HighlightLabel';
 
 type Props<T> = {
   parentIndex?: string;
-  selectedValue: SelectedType<T>[];
+  selectedValue: DropdownItem<T>[];
   indeterminate: T[];
   isMultiple: boolean;
   item: DropdownItem<T>;
@@ -21,7 +21,7 @@ type Props<T> = {
   depth?: number;
   is1DepthSingle?: boolean;
   isInfiniteAll: boolean;
-  onChange: (value: SelectedType<T>[], checked: boolean, forceClose?: boolean) => void;
+  onChange: (value: DropdownItem<T>[], checked: boolean, forceClose?: boolean) => void;
   onClose: () => void;
 };
 
@@ -205,7 +205,7 @@ const ItemInnerComponent = <T,>(props: Props<T>) => {
     }
   };
 
-  const handleChange = (values: SelectedType<T>[], checked: boolean, forceClose?: boolean) => {
+  const handleChange = (values: DropdownItem<T>[], checked: boolean, forceClose?: boolean) => {
     if (props.is1DepthSingle && checked) {
       const prevGroupValue = selectedValue.filter(
         (v) => allChildValue.includes(v.value) && values.every((v2) => v2.value !== v.value)

@@ -1,7 +1,7 @@
 import { cloneElement } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import { SelectedType, StickyBottomElementType, StickyBottomItemType, StickyBottomModule, ValueType } from '../@types';
+import { DropdownItem, StickyBottomElementType, StickyBottomItemType, StickyBottomModule, ValueType } from '../@types';
 import { MDSTypography } from '../../../atoms/Typography';
 import { Item } from './Item';
 
@@ -29,8 +29,8 @@ type Props<T> = {
   isMultiple: boolean;
   is1DepthSingle?: boolean;
   isInfiniteAll: boolean;
-  selectedValue: SelectedType<ValueType<T>>[];
-  onChange: (value: SelectedType<ValueType<T>>[], checked: boolean, forceClose?: boolean | undefined) => void;
+  selectedValue: DropdownItem<ValueType<T>>[];
+  onChange: (value: DropdownItem<ValueType<T>>[], checked: boolean, forceClose?: boolean | undefined) => void;
   onClose: () => void;
 };
 

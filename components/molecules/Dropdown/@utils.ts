@@ -1,11 +1,11 @@
-import { ReactElement } from 'react';
-import { DropdownItem, SelectedType, SortType } from './@types';
+import { MDSDropdownItem } from './index';
+import { DropdownItem, SortType } from './@types';
 
 export const flattenDropdown = <T>(items: DropdownItem<T>[]): DropdownItem<T>[] => {
   const result: DropdownItem<T>[] = [];
 
   const flatten = (item: DropdownItem<T>) => {
-    if (item.value !== undefined) {
+    if (item.value !== undefined && !item.children) {
       result.push(item);
     }
     if (item.children) {
@@ -91,11 +91,11 @@ export const getRegExpByKeyword = (keyword: string) => {
   return new RegExp(keyword.replace(/[.*+?^${}()\[\]\\]/g, '\\$&'), 'ig');
 };
 
-export const getValueFromList = <T>(list: DropdownItem<T>[]): SelectedType<T>[] => {
+export const getValueFromList = <T>(list: DropdownItem<T>[]): DropdownItem<T>[] => {
   const arrValues: T[] = [];
 
-  const loop = (curList: DropdownItem<T>[]): SelectedType<T>[] =>
-    curList.reduce<SelectedType<T>[]>((arr, item) => {
+  const loop = (curList: DropdownItem<T>[]): DropdownItem<T>[] =>
+    curList.reduce<DropdownItem<T>[]>((arr, item) => {
       if (item.children) {
         return [...arr, ...loop(item.children)];
       } else if (item.value !== undefined && !arrValues.includes(item.value)) {
@@ -140,5 +140,5 @@ export const getAllListIndex = <T>(list: DropdownItem<T>[]) => {
   return arr;
 };
 
-export const getLabelFromList = (value: unknown, list: { label: string | ReactElement; value?: unknown }[]) =>
-  list.find((v) => v.value === value)?.label || (value ? `${value}` : '');
+export const getItemFromList = <T>(value: T, list: MDSDropdownItem<T>[]) =>
+  list.find((v) => v.value === value) || { label: String(value), value };

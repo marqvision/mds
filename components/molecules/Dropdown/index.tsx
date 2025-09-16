@@ -18,9 +18,9 @@ import {
   FilterButtonModule,
   InferType,
   InfiniteModule,
+  ObjType,
   Props,
   SearchModule,
-  SelectedType,
   SortModule,
   SortType,
   StickyBottomModule,
@@ -108,9 +108,9 @@ const StyledSort = styled.button`
 const Dropdown = <T, SortT>(
   props: Omit<Props<T, SortT>, 'renderAnchor' | 'onChange' | 'indeterminate'> & {
     indeterminate: ValueType<T>[];
-    selectedValues: SelectedType<ValueType<T>>[];
-    selectableValues: SelectedType<ValueType<T>>[];
-    onChange: (value: SelectedType<ValueType<T>>[], isSelected: boolean) => void;
+    selectedValues: DropdownItem<ValueType<T>>[];
+    selectableValues: DropdownItem<ValueType<T>>[];
+    onChange: (value: DropdownItem<ValueType<T>>[], isSelected: boolean) => void;
     onClose: () => void;
     onMount: () => void;
     onUnmount: () => void;
@@ -485,13 +485,13 @@ const Dropdown = <T, SortT>(
 export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>) => {
   const { renderAnchor, width, position, ...restProps } = props;
 
-  const { value, list, isLoading, isDisabled } = restProps;
+  const { value, isLoading, isDisabled } = restProps;
 
   const closeRef = useRef<() => void>();
   const openFnRef = useRef<() => void | undefined>();
   const closeFnRef = useRef<() => void | undefined>();
 
-  const { selectedValues, selectableValue, indeterminate, labels, selectedItems, handler } = useInitDropdown<T, SortT>({
+  const { selectedItems, selectableValue, indeterminate, labels, handler } = useInitDropdown<T, SortT>({
     ...restProps,
     closeRef,
   });
@@ -506,7 +506,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
     | undefined;
 
   const anchor = renderAnchor ? (
-    renderAnchor(value, selectedItems, list)
+    renderAnchor(value, (Array.isArray(value) ? selectedItems : selectedItems[0]) as ObjType<T>, selectableValue)
   ) : (
     <FilterButton
       label={props.label || ''}
@@ -562,10 +562,10 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
             <Dropdown<T, SortT>
               {...restProps}
               width={width}
-              selectedValues={selectedValues}
+              selectedValues={selectedItems}
               indeterminate={indeterminate}
               selectableValues={selectableValue}
-              onChange={(v: SelectedType<ValueType<T>>[], isSelected, forceClose?: boolean) =>
+              onChange={(v: DropdownItem<ValueType<T>>[], isSelected, forceClose?: boolean) =>
                 handler.change(v, isSelected, close, forceClose)
               }
               onClear={handler.clear}

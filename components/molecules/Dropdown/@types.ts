@@ -124,9 +124,4 @@ export type Props<T, SortT = unknown> = {
   onClose?: () => void;
 };
 
-export type SelectedType<T> = {
-  value: T;
-  label: string | ReactElement;
-};
-
 export type SortType = 'asc' | 'desc';

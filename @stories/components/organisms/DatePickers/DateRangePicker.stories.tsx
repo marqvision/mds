@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { css } from '@emotion/react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { MDSDateRangePicker } from '../../../../components/organisms/DatePickers/DateRangePicker';
+import { MDSIcon, MDSSegmentedButton } from '../../../../components';
+import { MDSSegmentedButtonProps } from '../../../../components/molecules/SegmentedButton/@types';
 
 const meta: Meta<typeof MDSDateRangePicker> = {
   component: MDSDateRangePicker,
@@ -164,6 +166,100 @@ export const AnchorCustom: Story = {
             }}
           /> */}
       </>
+    );
+  },
+};
+
+export type DateButtonType = 'custom' | '30d' | '3m' | '6m' | '1y' | 'all';
+export const DATE_FILTERS: Record<
+  DateButtonType,
+  MDSSegmentedButtonProps<DateButtonType>['list'][number] & { startDate?: Dayjs }
+> = {
+  ['custom']: { label: 'Custom', value: 'custom' },
+  ['30d']: {
+    label: '30D',
+    value: '30d',
+    startDate: dayjs().subtract(30, 'd'),
+  },
+  ['3m']: {
+    label: '3M',
+    value: '3m',
+    startDate: dayjs().subtract(3, 'M'),
+  },
+  ['6m']: {
+    label: '6M',
+    value: '6m',
+    startDate: dayjs().subtract(6, 'M'),
+  },
+  ['1y']: {
+    label: '1Y',
+    value: '1y',
+    startDate: dayjs().subtract(1, 'y'),
+  },
+  ['all']: { label: 'All', value: 'all' },
+};
+const DATE_OPTIONS = Object.values(DATE_FILTERS);
+export const WithSegmentedButton: Story = {
+  render: function Render(args) {
+    const [selected, setSelected] = useState<{
+      date?: { startDate: string; endDate: string };
+      datePreset: DateButtonType;
+    }>({
+      date: undefined,
+      datePreset: 'custom',
+    });
+
+    const dateRangePickerRef = useRef<{ onClick: () => void }>(null);
+
+    const handleChange = (value: DateButtonType) => {
+      switch (value) {
+        case 'custom':
+          dateRangePickerRef.current?.onClick();
+          setSelected(prev => ({ date: prev.date, datePreset: value }));
+          break;
+        case 'all':
+          setSelected({
+            date: {
+              startDate: dayjs().format('YYYY-MM-DD'),
+              endDate: dayjs().add(500, 'day').format('YYYY-MM-DD'),
+            },
+            datePreset: value,
+          });
+
+          break;
+        case '30d':
+        case '3m':
+        case '6m':
+        case '1y':
+          setSelected({
+            date: {
+              startDate: DATE_FILTERS[value].startDate?.format('YYYY-MM-DD') || '',
+              endDate: dayjs().format('YYYY-MM-DD'),
+            },
+            datePreset: value,
+          });
+          break;
+      }
+    };
+
+    return (
+      <div style={{ display: 'flex', gap: '12px' }}>
+        <MDSSegmentedButton
+          variant="border"
+          type="hug"
+          list={DATE_OPTIONS}
+          value={selected.datePreset}
+          onChange={handleChange}
+          selectedIcon={<MDSIcon.Check variant="outline" />}
+        />
+        <MDSDateRangePicker
+          anchor={{ variant: 'plainButton', format: args.format }}
+          value={selected.date}
+          format={args.format}
+          ref={dateRangePickerRef}
+          onChange={args.onChange}
+        />
+      </div>
     );
   },
 };

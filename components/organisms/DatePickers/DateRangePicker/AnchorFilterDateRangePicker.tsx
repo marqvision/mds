@@ -1,3 +1,4 @@
+import { useImperativeHandle, useRef } from 'react';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSButton } from '../../../molecules/Button';
 import { MDSPopover } from '../../../molecules/Popover';
@@ -14,55 +15,57 @@ type AnchorFilterDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
 };
 
 export const AnchorFilterDateRangePicker = (props: AnchorFilterDateRangePickerProps) => {
-  const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
+  const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
   const { internalDate, handleDateChange, formattedDateString } = useDateRangePicker(props);
 
+  const anchorRef = useRef<HTMLDivElement>(null);
+  useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);
+
   return (
-    <div>
-      <MDSPopover
-        padding={0}
-        width={304}
-        blockAutoClose={true}
-        anchor={({ open }) => (
-          <div
+    <MDSPopover
+      padding={0}
+      width={304}
+      blockAutoClose={true}
+      anchor={({ open }) => (
+        <div
+          ref={anchorRef}
           style={{ width: 'fit-content' }}
-            onClickCapture={(e) => {
-              e.stopPropagation();
-              open(e);
-            }}
+          onClickCapture={(e) => {
+            e.stopPropagation();
+            open(e);
+          }}
+        >
+          <MDSButton
+            variant={internalDate.startDate && internalDate.endDate ? 'fill' : 'tint'}
+            color="bluegray"
+            startIcon={<MDSIcon.Calendar />}
+            tags={
+              internalDate.startDate && internalDate.endDate ? (
+                <MDSTag size="small" variant="tint" color="bluegray">
+                  {formattedDateString}
+                </MDSTag>
+              ) : undefined
+            }
+            {...anchor.props}
           >
-            <MDSButton
-              variant={internalDate.startDate && internalDate.endDate ? 'fill' : 'tint'}
-              color="bluegray"
-              startIcon={<MDSIcon.Calendar />}
-              tags={
-                internalDate.startDate && internalDate.endDate ? (
-                  <MDSTag size="small" variant="tint" color="bluegray">
-                    {formattedDateString}
-                  </MDSTag>
-                ) : undefined
-              }
-              {...anchor.props}
-            >
-              {anchor.props?.children || 'Label'}
-            </MDSButton>
-          </div>
-        )}
-      >
-        {({ close, isOpen }) =>
-          isOpen ? (
-            <DateRangePickerCore
-              {...props}
-              format={format}
-              separator={separator}
-              onChange={handleDateChange}
-              onClose={close}
-            />
-          ) : (
-            <div />
-          )
-        }
-      </MDSPopover>
-    </div>
+            {anchor.props?.children || 'Label'}
+          </MDSButton>
+        </div>
+      )}
+    >
+      {({ close, isOpen }) =>
+        isOpen ? (
+          <DateRangePickerCore
+            {...props}
+            format={format}
+            separator={separator}
+            onChange={handleDateChange}
+            onClose={close}
+          />
+        ) : (
+          <div />
+        )
+      }
+    </MDSPopover>
   );
 };

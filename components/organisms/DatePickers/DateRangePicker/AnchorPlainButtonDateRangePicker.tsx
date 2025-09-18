@@ -1,3 +1,4 @@
+import { useImperativeHandle, useRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { MDSPopover } from '../../../molecules/Popover';
@@ -12,13 +13,17 @@ const StyledContainer = styled.div`
 `;
 
 type AnchorPlainButtonProps = Extract<AnchorProps, { variant: 'plainButton' }>;
+
 type AnchorPlainButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
   anchor: AnchorPlainButtonProps;
 };
 
 export const AnchorPlainButtonDateRangePicker = (props: AnchorPlainButtonDateRangePickerProps) => {
-  const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
+  const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
   const { handleDateChange, formattedDateString } = useDateRangePicker(props);
+
+  const anchorRef = useRef<HTMLButtonElement>(null);
+  useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);
 
   return (
     <StyledContainer>
@@ -27,6 +32,7 @@ export const AnchorPlainButtonDateRangePicker = (props: AnchorPlainButtonDateRan
         width={304}
         anchor={({ open }) => (
           <MDSPlainButton
+            ref={anchorRef}
             color="bluegray"
             {...anchor.props}
             onClick={(e) => {

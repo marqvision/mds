@@ -41,6 +41,7 @@ export type DateRangePickerProps = {
   onClose?: () => void;
   onChange?: (dates?: { startDate: Date; endDate: Date }) => void;
   anchor: AnchorProps;
+  externalHandle?: React.ForwardedRef<{ onClick: () => void }>;
 } & Partial<Omit<DateInputGroupProps, 'onDateChange'>>;
 
 export type ExternalDateRangePickerProps = {

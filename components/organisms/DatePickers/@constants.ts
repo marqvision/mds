@@ -14,7 +14,7 @@ export const SEPARATOR_MAP: Record<AvailableDateFormat, string> = {
 
 export const DEFAULT_PROPS = {
   value: '',
-  separator: '~',
+  separator: '→',
   placeholder: 'MM/DD/YYYY' as AvailableDateFormat,
   format: 'MM/DD/YYYY' as AvailableDateFormat,
 };

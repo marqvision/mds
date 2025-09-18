@@ -2,6 +2,7 @@ import { MDSTypography } from '../../../atoms/Typography';
 import { MDSInput } from '../../../molecules/Input';
 import { DEFAULT_PROPS } from '../@constants';
 import { getDateRangeInputLabel } from '../@utils';
+import { MDSIcon } from '../../../atoms/Icon';
 import { DateInputGroupLayout } from './styles';
 import { getHelperText } from './@utils';
 import { DateInputGroupProps } from './@types';
@@ -43,7 +44,7 @@ const DateInputGroup = (props: DateInputGroupProps) => {
         />
       </div>
       <div data-role="separator">
-        {typeof separator === 'string' ? <MDSTypography>{separator}</MDSTypography> : separator}
+        {typeof separator === 'string' ? <MDSTypography>{separator}</MDSTypography> : <MDSIcon.ArrowRight variant="outline" size={16} />}
       </div>
       <div data-role="end-date-input-wrapper" onClick={endDate.onClick}>
         <MDSInput

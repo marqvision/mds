@@ -22,7 +22,6 @@ export const AnchorFilterDateRangePicker = (props: AnchorFilterDateRangePickerPr
       <MDSPopover
         padding={0}
         width={304}
-        style={{ marginTop: -34 }}
         blockAutoClose={true}
         anchor={({ open }) => (
           <div

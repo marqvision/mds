@@ -54,8 +54,8 @@ export const DefaultWithMMDDYYYY: Story = {
           endDate={{ value: date.end }}
           onDateChange={(dates) => {
             setDate({
-              start: dates.startDate ? dayjs(dates.startDate).format(format) : '',
-              end: dates.endDate ? dayjs(dates.endDate).format(format) : '',
+              start: dates?.startDate ? dayjs(dates.startDate).format(format) : '',
+              end: dates?.endDate ? dayjs(dates.endDate).format(format) : '',
             });
           }}
         />
@@ -89,8 +89,8 @@ export const DefaultWithYYYYMMDD: Story = {
           endDate={{ value: date.end }}
           onDateChange={(dates) => {
             setDate({
-              start: dates.startDate ? dayjs(dates.startDate).format(format) : '',
-              end: dates.endDate ? dayjs(dates.endDate).format(format) : '',
+              start: dates?.startDate ? dayjs(dates.startDate).format(format) : '',
+              end: dates?.endDate ? dayjs(dates.endDate).format(format) : '',
             });
           }}
         />
@@ -121,8 +121,8 @@ export const NoDefaultValue: Story = {
           endDate={{ value: date.end }}
           onDateChange={(dates) => {
             setDate({
-              start: dates.startDate ? dayjs(dates.startDate).format(format) : '',
-              end: dates.endDate ? dayjs(dates.endDate).format(format) : '',
+              start: dates?.startDate ? dayjs(dates.startDate).format(format) : '',
+              end: dates?.endDate ? dayjs(dates.endDate).format(format) : '',
             });
           }}
         />
@@ -199,8 +199,8 @@ export const ExternallyInjectedValue: Story = {
             endDate={{ value: injectedDate.end }}
             onDateChange={(dates) => {
               setDateFromMDSDateInputGroup({
-                start: dates.startDate ? dayjs(dates.startDate).format(format) : '',
-                end: dates.endDate ? dayjs(dates.endDate).format(format) : '',
+                start: dates?.startDate ? dayjs(dates.startDate).format(format) : '',
+                end: dates?.endDate ? dayjs(dates.endDate).format(format) : '',
               });
             }}
           />
@@ -292,8 +292,8 @@ export const MinMax: Story = {
             endDate={{ value: injectedDate.end }}
             onDateChange={(dates) => {
               setDateFromMDSDateInputGroup({
-                start: dates.startDate ? dayjs(dates.startDate).format(format) : '',
-                end: dates.endDate ? dayjs(dates.endDate).format(format) : '',
+                start: dates?.startDate ? dayjs(dates.startDate).format(format) : '',
+                end: dates?.endDate ? dayjs(dates.endDate).format(format) : '',
               });
             }}
           />
@@ -336,8 +336,8 @@ export const WithInputLabel: Story = {
           endDate={{ value: date.end, ...arg.endDate }}
           onDateChange={(dates) => {
             setDate({
-              start: dates.startDate ? dayjs(dates.startDate).format(format) : '',
-              end: dates.endDate ? dayjs(dates.endDate).format(format) : '',
+              start: dates?.startDate ? dayjs(dates.startDate).format(format) : '',
+              end: dates?.endDate ? dayjs(dates.endDate).format(format) : '',
             });
           }}
         />

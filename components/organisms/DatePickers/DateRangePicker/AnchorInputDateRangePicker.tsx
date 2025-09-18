@@ -9,7 +9,7 @@ import { AnchorProps, DateRangePickerProps } from './@types';
 import { useDateRangePicker } from './@hooks/useDateRangePicker';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
-const StyledContainer = styled.div<{ hasLabel: boolean; hideAnchor: boolean }>`
+const StyledContainer = styled.div<{ hasLabel: boolean }>`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
 
@@ -29,17 +29,6 @@ const StyledContainer = styled.div<{ hasLabel: boolean; hideAnchor: boolean }>`
       `;
     }}
   }
-  ${({ hideAnchor }) =>
-    hideAnchor &&
-    css`
-      // height: 0px;
-      // & label, & label div {
-      // // display: none;
-      //   min-height: 0px;
-      //   height: 0px;
-      //   opacity: 0;
-      // }
-    `}
 `;
 
 type AnchorInputProps = Extract<AnchorProps, { variant: 'input' }>;
@@ -55,23 +44,13 @@ export const AnchorInputDateRangePicker = (props: AnchorInputDateRangePickerProp
 
   const startMainLabel = getDateRangeInputLabel(props.anchor.startDateProps?.label, props.anchor.endDateProps?.label);
 
-  const [isOpen, setIsOpen] = useState(false);
-
-
   return (
     <MDSPopover
       padding={0}
       width={304}
-      style={{ marginTop: -34 }}
       blockAutoClose={true}
-      onVisibleChange={() => {
-        setIsOpen((prev) => !prev);
-      }}
       anchor={({ open }) => (
-        <StyledContainer
-          hasLabel={!!props.anchor.startDateProps?.label || !!props.anchor.endDateProps?.label}
-          hideAnchor={isOpen}
-        >
+        <StyledContainer hasLabel={!!props.anchor.startDateProps?.label || !!props.anchor.endDateProps?.label}>
           <MDSInput
             {...anchor.startDateProps}
             variant="select"

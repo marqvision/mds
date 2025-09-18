@@ -118,6 +118,10 @@ export const validateDateRange = (params: {
 }) => {
   const { startDate, endDate, format, minDate, maxDate } = params;
 
+  if (!startDate && !endDate) {
+    return true;
+  }
+
   if (!isDateRangeValid(startDate, endDate)) {
     return false;
   }

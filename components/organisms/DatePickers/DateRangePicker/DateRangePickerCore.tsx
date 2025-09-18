@@ -25,14 +25,13 @@ const DateRangePickerLayout = styled.div`
   }
 `;
 
-
 /**
  * [ 동작 스펙]
- * 
+ *
  * 두 가지 방법으로 date range 선택
  * 1. calendar에서 두 날짜를 선택 -> 두번째 날짜를 선택하는 즉시 apply
  * 2. input에 날짜를 입력 -> date picker 밖을 클릭하면 apply
- * 
+ *
  * 다음의 경우 apply 되지 않음
  * 1. start, end date 중 하나라도 비어있는 경우
  * 2. start, end date 중 하나라도 invalid한 경우
@@ -53,8 +52,8 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
 
   const [store, setStore] = useState<
     | {
-        startDate: Date;
-        endDate: Date;
+        startDate?: Date;
+        endDate?: Date;
       }
     | undefined
   >(
@@ -73,10 +72,9 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
     calendar: false,
   });
 
-
   /**
    * note-@jamie: lockDuplicatedCloseAction
-   * 캘린더에서 date-range 선택을 했을 때 useEffect에서 document.body에 붙인 리스너 함수가 동작하지 않도록 막아서, 
+   * 캘린더에서 date-range 선택을 했을 때 useEffect에서 document.body에 붙인 리스너 함수가 동작하지 않도록 막아서,
    * onClose가 연달아 두번 실행되어 깜빡이는 것을 방지
    */
   const [lockDuplicatedCloseAction, setLockDuplicatedCloseAction] = useState(false);
@@ -85,12 +83,12 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
   const handleDateInputGroupChange = useCallback(
     (dates: { startDate: Date | null; endDate: Date | null } | undefined) => {
       setStore(
-        dates?.startDate && dates?.endDate
-          ? {
-              startDate: dayjs(dates.startDate, format).toDate(),
-              endDate: dayjs(dates.endDate, format).toDate(),
+        !dates?.startDate && !dates?.endDate
+          ? undefined
+          : {
+              startDate: dates.startDate ? dayjs(dates.startDate, format).toDate() : undefined,
+              endDate: dates.endDate ? dayjs(dates.endDate, format).toDate() : undefined,
             }
-          : undefined
       );
     },
     [format]
@@ -121,7 +119,7 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
   const handleApply = useCallback(() => {
     if (frozenOnChange.current) {
       frozenOnChange.current(
-        store
+        store?.startDate && store?.endDate
           ? {
               startDate: store.startDate,
               endDate: store.endDate,
@@ -191,10 +189,17 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
           />
         </div>
         <MDSCalendar
-          value={{
-            startDate: store?.startDate,
-            endDate: store?.endDate,
-          }}
+          value={
+            store?.startDate && store?.endDate
+              ? {
+                  startDate: store?.startDate,
+                  endDate: store?.endDate,
+                }
+              : {
+                  startDate: undefined,
+                  endDate: undefined,
+                }
+          }
           onChange={handleCalendarChange}
           onError={handleCalendarError}
           initialFocus={initialFocus}

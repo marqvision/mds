@@ -81,7 +81,7 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
 
   const frozenOnChange = useRef(onChange);
   const handleDateInputGroupChange = useCallback(
-    (dates: { startDate: Date | null; endDate: Date | null } | undefined) => {
+    (dates: { startDate?: Date; endDate?: Date } | undefined) => {
       setStore(
         !dates?.startDate && !dates?.endDate
           ? undefined

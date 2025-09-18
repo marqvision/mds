@@ -34,22 +34,19 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   //#endregion
 
   //#region - handlers
-  const setErrorsOptimized = useCallback(
-    (newErrors: Partial<DateInputError>) => {
-      setErrors((currentErrors) => {
-        const nextErrors = { ...currentErrors, ...newErrors };
-        if (
-          currentErrors.start === nextErrors.start &&
-          currentErrors.end === nextErrors.end &&
-          currentErrors.range === nextErrors.range
-        ) {
-          return currentErrors;
-        }
-        return nextErrors;
-      });
-    },
-    []
-  );
+  const setErrorsOptimized = useCallback((newErrors: Partial<DateInputError>) => {
+    setErrors((currentErrors) => {
+      const nextErrors = { ...currentErrors, ...newErrors };
+      if (
+        currentErrors.start === nextErrors.start &&
+        currentErrors.end === nextErrors.end &&
+        currentErrors.range === nextErrors.range
+      ) {
+        return currentErrors;
+      }
+      return nextErrors;
+    });
+  }, []);
 
   const handleStartDateChange = useDateChangeHandler('start', {
     dateProps: startDate,
@@ -96,9 +93,10 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
       if (validEndDate) {
         setEndDateState((prev) => ({ ...prev, lastValid: validEndDate }));
       }
+
       onDateChange?.({
-        startDate: validStartDate ?? startDateState.lastValid,
-        endDate: validEndDate ?? endDateState.lastValid,
+        startDate: validStartDate ?? startDateState.lastValid ?? undefined,
+        endDate: validEndDate ?? endDateState.lastValid ?? undefined,
       });
     }
   };
@@ -194,7 +192,7 @@ const useDateChangeHandler = (
     format: AvailableDateFormat;
     minDate?: Date;
     maxDate?: Date;
-    onDateChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;
+    onDateChange?: (dates: { startDate?: Date; endDate?: Date }) => void;
   }
 ) => {
   return useCallback(
@@ -239,8 +237,8 @@ const useDateChangeHandler = (
           }
 
           onDateChange?.({
-            startDate: type === 'start' ? nextStartDate : validStartDate ?? otherState.lastValid,
-            endDate: type === 'end' ? nextEndDate : validEndDate ?? otherState.lastValid,
+            startDate: (type === 'start' ? nextStartDate : validStartDate ?? otherState.lastValid) ?? undefined,
+            endDate: (type === 'end' ? nextEndDate : validEndDate ?? otherState.lastValid) ?? undefined,
           });
 
           // note-@jamie:

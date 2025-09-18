@@ -95,23 +95,30 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
   );
 
   const handleCalendarChange = useCallback(
-    (startDate: Date, endDate: Date) => {
+    (
+      startDate: Date,
+      endDate: Date,
+      lastUpdatedDateType: 'startDate' | 'endDate',
+      actionState: 'initial' | 'in-progress' | 'done'
+    ) => {
       setLockDuplicatedCloseAction(true);
       setStore({
         startDate,
         endDate,
       });
-      onChange?.(
-        startDate && endDate
-          ? {
-              startDate,
-              endDate,
-            }
-          : undefined
-      );
-      setTimeout(() => {
-        onClose?.();
-      }, 0);
+      if (actionState === 'done') {
+        onChange?.(
+          startDate && endDate
+            ? {
+                startDate,
+                endDate,
+              }
+            : undefined
+        );
+        setTimeout(() => {
+          onClose?.();
+        }, 0);
+      }
     },
     [onChange, onClose]
   );

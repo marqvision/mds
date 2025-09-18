@@ -15,15 +15,18 @@ type AnchorButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
 
 export const AnchorButtonDateRangePicker = (props: AnchorButtonDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
-  const { internalDate, handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePicker(props);
+  const { internalDate, handleDateChange, formattedDateString } = useDateRangePicker(props);
 
   return (
     <div>
       <MDSPopover
         padding={0}
         width={304}
+        style={{ marginTop: -34 }}
+        blockAutoClose={true}
         anchor={({ open }) => (
           <div
+          style={{ width: 'fit-content' }}
             onClickCapture={(e) => {
               e.stopPropagation();
               open(e);
@@ -32,14 +35,14 @@ export const AnchorButtonDateRangePicker = (props: AnchorButtonDateRangePickerPr
             <MDSButton
               variant={internalDate.startDate && internalDate.endDate ? 'fill' : 'tint'}
               color="bluegray"
+              startIcon={<MDSIcon.Calendar />}
               tags={
                 internalDate.startDate && internalDate.endDate ? (
                   <MDSTag size="small" variant="tint" color="bluegray">
-                    {formattedStartDate} <MDSIcon.ArrowRight variant="outline" size={16} /> {formattedEndDate}
+                    {formattedDateString}
                   </MDSTag>
                 ) : undefined
               }
-              endIcon={<MDSIcon.Calendar />}
               {...anchor.props}
             >
               {anchor.props?.children || 'Label'}

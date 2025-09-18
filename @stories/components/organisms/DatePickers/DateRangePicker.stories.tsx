@@ -14,6 +14,21 @@ const meta: Meta<typeof MDSDateRangePicker> = {
       },
     },
   },
+  args: {
+    value: {
+      startDate: dayjs().subtract(3, 'day').format('YYYY-MM-DD'),
+      endDate: dayjs().add(8, 'day').format('YYYY-MM-DD'),
+    },
+    format: 'MM/DD/YYYY',
+    minDate: dayjs().subtract(50, 'day').format('YYYY-MM-DD'),
+    maxDate: dayjs().add(50, 'day').format('YYYY-MM-DD'),
+  },
+  argTypes: {
+    format: {
+      control: 'select',
+      options: ['MM/DD/YYYY', 'YYYY-MM-DD'],
+    },
+  },
   tags: ['autodocs'],
 };
 
@@ -39,15 +54,6 @@ const dataBoxStyle = css`
 `;
 
 export const AnchorInput: Story = {
-  args: {
-    value: {
-      startDate: dayjs().subtract(3, 'day').format('YYYY-MM-DD'),
-      endDate: dayjs().add(8, 'day').format('YYYY-MM-DD'),
-    },
-    format: 'MM/DD/YYYY',
-    minDate: dayjs().subtract(50, 'day').format('YYYY-MM-DD'),
-    maxDate: dayjs().add(50, 'day').format('YYYY-MM-DD'),
-  },
   render: function Render(args) {
     const [date, setDate] = useState<{ startDate: string; endDate: string } | undefined>(args.value);
     const handleChange = (dates?: { startDate: string; endDate: string }) => {
@@ -56,36 +62,44 @@ export const AnchorInput: Story = {
     };
 
     return (
-      <div>
-        <MDSDateRangePicker
-          anchor={{
-            variant: 'select',
-            format: 'MM/DD/YYYY',
-          }}
-          value={date}
-          format={args.format}
-          minDate={args.minDate}
-          maxDate={args.maxDate}
-          onChange={handleChange}
-        />
-        <div style={{ position: 'fixed', bottom: 0, left: 0 }}>
-          <MDSDateRangePicker
-            anchor={{
-              variant: 'select',
-              format: 'MM/DD/YYYY',
-            }}
-            value={date}
-            format={args.format}
-            minDate={args.minDate}
-            maxDate={args.maxDate}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
+      <MDSDateRangePicker
+        anchor={{
+          variant: 'input',
+          format: args.format,
+        }}
+        value={date}
+        format={args.format}
+        minDate={args.minDate}
+        maxDate={args.maxDate}
+        onChange={handleChange}
+      />
     );
   },
 };
 
+export const AnchorFilter: Story = {
+  render: function Render(args) {
+    const [date, setDate] = useState<{ startDate: string; endDate: string } | undefined>(args.value);
+    const handleChange = (dates?: { startDate: string; endDate: string }) => {
+      console.log('dates', dates);
+      setDate(dates);
+    };
+
+    return (
+      <MDSDateRangePicker
+        anchor={{
+          variant: 'filter',
+          format: args.format,
+        }}
+        value={date}
+        format={args.format}
+        minDate={args.minDate}
+        maxDate={args.maxDate}
+        onChange={handleChange}
+      />
+    );
+  },
+};
 // export const AnchorFilter: Story = {
 //   render: function Render() {
 //     const DEFAULT_VALUE = {

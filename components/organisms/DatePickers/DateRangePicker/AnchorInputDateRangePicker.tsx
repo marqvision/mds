@@ -10,7 +10,6 @@ import { useDateRangePicker } from './@hooks/useDateRangePicker';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
 const StyledContainer = styled.div<{ hasLabel: boolean; hideAnchor: boolean }>`
-  width: 100%;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
 

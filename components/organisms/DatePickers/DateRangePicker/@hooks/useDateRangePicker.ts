@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import { AnchorProps, AvailableDateFormat, DateRangePickerProps } from '../@types';
 import { DEFAULT_PROPS } from '../../@constants';
@@ -37,8 +37,8 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
     endDate: Date | null;
   }>(getInitialState(startDate, endDate, anchor));
 
-  const handleDateChange = (dates: { startDate: Date | null; endDate: Date | null }) => {
-    setInternalDate(dates);
+  const handleDateChange = (dates?: { startDate: Date; endDate: Date }) => {
+    setInternalDate(dates ?? { startDate: null, endDate: null });
     onChange?.(dates);
   };
 
@@ -52,7 +52,7 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
       });
       return;
     }
-    
+
     const newStartDate = startDate?.value ? getDateObject(startDate.value, anchor) : internalDate.startDate;
     const newEndDate = endDate?.value ? getDateObject(endDate.value, anchor) : internalDate.endDate;
 
@@ -74,15 +74,18 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
   }, [startDate?.value, endDate?.value, minDate, maxDate]);
   //#endregion
 
-  const formattedStartDate = internalDate.startDate
-    ? dayjs(internalDate.startDate).format(getFormat(anchor))
-    : undefined;
-  const formattedEndDate = internalDate.endDate ? dayjs(internalDate.endDate).format(getFormat(anchor)) : undefined;
+  //MM/DD/YYYY -> MM/DD/YYYY
+  const formattedDateString = useMemo(() => {
+    const formattedStartDate = internalDate.startDate
+      ? dayjs(internalDate.startDate).format(getFormat(anchor))
+      : undefined;
+    const formattedEndDate = internalDate.endDate ? dayjs(internalDate.endDate).format(getFormat(anchor)) : undefined;
+    return internalDate.startDate && internalDate.endDate ? `${formattedStartDate} - ${formattedEndDate}` : '';
+  }, [internalDate.startDate, internalDate.endDate, anchor]);
 
   return {
     internalDate,
     handleDateChange,
-    formattedStartDate,
-    formattedEndDate,
+    formattedDateString,
   };
 };

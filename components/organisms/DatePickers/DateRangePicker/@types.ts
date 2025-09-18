@@ -13,7 +13,7 @@ export type AnchorProps =
   | {
       variant: 'input';
       format?: AvailableDateFormat;
-      separator?: string;
+      width?: MDSInputProps<string>['width'];
       startDateProps?: Omit<
         MDSInputProps<string>,
         'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'ref' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
@@ -24,15 +24,13 @@ export type AnchorProps =
       >;
     }
   | {
-      variant: 'button';
+      variant: 'filter';
       format?: AvailableDateFormat;
-      separator?: string;
       props?: MDSButtonProps;
     }
   | {
       variant: 'plainButton';
       format?: AvailableDateFormat;
-      separator?: string;
       props?: Omit<MDSPlainButtonProps, 'icon'>;
     }
   | {
@@ -48,6 +46,15 @@ export type AnchorProps =
 
 export type DateRangePickerProps = {
   onClose?: () => void;
-  onChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;
+  onChange?: (dates?: { startDate: Date; endDate: Date }) => void;
   anchor: AnchorProps;
 } & Partial<Omit<DateInputGroupProps, 'onDateChange'>>;
+
+export type ExternalDateRangePickerProps = {
+  onClose?: () => void;
+  onChange?: (dates?: { startDate: string; endDate: string }) => void;
+  anchor: AnchorProps;
+  value?: { startDate: string; endDate: string };
+  minDate?: string;
+  maxDate?: string;
+} & Partial<Omit<DateInputGroupProps, 'onDateChange' | 'startDate' | 'endDate' | 'minDate' | 'maxDate'>>;

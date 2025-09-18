@@ -7,7 +7,7 @@ import { useDateRangePicker } from './@hooks/useDateRangePicker';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
-type AnchorButtonProps = Extract<AnchorProps, { variant: 'button' }>;
+type AnchorButtonProps = Extract<AnchorProps, { variant: 'filter' }>;
 
 type AnchorButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
   anchor: AnchorButtonProps;
@@ -35,7 +35,7 @@ export const AnchorButtonDateRangePicker = (props: AnchorButtonDateRangePickerPr
               tags={
                 internalDate.startDate && internalDate.endDate ? (
                   <MDSTag size="small" variant="tint" color="bluegray">
-                    {formattedStartDate} {anchor.separator} {formattedEndDate}
+                    {formattedStartDate} <MDSIcon.ArrowRight variant="outline" size={16} /> {formattedEndDate}
                   </MDSTag>
                 ) : undefined
               }

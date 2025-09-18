@@ -119,7 +119,6 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
         endDateStr: clickedDateStr,
         lastUpdatedDateType: 'endDate',
       };
-      fireDateRangeUpdate();
     }
   };
 

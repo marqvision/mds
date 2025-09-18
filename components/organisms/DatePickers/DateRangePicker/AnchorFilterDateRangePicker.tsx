@@ -7,13 +7,13 @@ import { useDateRangePicker } from './@hooks/useDateRangePicker';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
-type AnchorButtonProps = Extract<AnchorProps, { variant: 'filter' }>;
+type AnchorFilterProps = Extract<AnchorProps, { variant: 'filter' }>;
 
-type AnchorButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
-  anchor: AnchorButtonProps;
+type AnchorFilterDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
+  anchor: AnchorFilterProps;
 };
 
-export const AnchorButtonDateRangePicker = (props: AnchorButtonDateRangePickerProps) => {
+export const AnchorFilterDateRangePicker = (props: AnchorFilterDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
   const { internalDate, handleDateChange, formattedDateString } = useDateRangePicker(props);
 

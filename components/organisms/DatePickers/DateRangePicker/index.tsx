@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { DateRangePickerProps, ExternalDateRangePickerProps } from './@types';
-import { AnchorButtonDateRangePicker } from './AnchorButtonDateRangePicker';
+import { AnchorFilterDateRangePicker } from './AnchorFilterDateRangePicker';
 import { AnchorCustomDateRangePicker } from './AnchorCustomDateRangePicker';
 import { AnchorInputDateRangePicker } from './AnchorInputDateRangePicker';
 import { AnchorPlainButtonDateRangePicker } from './AnchorPlainButtonDateRangePicker';
@@ -37,7 +37,7 @@ const DateRangePickerSelector = (props: ExternalDateRangePickerProps) => {
   };
 
   return anchor.variant === 'filter' ? (
-    <AnchorButtonDateRangePicker {...resolvedProps} anchor={anchor} />
+    <AnchorFilterDateRangePicker {...resolvedProps} anchor={anchor} />
   ) : anchor.variant === 'plainButton' ? (
     <AnchorPlainButtonDateRangePicker {...resolvedProps} anchor={anchor} />
   ) : anchor.variant === 'input' ? (

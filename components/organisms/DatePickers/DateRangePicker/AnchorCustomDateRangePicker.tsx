@@ -11,7 +11,7 @@ type AnchorPlainButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'
 
 export const AnchorCustomDateRangePicker = (props: AnchorPlainButtonDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
-  const { internalDate, handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePicker(props);
+  const { internalDate, handleDateChange } = useDateRangePicker(props);
 
   return (
     <MDSPopover
@@ -19,12 +19,13 @@ export const AnchorCustomDateRangePicker = (props: AnchorPlainButtonDateRangePic
       width={304}
       anchor={({ open }) => (
         <div
+          style={{ width: 'fit-content' }}
           onClickCapture={(e) => {
             e.stopPropagation();
             open(e);
           }}
         >
-          {typeof anchor.children === 'function' ? anchor.children({ selectedDates: internalDate }) : anchor.children}
+          {anchor.children({ selectedDates: internalDate })}
         </div>
       )}
     >

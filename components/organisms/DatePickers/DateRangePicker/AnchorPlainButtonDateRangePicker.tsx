@@ -18,7 +18,7 @@ type AnchorPlainButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'
 
 export const AnchorPlainButtonDateRangePicker = (props: AnchorPlainButtonDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
-  const { handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePicker(props);
+  const { handleDateChange, formattedDateString } = useDateRangePicker(props);
 
   return (
     <StyledContainer>
@@ -34,7 +34,7 @@ export const AnchorPlainButtonDateRangePicker = (props: AnchorPlainButtonDateRan
               open(e);
             }}
           >
-            {formattedStartDate}
+            {formattedDateString}
           </MDSPlainButton>
         )}
       >
@@ -45,38 +45,6 @@ export const AnchorPlainButtonDateRangePicker = (props: AnchorPlainButtonDateRan
               format={format}
               separator={separator}
               initialFocus="startDate"
-              onChange={handleDateChange}
-              onClose={close}
-            />
-          ) : (
-            <div />
-          )
-        }
-      </MDSPopover>
-      <div>{anchor.separator}</div>
-      <MDSPopover
-        padding={0}
-        width={304}
-        anchor={({ open }) => (
-          <MDSPlainButton
-            color="bluegray"
-            {...anchor.props}
-            onClick={(e) => {
-              e.stopPropagation();
-              open(e);
-            }}
-          >
-            {formattedEndDate}
-          </MDSPlainButton>
-        )}
-      >
-        {({ close, isOpen }) =>
-          isOpen ? (
-            <DateRangePickerCore
-              {...props}
-              format={format}
-              separator={separator}
-              initialFocus="endDate"
               onChange={handleDateChange}
               onClose={close}
             />

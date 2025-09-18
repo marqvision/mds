@@ -100,6 +100,74 @@ export const AnchorFilter: Story = {
     );
   },
 };
+
+export const AnchorPlainButton: Story = {
+  render: function Render(args) {
+    const [date, setDate] = useState<{ startDate: string; endDate: string } | undefined>(args.value);
+    const handleChange = (dates?: { startDate: string; endDate: string }) => {
+      console.log('dates', dates);
+      setDate(dates);
+    };
+
+    return (
+      <MDSDateRangePicker
+        anchor={{
+          variant: 'plainButton',
+          format: args.format,
+        }}
+        value={date}
+        format={args.format}
+        minDate={args.minDate}
+        maxDate={args.maxDate}
+        onChange={handleChange}
+      />
+    );
+  },
+};
+
+export const AnchorCustom: Story = {
+  render: function Render(args) {
+    const [date, setDate] = useState<{ startDate: string; endDate: string } | undefined>(args.value);
+    const handleChange = (dates?: { startDate: string; endDate: string }) => {
+      console.log('dates', dates);
+      setDate(dates);
+    };
+    return (
+      <>
+        <MDSDateRangePicker
+          anchor={{
+            variant: 'custom',
+            children: ({ selectedDates }) => (
+              <div style={{ border: '1px solid lightgray', padding: '10px', width: 'fit-content' }}>
+                <div>🚧 In progress - function style</div>
+                <div>selectedDates: {JSON.stringify(selectedDates)}</div>
+              </div>
+            ),
+          }}
+          value={date}
+          format={args.format}
+          minDate={args.minDate}
+          maxDate={args.maxDate}
+          onChange={handleChange}
+        />
+        {/* 
+          
+            이 타입으로 하면 성능 이슈가 있는데 왜 그런지 모르겠다 ㅠㅠ
+          <MDSDateRangePicker
+            anchor={{
+              variant: 'custom',
+              children: (
+                <div style={{ border: '1px solid lightgray', padding: '10px', width: 'fit-content' }}>
+                  🚧 In progress - component style
+                </div>
+              ),
+            }}
+          /> */}
+      </>
+    );
+  },
+};
+
 // export const AnchorFilter: Story = {
 //   render: function Render() {
 //     const DEFAULT_VALUE = {

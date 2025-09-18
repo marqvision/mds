@@ -174,7 +174,7 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
     return () => {
       document.body.removeEventListener('click', handleBodyClick, { capture: true });
     };
-  }, [lockDuplicatedCloseAction, isReadyToApply, handleApply, onClose]);
+  }, [lockDuplicatedCloseAction, isReadyToApply, handleApply]);
 
   return (
     <DateRangePickerContainer ref={containerRef}>

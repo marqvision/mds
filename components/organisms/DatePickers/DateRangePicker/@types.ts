@@ -1,4 +1,3 @@
-import { SyntheticEvent } from 'react';
 import { MDSButtonProps } from '../../../molecules/Button';
 import { MDSInputProps } from '../../../molecules/Input';
 import { MDSPlainButtonProps } from '../../../molecules/PlainButton';
@@ -35,13 +34,7 @@ export type AnchorProps =
     }
   | {
       variant: 'custom';
-      children:
-        | React.ReactNode
-        | ((props: {
-            selectedDates: { startDate: Date | null; endDate: Date | null };
-            open?: (e?: React.MouseEvent<Element, MouseEvent>) => void;
-            close?: (e?: SyntheticEvent) => void;
-          }) => React.ReactNode);
+      children: (props: { selectedDates: { startDate: Date | null; endDate: Date | null } }) => React.ReactNode;
     };
 
 export type DateRangePickerProps = {

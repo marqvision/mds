@@ -1,4 +1,4 @@
-import React, { forwardRef, JSX, Ref, useEffect, useState } from 'react';
+import React, { forwardRef, JSX, Ref, useState } from 'react';
 import { MDSIcon } from '../../atoms/Icon';
 import { MDSDropdown, ValueType } from '../Dropdown';
 import { MDSInput, MDSInputProps } from '../Input';
@@ -62,7 +62,7 @@ export const MDSSearch = forwardRef(<T,>(props: SearchProps<T>, ref: Ref<HTMLInp
     placeholder,
     status: error ? 'error' : undefined,
     custom: {
-      alwaysShowDelete: true,
+      deleteIcon: 'always',
       onEnter: trigger === 'enter' ? handleSearch : undefined,
       prefix: <MDSIcon.Search size={16} />,
       expandOnFocus: expandWidth,

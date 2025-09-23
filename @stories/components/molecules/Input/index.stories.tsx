@@ -447,12 +447,12 @@ export const DeleteIconCustomProps: Story = {
           label={{ main: 'custom.deleteIcon: never', sub: '항상 표시 안함' }}
         />
         <MDSInput
-          custom={{ deleteIcon: 'default' }}
+          custom={{ deleteIcon: 'onFocus' }}
           value={value}
           onChange={setValue}
           label={{
-            main: 'custom.deleteIcon: default',
-            sub: '내용이 있을 때, textField에 포커스 하면 표시. 이 prop을 아예 할당하지 않아도 동일하게 동작. ',
+            main: 'custom.deleteIcon: onFocus',
+            sub: '내용이 있을 때, textField에 포커스 하면 표시. (*기본값)',
           }}
         />
       </Wrapper>

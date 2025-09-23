@@ -119,8 +119,8 @@ export const TextField = forwardRef((props: Props, ref: Ref<HTMLInputElement>) =
 
   const typographySize = theme.size[size].typographySize;
 
-  const isUnusable = isDisabled || isReadOnly;
-  const alwaysShowDelete = custom?.alwaysShowDelete;
+  const isUnusable = isDisabled || isReadOnly || custom?.deleteIcon === 'never';
+  const alwaysShowDelete = custom?.deleteIcon === 'always';
   const isShowDelete = !isUnusable && _isShowDelete && (alwaysShowDelete || focused);
 
   const Prefix = prefix ? (

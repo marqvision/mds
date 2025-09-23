@@ -427,3 +427,35 @@ export const NumberInputDiscountDemo: Story = {
     );
   },
 };
+
+export const DeleteIconCustomProps: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<string>('');
+
+    return (
+      <Wrapper>
+        <MDSInput
+          custom={{ deleteIcon: 'always' }}
+          value={value}
+          onChange={setValue}
+          label={{ main: 'custom.deleteIcon: always', sub: '내용이 있을 때, 항상 clear 버튼 표시' }}
+        />
+        <MDSInput
+          custom={{ deleteIcon: 'never' }}
+          value={value}
+          onChange={setValue}
+          label={{ main: 'custom.deleteIcon: never', sub: '항상 표시 안함' }}
+        />
+        <MDSInput
+          custom={{ deleteIcon: 'default' }}
+          value={value}
+          onChange={setValue}
+          label={{
+            main: 'custom.deleteIcon: default',
+            sub: '내용이 있을 때, textField에 포커스 하면 표시. 이 prop을 아예 할당하지 않아도 동일하게 동작. ',
+          }}
+        />
+      </Wrapper>
+    );
+  },
+};

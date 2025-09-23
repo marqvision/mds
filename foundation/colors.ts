@@ -1,5 +1,9 @@
 export const RAW_COLORS = {
   white: '#ffffff',
+  whiteAlpha90: 'rgba(255, 255, 255, 0.9)',
+  whiteAlpha80: 'rgba(255, 255, 255, 0.8)',
+  whiteAlpha70: 'rgba(255, 255, 255, 0.7)',
+  whiteAlpha60: 'rgba(255, 255, 255, 0.6)',
   whiteAlpha50: 'rgba(255, 255, 255, 0.5)',
   whiteAlpha40: 'rgba(255, 255, 255, 0.4)',
   whiteAlpha30: 'rgba(255, 255, 255, 0.3)',

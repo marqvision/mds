@@ -1,18 +1,28 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
 import { validateDateAndMinMaxRange, isDateRangeValid, isDateShapeValid } from '../../@utils';
 import { DateInputError, DateInputGroupProps, SingleDateInput } from '../@types';
-import { isPartiallyValidDate, parseDateString, validateDateValue, getValidatedDate } from '../@utils';
+import { isPartiallyValidDate, parseDateStringToDate, validateDateValue, getValidatedDate } from '../@utils';
 import { DEFAULT_PROPS } from '../../@constants';
 import { DateValidationError } from '../../@types';
 import { AvailableDateFormat } from '../../DateRangePicker/@types';
 
 export const useDateInputGroup = (params: DateInputGroupProps) => {
-  const { startDate, endDate, minDate, maxDate, format = DEFAULT_PROPS.format, onDateChange, onError } = params;
+  const {
+    startDate,
+    endDate,
+    minDate,
+    maxDate,
+    format = DEFAULT_PROPS.format,
+    preventClearValue,
+    onDateChange,
+    onError,
+  } = params;
 
   //#region - local state
   const [startDateState, setStartDateState] = useState(() => {
     const initialValue = startDate.value || '';
-    const d = parseDateString(initialValue, format);
+    const d = parseDateStringToDate(initialValue, format);
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: d, minDate, maxDate });
 
     return {
@@ -22,7 +32,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
   });
   const [endDateState, setEndDateState] = useState(() => {
     const initialValue = endDate.value || '';
-    const d = parseDateString(initialValue, format);
+    const d = parseDateStringToDate(initialValue, format);
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: d, minDate, maxDate });
 
     return {
@@ -57,6 +67,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
     format,
     minDate,
     maxDate,
+    preventClearValue,
     onDateChange,
   });
 
@@ -69,6 +80,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
     format,
     minDate,
     maxDate,
+    preventClearValue,
     onDateChange,
   });
 
@@ -98,6 +110,60 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
         startDate: validStartDate ?? startDateState.lastValid ?? undefined,
         endDate: validEndDate ?? endDateState.lastValid ?? undefined,
       });
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // preventClearValue 옵션이 켜진 상황에서 전체 선택 후 삭제를 방지하기 위한 키 입력 처리
+    // - 전체 선택 상태에서 Backspace/Delete가 눌리면 lastValid 값을 즉시 복원.
+    // - 이미 빈 값에서 Backspace가 눌릴 때도 lastValid로 되돌린다.
+    const { key, currentTarget } = e;
+    const { value, selectionStart, selectionEnd, dataset } = currentTarget;
+    const wrapperRole =
+      dataset.role || currentTarget.closest('[data-role]')?.getAttribute('data-role') || undefined;
+
+    if (
+      preventClearValue &&
+      (key === 'Backspace' || key === 'Delete') &&
+      typeof selectionStart === 'number' &&
+      typeof selectionEnd === 'number' &&
+      selectionStart === 0 &&
+      selectionEnd === value.length &&
+      value !== ''
+    ) {
+      const isStartInput = wrapperRole === 'start-date-input-wrapper';
+      const isEndInput = wrapperRole === 'end-date-input-wrapper';
+      const lastValidDate = isStartInput ? startDateState.lastValid : isEndInput ? endDateState.lastValid : null;
+
+      if (lastValidDate) {
+        // 전체 선택된 상태에서 삭제를 막고, 마지막 유효 날짜 문자열로 복원
+        e.preventDefault();
+        const lastValidString = dayjs(lastValidDate).format(format);
+
+        if (isStartInput) {
+          handleStartDateChange(lastValidString);
+        } else if (isEndInput) {
+          handleEndDateChange(lastValidString);
+        }
+
+        requestAnimationFrame(() => {
+          // 복원 후 커서를 입력 끝으로 이동
+          const inputElement = currentTarget;
+          const caretPosition = inputElement.value.length;
+          inputElement.setSelectionRange(caretPosition, caretPosition);
+        });
+
+        return;
+      }
+    }
+
+    if (preventClearValue && key === 'Backspace' && value === '') {
+      // 이미 비어 있는 필드에서 Backspace가 눌릴 때 마지막 유효 날짜로 복원
+      if (wrapperRole === 'start-date-input-wrapper') {
+        handleStartDateChange(startDateState.lastValid ? dayjs(startDateState.lastValid).format(format) : '');
+      } else if (wrapperRole === 'end-date-input-wrapper') {
+        handleEndDateChange(endDateState.lastValid ? dayjs(endDateState.lastValid).format(format) : '');
+      }
     }
   };
   //#endregion
@@ -165,6 +231,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
     },
     handleStartDateChange,
     handleEndDateChange,
+    handleKeyDown,
     handleBlur,
   };
 };
@@ -180,6 +247,7 @@ const useDateChangeHandler = (
     format,
     minDate,
     maxDate,
+    preventClearValue,
     onDateChange,
   }: {
     dateProps: SingleDateInput;
@@ -192,12 +260,33 @@ const useDateChangeHandler = (
     format: AvailableDateFormat;
     minDate?: Date;
     maxDate?: Date;
+    preventClearValue?: boolean;
     onDateChange?: (dates: { startDate?: Date; endDate?: Date }) => void;
   }
 ) => {
   return useCallback(
     (inputValue: string) => {
+      console.log('>>>> inputValue', inputValue);
       const { onChange: onDateFieldChange } = dateProps;
+      if (preventClearValue && inputValue === '') {
+        setTargetDateState((prev) => {
+          const lastValidDateString = prev.lastValid ? dayjs(prev.lastValid).format(format) : '';
+          console.log('>>>> lastValidDateString', lastValidDateString);
+          return {
+            ...prev,
+            value: lastValidDateString,
+          };
+        });
+        setTimeout(() => {
+          if (type === 'start') {
+            (document.querySelector('[data-role="start-date-input-wrapper"] input') as HTMLInputElement)?.blur();
+          } else if (type === 'end') {
+            (document.querySelector('[data-role="end-date-input-wrapper"] input') as HTMLInputElement)?.blur();
+          }
+        }, 60);
+        return;
+      }
+
       onDateFieldChange?.(inputValue);
 
       if (!isDateShapeValid(inputValue, format) || !isPartiallyValidDate(inputValue, format)) {

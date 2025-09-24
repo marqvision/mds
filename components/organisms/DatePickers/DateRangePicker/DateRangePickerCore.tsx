@@ -188,11 +188,12 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
             endDate={{
               value: store?.endDate ? dayjs(store?.endDate).format(format) : undefined,
             }}
-            onDateChange={handleDateInputGroupChange}
-            onError={handleDateInputGroupError}
             minDate={minDate}
             maxDate={maxDate}
             initialFocus={initialFocus}
+            preventClearValue
+            onDateChange={handleDateInputGroupChange}
+            onError={handleDateInputGroupError}
           />
         </div>
         <MDSCalendar

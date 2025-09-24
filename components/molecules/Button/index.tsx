@@ -130,16 +130,18 @@ export const MDSButton = forwardRef<
       }
     : undefined;
 
+  const isButton = !!(onClick || props.type);
+
   const commonProps: StyledButtonProps & React.ComponentProps<'button'> & { as: React.ElementType } = {
     size,
     variant,
     color,
     width,
-    as: onClick || props.type ? 'button' : 'div',
+    as: isButton ? 'button' : 'div',
     isLoading: (isLoading && icon) || isLoading === 'hideLabel' ? 'hideLabel' : isLoading,
-    isClickable: !!(!isLoading && (onClick || props.type) && !isDisabled),
+    isClickable: !isLoading && isButton && !isDisabled,
     onClick: handleClick,
-    disabled: isDisabled || isCompleted,
+    disabled: isButton && (isDisabled || isCompleted),
     isDisabled,
     isCompleted,
     flat,

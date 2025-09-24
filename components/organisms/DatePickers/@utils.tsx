@@ -103,6 +103,13 @@ export const isDateShapeValid = (value: string, format: AvailableDateFormat) => 
     if (parts.length > 2 && parts[1].length < 2) {
       return false;
     }
+  } else if (format === 'MMM DD, YYYY') {
+    if (parts.length > 1 && parts[0].length < 3) {
+      return false;
+    }
+    if (parts.length > 2 && parts[1].length < 2) {
+      return false;
+    }
   }
   // todo-@jamie: 나머지 포맷 검사 추가
 

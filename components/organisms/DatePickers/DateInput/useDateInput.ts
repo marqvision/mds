@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getValidatedDate, isPartiallyValidDate, parseDateString, validateDateValue } from '../DateInputGroup/@utils';
+import { getValidatedDate, isPartiallyValidDate, parseDateStringToDate, validateDateValue } from '../DateInputGroup/@utils';
 import { validateDateAndMinMaxRange, isDateShapeValid } from '../@utils';
 import { DEFAULT_PROPS } from '../@constants';
 import { DateValidationError } from '../@types';
@@ -9,7 +9,7 @@ export const useDateInput = (params: DateInputProps) => {
   const { value, format = DEFAULT_PROPS.format, minDate, maxDate, onDateChange } = params;
   const [dateState, setDateState] = useState(() => {
     const initialValue = value || '';
-    const d = parseDateString(initialValue, format);
+    const d = parseDateStringToDate(initialValue, format);
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: d, minDate, maxDate });
 
     return {

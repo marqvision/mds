@@ -119,8 +119,7 @@ export const useDateInputGroup = (params: DateInputGroupProps) => {
     // - 이미 빈 값에서 Backspace가 눌릴 때도 lastValid로 되돌린다.
     const { key, currentTarget } = e;
     const { value, selectionStart, selectionEnd, dataset } = currentTarget;
-    const wrapperRole =
-      dataset.role || currentTarget.closest('[data-role]')?.getAttribute('data-role') || undefined;
+    const wrapperRole = dataset.role || currentTarget.closest('[data-role]')?.getAttribute('data-role') || undefined;
 
     if (
       preventClearValue &&
@@ -266,12 +265,10 @@ const useDateChangeHandler = (
 ) => {
   return useCallback(
     (inputValue: string) => {
-      console.log('>>>> inputValue', inputValue);
       const { onChange: onDateFieldChange } = dateProps;
       if (preventClearValue && inputValue === '') {
         setTargetDateState((prev) => {
           const lastValidDateString = prev.lastValid ? dayjs(prev.lastValid).format(format) : '';
-          console.log('>>>> lastValidDateString', lastValidDateString);
           return {
             ...prev,
             value: lastValidDateString,

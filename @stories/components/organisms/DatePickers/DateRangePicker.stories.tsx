@@ -28,7 +28,7 @@ const meta: Meta<typeof MDSDateRangePicker> = {
   argTypes: {
     format: {
       control: 'select',
-      options: ['MM/DD/YYYY', 'YYYY-MM-DD'],
+      options: ['MM/DD/YYYY', 'YYYY-MM-DD', 'MMM DD, YYYY'],
     },
   },
   tags: ['autodocs'],
@@ -170,8 +170,8 @@ export const AnchorCustom: Story = {
   },
 };
 
-export type DateButtonType = 'custom' | '30d' | '3m' | '6m' | '1y' | 'all';
-export const DATE_FILTERS: Record<
+type DateButtonType = 'custom' | '30d' | '3m' | '6m' | '1y' | 'all';
+const DATE_FILTERS: Record<
   DateButtonType,
   MDSSegmentedButtonProps<DateButtonType>['list'][number] & { startDate?: Dayjs }
 > = {
@@ -215,7 +215,7 @@ export const WithSegmentedButton: Story = {
       switch (value) {
         case 'custom':
           dateRangePickerRef.current?.onClick();
-          setSelected(prev => ({ date: prev.date, datePreset: value }));
+          setSelected((prev) => ({ date: prev.date, datePreset: value }));
           break;
         case 'all':
           setSelected({
@@ -252,8 +252,9 @@ export const WithSegmentedButton: Story = {
           onChange={handleChange}
           selectedIcon={<MDSIcon.Check variant="outline" />}
         />
+        
         <MDSDateRangePicker
-          anchor={{ variant: 'plainButton', format: args.format }}
+          anchor={{ variant: 'input', format: args.format }}
           value={selected.date}
           format={args.format}
           ref={dateRangePickerRef}

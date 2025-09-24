@@ -5,7 +5,6 @@ import { AvailableDateFormat } from '../DateRangePicker/@types';
 import { DateValidationError } from '../@types';
 import { SingleDateInput } from './@types';
 
-
 // todo-@jamie: 아래의 format 검사하는 함수들을 dayjs의 customParseFormat를 사용하는 방법으로 바꾸기
 
 /**
@@ -51,6 +50,34 @@ export const isPartiallyValidDate = (value: string, format: AvailableDateFormat)
         return false;
       }
     }
+  } else if (format === 'MMM DD, YYYY') {
+    // MMM DD, YYYY 형식의 경우 (예: "Jan 15, 2024")
+    const [monthStr, dayStr, yearStr] = value.split(/[\s,]+/);
+
+    // 월 부분 검사 (3글자 월 약어)
+    if (monthStr && monthStr.length === 3) {
+      const validMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      if (!validMonths.includes(monthStr)) {
+        return false;
+      }
+    }
+
+    // 일 부분 검사 (1-31)
+    if (dayStr && dayStr.length >= 1) {
+      const day = parseInt(dayStr, 10);
+      if (isNaN(day) || day < 1 || day > 31) {
+        return false;
+      }
+    }
+
+    // 년도 부분 검사 (4자리 숫자)
+    if (yearStr && yearStr.length >= 1) {
+      const year = parseInt(yearStr, 10);
+      if (isNaN(year)) {
+        return false;
+      }
+    }
   }
 
   return true;
@@ -63,32 +90,9 @@ export const isPartiallyValidDate = (value: string, format: AvailableDateFormat)
  * @param format - 'MM/DD/YYYY' 또는 'YYYY-MM-DD' 형식의 날짜 포맷.
  * @returns 파싱된 Date 객체 또는 null.
  */
-export const parseDateString = (dateString: string, format: AvailableDateFormat = 'MM/DD/YYYY'): Date | null => {
-  const separator = SEPARATOR_MAP[format];
-  const parts = dateString.split(separator);
-
-  if (format === 'MM/DD/YYYY') {
-    if (parts.length !== 3 || parts[0].length !== 2 || parts[1].length !== 2 || parts[2].length !== 4) {
-      return null;
-    }
-    const [month, day, year] = parts.map(Number);
-    if (isNaN(month) || isNaN(day) || isNaN(year) || month < 1 || month > 12) return null;
-
-    const date = new Date(year, month - 1, day);
-    if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
-      return date;
-    }
-  } else if (format === 'YYYY-MM-DD') {
-    if (parts.length !== 3 || parts[0].length !== 4 || parts[1].length !== 2 || parts[2].length !== 2) {
-      return null;
-    }
-    const [year, month, day] = parts.map(Number);
-    if (isNaN(year) || isNaN(month) || isNaN(day) || month < 1 || month > 12) return null;
-
-    const date = new Date(year, month - 1, day);
-    if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
-      return date;
-    }
+export const parseDateStringToDate = (dateString: string, format: AvailableDateFormat = 'MM/DD/YYYY'): Date | null => {
+  if (dayjs(dateString, format).isValid()) {
+    return dayjs(dateString, format).toDate();
   }
 
   return null;
@@ -115,7 +119,7 @@ export const validateDateValue = (
   if (value.length < format.length || !isDateShapeValid(value, format) || !isPartiallyValidDate(value, format)) {
     return 'INVALID_DATE';
   }
-  const parsedDate = parseDateString(value, format);
+  const parsedDate = parseDateStringToDate(value, format);
 
   const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: parsedDate, minDate, maxDate });
   if (!isValid) {
@@ -147,7 +151,7 @@ export const getValidatedDate = (
   minDate?: Date,
   maxDate?: Date
 ): Date | null => {
-  const parsedDate = parseDateString(value, format);
+  const parsedDate = parseDateStringToDate(value, format);
   if (!parsedDate) {
     return null;
   }

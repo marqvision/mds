@@ -9,6 +9,7 @@ export const RAW_COLORS = {
   whiteAlpha30: 'rgba(255, 255, 255, 0.3)',
   whiteAlpha20: 'rgba(255, 255, 255, 0.2)',
   whiteAlpha10: 'rgba(255, 255, 255, 0.1)',
+  whiteAlpha5: 'rgba(255, 255, 255, 0.05)',
   clear: 'rgba(255, 255, 255, 0)',
   blue50: '#e9eefd',
   blue100: '#d7e1fb',

@@ -62,6 +62,7 @@ export const MDSTypography = forwardRef(
         as={tagName}
         color={color}
         wordBreak={wordBreak}
+        data-typography-new-font
         {...props}
       />
     );

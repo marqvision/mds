@@ -79,6 +79,7 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
           as={typeof children !== 'string' && typeof children !== 'number' ? 'div' : undefined}
           variant="body"
           size="s"
+          data-typography-new-font
           color={color}
           weight={weight}
           wordBreak={wordBreak}

@@ -23,7 +23,7 @@ export const AnchorInputDatePicker = (props: AnchorInputDatePickerProps) => {
       padding={0}
       width={DATE_RANGE_PICKER_CORE_WIDTH}
       blockAutoClose={true}
-      anchor={({ open }) => (
+      anchor={({ open, close }) => (
         <>
           <div
             ref={anchorRef}
@@ -40,6 +40,7 @@ export const AnchorInputDatePicker = (props: AnchorInputDatePickerProps) => {
             fullWidth
             onChange={() => {
               handleDateChange(undefined);
+              close();
             }}
             onClick={(e) => {
               e.stopPropagation();

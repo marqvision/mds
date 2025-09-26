@@ -4,8 +4,7 @@ import { validateDateAndMinMaxRange, isDateRangeValid, isDateShapeValid } from '
 import { DateInputError, DateInputGroupProps, SingleDateInput } from '../@types';
 import { isPartiallyValidDate, parseDateStringToDate, validateDateValue, getValidatedDate } from '../@utils';
 import { DEFAULT_PROPS } from '../../@constants';
-import { DateValidationError } from '../../@types';
-import { AvailableDateFormat } from '../../DateRangePicker/@types';
+import { DateValidationError, AvailableDateFormat } from '../../@types';
 
 export const useDateInputGroup = (params: DateInputGroupProps) => {
   const {

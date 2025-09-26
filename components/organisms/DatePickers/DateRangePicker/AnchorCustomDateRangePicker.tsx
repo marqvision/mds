@@ -2,7 +2,7 @@ import { useImperativeHandle, useRef } from 'react';
 import dayjs from 'dayjs';
 import { MDSPopover } from '../../../molecules/Popover';
 import { APP_VALUE_FORMAT, DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
-import { useDateRangePicker } from './@hooks/useDateRangePickerAnchor';
+import { useDateRangePickerAnchor } from './@hooks/useDateRangePickerAnchor';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
@@ -14,7 +14,7 @@ type AnchorPlainButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'
 
 export const AnchorCustomDateRangePicker = (props: AnchorPlainButtonDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
-  const { internalDate, handleDateChange } = useDateRangePicker(props);
+  const { internalDate, handleDateChange } = useDateRangePickerAnchor(props);
 
   const anchorRef = useRef<HTMLDivElement>(null);
   useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);

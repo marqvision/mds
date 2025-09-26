@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 import { isDateShapeValid, validateDateAndMinMaxRange } from '../@utils';
 import { SEPARATOR_MAP } from '../@constants';
-import { AvailableDateFormat } from '../DateRangePicker/@types';
-import { DateValidationError } from '../@types';
+import { AvailableDateFormat, DateValidationError } from '../@types';
 import { SingleDateInput } from './@types';
 
 // todo-@jamie: 아래의 format 검사하는 함수들을 dayjs의 customParseFormat를 사용하는 방법으로 바꾸기

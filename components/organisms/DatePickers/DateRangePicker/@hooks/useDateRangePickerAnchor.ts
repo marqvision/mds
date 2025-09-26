@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { AnchorProps, AvailableDateFormat, DateRangePickerProps } from '../@types';
+import { AnchorProps, DateRangePickerProps } from '../@types';
+import { AvailableDateFormat } from '../../@types';
 import { DEFAULT_PROPS } from '../../@constants';
 import { validateDateRange } from '../../@utils';
 import { SingleDateInput } from '../../DateInputGroup/@types';
@@ -35,7 +36,7 @@ const getFormat = (anchor: AnchorProps, valueFormat: AvailableDateFormat = DEFAU
   return anchor.variant === 'custom' ? valueFormat : anchor.format ?? valueFormat ?? DEFAULT_PROPS.format;
 };
 
-export const useDateRangePicker = (params: DateRangePickerProps) => {
+export const useDateRangePickerAnchor = (params: DateRangePickerProps) => {
   const { anchor, format: valueFormat, startDate, endDate, minDate, maxDate, onChange } = params;
 
   const [internalDate, setInternalDate] = useState<{

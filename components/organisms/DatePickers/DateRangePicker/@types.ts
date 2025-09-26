@@ -1,12 +1,8 @@
 import { MDSButtonProps } from '../../../molecules/Button';
 import { MDSInputProps } from '../../../molecules/Input';
 import { MDSPlainButtonProps } from '../../../molecules/PlainButton';
+import { AvailableDateFormat } from '../@types';
 import { DateInputGroupProps } from '../DateInputGroup/@types';
-
-export type AvailableDateFormat =
-  | 'MM/DD/YYYY' // 06/26/2025
-  | 'YYYY-MM-DD' // 2025-06-26
-  | 'MMM DD, YYYY'; // Jan 01, 2020
 
 export type AnchorProps =
   | {

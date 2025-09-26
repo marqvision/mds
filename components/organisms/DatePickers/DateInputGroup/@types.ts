@@ -1,6 +1,5 @@
 import { MDSInputProps } from '../../../molecules/Input';
-import { DateValidationError } from '../@types';
-import { AvailableDateFormat } from '../DateRangePicker/@types';
+import { DateValidationError, AvailableDateFormat } from '../@types';
 
 export type DateInputError = {
   start: DateValidationError | null;

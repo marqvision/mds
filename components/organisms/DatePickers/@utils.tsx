@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { DATE_SHAPE_REGEX_MAP, SEPARATOR_MAP } from './@constants';
-import { AvailableDateFormat } from './DateRangePicker/@types';
+import { AvailableDateFormat } from './@types';
 import { SingleDateInput } from './DateInputGroup/@types';
 
 //#region  ------ VALIDATOR  ------

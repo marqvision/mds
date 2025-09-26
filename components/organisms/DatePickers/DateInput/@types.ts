@@ -1,5 +1,5 @@
 import { SingleDateInput } from '../DateInputGroup/@types';
-import { AvailableDateFormat } from '../DateRangePicker/@types';
+import { AvailableDateFormat } from '../@types';
 
 export type DateInputProps = {
   minDate?: Date;

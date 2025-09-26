@@ -5,7 +5,7 @@ import { MDSPopover } from '../../../molecules/Popover';
 import { DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSIcon } from '../../../atoms/Icon';
-import { useDateRangePicker } from './@hooks/useDateRangePickerAnchor';
+import { useDateRangePickerAnchor } from './@hooks/useDateRangePickerAnchor';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
@@ -22,7 +22,7 @@ type AnchorPlainButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'
 
 export const AnchorPlainButtonDateRangePicker = (props: AnchorPlainButtonDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
-  const { handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePicker(props);
+  const { handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePickerAnchor(props);
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);

@@ -1,4 +1,4 @@
-import { AvailableDateFormat } from './DateRangePicker/@types';
+import { AvailableDateFormat } from './@types';
 
 export const DATE_RANGE_PICKER_CORE_WIDTH = '304px';
 export const DATE_SHAPE_REGEX_MAP: Record<AvailableDateFormat, RegExp> = {

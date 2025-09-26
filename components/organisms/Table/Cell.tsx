@@ -60,11 +60,18 @@ const CellBox = styled.div<TableCellInnerProps>`
 `;
 
 export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCellElement>) => {
-  const { children, isNewHeader, align = 'left', valign = 'middle', cellSize = 'medium', ...restProps } = props;
+  const {
+    children,
+    isNewHeader,
+    align = 'left',
+    valign = 'middle',
+    cellSize = 'medium',
+    wordBreak = 'break-word',
+    ...restProps
+  } = props;
 
   const color = props.as === 'th' ? 'color/content/neutral/secondary/normal' : undefined;
   const weight = isNewHeader ? 'medium' : undefined;
-
   return (
     <Wrapper ref={ref} valign={valign} {...restProps}>
       <CellBox cellSize={cellSize} align={align}>
@@ -74,6 +81,7 @@ export const TableCell = forwardRef((props: TableCellProps, ref: Ref<HTMLTableCe
           size="s"
           color={color}
           weight={weight}
+          wordBreak={wordBreak}
         >
           {children}
         </MDSTypography>

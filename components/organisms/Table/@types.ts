@@ -1,4 +1,5 @@
 import React, { HTMLAttributes, TdHTMLAttributes } from 'react';
+import { MDSTypographyProps } from '../../atoms/Typography';
 
 // Table
 export type StyledTableProps = {
@@ -86,6 +87,9 @@ export type StyledTableCellProps = {
   width?: string;
   // cell 의 border-right 를 지정합니다.
   borderRight?: BorderProps;
+
+  // cell 의 word-break 를 지정합니다.
+  wordBreak?: MDSTypographyProps['wordBreak'];
 };
 
 export type TableCellInnerProps = {

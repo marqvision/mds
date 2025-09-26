@@ -29,8 +29,6 @@ export const StyledOutline = styled.div<{
   &:has(input:focus, textarea:focus, button:focus) {
     border-color: ${({ isError }) => theme.color.border[isError ? 'error' : 'active']};
     border-radius: ${({ flatRight }) => (flatRight === 'add' ? '8px 0 0 8px' : `8px`)};
-    position: relative;
-    z-index: 1;
   }
   &:has(button:not(:disabled):not(.readOnly)) {
     cursor: pointer;

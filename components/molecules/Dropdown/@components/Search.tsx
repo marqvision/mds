@@ -23,7 +23,7 @@ export const Search = ({
     <MDSInput
       value={value}
       onChange={setValue}
-      custom={{ prefix: prefix || <MDSIcon.Search size={16} />, alwaysShowDelete: true }}
+      custom={{ prefix: prefix || <MDSIcon.Search size={16} />, deleteIcon: 'always' }}
       placeholder={placeholder || 'Search'}
       fullWidth
       inputProps={{ autoFocus: true }}

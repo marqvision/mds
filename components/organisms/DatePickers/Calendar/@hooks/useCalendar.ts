@@ -234,7 +234,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   return [
     ...(prevMonthDays.length < 7 ? prevMonthDays : []),
     ...currentMonthDays,
-    ...(nextMonthDays.length < 14 ? nextMonthDays : []),
+    ...(nextMonthDays.length <= 14 ? nextMonthDays : []),
   ];
 };
 //#endregion

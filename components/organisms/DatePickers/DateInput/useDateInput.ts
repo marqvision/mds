@@ -1,12 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getValidatedDate, isPartiallyValidDate, parseDateStringToDate, validateDateValue } from '../DateInputGroup/@utils';
+import dayjs from 'dayjs';
+import {
+  getValidatedDate,
+  isPartiallyValidDate,
+  parseDateStringToDate,
+  validateDateValue,
+} from '../DateInputGroup/@utils';
 import { validateDateAndMinMaxRange, isDateShapeValid } from '../@utils';
 import { DEFAULT_PROPS } from '../@constants';
 import { DateValidationError } from '../@types';
 import { DateInputProps } from './@types';
 
 export const useDateInput = (params: DateInputProps) => {
-  const { value, format = DEFAULT_PROPS.format, minDate, maxDate, onDateChange } = params;
+  const { value, format = DEFAULT_PROPS.format, minDate, maxDate, preventClearValue, onDateChange, onError } = params;
+
+  //#region - local state
   const [dateState, setDateState] = useState(() => {
     const initialValue = value || '';
     const d = parseDateStringToDate(initialValue, format);
@@ -18,16 +26,33 @@ export const useDateInput = (params: DateInputProps) => {
     };
   });
   const [errors, setErrors] = useState<DateValidationError | null>(null);
+  //#endregion
 
+  //#region - handlers
+  const setErrorsOptimized = useCallback((newErrors: DateValidationError | null) => {
+    setErrors((currentErrors) => {
+      if (currentErrors === newErrors) {
+        return currentErrors;
+      }
+      return newErrors;
+    });
+    onError?.(newErrors ?? undefined);
+  }, []);
   const handleDateChange = (inputValue: string) => {
+    if (preventClearValue && inputValue === '') {
+      setErrorsOptimized(null);
+      setDateState((prev) => ({ ...prev, value: prev.lastValid ? dayjs(prev.lastValid).format(format) : '' }));
+      return;
+    }
+
     if (!isDateShapeValid(inputValue, format) || !isPartiallyValidDate(inputValue, format)) {
-      setErrors('INVALID_DATE');
+      setErrorsOptimized('INVALID_DATE');
       setDateState((prev) => ({ ...prev, value: inputValue }));
       return;
     }
 
     if (inputValue.length === 0) {
-      setErrors(null);
+      setErrorsOptimized(null);
       setDateState((prev) => ({ ...prev, value: inputValue }));
       onDateChange?.(null);
       return;
@@ -37,7 +62,7 @@ export const useDateInput = (params: DateInputProps) => {
       const dateError = validateDateValue(inputValue, format, minDate, maxDate);
       const validDate = getValidatedDate(inputValue, format, minDate, maxDate);
 
-      setErrors(dateError);
+      setErrorsOptimized(dateError);
       if (!dateError) {
         const nextDateState = validDate ?? dateState.lastValid;
         if (validDate) {
@@ -46,7 +71,7 @@ export const useDateInput = (params: DateInputProps) => {
         onDateChange?.(nextDateState);
       }
     } else {
-      setErrors(null);
+      setErrorsOptimized(null);
       setDateState((prev) => ({ ...prev, value: inputValue }));
     }
   };
@@ -55,7 +80,7 @@ export const useDateInput = (params: DateInputProps) => {
     const dateError = validateDateValue(dateState.value, format, minDate, maxDate);
     const validDate = getValidatedDate(dateState.value, format, minDate, maxDate);
 
-    setErrors(dateError);
+    setErrorsOptimized(dateError);
     if (!dateError) {
       setDateState((prev) => ({ ...prev, lastValid: validDate }));
       onDateChange?.(validDate ?? dateState.lastValid);
@@ -65,7 +90,7 @@ export const useDateInput = (params: DateInputProps) => {
   const validateExternalInjectedDates = useCallback(
     (currentValue: string | undefined) => {
       if (!currentValue) {
-        setErrors(null);
+        setErrorsOptimized(null);
         setDateState((prev) => ({ ...prev, value: '', lastValid: null }));
         onDateChange?.(null);
         return;
@@ -73,13 +98,13 @@ export const useDateInput = (params: DateInputProps) => {
       const dateError = validateDateValue(currentValue, format, minDate, maxDate);
       const validDate = getValidatedDate(currentValue, format, minDate, maxDate);
 
-      setErrors(dateError);
+      setErrorsOptimized(dateError);
       if (!dateError) {
         setDateState((prev) => ({ ...prev, lastValid: validDate }));
         onDateChange?.(validDate ?? dateState.lastValid);
       }
     },
-    [format, minDate, maxDate, onDateChange, dateState.lastValid]
+    [format, minDate, maxDate, setErrorsOptimized, onDateChange, dateState.lastValid]
   );
 
   useEffect(() => {

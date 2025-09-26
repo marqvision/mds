@@ -2,7 +2,7 @@ import { useImperativeHandle, useRef } from 'react';
 import dayjs from 'dayjs';
 import { MDSPopover } from '../../../molecules/Popover';
 import { APP_VALUE_FORMAT, DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
-import { useDateRangePicker } from './@hooks/useDateRangePicker';
+import { useDateRangePicker } from './@hooks/useDateRangePickerAnchor';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 

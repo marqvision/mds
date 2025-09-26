@@ -4,7 +4,7 @@ import { MDSButton } from '../../../molecules/Button';
 import { MDSPopover } from '../../../molecules/Popover';
 import { MDSTag } from '../../../molecules/Tag';
 import { DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
-import { useDateRangePicker } from './@hooks/useDateRangePicker';
+import { useDateRangePicker } from './@hooks/useDateRangePickerAnchor';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 

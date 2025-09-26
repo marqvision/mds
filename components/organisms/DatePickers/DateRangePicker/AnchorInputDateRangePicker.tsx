@@ -3,7 +3,7 @@ import { DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
 import { MDSInput } from '../../../molecules/Input';
 import { MDSPopover } from '../../../molecules/Popover';
 import { AnchorProps, DateRangePickerProps } from './@types';
-import { useDateRangePicker } from './@hooks/useDateRangePicker';
+import { useDateRangePicker } from './@hooks/useDateRangePickerAnchor';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
 type AnchorInputProps = Extract<AnchorProps, { variant: 'input' }>;

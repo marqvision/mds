@@ -36,12 +36,12 @@ const getFormat = (anchor: AnchorProps, valueFormat: AvailableDateFormat = DEFAU
 };
 
 export const useDateRangePicker = (params: DateRangePickerProps) => {
-  const { anchor, startDate, endDate, minDate, maxDate, onChange } = params;
+  const { anchor, format: valueFormat, startDate, endDate, minDate, maxDate, onChange } = params;
 
   const [internalDate, setInternalDate] = useState<{
     startDate: Date | null;
     endDate: Date | null;
-  }>(getInitialState(startDate, endDate, anchor));
+  }>(getInitialState(startDate, endDate, anchor, valueFormat));
 
   const handleDateChange = (dates?: { startDate: Date; endDate: Date }) => {
     setInternalDate(dates ?? { startDate: null, endDate: null });
@@ -59,8 +59,10 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
       return;
     }
 
-    const newStartDate = startDate?.value ? getDateObject(startDate.value, anchor) : internalDate.startDate;
-    const newEndDate = endDate?.value ? getDateObject(endDate.value, anchor) : internalDate.endDate;
+    const newStartDate = startDate?.value
+      ? getDateObject(startDate.value, anchor, valueFormat)
+      : internalDate.startDate;
+    const newEndDate = endDate?.value ? getDateObject(endDate.value, anchor, valueFormat) : internalDate.endDate;
 
     const isValid = validateDateRange({
       startDate: newStartDate,

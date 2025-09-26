@@ -5,7 +5,7 @@ import { MDSPopover } from '../../../molecules/Popover';
 import { DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSIcon } from '../../../atoms/Icon';
-import { useDateRangePicker } from './@hooks/useDateRangePicker';
+import { useDateRangePicker } from './@hooks/useDateRangePickerAnchor';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 

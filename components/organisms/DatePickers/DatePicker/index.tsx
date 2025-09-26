@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import dayjs from 'dayjs';
-import { MDSDivider } from '../../../atoms/Divider';
-import { MDSButton } from '../../../molecules/Button';
 import { MDSInput, MDSInputProps } from '../../../molecules/Input';
-import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { MDSPopover } from '../../../molecules/Popover';
 import { DEFAULT_PROPS } from '../@constants';
 import { MDSCalendar } from '../Calendar';
 import { MDSDateInput } from '../DateInput';
+import { validateDateAndMinMaxRange } from '../@utils';
 import { SingleDateInput } from '../DateInputGroup/@types';
 import { AvailableDateFormat } from '../DateRangePicker/@types';
 
@@ -27,13 +25,7 @@ const DatePickerLayout = styled.div`
     padding: 12px 12px 0;
   }
 `;
-const DatePickerActionContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-  padding: 12px;
-`;
+// actions removed (Apply/Cancel) to align behavior with DateRangePickerCore
 
 type Props = {
   format?: AvailableDateFormat;
@@ -50,29 +42,59 @@ const DatePicker = (props: Props) => {
   const { value, format = DEFAULT_PROPS.format, onChange, minDate, maxDate, onClose } = props;
 
   const [store, setStore] = useState<Date | undefined>(value ? dayjs(value).toDate() : undefined);
+  const [lockDuplicatedCloseAction, setLockDuplicatedCloseAction] = useState(false);
   const frozenOnChange = useRef(onChange);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleDateInputChange = useCallback((date: Date | null) => {
     setStore(date ? dayjs(date).toDate() : undefined);
   }, []);
 
-  const handleCalendarChange = useCallback((date: Date) => {
-    setStore(date);
-  }, []);
+  const handleCalendarChange = useCallback(
+    (date: Date) => {
+      setLockDuplicatedCloseAction(true);
+      setStore(date);
+      onChange?.(dayjs(date).format(format));
+      setTimeout(() => {
+        onClose?.();
+      }, 0);
+    },
+    [onChange, onClose, format]
+  );
 
-  const handleApply = () => {
+  const handleApply = useCallback(() => {
     if (frozenOnChange.current) {
       frozenOnChange.current(store ? dayjs(store).format(format) : undefined);
     }
-  };
+  }, [store, format]);
+
+  const isReadyToApply = (() => {
+    if (!store) return false;
+    const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: store, minDate, maxDate });
+    return isValid && !isOutOfRange;
+  })();
 
   // 외부에서 들어온 값 동기화
   useEffect(() => {
     setStore(value ? dayjs(value).toDate() : undefined);
   }, [value]);
 
+  useEffect(() => {
+    const handleBodyClick = (e: Event) => {
+      const isIn = containerRef.current?.contains(e.target as Node);
+      if (!lockDuplicatedCloseAction && !isIn && isReadyToApply) {
+        handleApply();
+        onClose?.();
+      }
+    };
+    document.body.addEventListener('click', handleBodyClick, { capture: true });
+    return () => {
+      document.body.removeEventListener('click', handleBodyClick, { capture: true });
+    };
+  }, [lockDuplicatedCloseAction, isReadyToApply, handleApply, onClose]);
+
   return (
-    <DatePickerContainer>
+    <DatePickerContainer ref={containerRef}>
       <DatePickerLayout>
         <div className="mds-date-picker-input-container">
           <MDSDateInput
@@ -85,26 +107,6 @@ const DatePicker = (props: Props) => {
         </div>
         <MDSCalendar value={store} onChange={handleCalendarChange} minDate={minDate} maxDate={maxDate} />
       </DatePickerLayout>
-
-      <MDSDivider />
-      <DatePickerActionContainer>
-        <MDSPlainButton
-          color="bluegray"
-          onClick={() => {
-            onClose?.();
-          }}
-        >
-          Cancel
-        </MDSPlainButton>
-        <MDSButton
-          onClick={() => {
-            handleApply();
-            onClose?.();
-          }}
-        >
-          Apply
-        </MDSButton>
-      </DatePickerActionContainer>
     </DatePickerContainer>
   );
 };

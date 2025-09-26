@@ -84,10 +84,13 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
     ? dayjs(internalDate.startDate).format(getFormat(anchor))
     : undefined;
   const formattedEndDate = internalDate.endDate ? dayjs(internalDate.endDate).format(getFormat(anchor)) : undefined;
+  const formattedDateString =
+    internalDate.startDate && internalDate.endDate ? `${formattedStartDate} → ${formattedEndDate}` : '';
 
   return {
     internalDate,
     handleDateChange,
+    formattedDateString,
     formattedStartDate,
     formattedEndDate,
   };

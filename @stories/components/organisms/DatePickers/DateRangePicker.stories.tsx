@@ -1,10 +1,12 @@
-import { useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { css } from '@emotion/react';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { MDSDateRangePicker } from '../../../../components/organisms/DatePickers/DateRangePicker';
-import { MDSIcon, MDSSegmentedButton } from '../../../../components';
-import { MDSSegmentedButtonProps } from '../../../../components/molecules/SegmentedButton/@types';
+import { MDSIcon, MDSPlainButton } from '../../../../components';
+import {
+  MDSDateRangeSegmentedButton,
+  MDSDateRangeSegmentedButtonProps,
+} from '../../../../components/organisms/DatePickers/DateRangeSegmentedButton';
 
 const meta: Meta<typeof MDSDateRangePicker> = {
   component: MDSDateRangePicker,
@@ -21,14 +23,20 @@ const meta: Meta<typeof MDSDateRangePicker> = {
       startDate: dayjs().subtract(3, 'day').format('YYYY-MM-DD'),
       endDate: dayjs().add(8, 'day').format('YYYY-MM-DD'),
     },
-    format: 'MM/DD/YYYY',
-    minDate: dayjs().subtract(50, 'day').format('YYYY-MM-DD'),
-    maxDate: dayjs().add(50, 'day').format('YYYY-MM-DD'),
+    format: 'MMM DD, YYYY',
+    minDate: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
+    maxDate: dayjs().add(1, 'year').format('YYYY-MM-DD'),
   },
   argTypes: {
     format: {
       control: 'select',
       options: ['MM/DD/YYYY', 'YYYY-MM-DD', 'MMM DD, YYYY'],
+    },
+    minDate: {
+      control: 'date',
+    },
+    maxDate: {
+      control: 'date',
     },
   },
   tags: ['autodocs'],
@@ -37,25 +45,17 @@ const meta: Meta<typeof MDSDateRangePicker> = {
 export default meta;
 type Story = StoryObj<typeof MDSDateRangePicker>;
 
-const testGroupStyle = css`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-const dataBoxLayout = css`
-  display: flex;
-  gap: 24px;
-`;
-const dataBoxStyle = css`
-  border: 1px solid lightgray;
-  padding: 20px;
-  border-radius: 10px;
-  width: 320px;
-  display: grid;
-  gap: 12px;
-`;
-
 export const AnchorInput: Story = {
+  args: {
+    ...meta.args,
+    anchor: {
+      variant: 'input',
+      mdsInputProps: {
+        label: 'Date range picker - input type',
+        placeholder: 'PLACEHOLDER ',
+      },
+    },
+  },
   render: function Render(args) {
     const [date, setDate] = useState<{ startDate: string; endDate: string } | undefined>(args.value);
     const handleChange = (dates?: { startDate: string; endDate: string }) => {
@@ -63,12 +63,14 @@ export const AnchorInput: Story = {
       setDate(dates);
     };
 
+    const anchorProps = {
+      ...args.anchor,
+      format: args.format, // anchor 요소의 format과 DateRangePicker 내부의 format을 다르게 지정할 수 있음
+    };
+
     return (
       <MDSDateRangePicker
-        anchor={{
-          variant: 'input',
-          format: args.format,
-        }}
+        anchor={anchorProps}
         value={date}
         format={args.format}
         minDate={args.minDate}
@@ -80,6 +82,15 @@ export const AnchorInput: Story = {
 };
 
 export const AnchorFilter: Story = {
+  args: {
+    ...meta.args,
+    anchor: {
+      variant: 'filter',
+      mdsButtonProps: {
+        children: 'Date range picker - filter type',
+      },
+    },
+  },
   render: function Render(args) {
     const [date, setDate] = useState<{ startDate: string; endDate: string } | undefined>(args.value);
     const handleChange = (dates?: { startDate: string; endDate: string }) => {
@@ -87,23 +98,41 @@ export const AnchorFilter: Story = {
       setDate(dates);
     };
 
+    const anchorProps = {
+      ...args.anchor,
+      format: args.format, // anchor 요소의 format과 DateRangePicker 내부의 format을 다르게 지정할 수 있음
+    };
+
     return (
-      <MDSDateRangePicker
-        anchor={{
-          variant: 'filter',
-          format: args.format,
-        }}
-        value={date}
-        format={args.format}
-        minDate={args.minDate}
-        maxDate={args.maxDate}
-        onChange={handleChange}
-      />
+      <div style={{ display: 'flex', gap: '12px' }}>
+        <MDSDateRangePicker
+          anchor={anchorProps}
+          value={date}
+          format={args.format}
+          minDate={args.minDate}
+          maxDate={args.maxDate}
+          onChange={handleChange}
+        />
+        {date && (
+          <MDSPlainButton color="blue" startIcon={<MDSIcon.Reset />} onClick={() => setDate(undefined)}>
+            Reset
+          </MDSPlainButton>
+        )}
+      </div>
     );
   },
 };
 
 export const AnchorPlainButton: Story = {
+  args: {
+    ...meta.args,
+    anchor: {
+      variant: 'plainButton',
+      mdsPlainButtonProps: {
+        children: 'Date range picker - plain button type',
+      },
+    },
+  },
   render: function Render(args) {
     const [date, setDate] = useState<{ startDate: string; endDate: string } | undefined>(args.value);
     const handleChange = (dates?: { startDate: string; endDate: string }) => {
@@ -111,12 +140,14 @@ export const AnchorPlainButton: Story = {
       setDate(dates);
     };
 
+    const anchorProps = {
+      ...args.anchor,
+      format: args.format, // anchor 요소의 format과 DateRangePicker 내부의 format을 다르게 지정할 수 있음
+    };
+
     return (
       <MDSDateRangePicker
-        anchor={{
-          variant: 'plainButton',
-          format: args.format,
-        }}
+        anchor={anchorProps}
         value={date}
         format={args.format}
         minDate={args.minDate}
@@ -134,12 +165,14 @@ export const AnchorCustom: Story = {
       console.log('dates', dates);
       setDate(dates);
     };
+
     return (
       <>
         <MDSDateRangePicker
           anchor={{
             variant: 'custom',
             children: ({ selectedDates }) => (
+              // selectedDates는 언제나 YYYY-MM-DD 형식으로 온다.
               <div style={{ border: '1px solid lightgray', padding: '10px', width: 'fit-content' }}>
                 <div>🚧 In progress - function style</div>
                 <div>selectedDates: {JSON.stringify(selectedDates)}</div>
@@ -170,101 +203,138 @@ export const AnchorCustom: Story = {
   },
 };
 
-type DateButtonType = 'custom' | '30d' | '3m' | '6m' | '1y' | 'all';
-const DATE_FILTERS: Record<
-  DateButtonType,
-  MDSSegmentedButtonProps<DateButtonType>['list'][number] & { startDate?: Dayjs }
-> = {
-  ['custom']: { label: 'Custom', value: 'custom' },
-  ['30d']: {
+//#region WithMDSDateRangeSegmentedButton > Segmented button 정의 값들
+type PresetKey =
+  | '10d'
+  | '20d'
+  | '30d'
+  | '3m'
+  | '6m'
+  | '1y'
+  | '10d'
+  | 'user-input-1'
+  | 'user-input-2'
+  | 'user-input-3'
+  | 'user-input-4';
+type SegmentedProps = MDSDateRangeSegmentedButtonProps<PresetKey>;
+type SegmentedPreset = SegmentedProps['list'][number];
+type SegmentedValue = SegmentedPreset['value'];
+const createDatePresets = (): SegmentedProps['list'] => [
+  {
+    label: 'Custom',
+    value: 'custom',
+  },
+  {
     label: '30D',
     value: '30d',
-    startDate: dayjs().subtract(30, 'd'),
   },
-  ['3m']: {
+  {
     label: '3M',
     value: '3m',
-    startDate: dayjs().subtract(3, 'M'),
   },
-  ['6m']: {
+  {
     label: '6M',
     value: '6m',
-    startDate: dayjs().subtract(6, 'M'),
   },
-  ['1y']: {
+  {
     label: '1Y',
     value: '1y',
-    startDate: dayjs().subtract(1, 'y'),
   },
-  ['all']: { label: 'All', value: 'all' },
-};
-const DATE_OPTIONS = Object.values(DATE_FILTERS);
-export const WithSegmentedButton: Story = {
+  {
+    label: '아무거나',
+    value: '10d',
+    resolveRange: () => ({
+      startDate: dayjs().format('YYYY-MM-DD'),
+      endDate: dayjs().add(10, 'day').format('YYYY-MM-DD'),
+    }),
+  },
+  {
+    label: '입력하고 싶은',
+    value: '20d',
+    resolveRange: () => ({
+      startDate: dayjs().subtract(20, 'day').format('YYYY-MM-DD'),
+      endDate: dayjs().format('YYYY-MM-DD'),
+    }),
+  },
+  {
+    label: '프리셋을',
+    value: 'user-input-3',
+    resolveRange: () => ({
+      startDate: dayjs().add(1, 'day').format('YYYY-MM-DD'),
+      endDate: dayjs().add(30, 'day').format('YYYY-MM-DD'),
+    }),
+  },
+  {
+    label: '만들어 넣으세요',
+    value: 'user-input-4',
+    resolveRange: () => ({
+      startDate: dayjs().add(1, 'day').format('YYYY-MM-DD'),
+      endDate: dayjs().add(40, 'day').format('YYYY-MM-DD'),
+    }),
+  },
+];
+//#endregion
+export const WithMDSDateRangeSegmentedButton: Story = {
   render: function Render(args) {
     const [selected, setSelected] = useState<{
       date?: { startDate: string; endDate: string };
-      datePreset: DateButtonType;
+      datePreset: SegmentedValue;
     }>({
-      date: undefined,
+      date: { startDate: args.value?.startDate ?? '', endDate: args.value?.endDate ?? '' },
       datePreset: 'custom',
     });
 
     const dateRangePickerRef = useRef<{ onClick: () => void }>(null);
+    const presets = useMemo(() => createDatePresets(), []);
 
-    const handleChange = (value: DateButtonType) => {
-      switch (value) {
-        case 'custom':
-          dateRangePickerRef.current?.onClick();
-          setSelected((prev) => ({ date: prev.date, datePreset: value }));
-          break;
-        case 'all':
-          setSelected({
-            date: {
-              startDate: dayjs().format('YYYY-MM-DD'),
-              endDate: dayjs().add(500, 'day').format('YYYY-MM-DD'),
-            },
-            datePreset: value,
-          });
-
-          break;
-        case '30d':
-        case '3m':
-        case '6m':
-        case '1y':
-          setSelected({
-            date: {
-              startDate: DATE_FILTERS[value].startDate?.format('YYYY-MM-DD') || '',
-              endDate: dayjs().format('YYYY-MM-DD'),
-            },
-            datePreset: value,
-          });
-          break;
+    const handleSegmentedChange: SegmentedProps['onChange'] = useCallback((preset, dateRange) => {
+      if (preset.value === 'custom') {
+        dateRangePickerRef.current?.onClick();
+        setSelected((prev) => ({
+          date: prev.date,
+          datePreset: preset.value,
+        }));
+        return;
       }
-    };
+
+      setSelected({
+        date: dateRange,
+        datePreset: preset.value,
+      });
+    }, []);
+
+    const handleDateRangeChange = useCallback(
+      (dateRange?: { startDate: string; endDate: string }) => {
+        setSelected({
+          date: dateRange,
+          datePreset: 'custom',
+        });
+        args.onChange?.(dateRange);
+      },
+      [args]
+    );
 
     return (
       <div style={{ display: 'flex', gap: '12px' }}>
-        <MDSSegmentedButton
-          variant="border"
-          type="hug"
-          list={DATE_OPTIONS}
+        <MDSDateRangeSegmentedButton
+          list={presets}
           value={selected.datePreset}
-          onChange={handleChange}
+          onChange={handleSegmentedChange}
           selectedIcon={<MDSIcon.Check variant="outline" />}
         />
-        
         <MDSDateRangePicker
           anchor={{ variant: 'input', format: args.format }}
           value={selected.date}
           format={args.format}
           ref={dateRangePickerRef}
-          onChange={args.onChange}
+          onChange={handleDateRangeChange}
         />
       </div>
     );
   },
 };
 
+// #region With External Value stories
 // export const AnchorFilter: Story = {
 //   render: function Render() {
 //     const DEFAULT_VALUE = {
@@ -810,3 +880,4 @@ export const WithSegmentedButton: Story = {
 // //     );
 // //   },
 // // };
+// #endregion

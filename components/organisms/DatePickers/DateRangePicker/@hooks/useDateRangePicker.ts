@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { AnchorProps, AvailableDateFormat, DateRangePickerProps } from '../@types';
 import { DEFAULT_PROPS } from '../../@constants';
@@ -25,8 +25,14 @@ const getDateObject = (
   const format = getFormat(anchor, valueFormat);
   return dayjs(dateString, format).toDate();
 };
+
+/**
+ * 다음 순서로 적용
+ * - anchor.variant: custom 케이스 : valueFormat -> DEFAULT_PROPS.format
+ * - anchor.variant: 나머지 케이스 : anchor.format -> valueFormat -> DEFAULT_PROPS.format
+ */
 const getFormat = (anchor: AnchorProps, valueFormat: AvailableDateFormat = DEFAULT_PROPS.format) => {
-  return anchor.variant === 'custom' ? valueFormat : anchor.format ?? DEFAULT_PROPS.format;
+  return anchor.variant === 'custom' ? valueFormat : anchor.format ?? valueFormat ?? DEFAULT_PROPS.format;
 };
 
 export const useDateRangePicker = (params: DateRangePickerProps) => {
@@ -74,18 +80,15 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
   }, [startDate?.value, endDate?.value, minDate, maxDate]);
   //#endregion
 
-  //MM/DD/YYYY -> MM/DD/YYYY
-  const formattedDateString = useMemo(() => {
-    const formattedStartDate = internalDate.startDate
-      ? dayjs(internalDate.startDate).format(getFormat(anchor))
-      : undefined;
-    const formattedEndDate = internalDate.endDate ? dayjs(internalDate.endDate).format(getFormat(anchor)) : undefined;
-    return internalDate.startDate && internalDate.endDate ? `${formattedStartDate} → ${formattedEndDate}` : '';
-  }, [internalDate.startDate, internalDate.endDate, anchor]);
+  const formattedStartDate = internalDate.startDate
+    ? dayjs(internalDate.startDate).format(getFormat(anchor))
+    : undefined;
+  const formattedEndDate = internalDate.endDate ? dayjs(internalDate.endDate).format(getFormat(anchor)) : undefined;
 
   return {
     internalDate,
     handleDateChange,
-    formattedDateString,
+    formattedStartDate,
+    formattedEndDate,
   };
 };

@@ -3,7 +3,7 @@ import { MDSIcon } from '../../../atoms/Icon';
 import { MDSButton } from '../../../molecules/Button';
 import { MDSPopover } from '../../../molecules/Popover';
 import { MDSTag } from '../../../molecules/Tag';
-import { DEFAULT_PROPS } from '../@constants';
+import { DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
 import { useDateRangePicker } from './@hooks/useDateRangePicker';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
@@ -16,7 +16,7 @@ type AnchorFilterDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
 
 export const AnchorFilterDateRangePicker = (props: AnchorFilterDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
-  const { internalDate, handleDateChange, formattedDateString } = useDateRangePicker(props);
+  const { internalDate, handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePicker(props);
 
   const anchorRef = useRef<HTMLDivElement>(null);
   useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);
@@ -24,7 +24,7 @@ export const AnchorFilterDateRangePicker = (props: AnchorFilterDateRangePickerPr
   return (
     <MDSPopover
       padding={0}
-      width={304}
+      width={DATE_RANGE_PICKER_CORE_WIDTH}
       blockAutoClose={true}
       anchor={({ open }) => (
         <div
@@ -39,16 +39,21 @@ export const AnchorFilterDateRangePicker = (props: AnchorFilterDateRangePickerPr
             variant={internalDate.startDate && internalDate.endDate ? 'fill' : 'tint'}
             color="bluegray"
             startIcon={<MDSIcon.Calendar />}
+            endIcon={<MDSIcon.ArrowDown variant="outline" />}
             tags={
               internalDate.startDate && internalDate.endDate ? (
                 <MDSTag size="small" variant="tint" color="bluegray">
-                  {formattedDateString}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {formattedStartDate}
+                    <MDSIcon.TailArrowRight size={14} />
+                    {formattedEndDate}
+                  </div>
                 </MDSTag>
               ) : undefined
             }
-            {...anchor.props}
+            {...anchor.mdsButtonProps}
           >
-            {anchor.props?.children || 'Label'}
+            {anchor.mdsButtonProps?.children || 'Label'}
           </MDSButton>
         </div>
       )}

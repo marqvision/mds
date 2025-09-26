@@ -2,7 +2,9 @@ import { useImperativeHandle, useRef } from 'react';
 import styled from '@emotion/styled';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { MDSPopover } from '../../../molecules/Popover';
-import { DEFAULT_PROPS } from '../@constants';
+import { DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
+import { MDSTypography } from '../../../atoms/Typography';
+import { MDSIcon } from '../../../atoms/Icon';
 import { useDateRangePicker } from './@hooks/useDateRangePicker';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
@@ -20,7 +22,7 @@ type AnchorPlainButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'
 
 export const AnchorPlainButtonDateRangePicker = (props: AnchorPlainButtonDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
-  const { handleDateChange, formattedDateString } = useDateRangePicker(props);
+  const { handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePicker(props);
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);
@@ -29,18 +31,27 @@ export const AnchorPlainButtonDateRangePicker = (props: AnchorPlainButtonDateRan
     <StyledContainer>
       <MDSPopover
         padding={0}
-        width={304}
+        width={DATE_RANGE_PICKER_CORE_WIDTH}
+        blockAutoClose={true}
         anchor={({ open }) => (
           <MDSPlainButton
             ref={anchorRef}
             color="bluegray"
-            {...anchor.props}
+            {...anchor.mdsPlainButtonProps}
             onClick={(e) => {
               e.stopPropagation();
               open(e);
             }}
           >
-            {formattedDateString}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MDSTypography variant="body" weight="medium">
+                {formattedStartDate}
+              </MDSTypography>
+              <MDSIcon.TailArrowRight size={14} />
+              <MDSTypography variant="body" weight="medium">
+                {formattedEndDate}
+              </MDSTypography>
+            </div>
           </MDSPlainButton>
         )}
       >

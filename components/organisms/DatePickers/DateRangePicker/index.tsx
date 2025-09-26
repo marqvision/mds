@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import dayjs from 'dayjs';
+import { APP_VALUE_FORMAT } from '../@constants';
 import { DateRangePickerProps, ExternalDateRangePickerProps } from './@types';
 import { AnchorFilterDateRangePicker } from './AnchorFilterDateRangePicker';
 import { AnchorCustomDateRangePicker } from './AnchorCustomDateRangePicker';
@@ -13,8 +14,8 @@ const DateRangePickerSelector = forwardRef(
     const handleDateChangeAdaptor = (dates?: { startDate?: Date; endDate?: Date }) => {
       if (dates?.startDate && dates?.endDate) {
         onChange?.({
-          startDate: dayjs(dates.startDate).format(props.format),
-          endDate: dayjs(dates.endDate).format(props.format),
+          startDate: dayjs(dates.startDate).format(APP_VALUE_FORMAT),
+          endDate: dayjs(dates.endDate).format(APP_VALUE_FORMAT),
         });
       } else {
         onChange?.(undefined);
@@ -30,7 +31,7 @@ const DateRangePickerSelector = forwardRef(
     const resolvedMaxDate = maxDate ? dayjs(maxDate).toDate() : undefined;
 
     const resolvedProps = {
-      onChange: handleDateChangeAdaptor,  
+      onChange: handleDateChangeAdaptor,
       startDate: resolvedStartDate,
       endDate: resolvedEndDate,
       minDate: resolvedMinDate,

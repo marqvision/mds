@@ -176,18 +176,18 @@ export const getHelperText = (
 ) => {
   if (errors.range) {
     return type === 'start'
-      ? 'Start date must be same or before end date'
-      : 'End date must be same or after start date';
+      ? 'Must be before the end date'
+      : 'Must be after the start date';
   }
 
   const errorType = type === 'start' ? errors.start : errors.end;
 
   if (errorType) {
     if (errorType === 'MIN_DATE') {
-      return `Date cannot be before the minimum date`;
+      return `Must be after the min date`;
     }
     if (errorType === 'MAX_DATE') {
-      return `Date cannot be after the maximum date`;
+      return `Must be before the max date`;
     }
     return dateInputProps.helperText || 'Invalid date';
   }

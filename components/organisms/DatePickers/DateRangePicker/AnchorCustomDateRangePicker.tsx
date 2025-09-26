@@ -1,6 +1,7 @@
 import { useImperativeHandle, useRef } from 'react';
+import dayjs from 'dayjs';
 import { MDSPopover } from '../../../molecules/Popover';
-import { DEFAULT_PROPS } from '../@constants';
+import { APP_VALUE_FORMAT, DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
 import { useDateRangePicker } from './@hooks/useDateRangePicker';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
@@ -21,7 +22,8 @@ export const AnchorCustomDateRangePicker = (props: AnchorPlainButtonDateRangePic
   return (
     <MDSPopover
       padding={0}
-      width={304}
+      width={DATE_RANGE_PICKER_CORE_WIDTH}
+      blockAutoClose={true}
       anchor={({ open }) => (
         <div
           ref={anchorRef}
@@ -31,7 +33,13 @@ export const AnchorCustomDateRangePicker = (props: AnchorPlainButtonDateRangePic
             open(e);
           }}
         >
-          {anchor.children({ selectedDates: internalDate })}
+          {anchor.children({
+            selectedDates: {
+              // 코드에서 주고 받는 날짜 포맷은 YYYY-MM-DD로 통일
+              startDate: internalDate.startDate ? dayjs(internalDate.startDate).format(APP_VALUE_FORMAT) : null,
+              endDate: internalDate.endDate ? dayjs(internalDate.endDate).format(APP_VALUE_FORMAT) : null,
+            },
+          })}
         </div>
       )}
     >

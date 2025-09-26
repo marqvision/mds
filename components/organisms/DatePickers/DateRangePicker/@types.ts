@@ -13,28 +13,24 @@ export type AnchorProps =
       variant: 'input';
       format?: AvailableDateFormat;
       width?: MDSInputProps<string>['width'];
-      startDateProps?: Omit<
+      mdsInputProps?: Omit<
         MDSInputProps<string>,
-        'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'ref' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
-      >;
-      endDateProps?: Omit<
-        MDSInputProps<string>,
-        'variant' | 'list' | 'value' | 'inputProps' | 'isMultiline' | 'ref' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
+        'variant' | 'list' | 'value' | 'format' | 'isMultiline' | 'ref' | 'inputProps' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
       >;
     }
   | {
       variant: 'filter';
       format?: AvailableDateFormat;
-      props?: MDSButtonProps;
+      mdsButtonProps?: MDSButtonProps;
     }
   | {
       variant: 'plainButton';
       format?: AvailableDateFormat;
-      props?: Omit<MDSPlainButtonProps, 'icon'>;
+      mdsPlainButtonProps?: Omit<MDSPlainButtonProps, 'icon'>;
     }
   | {
       variant: 'custom';
-      children: (props: { selectedDates: { startDate: Date | null; endDate: Date | null } }) => React.ReactNode;
+      children: (props: { selectedDates: { startDate: string | null; endDate: string | null } }) => React.ReactNode;
     };
 
 export type DateRangePickerProps = {

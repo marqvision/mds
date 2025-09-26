@@ -229,10 +229,18 @@ export const useInitDropdown = <T, SortT>(
       const temp = [...storedItemsRef.current];
 
       newValues.forEach((v) => {
-        if (!temp.some((v2) => v2.value === v)) {
+        const findIndex = temp.findIndex((v2) => v2.value === v);
+        if (findIndex < 0) {
           const item = getItemFromList(v, flatItems);
           if (item.value !== undefined) {
             temp.push(item);
+          }
+        } else {
+          if (temp[findIndex].label === `${temp[findIndex].value}`) {
+            const item = getItemFromList(v, flatItems);
+            if (item.value !== undefined) {
+              temp[findIndex] = item;
+            }
           }
         }
       });

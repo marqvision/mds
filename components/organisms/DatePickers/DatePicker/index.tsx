@@ -2,10 +2,10 @@ import { forwardRef } from 'react';
 import dayjs from 'dayjs';
 import { APP_VALUE_FORMAT } from '../@constants';
 import { DatePickerProps, ExternalDatePickerProps } from './@types';
-// import { AnchorFilterDatePicker } from './AnchorFilterDatePicker';
 import { AnchorCustomDatePicker } from './AnchorCustomDatePicker';
-// import { AnchorInputDatePicker } from './AnchorInputDatePicker';
-// import { AnchorPlainButtonDatePicker } from './AnchorPlainButtonDatePicker';
+import { AnchorInputDatePicker } from './AnchorInputDatePicker';
+import { AnchorFilterDatePicker } from './AnchorFilterDatePicker';
+import { AnchorPlainButtonDatePicker } from './AnchorPlainButtonDatePicker';
 
 const DatePickerSelector = forwardRef(
   (props: ExternalDatePickerProps, ref?: React.ForwardedRef<{ onClick: () => void }>) => {
@@ -28,13 +28,12 @@ const DatePickerSelector = forwardRef(
     };
 
     return anchor.variant === 'filter' ? (
-      <div />
-    ) : //   <AnchorFilterDatePicker {...resolvedProps} anchor={anchor} />
-    // ) : anchor.variant === 'plainButton' ? (
-    //   <AnchorPlainButtonDatePicker {...resolvedProps} anchor={anchor} />
-    // ) : anchor.variant === 'input' ? (
-    //   <AnchorInputDatePicker {...resolvedProps} anchor={anchor} />
-    anchor.variant === 'custom' ? (
+      <AnchorFilterDatePicker {...resolvedProps} anchor={anchor} />
+    ) : anchor.variant === 'plainButton' ? (
+      <AnchorPlainButtonDatePicker {...resolvedProps} anchor={anchor} />
+    ) : anchor.variant === 'input' ? (
+      <AnchorInputDatePicker {...resolvedProps} anchor={anchor} />
+    ) : anchor.variant === 'custom' ? (
       <AnchorCustomDatePicker {...resolvedProps} anchor={anchor} />
     ) : null;
   }

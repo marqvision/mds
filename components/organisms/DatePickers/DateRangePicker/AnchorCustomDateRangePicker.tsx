@@ -6,13 +6,13 @@ import { useDateRangePickerAnchor } from './@hooks/useDateRangePickerAnchor';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
-type AnchorPlainButtonProps = Extract<AnchorProps, { variant: 'custom' }>;
+type AnchorCustomProps = Extract<AnchorProps, { variant: 'custom' }>;
 
-type AnchorPlainButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
-  anchor: AnchorPlainButtonProps;
+type AnchorCustomDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
+  anchor: AnchorCustomProps;
 };
 
-export const AnchorCustomDateRangePicker = (props: AnchorPlainButtonDateRangePickerProps) => {
+export const AnchorCustomDateRangePicker = (props: AnchorCustomDateRangePickerProps) => {
   const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
   const { internalDate, handleDateChange } = useDateRangePickerAnchor(props);
 

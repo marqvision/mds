@@ -64,7 +64,7 @@ export const useDatePickerAnchor = (params: DatePickerProps) => {
   }, [value, minDate, maxDate]);
   //#endregion
 
-  const formattedDateString = internalDate ? dayjs(internalDate).format(getFormat(anchor)) : undefined;
+  const formattedDateString = internalDate ? dayjs(internalDate).format(getFormat(anchor)) : '';
 
   return {
     internalDate,

@@ -163,9 +163,10 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleBodyClick = (e: Event) => {
-      const isIn = containerRef.current?.contains(e.target as Node);
+      const isIn = containerRef.current?.contains(e.target as Node); // DatePicker 내부에서 클릭했는가?
+      const isInPopover = document.querySelector('.mds-dropdown-scroll')?.contains(e.target as Node); // year,month dropdown은 portal로 열리므로 따로 처리 필요
 
-      if (!lockDuplicatedCloseAction && !isIn && isReadyToApply) {
+      if (!lockDuplicatedCloseAction && !isIn && !isInPopover && isReadyToApply) {
         handleApply();
         onClose?.();
       }
@@ -174,7 +175,7 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
     return () => {
       document.body.removeEventListener('click', handleBodyClick, { capture: true });
     };
-  }, [lockDuplicatedCloseAction, isReadyToApply, handleApply]);
+  }, [lockDuplicatedCloseAction, isReadyToApply, handleApply, onClose]);
 
   return (
     <DateRangePickerContainer ref={containerRef}>

@@ -39,9 +39,12 @@ export const DatePickerCore = (props: DatePickerProps) => {
   const [lockDuplicatedCloseAction, setLockDuplicatedCloseAction] = useState(false);
 
   const frozenOnChange = useRef(onChange);
-  const handleDateInputChange = useCallback((date: Date | null) => {
-    setStore(date ? dayjs(date, format).toDate() : undefined);
-  }, [format]);
+  const handleDateInputChange = useCallback(
+    (date: Date | null) => {
+      setStore(date ? dayjs(date, format).toDate() : undefined);
+    },
+    [format]
+  );
 
   const handleDateInputError = useCallback((error?: DateValidationError | undefined) => {
     setErrors(error ?? null);
@@ -75,8 +78,10 @@ export const DatePickerCore = (props: DatePickerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleBodyClick = (e: Event) => {
-      const isIn = containerRef.current?.contains(e.target as Node);
-      if (!lockDuplicatedCloseAction && !isIn && isReadyToApply) {
+      const isIn = containerRef.current?.contains(e.target as Node); // DatePicker 내부에서 클릭했는가?
+      const isInPopover = document.querySelector('.mds-dropdown-scroll')?.contains(e.target as Node); // year,month dropdown은 portal로 열리므로 따로 처리 필요
+
+      if (!lockDuplicatedCloseAction && !isIn && !isInPopover && isReadyToApply) {
         handleApply();
         onClose?.();
       }

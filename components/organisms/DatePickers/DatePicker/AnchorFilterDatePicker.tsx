@@ -37,7 +37,6 @@ export const AnchorFilterDatePicker = (props: AnchorFilterDatePickerProps) => {
           <MDSButton
             variant={formattedDateString ? 'fill' : 'tint'}
             color="bluegray"
-            startIcon={<MDSIcon.Calendar />}
             endIcon={<MDSIcon.ArrowDown variant="outline" />}
             tags={
               formattedDateString ? (

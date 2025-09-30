@@ -38,7 +38,6 @@ export const AnchorFilterDateRangePicker = (props: AnchorFilterDateRangePickerPr
           <MDSButton
             variant={internalDate.startDate && internalDate.endDate ? 'fill' : 'tint'}
             color="bluegray"
-            startIcon={<MDSIcon.Calendar />}
             endIcon={<MDSIcon.ArrowDown variant="outline" />}
             tags={
               internalDate.startDate && internalDate.endDate ? (

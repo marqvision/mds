@@ -22,7 +22,10 @@ export const getFilteredList = <T>(items: DropdownItem<T>[], search: string, sor
     const arr: string[] = [];
 
     const loop = (currentItem: DropdownItem<T>) => {
-      if (typeof currentItem.label === 'string' && (currentItem.value !== undefined || currentItem.children)) {
+      if (
+        typeof currentItem.label === 'string' &&
+        (currentItem.value !== undefined || currentItem.onClick || currentItem.children)
+      ) {
         arr.push(currentItem.label);
       }
       if (currentItem.children) {

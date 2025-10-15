@@ -607,3 +607,65 @@ export const WithFlatButton: Story = {
     );
   },
 };
+
+export const MixedDisabledItems: Story = {
+  args: {
+    modules: ['search'],
+  },
+  render: function Render(props) {
+    const [value, setValue] = useState<number[]>([]);
+    const allList = [
+      { label: '활성화된 항목 1', value: 1 },
+      { label: '비활성화된 항목', value: 2, isDisabled: true },
+      { label: '활성화된 항목 2', value: 3 },
+      { label: '비활성화된 항목 2', value: 4, isDisabled: true },
+      { label: '활성화된 항목 3', value: 5 },
+      { label: 'Divider' },
+      {
+        label: '활성화된 그룹',
+        children: [
+          { label: '그룹 항목 1', value: 6 },
+          { label: '비활성화된 그룹 항목', value: 7, isDisabled: true },
+          { label: '그룹 항목 2', value: 8 },
+        ],
+      },
+      {
+        label: '비활성화된 그룹',
+        isDisabled: true,
+        children: [
+          { label: '비활성화 그룹 항목 1', value: 9 },
+          { label: '비활성화 그룹 항목 2', value: 10 },
+        ],
+      },
+      { label: '활성화된 항목 4', value: 11 },
+    ];
+
+    const sample = `
+      <MDSDropdown
+        label="항목 선택"
+        value={value}
+        onChange={setValue}
+        list={allList}
+        modules={['search']}
+      />
+    `;
+
+    return (
+      <Wrapper>
+        <MDSTypography>활성화/비활성화 항목 혼용 예시</MDSTypography>
+        <MDSTypography as="code" style={{ whiteSpace: 'pre', backgroundColor: '#ddd', borderRadius: '4px' }}>
+          {sample}
+        </MDSTypography>
+        <MDSTypography>비활성화된 항목(isDisabled: true)은 선택할 수 없으며 시각적으로 구분됩니다.</MDSTypography>
+        <MDSDropdown
+          {...props}
+          label="항목 선택"
+          value={value}
+          onChange={setValue}
+          list={allList}
+          onSelect={undefined}
+        />
+      </Wrapper>
+    );
+  },
+};

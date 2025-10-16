@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import { LinkComponentProps, LinkPath } from '../../../types';
 
 export type ItemType = 'group' | 'sub' | 'popover';
@@ -10,17 +10,19 @@ export type Item<Type extends ItemType> = {
   shouldCollapse?: boolean;
   parentLabel?: string;
   isNew?: boolean;
+  isBeta?: boolean;
 
   items?: never;
 } & (Type extends 'group' ? { icon: React.ReactElement } : { icon?: never });
 
-export type Group = {
+type Group = {
   key: string;
   label: string;
   icon: React.ReactElement;
   items: Item<'sub'>[];
   shouldCollapse?: boolean;
   isNew?: boolean;
+  isBeta?: boolean;
 
   path?: never;
   parentLabel?: never;

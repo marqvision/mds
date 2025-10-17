@@ -77,6 +77,8 @@ export type IconVariant = {
   Performance: VariantSet['OutlineFill'];
   Home: VariantSet['OutlineFill'];
   Link: VariantSet['OutlineFill'];
+  ProtectionSearch: VariantSet['OutlineFill'];
+  ProtectionWarning: VariantSet['OutlineFill'];
 
   // Editor
   Circle: VariantSet['OutlineFill'] | 'outline_small' | 'fill_small';

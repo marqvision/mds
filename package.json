@@ -4,7 +4,10 @@
   "description": "Common design system for MarqVision web applications",
   "main": "index.ts",
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "typecheck": "tsc --noEmit"
@@ -48,34 +51,5 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>"
-    ],
-    "collectCoverageFrom": [
-      "**/*.{js,jsx,ts,tsx}",
-      "!**/*.d.ts",
-      "!**/*.stories.tsx"
-    ],
-    "testMatch": [
-      "<rootDir>/**/**/**.test.{ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "tsx",
-      "ts"
-    ],
-    "resetMocks": true
   }
 }

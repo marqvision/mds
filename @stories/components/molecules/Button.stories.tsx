@@ -255,6 +255,7 @@ export const ButtonWithTags: Story = {
     tags: {
       control: 'select',
       options: {
+        // @ts-ignore
         single: (
           <MDSTag size="small" variant="tint" color="bluegray">
             Tag

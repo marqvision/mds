@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/react';
 import styled from '@emotion/styled';
-import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
+import { EmotionJSX } from '@emotion/react/dist/declarations/src/jsx-namespace';
 import { MDSIcon, MDSIconProps, MDSTypography } from '../../../components';
 import { MDSTHEME_COLORS } from '../../@helper';
 

@@ -153,6 +153,7 @@ export const MDSTag = forwardRef<HTMLButtonElement, React.PropsWithChildren<TagP
         overflowWrap="normal"
         style={{
           lineHeight: TagTheme.size[size].lineHeight,
+          ...(lineClamp === 1 && { wordBreak: 'break-all' }),
         }}
         lineClamp={lineClamp}
       >

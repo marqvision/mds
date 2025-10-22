@@ -311,7 +311,7 @@ export const WithCustomActionButtons: Story = {
         actionButton={{
           label: '설정',
           onClick: () => alert('설정 clicked!'),
-          endIcon: <MDSIcon.Edit />,
+          endIcon: <MDSIcon.Edit variant="fill" />,
         }}
       />
     </Wrapper>

@@ -166,7 +166,7 @@ const ItemInnerComponent = <T,>(props: Props<T>) => {
     item.icon &&
     cloneElement(item.icon, {
       size: item.icon.props.size || 16,
-      style: { marginRight: '-8px' },
+      // style: { marginRight: '-8px' },
     });
 
   const handleClick = () => {

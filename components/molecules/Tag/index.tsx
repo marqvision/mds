@@ -117,7 +117,19 @@ const Icon = (props: IconProps) => {
 };
 
 export const MDSTag = forwardRef<HTMLButtonElement, React.PropsWithChildren<TagProps>>((props, ref) => {
-  const { children: label, size, icon, color, variant, startIcon, endIcon, isDisabled, onClick, ...restProps } = props;
+  const {
+    children: label,
+    size,
+    icon,
+    color,
+    variant,
+    startIcon,
+    endIcon,
+    isDisabled,
+    onClick,
+    lineClamp,
+    ...restProps
+  } = props;
 
   return (
     <Tag
@@ -141,7 +153,9 @@ export const MDSTag = forwardRef<HTMLButtonElement, React.PropsWithChildren<TagP
         overflowWrap="normal"
         style={{
           lineHeight: TagTheme.size[size].lineHeight,
+          ...(lineClamp === 1 && { wordBreak: 'break-all' }),
         }}
+        lineClamp={lineClamp}
       >
         {label}
       </MDSTypography>

@@ -66,6 +66,10 @@ type BaseProps = {
    * hover 및 cursor: pointer 효과가 적용됩니다.
    **/
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * MDSTypography 에 전달되는 lineClamp 속성
+   **/
+  lineClamp?: number;
 };
 
 export type TagProps = (

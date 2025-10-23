@@ -4,16 +4,17 @@ import { DropdownItem, SortType } from './@types';
 export const flattenDropdown = <T>(items: DropdownItem<T>[]): DropdownItem<T>[] => {
   const result: DropdownItem<T>[] = [];
 
-  const flatten = (item: DropdownItem<T>) => {
+  const flatten = (item: DropdownItem<T>, parentDisabled = false) => {
+    const isDisabled = item.isDisabled || parentDisabled;
     if (item.value !== undefined && !item.children) {
-      result.push(item);
+      result.push({ ...item, isDisabled });
     }
     if (item.children) {
-      item.children.forEach(flatten);
+      item.children.forEach((child) => flatten(child, isDisabled));
     }
   };
 
-  items.forEach(flatten);
+  items.forEach((item) => flatten(item));
   return result;
 };
 
@@ -22,7 +23,10 @@ export const getFilteredList = <T>(items: DropdownItem<T>[], search: string, sor
     const arr: string[] = [];
 
     const loop = (currentItem: DropdownItem<T>) => {
-      if (typeof currentItem.label === 'string' && (currentItem.value !== undefined || currentItem.children)) {
+      if (
+        typeof currentItem.label === 'string' &&
+        (currentItem.value !== undefined || currentItem.onClick || currentItem.children)
+      ) {
         arr.push(currentItem.label);
       }
       if (currentItem.children) {
@@ -94,11 +98,12 @@ export const getRegExpByKeyword = (keyword: string) => {
 export const getValueFromList = <T>(list: DropdownItem<T>[]): DropdownItem<T>[] => {
   const arrValues: T[] = [];
 
-  const loop = (curList: DropdownItem<T>[]): DropdownItem<T>[] =>
+  const loop = (curList: DropdownItem<T>[], parentDisabled = false): DropdownItem<T>[] =>
     curList.reduce<DropdownItem<T>[]>((arr, item) => {
+      const isDisabled = item.isDisabled || parentDisabled;
       if (item.children) {
-        return [...arr, ...loop(item.children)];
-      } else if (item.value !== undefined && !arrValues.includes(item.value)) {
+        return [...arr, ...loop(item.children, isDisabled)];
+      } else if (item.value !== undefined && !isDisabled && !arrValues.includes(item.value)) {
         arrValues.push(item.value);
         return [
           ...arr,

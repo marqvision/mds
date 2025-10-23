@@ -1,5 +1,7 @@
 import { join, dirname } from 'path';
 import react from '@vitejs/plugin-react';
+import checker from 'vite-plugin-checker';
+import path from 'path';
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -25,6 +27,11 @@ const config = {
 
   async viteFinal(config) {
     config.plugins.push(
+      checker({
+        typescript: {
+          tsconfigPath: path.resolve(__dirname, '../tsconfig.json'),
+        }
+      }),
       react({
         jsxImportSource: '@emotion/react',
         babel: {

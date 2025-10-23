@@ -89,13 +89,15 @@ export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChild
       }
     : undefined;
 
+  const isButton = !!(onClick || props.type);
+
   const commonProps: StyledPlainButtonProps & React.ComponentProps<'button'> & { as: React.ElementType } = {
     size,
     color,
-    as: onClick || props.type ? 'button' : 'div',
-    isClickable: !!(onClick || props.type) && !isDisabled,
+    as: isButton ? 'button' : 'div',
+    isClickable: isButton && !isDisabled,
     onClick: handleClick,
-    disabled: isDisabled || isCompleted,
+    disabled: isButton && (isDisabled || isCompleted),
     isDisabled,
     isCompleted,
     ...restProps,

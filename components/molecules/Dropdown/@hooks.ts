@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState, MutableRefObject, useCallback } from 'react';
-import { StickyBottomItemType, DropdownItem, InferType, Props, SortType, ValueType } from './@types';
+import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { DropdownItem, InferType, Props, SortType, StickyBottomItemType, ValueType } from './@types';
 import { flattenDropdown, getFilteredList, getItemFromList, getValueFromList } from './@utils';
 
 export const useDropdown = <T>({
@@ -85,10 +85,10 @@ export const useInitDropdown = <T, SortT>(
   );
 
   const selectableValue = (() => {
-    const arr = [...flatItems];
+    const arr = [...flatItems].filter((item) => !item.isDisabled);
 
     storedItemsRef.current.forEach((v) => {
-      if (!arr.some((v2) => v2.value === v.value)) {
+      if (!arr.some((v2) => v2.value === v.value) && !v.isDisabled) {
         arr.push(v);
       }
     });
@@ -229,10 +229,18 @@ export const useInitDropdown = <T, SortT>(
       const temp = [...storedItemsRef.current];
 
       newValues.forEach((v) => {
-        if (!temp.some((v2) => v2.value === v)) {
+        const findIndex = temp.findIndex((v2) => v2.value === v);
+        if (findIndex < 0) {
           const item = getItemFromList(v, flatItems);
           if (item.value !== undefined) {
             temp.push(item);
+          }
+        } else {
+          if (temp[findIndex].label === `${temp[findIndex].value}`) {
+            const item = getItemFromList(v, flatItems);
+            if (item.value !== undefined) {
+              temp[findIndex] = item;
+            }
           }
         }
       });

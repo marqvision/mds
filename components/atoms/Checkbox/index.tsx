@@ -16,7 +16,9 @@ const Wrapper = styled.label<{ isClickable: boolean; gap: number }>`
   `}
 
   & input {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
   }
 `;
 
@@ -53,7 +55,7 @@ const IconWrapper = styled.div<StyledWrapperProps>`
     transition: 0.3s;
   }
 
-  &:hover:after {
+  &:hover:after, ${Wrapper}:has(:focus) &:after {
     ${({ theme, type }) => (type === 'normal' ? `background-color: ${theme.color.border.target.default};` : '')};
   }
 `;
@@ -74,7 +76,7 @@ export const MDSCheckbox = forwardRef<HTMLLabelElement, Props>((props, ref) => {
   const isTranslucent = isDisabled && !value && color === 'white';
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.checked);
+    onChange(event.target.checked, event);
   };
 
   const stopPropagation = (event: React.MouseEvent<HTMLLabelElement>) => {

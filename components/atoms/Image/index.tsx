@@ -183,7 +183,12 @@ export const MDSImage = forwardRef<HTMLDivElement, ImageProps>((props, ref) => {
       {...restProps}
       {...wrapperProps}
     >
-      <ErrorWrapper isDraggable={isDraggable} fallbackStyle={fallbackStyle} iconSize={_iconSize} isLoaded={isLoaded}>
+      <ErrorWrapper
+        isDraggable={isDraggable}
+        fallbackStyle={fallbackStyle}
+        iconSize={_iconSize}
+        isLoaded={!isLoading && isLoaded}
+      >
         {!isError ? (
           <MDSIcon.Image variant="outline" size={iconSize} color={color} />
         ) : (

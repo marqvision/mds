@@ -50,6 +50,9 @@ export const AnchorFilterDateRangePicker = (props: AnchorFilterDateRangePickerPr
                 </MDSTag>
               ) : undefined
             }
+            onClick={() => {
+              // button 스타일링을 위 빈 onClick 핸들러 추가
+            }}
             {...anchor.mdsButtonProps}
           >
             {anchor.mdsButtonProps?.children || 'Label'}

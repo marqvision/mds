@@ -69,6 +69,7 @@ export const DatePickerCore = (props: DatePickerProps) => {
   }, [store]);
 
   const isReadyToApply = (() => {
+    if (store === undefined) return true; // 단일 값 선택 케이스이므로, 이 경우는 값이 아예 없을 때도 valid 로 판단
     if (errors) return false;
     const { isValid, isOutOfRange } = validateDateAndMinMaxRange({ date: store, minDate, maxDate });
     return isValid && !isOutOfRange;

@@ -196,6 +196,7 @@ export const MDSIcon = {
   Link: createIcon(Symbols.Link),
   Live: createIcon(Symbols.Live),
   Reply: createIcon(Symbols.Reply),
+  GenerativeAI: createIcon(Symbols.GenerativeAI),
 
   // editor
   Bold: createIcon(Editor.Bold),

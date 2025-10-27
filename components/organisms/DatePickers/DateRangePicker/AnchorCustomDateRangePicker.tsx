@@ -1,30 +1,45 @@
+import { useImperativeHandle, useRef } from 'react';
+import dayjs from 'dayjs';
 import { MDSPopover } from '../../../molecules/Popover';
-import { DEFAULT_PROPS } from '../@constants';
-import { useDateRangePicker } from './@hooks/useDateRangePicker';
+import { APP_VALUE_FORMAT, DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
+import { useDateRangePickerAnchor } from './@hooks/useDateRangePickerAnchor';
 import { AnchorProps, DateRangePickerProps } from './@types';
 import { DateRangePickerCore } from './DateRangePickerCore';
 
-type AnchorPlainButtonProps = Extract<AnchorProps, { variant: 'custom' }>;
-type AnchorPlainButtonDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
-  anchor: AnchorPlainButtonProps;
+type AnchorCustomProps = Extract<AnchorProps, { variant: 'custom' }>;
+
+type AnchorCustomDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
+  anchor: AnchorCustomProps;
 };
 
-export const AnchorCustomDateRangePicker = (props: AnchorPlainButtonDateRangePickerProps) => {
-  const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator } = props;
-  const { internalDate, handleDateChange, formattedStartDate, formattedEndDate } = useDateRangePicker(props);
+export const AnchorCustomDateRangePicker = (props: AnchorCustomDateRangePickerProps) => {
+  const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
+  const { internalDate, handleDateChange } = useDateRangePickerAnchor(props);
+
+  const anchorRef = useRef<HTMLDivElement>(null);
+  useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);
 
   return (
     <MDSPopover
       padding={0}
-      width={304}
+      width={DATE_RANGE_PICKER_CORE_WIDTH}
+      blockAutoClose={true}
       anchor={({ open }) => (
         <div
+          ref={anchorRef}
+          style={{ width: 'fit-content' }}
           onClickCapture={(e) => {
             e.stopPropagation();
             open(e);
           }}
         >
-          {typeof anchor.children === 'function' ? anchor.children({ selectedDates: internalDate }) : anchor.children}
+          {anchor.children({
+            selectedDates: {
+              // 코드에서 주고 받는 날짜 포맷은 YYYY-MM-DD로 통일
+              startDate: internalDate.startDate ? dayjs(internalDate.startDate).format(APP_VALUE_FORMAT) : null,
+              endDate: internalDate.endDate ? dayjs(internalDate.endDate).format(APP_VALUE_FORMAT) : null,
+            },
+          })}
         </div>
       )}
     >

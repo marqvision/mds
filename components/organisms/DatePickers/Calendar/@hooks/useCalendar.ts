@@ -37,6 +37,12 @@ export const useCalendar = (params: Params) => {
   useEffect(() => {
     // note-@jamie: 외부 입력 값으로 min/maxDate를 벗어나면 calendar에서는 그냥 값을 무시하기로 하고, 입력하는 쪽에서 에러를 표시하는 방향으로.
     if (isDateRange(params)) {
+      if (!params.value?.startDate && !params.value?.endDate) {
+        // 밖에서 값을 초기화해버리면 calendar에서도 표시된 값을 날린다
+        setValue({ startDate: undefined, endDate: undefined, lastUpdatedDateType: 'startDate' });
+        return;
+      }
+
       const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange({
         date: params.value.startDate,
         minDate: params.minDate,
@@ -93,15 +99,15 @@ export const useCalendar = (params: Params) => {
 
   useEffect(() => {
     // 마지막으로 설정된 날짜와 실제 보이는 캘린더 월을 동기화 한다. (date input으로 입력하는 경우 필요)
-    // setDisplayedDate(
-    //   dayjs(
-    //     isDateRange(params)
-    //       ? _value.lastUpdatedDateType === 'startDate'
-    //         ? params.value.startDate
-    //         : params.value.endDate
-    //       : params.value
-    //   )
-    // );
+    setDisplayedDate(
+      dayjs(
+        isDateRange(params)
+          ? _value.lastUpdatedDateType === 'startDate'
+            ? params.value.startDate
+            : params.value.endDate
+          : params.value
+      )
+    );
 
     // note-@jamie: 의도된 exhaustive-deps -- params.onChange 함수의 참조를 얼려야 해결될듯..
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,7 +117,12 @@ export const useCalendar = (params: Params) => {
     return {
       ...commonProps,
       type: 'range' as const,
-      onChange: (startDate: Date, endDate: Date, lastUpdatedDateType: LastUpdatedDateKind) => {
+      onChange: (
+        startDate: Date,
+        endDate: Date,
+        lastUpdatedDateType: LastUpdatedDateKind,
+        actionState: 'initial' | 'in-progress' | 'done'
+      ) => {
         const { isValid: isStartValid, isOutOfRange: isStartOutOfRange } = validateDateAndMinMaxRange({
           date: startDate,
           minDate: params.minDate,
@@ -134,7 +145,7 @@ export const useCalendar = (params: Params) => {
         }
 
         setValue({ startDate, endDate, lastUpdatedDateType });
-        params.onChange(startDate, endDate);
+        params.onChange(startDate, endDate, lastUpdatedDateType, actionState);
       },
     };
   }
@@ -223,7 +234,7 @@ const getCalendarDays = (date: Date, minDate?: Date, maxDate?: Date): CalendarDa
   return [
     ...(prevMonthDays.length < 7 ? prevMonthDays : []),
     ...currentMonthDays,
-    ...(nextMonthDays.length < 14 ? nextMonthDays : []),
+    ...(nextMonthDays.length <= 14 ? nextMonthDays : []),
   ];
 };
 //#endregion

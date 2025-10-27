@@ -3,9 +3,9 @@ import styled from '@emotion/styled';
 import { LinkComponentProps } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
+import { MDSTag } from '../../../molecules/Tag';
 import { ItemProps, ItemType } from '../@types';
 import { resolveNavItemColor, resolveNavItemPadding } from '../@utils';
-import { MDSTag } from '../../../molecules/Tag';
 
 const Wrapper = styled.div<{ isOpen: boolean; type: ItemType; selected?: boolean } & Partial<LinkComponentProps>>`
   ${({ theme, isOpen, type, selected }) => {
@@ -64,6 +64,7 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
     type,
     shouldCollapse,
     isNew,
+    isBeta,
     onFold,
     onClick,
     onItemClick,
@@ -104,6 +105,11 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
         {isNew && (
           <MDSTag variant="fill" size="small" color="red">
             New
+          </MDSTag>
+        )}
+        {isBeta && (
+          <MDSTag variant="fill" size="small" color="teal">
+            Beta
           </MDSTag>
         )}
       </FlexRow>

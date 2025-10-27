@@ -2,7 +2,7 @@ import { MDSButtonProps } from '../../../molecules/Button';
 import { MDSInputProps } from '../../../molecules/Input';
 import { MDSPlainButtonProps } from '../../../molecules/PlainButton';
 import { AvailableDateFormat } from '../@types';
-import { DateInputGroupProps } from '../DateInputGroup/@types';
+import { DateInputProps } from '../DateInput/@types';
 
 export type AnchorProps =
   | {
@@ -26,21 +26,20 @@ export type AnchorProps =
     }
   | {
       variant: 'custom';
-      children: (props: { selectedDates: { startDate: string | null; endDate: string | null } }) => React.ReactNode;
+      children: (props: { selectedDate?: string }) => React.ReactNode;
     };
 
-export type DateRangePickerProps = {
+export type DatePickerProps = {
   onClose?: () => void;
-  onChange?: (dates?: { startDate: Date; endDate: Date }) => void;
+  onChange?: (date?: Date) => void;
   anchor: AnchorProps;
   externalHandle?: React.ForwardedRef<{ onClick: () => void }>;
-} & Partial<Omit<DateInputGroupProps, 'onDateChange'>>;
+} & Partial<Omit<DateInputProps, 'onDateChange' | 'onChange'>>;
 
-export type ExternalDateRangePickerProps = {
+export type ExternalDatePickerProps = {
   onClose?: () => void;
-  onChange?: (dates?: { startDate: string; endDate: string }) => void;
+  onChange?: (date?: string) => void;
   anchor: AnchorProps;
-  value?: { startDate: string; endDate: string };
   minDate?: string;
   maxDate?: string;
-} & Partial<Omit<DateInputGroupProps, 'onDateChange' | 'startDate' | 'endDate' | 'minDate' | 'maxDate'>>;
+} & Partial<Omit<DateInputProps, 'onDateChange' | 'minDate' | 'maxDate'>>;

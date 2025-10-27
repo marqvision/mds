@@ -31,6 +31,7 @@ export * from './organisms/DatePickers/DateInput';
 export * from './organisms/DatePickers/DateInputGroup';
 export * from './organisms/DatePickers/DatePicker';
 export * from './organisms/DatePickers/DateRangePicker';
+export * from './organisms/DatePickers/DateRangeSegmentedButton';
 export * from './organisms/Dimmed';
 export * from './organisms/DownloadPanel';
 export * from './organisms/EmptyView';

@@ -1,5 +1,5 @@
 import { validateDateAndMinMaxRange, isDateRangeValid, isDateShapeValid } from '../@utils';
-import { parseDateString, isPartiallyValidDate } from '../DateInputGroup/@utils';
+import { parseDateStringToDate, isPartiallyValidDate } from '../DateInputGroup/@utils';
 
 describe('DatePickers 유틸 함수', () => {
   describe('validateDateAndMinMaxRange 함수', () => {
@@ -52,39 +52,39 @@ describe('DateInputGroup 컴포넌트 유틸 함수', () => {
 
   describe('parseDateString 함수 ("MM/DD/YYYY" 포맷)', () => {
     it('유효한 날짜 문자열을 올바르게 파싱해야 합니다', () => {
-      const date = parseDateString('03/15/2024', 'MM/DD/YYYY');
+      const date = parseDateStringToDate('03/15/2024', 'MM/DD/YYYY');
       expect(date).toEqual(new Date(2024, 2, 15));
     });
 
     it('유효하지 않은 월에 대해 null을 반환해야 합니다', () => {
-      expect(parseDateString('13/15/2024', 'MM/DD/YYYY')).toBeNull();
-      expect(parseDateString('00/15/2024', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('13/15/2024', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('00/15/2024', 'MM/DD/YYYY')).toBeNull();
     });
 
     it('유효하지 않은 일에 대해 null을 반환해야 합니다', () => {
-      expect(parseDateString('02/30/2024', 'MM/DD/YYYY')).toBeNull();
-      expect(parseDateString('04/31/2024', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('02/30/2024', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('04/31/2024', 'MM/DD/YYYY')).toBeNull();
     });
 
     it('유효하지 않은 날짜 포맷에 대해 null을 반환해야 합니다', () => {
-      expect(parseDateString('3/15/2024', 'MM/DD/YYYY')).toBeNull();
-      expect(parseDateString('03/1/2024', 'MM/DD/YYYY')).toBeNull();
-      expect(parseDateString('03/15/202', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('3/15/2024', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('03/1/2024', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('03/15/202', 'MM/DD/YYYY')).toBeNull();
     });
   });
 
   describe('parseDateString 함수 ("YYYY-MM-DD" 포맷)', () => {
     it('유효한 날짜 문자열을 올바르게 파싱해야 합니다', () => {
-      const date = parseDateString('2024-03-15', 'YYYY-MM-DD');
+      const date = parseDateStringToDate('2024-03-15', 'YYYY-MM-DD');
       expect(date).toEqual(new Date(2024, 2, 15));
     });
 
     it('유효하지 않은 월에 대해 null을 반환해야 합니다', () => {
-      expect(parseDateString('2024-13-15', 'YYYY-MM-DD')).toBeNull();
+      expect(parseDateStringToDate('2024-13-15', 'YYYY-MM-DD')).toBeNull();
     });
 
     it('유효하지 않은 일에 대해 null을 반환해야 합니다', () => {
-      expect(parseDateString('2024-02-30', 'YYYY-MM-DD')).toBeNull();
+      expect(parseDateStringToDate('2024-02-30', 'YYYY-MM-DD')).toBeNull();
     });
   });
 

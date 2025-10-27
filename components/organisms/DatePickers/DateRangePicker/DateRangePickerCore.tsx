@@ -1,11 +1,8 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import styled from '@emotion/styled';
 import { MDSDateInputGroup } from '../DateInputGroup';
 import { MDSCalendar } from '../Calendar';
-import { MDSDivider } from '../../../atoms/Divider';
-import { MDSPlainButton } from '../../../molecules/PlainButton';
-import { MDSButton } from '../../../molecules/Button';
 import { DEFAULT_PROPS } from '../@constants';
 import { DateValidationError } from '../@types';
 import { validateDateRange } from '../@utils';
@@ -27,13 +24,18 @@ const DateRangePickerLayout = styled.div`
     padding: 12px 12px 0;
   }
 `;
-const DateRangePickerActionContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-  padding: 12px;
-`;
+
+/**
+ * [ 동작 스펙]
+ *
+ * 두 가지 방법으로 date range 선택
+ * 1. calendar에서 두 날짜를 선택 -> 두번째 날짜를 선택하는 즉시 apply
+ * 2. input에 날짜를 입력 -> date picker 밖을 클릭하면 apply
+ *
+ * 다음의 경우 apply 되지 않음
+ * 1. start, end date 중 하나라도 비어있는 경우
+ * 2. start, end date 중 하나라도 invalid한 경우
+ */
 
 export const DateRangePickerCore = (props: DateRangePickerProps) => {
   const {
@@ -50,8 +52,8 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
 
   const [store, setStore] = useState<
     | {
-        startDate: Date;
-        endDate: Date;
+        startDate?: Date;
+        endDate?: Date;
       }
     | undefined
   >(
@@ -69,37 +71,70 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
     dateInputGroup: false,
     calendar: false,
   });
-  const frozenOnChange = useRef(onChange);
 
+  /**
+   * note-@jamie: lockDuplicatedCloseAction
+   * 캘린더에서 date-range 선택을 했을 때 useEffect에서 document.body에 붙인 리스너 함수가 동작하지 않도록 막아서,
+   * onClose가 연달아 두번 실행되어 깜빡이는 것을 방지
+   */
+  const [lockDuplicatedCloseAction, setLockDuplicatedCloseAction] = useState(false);
+
+  const frozenOnChange = useRef(onChange);
   const handleDateInputGroupChange = useCallback(
-    (dates: { startDate: Date | null; endDate: Date | null }) => {
+    (dates: { startDate?: Date; endDate?: Date } | undefined) => {
       setStore(
-        dates.startDate && dates.endDate
-          ? {
-              startDate: dayjs(dates.startDate, format).toDate(),
-              endDate: dayjs(dates.endDate, format).toDate(),
+        !dates?.startDate && !dates?.endDate
+          ? undefined
+          : {
+              startDate: dates.startDate ? dayjs(dates.startDate, format).toDate() : undefined,
+              endDate: dates.endDate ? dayjs(dates.endDate, format).toDate() : undefined,
             }
-          : undefined
       );
     },
     [format]
   );
 
-  const handleCalendarChange = useCallback((startDate: Date, endDate: Date) => {
-    setStore({
-      startDate,
-      endDate,
-    });
-  }, []);
-
-  const handleApply = () => {
-    if (frozenOnChange.current) {
-      frozenOnChange.current({
-        startDate: store?.startDate ?? null,
-        endDate: store?.endDate ?? null,
+  const handleCalendarChange = useCallback(
+    (
+      startDate: Date,
+      endDate: Date,
+      lastUpdatedDateType: 'startDate' | 'endDate',
+      actionState: 'initial' | 'in-progress' | 'done'
+    ) => {
+      setLockDuplicatedCloseAction(true);
+      setStore({
+        startDate,
+        endDate,
       });
+      if (actionState === 'done') {
+        onChange?.(
+          startDate && endDate
+            ? {
+                startDate,
+                endDate,
+              }
+            : undefined
+        );
+        setTimeout(() => {
+          onClose?.();
+        }, 0);
+      }
+    },
+    [onChange, onClose]
+  );
+
+  const handleApply = useCallback(() => {
+    if (frozenOnChange.current) {
+      frozenOnChange.current(
+        store?.startDate && store?.endDate
+          ? {
+              startDate: store.startDate,
+              endDate: store.endDate,
+            }
+          : undefined
+      );
     }
-  };
+  }, [store]);
 
   const handleDateInputGroupError = (error?: DateInputError) => {
     setChildError((prev) => ({
@@ -124,9 +159,26 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
       minDate,
       maxDate,
     });
-    
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleBodyClick = (e: Event) => {
+      const isIn = containerRef.current?.contains(e.target as Node); // DatePicker 내부에서 클릭했는가?
+      const isInPopover = document.querySelector('.mds-dropdown-scroll')?.contains(e.target as Node); // year,month dropdown은 portal로 열리므로 따로 처리 필요
+
+      if (!lockDuplicatedCloseAction && !isIn && !isInPopover && isReadyToApply) {
+        handleApply();
+        onClose?.();
+      }
+    };
+    document.body.addEventListener('click', handleBodyClick, { capture: true });
+    return () => {
+      document.body.removeEventListener('click', handleBodyClick, { capture: true });
+    };
+  }, [lockDuplicatedCloseAction, isReadyToApply, handleApply, onClose]);
+
   return (
-    <DateRangePickerContainer>
+    <DateRangePickerContainer ref={containerRef}>
       <DateRangePickerLayout>
         <div className="mds-date-picker-input-container">
           <MDSDateInputGroup
@@ -137,18 +189,26 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
             endDate={{
               value: store?.endDate ? dayjs(store?.endDate).format(format) : undefined,
             }}
-            onDateChange={handleDateInputGroupChange}
-            onError={handleDateInputGroupError}
             minDate={minDate}
             maxDate={maxDate}
             initialFocus={initialFocus}
+            preventClearValue
+            onDateChange={handleDateInputGroupChange}
+            onError={handleDateInputGroupError}
           />
         </div>
         <MDSCalendar
-          value={{
-            startDate: store?.startDate,
-            endDate: store?.endDate,
-          }}
+          value={
+            store?.startDate && store?.endDate
+              ? {
+                  startDate: store?.startDate,
+                  endDate: store?.endDate,
+                }
+              : {
+                  startDate: undefined,
+                  endDate: undefined,
+                }
+          }
           onChange={handleCalendarChange}
           onError={handleCalendarError}
           initialFocus={initialFocus}
@@ -156,28 +216,6 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
           maxDate={maxDate}
         />
       </DateRangePickerLayout>
-
-      <MDSDivider />
-
-      <DateRangePickerActionContainer>
-        <MDSPlainButton
-          color="bluegray"
-          onClick={() => {
-            onClose?.();
-          }}
-        >
-          Cancel
-        </MDSPlainButton>
-        <MDSButton
-          isDisabled={!isReadyToApply}
-          onClick={() => {
-            handleApply();
-            onClose?.();
-          }}
-        >
-          Apply
-        </MDSButton>
-      </DateRangePickerActionContainer>
     </DateRangePickerContainer>
   );
 };

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { COLOR_TOKENS as color } from '../../foundation/colors';
 import { MDSTypography } from '../../components';
+import { COLOR_TOKENS as color } from '../../foundation/colors';
 
 export default {
   title: '1. Foundation/Colors',
@@ -433,11 +433,16 @@ export const RawColors = () => {
         title="White"
         colors={{
           white: '#ffffff',
+          whiteAlpha90: 'rgba(255, 255, 255, 0.9)',
+          whiteAlpha80: 'rgba(255, 255, 255, 0.8)',
+          whiteAlpha70: 'rgba(255, 255, 255, 0.7)',
+          whiteAlpha60: 'rgba(255, 255, 255, 0.6)',
           whiteAlpha50: 'rgba(255, 255, 255, 0.5)',
           whiteAlpha40: 'rgba(255, 255, 255, 0.4)',
           whiteAlpha30: 'rgba(255, 255, 255, 0.3)',
           whiteAlpha20: 'rgba(255, 255, 255, 0.2)',
           whiteAlpha10: 'rgba(255, 255, 255, 0.1)',
+          whiteAlpha5: 'rgba(255, 255, 255, 0.05)',
           clear: 'rgba(255, 255, 255, 0)',
         }}
       />

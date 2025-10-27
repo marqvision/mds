@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { AnchorProps, AvailableDateFormat, DateRangePickerProps } from '../@types';
+import { AnchorProps, DateRangePickerProps } from '../@types';
+import { AvailableDateFormat } from '../../@types';
 import { DEFAULT_PROPS } from '../../@constants';
 import { validateDateRange } from '../../@utils';
 import { SingleDateInput } from '../../DateInputGroup/@types';
@@ -25,20 +26,26 @@ const getDateObject = (
   const format = getFormat(anchor, valueFormat);
   return dayjs(dateString, format).toDate();
 };
+
+/**
+ * 다음 순서로 적용
+ * - anchor.variant: custom 케이스 : valueFormat -> DEFAULT_PROPS.format
+ * - anchor.variant: 나머지 케이스 : anchor.format -> valueFormat -> DEFAULT_PROPS.format
+ */
 const getFormat = (anchor: AnchorProps, valueFormat: AvailableDateFormat = DEFAULT_PROPS.format) => {
-  return anchor.variant === 'custom' ? valueFormat : anchor.format ?? DEFAULT_PROPS.format;
+  return anchor.variant === 'custom' ? valueFormat : anchor.format ?? valueFormat ?? DEFAULT_PROPS.format;
 };
 
-export const useDateRangePicker = (params: DateRangePickerProps) => {
-  const { anchor, startDate, endDate, minDate, maxDate, onChange } = params;
+export const useDateRangePickerAnchor = (params: DateRangePickerProps) => {
+  const { anchor, format: valueFormat, startDate, endDate, minDate, maxDate, onChange } = params;
 
   const [internalDate, setInternalDate] = useState<{
     startDate: Date | null;
     endDate: Date | null;
-  }>(getInitialState(startDate, endDate, anchor));
+  }>(getInitialState(startDate, endDate, anchor, valueFormat));
 
-  const handleDateChange = (dates: { startDate: Date | null; endDate: Date | null }) => {
-    setInternalDate(dates);
+  const handleDateChange = (dates?: { startDate: Date; endDate: Date }) => {
+    setInternalDate(dates ?? { startDate: null, endDate: null });
     onChange?.(dates);
   };
 
@@ -52,9 +59,11 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
       });
       return;
     }
-    
-    const newStartDate = startDate?.value ? getDateObject(startDate.value, anchor) : internalDate.startDate;
-    const newEndDate = endDate?.value ? getDateObject(endDate.value, anchor) : internalDate.endDate;
+
+    const newStartDate = startDate?.value
+      ? getDateObject(startDate.value, anchor, valueFormat)
+      : internalDate.startDate;
+    const newEndDate = endDate?.value ? getDateObject(endDate.value, anchor, valueFormat) : internalDate.endDate;
 
     const isValid = validateDateRange({
       startDate: newStartDate,
@@ -78,10 +87,13 @@ export const useDateRangePicker = (params: DateRangePickerProps) => {
     ? dayjs(internalDate.startDate).format(getFormat(anchor))
     : undefined;
   const formattedEndDate = internalDate.endDate ? dayjs(internalDate.endDate).format(getFormat(anchor)) : undefined;
+  const formattedDateString =
+    internalDate.startDate && internalDate.endDate ? `${formattedStartDate} → ${formattedEndDate}` : '';
 
   return {
     internalDate,
     handleDateChange,
+    formattedDateString,
     formattedStartDate,
     formattedEndDate,
   };

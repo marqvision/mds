@@ -1,20 +1,19 @@
 import { useImperativeHandle, useRef } from 'react';
+import { MDSPopover } from '../../../molecules/Popover';
 import { DATE_RANGE_PICKER_CORE_WIDTH, DEFAULT_PROPS } from '../@constants';
 import { MDSInput } from '../../../molecules/Input';
-import { MDSPopover } from '../../../molecules/Popover';
-import { AnchorProps, DateRangePickerProps } from './@types';
-import { useDateRangePickerAnchor } from './@hooks/useDateRangePickerAnchor';
-import { DateRangePickerCore } from './DateRangePickerCore';
+import { AnchorProps, DatePickerProps } from './@types';
+import { useDatePickerAnchor } from './@hooks/useDatePickerAnchor';
+import { DatePickerCore } from './DatePickerCore';
 
 type AnchorInputProps = Extract<AnchorProps, { variant: 'input' }>;
-
-type AnchorInputDateRangePickerProps = Omit<DateRangePickerProps, 'anchor'> & {
+type AnchorInputDatePickerProps = Omit<DatePickerProps, 'input'> & {
   anchor: AnchorInputProps;
 };
 
-export const AnchorInputDateRangePicker = (props: AnchorInputDateRangePickerProps) => {
-  const { anchor, format = DEFAULT_PROPS.format, separator = DEFAULT_PROPS.separator, externalHandle } = props;
-  const { handleDateChange, formattedDateString } = useDateRangePickerAnchor(props);
+export const AnchorInputDatePicker = (props: AnchorInputDatePickerProps) => {
+  const { anchor, format = DEFAULT_PROPS.format, externalHandle } = props;
+  const { handleDateChange, formattedDateString } = useDatePickerAnchor(props);
 
   const anchorRef = useRef<HTMLDivElement>(null);
   useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);
@@ -52,17 +51,7 @@ export const AnchorInputDateRangePicker = (props: AnchorInputDateRangePickerProp
       )}
     >
       {({ close, isOpen }) =>
-        isOpen ? (
-          <DateRangePickerCore
-            {...props}
-            format={format}
-            separator={separator}
-            onChange={handleDateChange}
-            onClose={close}
-          />
-        ) : (
-          <div />
-        )
+        isOpen ? <DatePickerCore {...props} format={format} onChange={handleDateChange} onClose={close} /> : <div />
       }
     </MDSPopover>
   );

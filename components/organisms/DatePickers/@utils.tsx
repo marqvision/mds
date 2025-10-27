@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { DATE_SHAPE_REGEX_MAP, SEPARATOR_MAP } from './@constants';
-import { AvailableDateFormat } from './DateRangePicker/@types';
+import { AvailableDateFormat } from './@types';
 import { SingleDateInput } from './DateInputGroup/@types';
 
 //#region  ------ VALIDATOR  ------
@@ -103,6 +103,13 @@ export const isDateShapeValid = (value: string, format: AvailableDateFormat) => 
     if (parts.length > 2 && parts[1].length < 2) {
       return false;
     }
+  } else if (format === 'MMM DD, YYYY') {
+    if (parts.length > 1 && parts[0].length < 3) {
+      return false;
+    }
+    if (parts.length > 2 && parts[1].length < 2) {
+      return false;
+    }
   }
   // todo-@jamie: 나머지 포맷 검사 추가
 
@@ -117,6 +124,10 @@ export const validateDateRange = (params: {
   maxDate?: Date;
 }) => {
   const { startDate, endDate, format, minDate, maxDate } = params;
+
+  if (!startDate && !endDate) {
+    return true;
+  }
 
   if (!isDateRangeValid(startDate, endDate)) {
     return false;

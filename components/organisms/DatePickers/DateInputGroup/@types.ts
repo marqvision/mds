@@ -1,6 +1,5 @@
 import { MDSInputProps } from '../../../molecules/Input';
-import { DateValidationError } from '../@types';
-import { AvailableDateFormat } from '../DateRangePicker/@types';
+import { DateValidationError, AvailableDateFormat } from '../@types';
 
 export type DateInputError = {
   start: DateValidationError | null;
@@ -26,6 +25,7 @@ export type DateInputGroupProps = {
   maxDate?: Date;
   format?: AvailableDateFormat;
   initialFocus?: 'startDate' | 'endDate';
-  onDateChange?: (dates: { startDate: Date | null; endDate: Date | null }) => void;
+  preventClearValue?: boolean; // 만일 true라면, 텍스트를 모두 지우면 마지막 valid date로 원복시켜버린다
+  onDateChange?: (dates?: { startDate?: Date; endDate?: Date }) => void;
   onError?: (error?: DateInputError) => void;
 };

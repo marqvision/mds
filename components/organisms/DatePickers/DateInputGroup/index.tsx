@@ -2,6 +2,7 @@ import { MDSTypography } from '../../../atoms/Typography';
 import { MDSInput } from '../../../molecules/Input';
 import { DEFAULT_PROPS } from '../@constants';
 import { getDateRangeInputLabel } from '../@utils';
+import { MDSIcon } from '../../../atoms/Icon';
 import { DateInputGroupLayout } from './styles';
 import { getHelperText } from './@utils';
 import { DateInputGroupProps } from './@types';
@@ -13,10 +14,17 @@ const DateInputGroup = (props: DateInputGroupProps) => {
     endDate,
     format = DEFAULT_PROPS.format,
     separator = DEFAULT_PROPS.separator,
-    initialFocus = 'startDate',
+    initialFocus,
   } = props;
-  const { startDateState, endDateState, errors, handleStartDateChange, handleEndDateChange, handleBlur } =
-    useDateInputGroup(props);
+  const {
+    startDateState,
+    endDateState,
+    errors,
+    handleStartDateChange,
+    handleEndDateChange,
+    handleKeyDown,
+    handleBlur,
+  } = useDateInputGroup(props);
 
   const startMainLabel = getDateRangeInputLabel(startDate.label, endDate.label);
   const endMainLabel = getDateRangeInputLabel(endDate.label, startDate.label);
@@ -33,8 +41,12 @@ const DateInputGroup = (props: DateInputGroupProps) => {
           value={startDateState.value}
           label={startMainLabel}
           placeholder={startDate.placeholder || format || DEFAULT_PROPS.placeholder}
+          custom={{
+            deleteIcon: 'never',
+          }}
           inputProps={{
             autoFocus: initialFocus === 'startDate',
+            onKeyDown: handleKeyDown,
           }}
           onChange={handleStartDateChange}
           onBlur={handleBlur}
@@ -43,7 +55,11 @@ const DateInputGroup = (props: DateInputGroupProps) => {
         />
       </div>
       <div data-role="separator">
-        {typeof separator === 'string' ? <MDSTypography>{separator}</MDSTypography> : separator}
+        {typeof separator === 'string' ? (
+          <MDSTypography>{separator}</MDSTypography>
+        ) : (
+          <MDSIcon.ArrowRight variant="outline" size={16} />
+        )}
       </div>
       <div data-role="end-date-input-wrapper" onClick={endDate.onClick}>
         <MDSInput
@@ -52,8 +68,12 @@ const DateInputGroup = (props: DateInputGroupProps) => {
           value={endDateState.value}
           label={endMainLabel}
           placeholder={endDate.placeholder || format || DEFAULT_PROPS.placeholder}
+          custom={{
+            deleteIcon: 'never',
+          }}
           inputProps={{
             autoFocus: initialFocus === 'endDate',
+            onKeyDown: handleKeyDown,
           }}
           onChange={handleEndDateChange}
           onBlur={handleBlur}
@@ -67,4 +87,3 @@ const DateInputGroup = (props: DateInputGroupProps) => {
 
 export const MDSDateInputGroup = DateInputGroup;
 export type MDSDateInputGroupProps = DateInputGroupProps;
-

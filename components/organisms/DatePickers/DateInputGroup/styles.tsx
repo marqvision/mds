@@ -22,7 +22,7 @@ export const DateInputGroupLayout = styled.div<{ hasLabel: boolean; hasError: bo
         marginBottom += 12;
       }
       return css`
-        margin: ${marginTop}px 8px ${marginBottom}px 8px;
+        margin: ${marginTop}px 0 ${marginBottom}px;
       `;
     }}
   }

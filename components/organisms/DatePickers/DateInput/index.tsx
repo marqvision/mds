@@ -16,7 +16,10 @@ const DateInput = (props: DateInputProps) => {
       label={label}
       placeholder={placeholder || format || DEFAULT_PROPS.placeholder}
       inputProps={{
-        autoFocus: true,
+        // autoFocus: true,
+      }}
+      custom={{
+        deleteIcon: 'never',
       }}
       onChange={handleDateChange}
       onBlur={handleBlur}

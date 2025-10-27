@@ -497,7 +497,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
   const anchor = isAnchorFunction ? _anchor({ open: handleOpenPopover, close: handleClosePopover }) : _anchor;
 
   const anchorEle = cloneElement(anchor, {
-    ...(isAnchorFunction
+    ...(isAnchorFunction || (trigger !== 'click' && !anchor.props.onClick)
       ? undefined
       : {
           onClick: (e: MouseEvent) => {

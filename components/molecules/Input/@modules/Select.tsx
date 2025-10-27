@@ -202,7 +202,7 @@ export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElemen
           className="show"
           variant="outline"
           size={theme.size[size].iconSize}
-          color={isDisabled ? 'color/content/placeholder/normal' : undefined}
+          color={isDisabled || isReadOnly ? 'color/content/placeholder/normal' : undefined}
         />
       </StyledOutline>
     </StyledLabel>

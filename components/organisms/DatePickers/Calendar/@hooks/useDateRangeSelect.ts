@@ -9,7 +9,12 @@ type DateRangeSelectParams = {
   endDate?: Date;
   minDate?: Date;
   maxDate?: Date;
-  onDateRangeUpdate: (startDate: Date, lastDate: Date, lastUpdatedDateType: 'startDate' | 'endDate') => void;
+  onDateRangeUpdate: (
+    startDate: Date,
+    lastDate: Date,
+    lastUpdatedDateType: 'startDate' | 'endDate',
+    actionState: 'initial' | 'in-progress' | 'done'
+  ) => void;
 };
 
 type SelectActionState = {
@@ -61,6 +66,7 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
         startDateStr: newStartDateStr,
         endDateStr: newEndDateStr,
         lastUpdatedDateType,
+        actionState: 'done'
       };
       fireDateRangeUpdate();
 
@@ -118,6 +124,7 @@ export const useDateRangeSelect = (params: DateRangeSelectParams) => {
         startDateStr: selectActionState.startDateStr,
         endDateStr: clickedDateStr,
         lastUpdatedDateType: 'endDate',
+        actionState: selectActionState.actionState,
       };
       fireDateRangeUpdate();
     }
@@ -218,12 +225,14 @@ const useHandlerDateRangeUpdate = (externalCallback: (...args: any[]) => void) =
     startDateStr: '',
     endDateStr: '',
     lastUpdatedDateType: 'startDate',
+    actionState: 'initial',
   });
   useEffect(() => {
     frozenExternalCallbackRef.current(
       dayjs(updateTargetData.current.startDateStr).toDate(),
       dayjs(updateTargetData.current.endDateStr).toDate(),
-      updateTargetData.current.lastUpdatedDateType
+      updateTargetData.current.lastUpdatedDateType,
+      updateTargetData.current.actionState
     );
   }, [callDateRangeUpdateTrigger]);
 

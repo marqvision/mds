@@ -1,21 +1,57 @@
-import { DateRangePickerProps } from './@types';
-import { AnchorButtonDateRangePicker } from './AnchorButtonDateRangePicker';
+import { forwardRef } from 'react';
+import dayjs from 'dayjs';
+import { APP_VALUE_FORMAT } from '../@constants';
+import { DateRangePickerProps, ExternalDateRangePickerProps } from './@types';
+import { AnchorFilterDateRangePicker } from './AnchorFilterDateRangePicker';
 import { AnchorCustomDateRangePicker } from './AnchorCustomDateRangePicker';
 import { AnchorInputDateRangePicker } from './AnchorInputDateRangePicker';
 import { AnchorPlainButtonDateRangePicker } from './AnchorPlainButtonDateRangePicker';
 
-const DateRangePickerSelector = (props: DateRangePickerProps) => {
-  const { anchor, ...rest } = props;
-  return anchor.variant === 'button' ? (
-    <AnchorButtonDateRangePicker {...rest} anchor={anchor} />
-  ) : anchor.variant === 'plainButton' ? (
-    <AnchorPlainButtonDateRangePicker {...rest} anchor={anchor} />
-  ) : anchor.variant === 'input' ? (
-    <AnchorInputDateRangePicker {...rest} anchor={anchor} />
-  ) : anchor.variant === 'custom' ? (
-    <AnchorCustomDateRangePicker {...rest} anchor={anchor} />
-  ) : null;
-};
+const DateRangePickerSelector = forwardRef(
+  (props: ExternalDateRangePickerProps, ref?: React.ForwardedRef<{ onClick: () => void }>) => {
+    const { anchor, onChange, value, minDate, maxDate, ...rest } = props;
+
+    const handleDateChangeAdaptor = (dates?: { startDate?: Date; endDate?: Date }) => {
+      if (dates?.startDate && dates?.endDate) {
+        onChange?.({
+          startDate: dayjs(dates.startDate).format(APP_VALUE_FORMAT),
+          endDate: dayjs(dates.endDate).format(APP_VALUE_FORMAT),
+        });
+      } else {
+        onChange?.(undefined);
+      }
+    };
+    const resolvedStartDate = {
+      value: value?.startDate ? dayjs(value.startDate).format(props.format) : undefined,
+    };
+    const resolvedEndDate = {
+      value: value?.endDate ? dayjs(value.endDate).format(props.format) : undefined,
+    };
+    const resolvedMinDate = minDate ? dayjs(minDate).toDate() : undefined;
+    const resolvedMaxDate = maxDate ? dayjs(maxDate).toDate() : undefined;
+
+    const resolvedProps = {
+      onChange: handleDateChangeAdaptor,
+      startDate: resolvedStartDate,
+      endDate: resolvedEndDate,
+      minDate: resolvedMinDate,
+      maxDate: resolvedMaxDate,
+      externalHandle: ref,
+      ...rest,
+    };
+
+    return anchor.variant === 'filter' ? (
+      <AnchorFilterDateRangePicker {...resolvedProps} anchor={anchor} />
+    ) : anchor.variant === 'plainButton' ? (
+      <AnchorPlainButtonDateRangePicker {...resolvedProps} anchor={anchor} />
+    ) : anchor.variant === 'input' ? (
+      <AnchorInputDateRangePicker {...resolvedProps} anchor={anchor} />
+    ) : anchor.variant === 'custom' ? (
+      <AnchorCustomDateRangePicker {...resolvedProps} anchor={anchor} />
+    ) : null;
+  }
+);
+DateRangePickerSelector.displayName = 'DateRangePickerSelector';
 
 export const MDSDateRangePicker = DateRangePickerSelector;
 export type MDSDateRangePickerProps = DateRangePickerProps;

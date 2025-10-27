@@ -42,7 +42,7 @@ const dataBoxStyle = css`
 export const SingleDate: Story = {
   render: function Render() {
     const onChange = (date: Date) => {
-      console.log('date', date);
+      console.log('>>>> [STORYBOOK] date', date);
     };
     return <MDSCalendar value={new Date('2024-01-01')} onChange={onChange} />;
   },
@@ -50,8 +50,12 @@ export const SingleDate: Story = {
 export const DateRange: Story = {
   render: function Render() {
     const onChange = (startDate: Date, endDate: Date) => {
-      console.log('startDate', startDate);
-      console.log('endDate', endDate);
+      console.log(
+        '>>>> [STORYBOOK] startDate',
+        dayjs(startDate).format('YYYY-MM-DD'),
+        'endDate',
+        dayjs(endDate).format('YYYY-MM-DD')
+      );
     };
     return <MDSCalendar value={{ startDate: new Date(), endDate: new Date() }} onChange={onChange} />;
   },

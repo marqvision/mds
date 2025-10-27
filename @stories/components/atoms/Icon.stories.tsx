@@ -1,6 +1,6 @@
+import { JSX } from 'react';
 import { Meta } from '@storybook/react';
 import styled from '@emotion/styled';
-import { EmotionJSX } from '@emotion/react/dist/declarations/src/jsx-namespace';
 import { MDSIcon, MDSIconProps, MDSTypography } from '../../../components';
 import { MDSTHEME_COLORS } from '../../@helper';
 
@@ -156,7 +156,7 @@ export const Showcase = (props: MDSIconProps) => {
   return (
     <Grid>
       {Object.entries(MDSIcon).map(([key, _Icon]) => {
-        const Icon = _Icon as (props: MDSIconProps) => EmotionJSX.Element;
+        const Icon = _Icon as (props: MDSIconProps) => JSX.Element;
         const variantList = key in IconVariant ? IconVariant[key as keyof typeof IconVariant] : [''];
         return (
           <Item key={key}>

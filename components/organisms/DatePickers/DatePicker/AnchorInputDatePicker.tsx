@@ -19,40 +19,42 @@ export const AnchorInputDatePicker = (props: AnchorInputDatePickerProps) => {
   useImperativeHandle(externalHandle, () => ({ onClick: () => anchorRef.current?.click() }), []);
 
   return (
-    <MDSPopover
-      padding={0}
-      width={DATE_RANGE_PICKER_CORE_WIDTH}
-      blockAutoClose={true}
-      anchor={({ open, close }) => (
-        <>
-          <div
-            ref={anchorRef}
-            onClick={(e) => {
-              open(e);
-            }}
-          />
-          <MDSInput
-            {...anchor.mdsInputProps}
-            variant="select"
-            width={anchor.width || DATE_RANGE_PICKER_CORE_WIDTH} // 기본값: DateRangePickerCore와 동일한 width 사용
-            value={formattedDateString}
-            list={[{ label: formattedDateString, value: formattedDateString }]}
-            fullWidth
-            onChange={() => {
-              handleDateChange(undefined);
-              close();
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              open(e);
-            }}
-          />
-        </>
-      )}
-    >
-      {({ close, isOpen }) =>
-        isOpen ? <DatePickerCore {...props} format={format} onChange={handleDateChange} onClose={close} /> : <div />
-      }
-    </MDSPopover>
+    <div>
+      <MDSPopover
+        padding={0}
+        width={DATE_RANGE_PICKER_CORE_WIDTH}
+        blockAutoClose={true}
+        anchor={({ open, close }) => (
+          <>
+            <div
+              ref={anchorRef}
+              onClick={(e) => {
+                open(e);
+              }}
+            />
+            <MDSInput
+              {...anchor.mdsInputProps}
+              variant="select"
+              width={anchor.width || DATE_RANGE_PICKER_CORE_WIDTH} // 기본값: DateRangePickerCore와 동일한 width 사용
+              value={formattedDateString}
+              list={[{ label: formattedDateString, value: formattedDateString }]}
+              fullWidth
+              onChange={() => {
+                handleDateChange(undefined);
+                close();
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                open(e);
+              }}
+            />
+          </>
+        )}
+      >
+        {({ close, isOpen }) =>
+          isOpen ? <DatePickerCore {...props} format={format} onChange={handleDateChange} onClose={close} /> : <div />
+        }
+      </MDSPopover>
+    </div>
   );
 };

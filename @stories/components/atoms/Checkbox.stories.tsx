@@ -1,5 +1,5 @@
 import React from 'react';
-import { useArgs } from '@storybook/preview-api';
+import { useArgs } from 'storybook/preview-api';
 import { useTheme } from '@emotion/react';
 import { MDSCheckbox } from '../../../components/atoms/Checkbox';
 import { MDSTag, MDSTypography } from '../../../components';

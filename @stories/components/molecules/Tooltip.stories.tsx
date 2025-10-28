@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from '@storybook/preview-api';
+import { useState } from 'storybook/preview-api';
 import { MDSButton, MDSDropdown, MDSIcon, MDSTooltip, MDSTypography } from '../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 

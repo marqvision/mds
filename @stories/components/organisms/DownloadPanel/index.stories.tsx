@@ -1,4 +1,4 @@
-import { useState } from '@storybook/preview-api';
+import { useState } from 'storybook/preview-api';
 import { MDSDownloadPanel, MDSDownloadPanelProps } from '../../../../components';
 import { NewTask, TaskForm } from './TaskForm';
 import { PanelLabelForm } from './PanelLabelForm';

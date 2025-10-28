@@ -1,4 +1,4 @@
-import { Canvas, Title } from '@storybook/blocks';
+import { Canvas, Title } from '@storybook/addon-docs/blocks';
 import {
   CustomTitle,
   JustifyContent,

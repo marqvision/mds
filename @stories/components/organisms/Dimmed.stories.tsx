@@ -1,4 +1,4 @@
-import { useArgs } from '@storybook/preview-api';
+import { useArgs } from 'storybook/preview-api';
 import { MDSDimmed } from '../../../components/organisms/Dimmed';
 import { MDSTypography } from '../../../components';
 import type { Meta, StoryObj } from '@storybook/react';

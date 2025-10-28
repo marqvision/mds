@@ -29,7 +29,7 @@ const config = {
     config.plugins.push(
       checker({
         typescript: {
-          tsconfigPath: path.resolve(__dirname, '../tsconfig.json'),
+          tsconfigPath: path.resolve(__dirname, '../tsconfig.storybook.json'),
         }
       }),
       react({

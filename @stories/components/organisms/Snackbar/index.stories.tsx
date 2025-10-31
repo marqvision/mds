@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story } from '@storybook/blocks';
+import { Story } from '@storybook/addon-docs/blocks';
 import { MDSButton, MDSSnackbar, MDSTypography, MDSSnackbarContainer, dismissToast } from '../../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 

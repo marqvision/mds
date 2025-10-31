@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Canvas, Title } from '@storybook/blocks';
+import { Canvas, Title } from '@storybook/addon-docs/blocks';
 import { DimmedPanel, PanelDirection, SplitPanel } from './index.stories';
 
 export const Doc = () => {

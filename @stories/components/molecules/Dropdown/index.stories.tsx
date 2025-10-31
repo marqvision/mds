@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState } from '@storybook/preview-api';
+import { useState } from 'storybook/preview-api';
 import { MDSButton, MDSDropdown, MDSIcon, MDSInput, MDSTag, MDSTypography } from '../../../../components';
 import { Wrapper } from './@components';
 import { StatusList } from './@constants';

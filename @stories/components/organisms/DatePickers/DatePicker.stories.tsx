@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { useState } from '@storybook/preview-api';
+import { useState } from 'storybook/preview-api';
 import dayjs from 'dayjs';
 import { MDSDatePicker } from '../../../../components/organisms/DatePickers/DatePicker';
 import { MDSIcon, MDSPlainButton } from '../../../../components';

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { useArgs } from '@storybook/preview-api';
+import { useArgs } from 'storybook/preview-api';
 import { MDSIcon, MDSModal, MDSTypography } from '../../../../components';
 import { Doc } from './Doc';
 

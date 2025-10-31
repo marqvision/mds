@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { useArgs, useState, useEffect } from '@storybook/preview-api';
+import { useArgs, useState, useEffect } from 'storybook/preview-api';
 import { MDSButton, MDSModal, MDSPanel, MDSTypography } from '../../../../components';
 import { Doc } from './Doc';
 

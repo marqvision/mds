@@ -64,6 +64,7 @@ export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, forwardedRef)
   const eleRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   const timeoutRef = useRef<number>();
+  const mouseTriggerRef = useRef<boolean>(false);
 
   const ref = composeRef(forwardedRef, eleRef);
 
@@ -73,8 +74,16 @@ export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, forwardedRef)
 
   const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    if (event.target !== event.currentTarget) return;
-    onClose?.();
+    if (event.target === event.currentTarget && mouseTriggerRef.current) {
+      onClose?.();
+    }
+    mouseTriggerRef.current = false;
+  };
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    // 이벤트의 시작 지점이 dimmed 인 경우만 onClick 의 close 이벤트를 발생시킴
+    mouseTriggerRef.current = event.target === event.currentTarget;
+    stopPropagation(event);
   };
 
   const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -147,7 +156,7 @@ export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, forwardedRef)
           ref={ref}
           className={clsx({ isOpen }, 'mds-dimmed')}
           onMouseMove={stopPropagation}
-          onMouseDown={stopPropagation}
+          onMouseDown={handleMouseDown}
           onMouseUp={stopPropagation}
           onClick={handleClose}
           padding={padding}

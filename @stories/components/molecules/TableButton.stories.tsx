@@ -34,6 +34,10 @@ const meta: Meta<typeof MDSTableButton> = {
       control: 'boolean',
       description: '읽기 전용 상태 (화살표 아이콘 표시 및 클릭 가능 여부 제어)',
     },
+    isTruncated: {
+      control: 'boolean',
+      description: '텍스트 말줄임 처리 여부 (true: 한 줄로 제한, false: 전체 표시)',
+    },
     onClick: {
       action: 'clicked',
       description: '클릭 이벤트 핸들러',
@@ -230,6 +234,42 @@ export const VariousIcons: Story = {
         <MDSTableButton icon={<MDSIcon.Settings variant="outline" />} onClick={() => {}}>
           Config
         </MDSTableButton>
+      </div>
+    </Wrapper>
+  ),
+};
+
+export const TextTruncation: Story = {
+  render: () => (
+    <Wrapper>
+      <MDSTypography>isTruncated 속성으로 긴 텍스트의 표시 방식을 제어할 수 있습니다.</MDSTypography>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+          <div style={{ textAlign: 'center', width: '200px' }}>
+            <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
+              말줄임 처리 (기본값)
+            </MDSTypography>
+            <div style={{ width: '100%', border: '1px dashed #ccc', padding: '8px' }}>
+              <MDSTableButton icon={<MDSIcon.Sort />} isTruncated={true} onClick={() => {}}>
+                This is a very long text that should be truncated
+              </MDSTableButton>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', width: '200px' }}>
+            <MDSTypography variant="body" size="xs" weight="medium" style={{ marginBottom: '8px' }}>
+              전체 표시
+            </MDSTypography>
+            <div style={{ width: '100%', border: '1px dashed #ccc', padding: '8px' }}>
+              <MDSTableButton icon={<MDSIcon.Sort />} isTruncated={false} onClick={() => {}}>
+                This is a very long text that should be displayed fully
+              </MDSTableButton>
+            </div>
+          </div>
+        </div>
+        <MDSTypography variant="body" size="s">
+          • isTruncated=true: 한 줄로 제한하고 말줄임표(...) 처리 (기본값)
+          <br />• isTruncated=false: 텍스트 전체를 표시하며 여러 줄로 줄바꿈 가능
+        </MDSTypography>
       </div>
     </Wrapper>
   ),

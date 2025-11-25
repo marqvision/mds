@@ -37,6 +37,14 @@ export type TableButtonProps = {
    * 텍스트 및 아이콘 색상
    */
   color?: MDSThemeColorPath;
+
+  /**
+   * 텍스트 말줄임 처리 여부
+   * - true: 한 줄로 제한하고 넘치는 텍스트는 말줄임표 처리 (lineClamp: 1, wordBreak: 'break-all' 적용)
+   * - false: 텍스트 제한 없이 전체 표시
+   * @default false
+   */
+  isTruncated?: boolean;
 };
 
 export type IconType = TableButtonProps['icon'];

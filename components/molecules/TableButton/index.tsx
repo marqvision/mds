@@ -49,6 +49,12 @@ const StyledButton = styled.button<{
   }
 `;
 
+const IconWrapper = styled.div`
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+`;
+
 export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonProps>((props, ref) => {
   const {
     children,
@@ -57,6 +63,7 @@ export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonPro
     onClick,
     isReadOnly = false,
     color = 'color/content/neutral/default/normal',
+    isTruncated = false,
   } = props;
 
   const [isHovered, setIsHovered] = React.useState(false);
@@ -86,17 +93,23 @@ export const MDSTableButton = React.forwardRef<HTMLButtonElement, TableButtonPro
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {renderIcon(icon, 16, isDisabled, getTextColor())}
+      <IconWrapper>{renderIcon(icon, 16, isDisabled, getTextColor())}</IconWrapper>
       <MDSTypography
         variant="body"
         size="s"
         weight="medium"
+        lineClamp={isTruncated ? 1 : undefined}
+        wordBreak={isTruncated ? 'break-all' : undefined}
         color={getTextColor()}
         style={{ marginLeft: icon ? '2px' : '0' }}
       >
         {children}
       </MDSTypography>
-      {!isReadOnly && <MDSIcon.ArrowDown size={20} variant="outline" color={getTextColor()} />}
+      {!isReadOnly && (
+        <IconWrapper>
+          <MDSIcon.ArrowDown size={20} variant="outline" color={getTextColor()} />
+        </IconWrapper>
+      )}
     </StyledButton>
   );
 });

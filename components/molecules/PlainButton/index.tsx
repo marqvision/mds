@@ -1,12 +1,12 @@
-import React, { forwardRef, isValidElement } from 'react';
+import React, { forwardRef, isValidElement, JSX, Ref } from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { Icon } from './@components/Icon';
-import { PlainButtonProps, StyledPlainButtonProps } from './@types';
+import { PlainButtonProps, StyledPlainButtonProps, Type } from './@types';
 import { resolveColor, resolveSize } from './@utils';
 
-export type MDSPlainButtonProps = PlainButtonProps;
+export type MDSPlainButtonProps<T extends Type = 'composite'> = PlainButtonProps<T>;
 
 const PlainButton = styled.button<StyledPlainButtonProps>`
   ${({ theme, ...props }) => {
@@ -61,11 +61,12 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
   }}
 `;
 
-export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChildren<PlainButtonProps>>((props, ref) => {
+export const MDSPlainButton = forwardRef((props, ref) => {
   const {
     children: label,
     size = 'medium',
     color = 'blue',
+    weight = 'medium',
     startIcon,
     endIcon,
     isDisabled,
@@ -120,7 +121,7 @@ export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChild
       {isValidElement(label)
         ? label
         : label && (
-            <MDSTypography variant="body" weight="medium" size={sizeStyle.typography} color="inherit">
+            <MDSTypography variant="body" weight={weight} size={sizeStyle.typography} color="inherit">
               {label}
             </MDSTypography>
           )}
@@ -128,5 +129,7 @@ export const MDSPlainButton = forwardRef<HTMLButtonElement, React.PropsWithChild
       {endIcon && <Icon type="withLabel" size={size} icon={endIcon} />}
     </PlainButton>
   );
-});
+}) as (<T extends Type>(props: PlainButtonProps<T> & { ref?: Ref<HTMLButtonElement> }) => JSX.Element) & {
+  displayName?: string;
+};
 MDSPlainButton.displayName = 'MDSPlainButton';

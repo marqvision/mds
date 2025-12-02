@@ -1,7 +1,10 @@
 import React from 'react';
+import { BodyWeight } from '../../atoms/Typography';
 
-export type Color = 'bluegray' | 'blue' | 'red' | 'yellow' | 'green' | 'white';
-export type Size = 'small' | 'medium' | 'large';
+export type Type = 'composite' | 'icon';
+export type Color = 'bluegray' | 'bluegray-secondary' | 'blue' | 'red' | 'yellow' | 'green' | 'white';
+export type IconButtonSize = 'small' | 'medium' | 'large';
+export type Size = 'x-small' | IconButtonSize;
 export type Status = 'normal' | 'hover' | 'disabled';
 
 export type StyledPlainButtonProps = {
@@ -20,11 +23,6 @@ export type IconProps = {
 };
 
 type CommonProps = {
-  /**
-   * Button 의 사이즈.
-   * @default 'medium'
-   **/
-  size?: Size;
   /**
    * Button 의 색상.
    * @default 'blue'
@@ -49,6 +47,11 @@ type CommonProps = {
 
 type CompositeButtonProps = {
   /**
+   * Button 의 사이즈.
+   * @default 'medium'
+   **/
+  size?: Size;
+  /**
    * Button 의 label 좌측에 아이콘 출력.
    * 사이즈는 Button 의 size 에 의해 결정되며,
    * 색상은 아이콘에 부여된 color 속성을 우선 적용 후 속성을 부여하지 않았다면 Button 의 color 에 의해 결정됩니다.
@@ -65,11 +68,22 @@ type CompositeButtonProps = {
    * ReactNode 형태로 전달되며, string, number, JSX.Element 모두 가능.
    **/
   children: React.ReactNode;
+  /**
+   * Button label 의 weight
+   * MDSTypography variant='body' 의 weight 와 동일합니다.
+   * @default 'medium'
+   **/
+  weight?: BodyWeight;
 
   icon?: never;
 };
 
 type IconButtonProps = {
+  /**
+   * Button 의 사이즈.
+   * @default 'medium'
+   **/
+  size?: IconButtonSize;
   /**
    * Button 의 아이콘.
    * 사이즈는 Button 의 size 에 의해 결정되며,
@@ -80,6 +94,8 @@ type IconButtonProps = {
   startIcon?: never;
   endIcon?: never;
   children?: never;
+  weight?: never;
 };
 
-export type PlainButtonProps = CommonProps & (CompositeButtonProps | IconButtonProps);
+export type PlainButtonProps<T extends Type = 'composite'> = CommonProps &
+  (T extends 'composite' ? CompositeButtonProps : IconButtonProps);

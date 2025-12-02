@@ -1,7 +1,7 @@
 import { MDSTheme } from '../../../../types';
+import { BodySize } from '../../../atoms/Typography';
 import { SIZE_ABBREVIATIONS, TOKEN_NAME, TYPOGRAPHY_SIZE } from '../@constants';
 import { StyledPlainButtonProps } from '../@types';
-import { BodySize } from '../../../atoms/Typography';
 
 export const resolveColor = (
   theme: MDSTheme,
@@ -12,22 +12,24 @@ export const resolveColor = (
     hover: string;
   };
 } => {
-  const colorTokenName = TOKEN_NAME[color];
-  const currentColor = theme.color.content[colorTokenName];
+  const currentColor =
+    color === 'bluegray-secondary'
+      ? theme.color.content.neutral.secondary
+      : theme.color.content[TOKEN_NAME[color]].default;
 
-  let normal = currentColor.default.normal;
-  let hover = currentColor.default.normal;
+  let normal = currentColor.normal;
+  let hover = currentColor.normal;
 
   if (isClickable) {
-    hover = currentColor.default.hover;
+    hover = currentColor.hover;
   }
   if (isDisabled) {
-    normal = currentColor.default.disabled;
-    hover = currentColor.default.disabled;
+    normal = currentColor.disabled;
+    hover = currentColor.disabled;
   }
   if (isCompleted) {
-    normal = currentColor.default.completed;
-    hover = currentColor.default.completed;
+    normal = theme.color.content.neutral.default.completed;
+    hover = theme.color.content.neutral.default.completed;
   }
 
   return {

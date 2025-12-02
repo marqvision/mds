@@ -1,5 +1,4 @@
 import React from 'react';
-import { Story } from '@storybook/addon-docs/blocks';
 import { MDSIcon, MDSPlainButton, MDSTypography } from '../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -15,23 +14,35 @@ const meta: Meta<typeof MDSPlainButton> = {
   },
   tags: ['autodocs'],
   args: {
+    size: 'medium',
+    weight: 'medium',
     onClick: undefined,
   },
   argTypes: {
     color: {
       control: 'select',
+      options: ['bluegray', 'bluegray-secondary', 'blue', 'red', 'yellow', 'green', 'white'],
+    },
+    weight: {
+      control: 'radio',
+      options: ['medium', 'regular'],
+    },
+    size: {
+      control: 'radio',
+      options: ['x-small', 'small', 'medium', 'large'],
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof MDSPlainButton>;
+type CompositeButtonStory = StoryObj<typeof MDSPlainButton<'composite'>>;
+type IconButtonStory = StoryObj<typeof MDSPlainButton<'icon'>>;
 
 const Wrapper = ({ children }: React.PropsWithChildren) => {
   return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>{children}</div>;
 };
 
-export const Preview: Story = {
+export const Preview: CompositeButtonStory = {
   args: {
     children: 'Plain button',
   },
@@ -41,13 +52,15 @@ export const Preview: Story = {
         size 기본값 medium
         <br />
         color 기본값 blue
+        <br />
+        weight 기본값 medium
       </MDSTypography>
       <MDSPlainButton {...args} />
     </Wrapper>
   ),
 };
 
-export const StartIcon: Story = {
+export const StartIcon: CompositeButtonStory = {
   args: {
     startIcon: <MDSIcon.LinkUrl />,
     children: 'Plain button',
@@ -60,7 +73,7 @@ export const StartIcon: Story = {
   ),
 };
 
-export const EndIcon: Story = {
+export const EndIcon: CompositeButtonStory = {
   args: {
     endIcon: <MDSIcon.OpenNew />,
     children: 'Plain button',
@@ -73,7 +86,7 @@ export const EndIcon: Story = {
   ),
 };
 
-export const ColoredIcon: Story = {
+export const ColoredIcon: CompositeButtonStory = {
   args: {
     startIcon: <MDSIcon.ExcelSheet color="color/content/success/default/normal" />,
     color: 'bluegray',
@@ -87,7 +100,7 @@ export const ColoredIcon: Story = {
   ),
 };
 
-export const Clickable: Story = {
+export const Clickable: CompositeButtonStory = {
   args: {
     startIcon: <MDSIcon.AttachFile />,
     endIcon: <MDSIcon.Download />,
@@ -107,13 +120,13 @@ export const Clickable: Story = {
   ),
 };
 
-export const IconButton: Story = {
+export const IconButton: IconButtonStory = {
   args: {
     color: 'blue',
     size: 'medium',
     onClick: () => {},
   },
-  render: ({ children, startIcon, endIcon, ...args }) => (
+  render: (args) => (
     <Wrapper>
       <MDSTypography>
         icon 속성을 넣으면 아이콘 버튼 스타일로 출력됩니다.

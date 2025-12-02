@@ -148,13 +148,11 @@ export const MDSImage = forwardRef<HTMLDivElement, ImageProps>((props, ref) => {
   const wrapperAspectRatio = aspectRatio || `${size?.width}/${size?.height}`;
 
   const handleLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    console.log('loaded');
     _onLoad?.(event);
     onLoad(event);
   };
 
   const handleError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    console.log('error');
     _onError?.(event);
     onError();
   };

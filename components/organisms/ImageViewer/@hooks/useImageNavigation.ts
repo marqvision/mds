@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ImageData } from '../@types';
 import { getInitialIndex } from '../@utils';
 
@@ -6,12 +6,8 @@ export const useImageNavigation = <Image extends string | ImageData>(list: Image
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState<number>(getInitialIndex(list, value));
 
-  const { isPrevDisabled, isNextDisabled } = useMemo(() => {
-    return {
-      isPrevDisabled: !currentIndex,
-      isNextDisabled: !list.at(currentIndex + 1),
-    };
-  }, [currentIndex, list]);
+  const isPrevDisabled = currentIndex === 0;
+  const isNextDisabled = !list.at(currentIndex + 1);
 
   const prev = useCallback(() => {
     if (isPrevDisabled) return;

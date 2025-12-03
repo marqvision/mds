@@ -67,10 +67,10 @@ const Inner = <Image extends string | ImageData>(props: InnerProps<Image>) => {
   const { image, list: _list, onClose } = props;
 
   const list = useMemo<Image[]>(() => {
-    const list = _list || [];
-    const hasImage = list.some((item) => getImageData(item).src === getImageData(image).src);
+    const listWithDefault = _list || [];
+    const hasImage = listWithDefault.some((item) => getImageData(item).src === getImageData(image).src);
     // 타겟 이미지가 리스트 내에 없으면 첫번째 아이템으로 추가
-    return hasImage ? list : [image, ...list];
+    return hasImage ? listWithDefault : [image, ...listWithDefault];
   }, [_list, image]);
 
   const imageNavigation = useImageNavigation(list, image);
@@ -133,7 +133,7 @@ export const MDSImageViewer = <Image extends string | ImageData>(props: ImageVie
         onClose={handleClose}
         style={{ flexDirection: 'column' }}
       >
-        <Inner onClose={handleClose} {...props} />
+        {isOpen && <Inner onClose={handleClose} {...props} />}
       </MDSDimmed>
       {renderAnchor({
         open: handleOpen,

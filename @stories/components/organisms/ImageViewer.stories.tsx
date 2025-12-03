@@ -267,7 +267,6 @@ export const ImageList: Story = {
     },
     list: [...Array(5)].map((_, index) => ({
       src: `https://picsum.photos/id/${index * 10}/400/${3600 - (index * 200)}`,
-      filename: `https://picsum.photos/id/${index * 10}/400/3600.pdf`,
     })),
   },
   render: function Render(props) {

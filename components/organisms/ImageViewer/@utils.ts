@@ -1,5 +1,13 @@
 import { ImageData } from './@types';
 
+export const getInitialIndex = <Image extends string | ImageData>(list: Image[], value: Image) => {
+  return list.findIndex((item) =>
+    typeof value !== 'string' && typeof item !== 'string'
+      ? item.src === value.src
+      : item === value
+  );
+};
+
 export const getImageData = <Image extends string | ImageData>(image: Image): ImageData => {
   if (typeof image === 'string') return { src: image };
   return image;
@@ -15,7 +23,7 @@ export const downloadImage = async (src: string) => {
 
     const link = document.createElement('a');
     link.href = url;
-    link.download = src.split('/').pop() || 'image';
+    link.download = src.split('/').pop() || 'image.jpg';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

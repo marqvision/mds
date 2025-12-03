@@ -259,3 +259,40 @@ export const VerticalImage: Story = {
     );
   },
 };
+
+export const ImageList: Story = {
+  args: {
+    image: {
+      src: 'https://picsum.photos/id/20/400/3200',
+    },
+    list: [...Array(5)].map((_, index) => ({
+      src: `https://picsum.photos/id/${index * 10}/400/${3600 - (index * 200)}`,
+      filename: `https://picsum.photos/id/${index * 10}/400/3600.pdf`,
+    })),
+  },
+  render: function Render(props) {
+    return (
+      <Wrapper>
+        <Wrapper>
+          <MDSTypography>
+            이미지 리스트를 전달하면 뷰어 내에서 여러개의 이미지를 넘기면서 확인할 수 있습니다.
+          </MDSTypography>
+          <MDSImageViewer
+            {...props}
+            renderAnchor={({ defaultButton }) => (
+              <MDSImage
+                width="200px"
+                height="200px"
+                src="https://picsum.photos/id/20/400"
+                custom={{
+                  type: 'hover',
+                  element: defaultButton,
+                }}
+              />
+            )}
+          />
+        </Wrapper>
+      </Wrapper>
+    );
+  },
+};

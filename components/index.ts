@@ -43,3 +43,4 @@ export * from './organisms/PageHeader';
 export * from './organisms/Panel';
 export * from './organisms/Table';
 export * from './organisms/Snackbar';
+export * from './organisms/Tabs';

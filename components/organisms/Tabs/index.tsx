@@ -206,6 +206,28 @@ const Tabs = forwardRef(<T,>(props: TabsProps<T>, ref: Ref<HTMLDivElement>) => {
     }
   }, [value, wrapWidth]);
 
+  useEffect(() => {
+    const selectedTab = scrollerRef.current?.querySelector('.selected') as HTMLDivElement | null;
+
+    if (!selectedTab || !scrollStep) return;
+
+    const tabLeft = selectedTab.offsetLeft;
+    const tabRight = tabLeft + selectedTab.offsetWidth;
+    const buffer = SCROLL_BUTTON_SIZE;
+
+    setScrollLeft((currentScrollLeft) => {
+      const visibleLeft = currentScrollLeft + buffer;
+      const visibleRight = currentScrollLeft + scrollStep - buffer;
+
+      if (tabLeft < visibleLeft) {
+        return Math.max(tabLeft - buffer, 0);
+      } else if (tabRight > visibleRight) {
+        return Math.min(tabRight - scrollStep + buffer, wrapWidth - scrollStep);
+      }
+      return currentScrollLeft;
+    });
+  }, [value, scrollStep, wrapWidth]);
+
   return (
     <Styled.Root ref={ref} themeType={theme}>
       {hasOverflowLeft && (

@@ -19,7 +19,7 @@ export const Doc = () => {
       </p>
       <hr />
       <h3 id="Preview">Preview</h3>
-      <p>Tabs.TextTab 아이템으로 구성된 Tab입니다.</p>
+      <p>Tabs.TextItem 아이템으로 구성된 Tab입니다.</p>
       <Canvas of={TextTab} story={{ inline: false, height: '700px' }} />
       <hr />
     </div>

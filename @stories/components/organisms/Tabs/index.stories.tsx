@@ -44,10 +44,10 @@ export const TextTab: StoryObj<typeof MDSTabs> = {
     const getTags = (index: number) => {
       if (index === 2) {
         return [
-          <MDSTag variant="fill" color="red" size="small">
+          <MDSTag key="N" variant="fill" color="red" size="small">
             N
           </MDSTag>,
-          <MDSTag variant="fill" color="bluegray" size="small">
+          <MDSTag key="T" variant="fill" color="bluegray" size="small">
             T
           </MDSTag>,
         ];

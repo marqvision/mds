@@ -99,7 +99,7 @@ export const useInitDropdown = <T, SortT>(
   const hasList = list.length > 0;
   const is1DepthSingle = props.modules?.includes('1-depth-single');
 
-  const labels = (() => {
+  const anchorValues = (() => {
     const isAllSelected =
       isMultiple &&
       !isCustomSearching &&
@@ -107,7 +107,12 @@ export const useInitDropdown = <T, SortT>(
       (value.length === flatItems.length || (value.length === 1 && value[0] === -1));
 
     if (isAllSelected) {
-      return ['All'];
+      return [
+        {
+          value: -1,
+          label: 'All',
+        },
+      ];
     }
 
     /*
@@ -118,7 +123,7 @@ export const useInitDropdown = <T, SortT>(
       return [];
     }
 
-    return values.flatMap((v) => storedItemsRef.current.find((v1) => v1.value === v)?.label || `${v}`);
+    return values.flatMap((v) => storedItemsRef.current.find((v1) => v1.value === v) || { label: `${v}`, value: v });
   })();
 
   const handleClose = () => {
@@ -316,7 +321,7 @@ export const useInitDropdown = <T, SortT>(
     selectedItems,
     selectableValue,
     indeterminate,
-    labels,
+    anchorValues,
     handler: {
       change: handleChange,
       clear: handleClear,

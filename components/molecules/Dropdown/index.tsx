@@ -491,7 +491,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
   const openFnRef = useRef<() => void | undefined>();
   const closeFnRef = useRef<() => void | undefined>();
 
-  const { selectedItems, selectableValue, indeterminate, labels, handler } = useInitDropdown<T, SortT>({
+  const { selectedItems, selectableValue, indeterminate, anchorValues, handler } = useInitDropdown<T, SortT>({
     ...restProps,
     closeRef,
   });
@@ -506,11 +506,11 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
     | undefined;
 
   const anchor = renderAnchor ? (
-    renderAnchor(value, (Array.isArray(value) ? selectedItems : selectedItems[0]) as ObjType<T>, selectableValue)
+    renderAnchor(value, (Array.isArray(value) ? anchorValues : anchorValues[0]) as ObjType<T>, selectableValue)
   ) : (
     <FilterButton
       label={props.label || ''}
-      selectedLabel={labels}
+      selectedLabel={anchorValues.flatMap((v) => v.label)}
       isLoading={!isOpen && isLoading}
       isDisabled={isDisabled || selectableValue.length === 0}
       {...filterButtonProps}

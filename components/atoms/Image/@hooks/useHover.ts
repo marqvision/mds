@@ -3,7 +3,7 @@ import { ImageProps } from '../@types';
 import { Hover, UnwrapArray } from '../@types/custom';
 
 export const useHover = (custom: ImageProps['custom']) => {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [hoverProps, setHoverProps] = useState<Hover>();
 

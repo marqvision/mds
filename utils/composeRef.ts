@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { Ref, MutableRefObject } from 'react';
 
 /**
  * 여러 개의 ref를 단일 콜백 ref로 합성하는 유틸리티 함수입니다.
@@ -11,7 +11,7 @@ export const composeRef = <T>(...refs: Ref<T>[]) => {
       if (typeof ref === 'function') {
         ref(node);
       } else if (ref) {
-        (ref as React.MutableRefObject<T | null>).current = node;
+        (ref as MutableRefObject<T | null>).current = node;
       }
     });
   };

@@ -40,7 +40,7 @@ export const StyledOutline = styled.div<{
   & textarea::placeholder {
     color: ${({ theme }) => theme.color.content.placeholder.normal};
   }
-  & input:disabled {
+  & input:disabled, & textarea:disabled {
     color: ${({ theme }) => theme.color.content.neutral.default.disabled};
   }
   & svg {

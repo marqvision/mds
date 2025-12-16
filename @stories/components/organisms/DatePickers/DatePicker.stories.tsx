@@ -24,7 +24,7 @@ const meta: Meta<typeof MDSDatePicker> = {
   argTypes: {
     format: {
       control: 'select',
-      options: ['MM/DD/YYYY', 'YYYY-MM-DD', 'MMM DD, YYYY'],
+      options: ['MM/DD/YYYY', 'YYYY-MM-DD', 'MMM DD, YYYY', 'M.D'],
     },
     minDate: {
       control: 'date',

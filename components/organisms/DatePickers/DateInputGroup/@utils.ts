@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { isDateShapeValid, validateDateAndMinMaxRange } from '../@utils';
 import { SEPARATOR_MAP } from '../@constants';
 import { AvailableDateFormat, DateValidationError } from '../@types';
+import { isDateShapeValid, validateDateAndMinMaxRange } from '../@utils';
 import { SingleDateInput } from './@types';
 
 // todo-@jamie: 아래의 format 검사하는 함수들을 dayjs의 customParseFormat를 사용하는 방법으로 바꾸기
@@ -55,8 +55,7 @@ export const isPartiallyValidDate = (value: string, format: AvailableDateFormat)
 
     // 월 부분 검사 (3글자 월 약어)
     if (monthStr && monthStr.length === 3) {
-      const validMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const validMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       if (!validMonths.includes(monthStr)) {
         return false;
       }
@@ -74,6 +73,24 @@ export const isPartiallyValidDate = (value: string, format: AvailableDateFormat)
     if (yearStr && yearStr.length >= 1) {
       const year = parseInt(yearStr, 10);
       if (isNaN(year)) {
+        return false;
+      }
+    }
+  } else if (format === 'M.D') {
+    const [monthStr, dayStr] = parts;
+
+    // 월 부분 검사 (1-12)
+    if (monthStr && monthStr.length >= 1) {
+      const month = parseInt(monthStr, 10);
+      if (isNaN(month) || month < 1 || month > 12) {
+        return false;
+      }
+    }
+
+    // 일 부분 검사 (1-31)
+    if (dayStr && dayStr.length >= 1) {
+      const day = parseInt(dayStr, 10);
+      if (isNaN(day) || day < 1 || day > 31) {
         return false;
       }
     }
@@ -174,9 +191,7 @@ export const getHelperText = (
   dateInputProps: SingleDateInput
 ) => {
   if (errors.range) {
-    return type === 'start'
-      ? 'Must be before the end date'
-      : 'Must be after the start date';
+    return type === 'start' ? 'Must be before the end date' : 'Must be after the start date';
   }
 
   const errorType = type === 'start' ? errors.start : errors.end;

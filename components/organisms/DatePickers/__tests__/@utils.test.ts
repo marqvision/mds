@@ -1,5 +1,5 @@
-import { validateDateAndMinMaxRange, isDateRangeValid, isDateShapeValid } from '../@utils';
-import { parseDateStringToDate, isPartiallyValidDate } from '../DateInputGroup/@utils';
+import { isDateRangeValid, isDateShapeValid, validateDateAndMinMaxRange } from '../@utils';
+import { isPartiallyValidDate, parseDateStringToDate } from '../DateInputGroup/@utils';
 
 describe('DatePickers 유틸 함수', () => {
   describe('validateDateAndMinMaxRange 함수', () => {
@@ -111,6 +111,20 @@ describe('DateInputGroup 컴포넌트 유틸 함수', () => {
       expect(isPartiallyValidDate('2024-00', 'YYYY-MM-DD')).toBe(false);
       expect(isPartiallyValidDate('2024-12-32', 'YYYY-MM-DD')).toBe(false);
       expect(isPartiallyValidDate('2024-12-00', 'YYYY-MM-DD')).toBe(false);
+    });
+
+    it('MMM DD, YYYY: 월/일 부분 유효성을 검사해야 합니다', () => {
+      expect(isPartiallyValidDate('Jan', 'MMM DD, YYYY')).toBe(true);
+      expect(isPartiallyValidDate('Jan 05', 'MMM DD, YYYY')).toBe(true);
+      expect(isPartiallyValidDate('Foo', 'MMM DD, YYYY')).toBe(false);
+      expect(isPartiallyValidDate('Jan 32', 'MMM DD, YYYY')).toBe(false);
+    });
+
+    it('M.D: 월/일 부분 유효성을 검사해야 합니다', () => {
+      expect(isPartiallyValidDate('6.', 'M.D')).toBe(true);
+      expect(isPartiallyValidDate('6.15', 'M.D')).toBe(true);
+      expect(isPartiallyValidDate('13.', 'M.D')).toBe(false);
+      expect(isPartiallyValidDate('6.32', 'M.D')).toBe(false);
     });
   });
 

@@ -31,6 +31,13 @@ const Styled = {
     &:hover:before {
       opacity: 1;
     }
+    &.disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+    &.disabled:hover:before {
+      opacity: 0;
+    }
   `,
   Label: styled(MDSTypography)<{ status: 'selected' | 'default'; themeType: TabTheme }>`
     position: relative;
@@ -43,8 +50,10 @@ const Styled = {
 type Props<T> = PublicTextItemProps<T> & InternalTabProps;
 
 export const TextItem = <T,>(props: Props<T>) => {
-  const { value, onClick, tags, children, style, ...internalProps } = props;
+  const { value, onClick, tags, children, style, isDisabled, ...internalProps } = props;
   const { isSelected, size = 'medium', theme = 'light', withTitle = false } = internalProps;
+
+  const className = isSelected ? 'selected' : isDisabled ? 'disabled' : undefined;
 
   const typeProps = {
     ...THEME.size[size].typography,
@@ -53,13 +62,18 @@ export const TextItem = <T,>(props: Props<T>) => {
   const tabHeight = THEME.size[size].tabSize[withTitle ? 'withTitle' : 'withoutTitle'].height;
   const dimmedHeight = THEME.size[size].tabSize.withTitle.height - 12;
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (isDisabled) return;
+    onClick?.(e, value);
+  };
+
   return (
     <Styled.Root
-      className={isSelected ? 'selected' : undefined}
+      className={className}
       height={tabHeight}
       dimmedHeight={dimmedHeight}
       themeType={theme}
-      onClick={(e) => onClick?.(e, value)}
+      onClick={handleClick}
       style={style}
     >
       <Styled.Label

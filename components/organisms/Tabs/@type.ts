@@ -18,6 +18,7 @@ export type PublicTextItemProps<T> = PropsWithChildren<{
   onClick?: (e: MouseEvent, value: T) => void;
   tags?: ReactElement | ReactElement[];
   style?: CSSProperties;
+  isDisabled?: boolean;
 }>;
 
 export type PublicCardItemProps<T> = {

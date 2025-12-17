@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
-import { InternalTabProps, PublicTextItemProps, TabTheme } from './@type';
 import { THEME } from './@constants';
+import { InternalTabProps, PublicTextItemProps, TabTheme } from './@type';
 import { resolveColor } from './@utils';
 
 const Styled = {
@@ -43,7 +43,7 @@ const Styled = {
 type Props<T> = PublicTextItemProps<T> & InternalTabProps;
 
 export const TextItem = <T,>(props: Props<T>) => {
-  const { value, onClick, tags, children, ...internalProps } = props;
+  const { value, onClick, tags, children, style, ...internalProps } = props;
   const { isSelected, size = 'medium', theme = 'light', withTitle = false } = internalProps;
 
   const typeProps = {
@@ -60,6 +60,7 @@ export const TextItem = <T,>(props: Props<T>) => {
       dimmedHeight={dimmedHeight}
       themeType={theme}
       onClick={(e) => onClick?.(e, value)}
+      style={style}
     >
       <Styled.Label
         themeType={theme}

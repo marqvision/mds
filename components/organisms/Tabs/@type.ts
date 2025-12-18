@@ -1,4 +1,4 @@
-import { JSX, PropsWithChildren, ReactElement, ReactNode, MouseEvent } from 'react';
+import { CSSProperties, JSX, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from 'react';
 import { MDSThemeColorPath } from '../../../types';
 
 export type TabTheme = 'light' | 'dark';
@@ -17,6 +17,8 @@ export type PublicTextItemProps<T> = PropsWithChildren<{
   value: T;
   onClick?: (e: MouseEvent, value: T) => void;
   tags?: ReactElement | ReactElement[];
+  style?: CSSProperties;
+  isDisabled?: boolean;
 }>;
 
 export type PublicCardItemProps<T> = {
@@ -25,6 +27,8 @@ export type PublicCardItemProps<T> = {
   title: ReactNode;
   description: ReactNode;
   tags?: ReactElement | ReactElement[];
+  style?: CSSProperties;
+  isDisabled?: boolean;
 };
 
 export type InternalTabProps = {

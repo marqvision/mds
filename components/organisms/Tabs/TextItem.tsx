@@ -28,15 +28,12 @@ const Styled = {
       border-radius: 8px;
       pointer-events: none;
     }
-    &:hover:before {
+    &:hover:not(:disabled):before {
       opacity: 1;
     }
     &.disabled {
       opacity: 0.5;
       cursor: default;
-    }
-    &.disabled:hover:before {
-      opacity: 0;
     }
   `,
   Label: styled(MDSTypography)<{ status: 'selected' | 'default'; themeType: TabTheme }>`
@@ -75,6 +72,7 @@ export const TextItem = <T,>(props: Props<T>) => {
       themeType={theme}
       onClick={handleClick}
       style={style}
+      disabled={isDisabled}
     >
       <Styled.Label
         themeType={theme}

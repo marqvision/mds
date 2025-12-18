@@ -47,7 +47,7 @@ export const CardItem = <T,>(props: Props<T>) => {
   };
 
   return (
-    <Styled.Root className={className} onClick={handleClick} style={style}>
+    <Styled.Root className={className} onClick={handleClick} style={style} disabled={isDisabled}>
       <MDSTypography weight="medium" color={isSelected ? 'color/content/primary/default/normal' : undefined}>
         {title}
       </MDSTypography>

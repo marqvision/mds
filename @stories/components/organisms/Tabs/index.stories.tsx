@@ -83,6 +83,21 @@ export const TextTab: StoryObj<typeof MDSTabs> = {
             ))}
           </MDSTabs>
         </div>
+        <div style={{ backgroundColor: '#FFF', borderRadius: '8px', padding: '12px' }}>
+          <p style={{ paddingBottom: '16px' }}>disabled example (TAB3, TAB5 disabled)</p>
+          <MDSTabs {...props} value={tab} onChange={setTab}>
+            {options.map((label, index) => (
+              <MDSTabs.TextItem
+                key={index}
+                value={`TAB${index + 1}`}
+                tags={getTags(index)}
+                isDisabled={index === 2 || index === 4}
+              >
+                {label}
+              </MDSTabs.TextItem>
+            ))}
+          </MDSTabs>
+        </div>
       </div>
     );
   },
@@ -150,6 +165,21 @@ export const CardTab: StoryObj<typeof MDSTabs> = {
                 tags={getTags(index)}
                 title={label}
                 description="description"
+              />
+            ))}
+          </MDSTabs>
+        </div>
+        <div style={{ backgroundColor: '#FFF', borderRadius: '8px', padding: '12px' }}>
+          <p style={{ paddingBottom: '16px' }}>disabled example (TAB3, TAB5 disabled)</p>
+          <MDSTabs {...props} value={tab} onChange={setTab}>
+            {options.map((label, index) => (
+              <MDSTabs.CardItem
+                key={index}
+                value={`TAB${index + 1}`}
+                tags={getTags(index)}
+                title={label}
+                description="description"
+                isDisabled={index === 2 || index === 4}
               />
             ))}
           </MDSTabs>

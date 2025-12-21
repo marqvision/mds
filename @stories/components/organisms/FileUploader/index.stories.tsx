@@ -4,7 +4,6 @@ import {
   MDSFileUploader,
   MDSIcon,
   MDSPlainButton,
-  MDSSnackbar,
   useMDSFileUploader,
   UseMDSFileUploaderOptions,
   UseMDSFileUploaderReturn,
@@ -17,6 +16,33 @@ const meta: Meta = {
   title: '2. Components/organisms/FileUploader',
   parameters: {
     layout: 'center',
+    docs: {
+      description: {
+        component: `
+파일 업로드를 위한 컴포넌트입니다.
+
+**기본 사용법**
+\`\`\`tsx
+const fileUploader = useMDSFileUploader({ onError: (e) => alert(e.message.ko) });
+return <MDSFileUploader {...fileUploader} />;
+\`\`\`
+
+**주요 옵션 (useMDSFileUploader)**
+- \`accept\`: 허용할 파일 타입 ('image', 'jpg', ['png', 'gif'])
+- \`limit\`: 최대 파일 개수 (1이면 단일 파일 모드)
+- \`maxFileSize\`: 최대 파일 크기 (bytes)
+- \`onError\`: 에러 발생 시 콜백
+- \`onChange\`: 파일 변경 시 콜백
+
+**반환값**
+- \`value\`: 파일 목록 (또는 단일 파일)
+- \`add\`: 파일 선택창 열기
+- \`remove(index)\`: 파일 삭제
+- \`dropzoneHandlers\`: Dropzone에 전달할 이벤트
+- \`store\`: useMDSFileUploadState에서 사용
+        `,
+      },
+    },
   },
   tags: ['autodocs'],
 };
@@ -49,10 +75,18 @@ const Wrapper = ({ children }: React.PropsWithChildren) => {
 };
 
 export const Preview: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'useMDSFileUploader와 MDSFileUploader를 조합한 기본 사용법입니다. placeholder, label, column, height 등을 커스터마이징할 수 있습니다.',
+      },
+    },
+  },
   args: {
     isDisabled: false,
     onError: (error) => {
-      MDSSnackbar({ type: 'error', title: error.message.en });
+      alert(error.message.en);
     },
   },
   render: function Render(props) {
@@ -61,7 +95,7 @@ export const Preview: StoryObj<UseMDSFileUploaderOptions> = {
     return (
       <Wrapper>
         <MDSFileUploader isDisabled={props.isDisabled} {...fileUploaderProps} />
-        <br/>
+        <br />
         <MDSFileUploader
           label="Images"
           isDisabled={props.isDisabled}
@@ -86,7 +120,78 @@ export const Preview: StoryObj<UseMDSFileUploaderOptions> = {
   },
 };
 
+export const SingleFile: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'limit: 1 옵션으로 단일 파일만 허용합니다. 이미 파일이 있으면 추가 선택 시 limit 에러가 발생합니다.',
+      },
+    },
+  },
+  render: function Render() {
+    const fileUploader = useMDSFileUploader({
+      limit: 1,
+      onError: (e) => alert(e.message.ko),
+    });
+    return (
+      <Wrapper>
+        <MDSFileUploader {...fileUploader} />
+      </Wrapper>
+    );
+  },
+};
+
+export const AcceptTypes: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'accept 옵션으로 특정 파일 타입만 허용합니다. `"image"`(카테고리), `"jpg"`(확장자), `["png", "gif"]`(복수) 형태로 지정 가능합니다.',
+      },
+    },
+  },
+  render: function Render() {
+    const fileUploader = useMDSFileUploader({
+      accept: 'image',
+      onError: (e) => alert(e.message.ko),
+    });
+    return (
+      <Wrapper>
+        <MDSFileUploader placeholder={{ description: '이미지 파일만 허용됩니다' }} {...fileUploader} />
+      </Wrapper>
+    );
+  },
+};
+
+export const MaxFileSize: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'maxFileSize 옵션으로 파일 크기를 제한합니다. 단위는 bytes입니다. (예: 1MB = 1024 * 1024)',
+      },
+    },
+  },
+  render: function Render() {
+    const fileUploader = useMDSFileUploader({
+      maxFileSize: 1024 * 1024, // 1MB
+      onError: (e) => alert(e.message.ko),
+    });
+    return (
+      <Wrapper>
+        <MDSFileUploader placeholder={{ description: '최대 1MB까지 업로드 가능합니다' }} {...fileUploader} />
+      </Wrapper>
+    );
+  },
+};
+
 export const WithLabel: StoryObj<typeof MDSFileUploader.Dropzone> = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dropzone에 라벨을 추가할 수 있습니다. label은 { main, sub, right } 형태로 지정합니다.',
+      },
+    },
+  },
   args: {
     label: {
       main: 'Images',
@@ -113,6 +218,13 @@ export const WithLabel: StoryObj<typeof MDSFileUploader.Dropzone> = {
 };
 
 export const Placeholder: StoryObj<typeof MDSFileUploader.Placeholder> = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Placeholder 서브 컴포넌트입니다. icon, title, description, errorMessage를 커스터마이징할 수 있습니다.',
+      },
+    },
+  },
   args: {
     icon: <MDSIcon.ExcelSheet color="color/content/success/default/normal" />,
     title: '파일을 추가해요',
@@ -129,6 +241,14 @@ export const Placeholder: StoryObj<typeof MDSFileUploader.Placeholder> = {
 };
 
 export const Loading: StoryObj<typeof MDSFileUploader.Loading> = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Loading 서브 컴포넌트입니다. progress 객체로 진행 상태를 표시합니다. 단일 파일이면 퍼센트만, 복수 파일이면 개수도 표시됩니다.',
+      },
+    },
+  },
   args: {
     progress: {
       count: { current: 5, total: 10 },
@@ -150,6 +270,13 @@ export const Loading: StoryObj<typeof MDSFileUploader.Loading> = {
 };
 
 export const Disabled: StoryObj<typeof MDSFileUploader.Placeholder> = {
+  parameters: {
+    docs: {
+      description: {
+        story: '비활성화 상태의 Placeholder입니다. isDisabled prop으로 제어합니다.',
+      },
+    },
+  },
   args: {
     isDisabled: true,
     title: '파일을 추가해요',
@@ -195,6 +322,14 @@ export const Readonly: StoryObj<typeof MDSFileUploader.Dropzone> = {
 };
 
 export const Grid: StoryObj<typeof MDSFileUploader.Dropzone> = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '커스텀 레이아웃 예시입니다. Dropzone, Grid, GridImage 등 서브 컴포넌트를 조합하여 원하는 UI를 구성할 수 있습니다.',
+      },
+    },
+  },
   args: {
     label: {
       main: 'Images',
@@ -231,6 +366,13 @@ export const Grid: StoryObj<typeof MDSFileUploader.Dropzone> = {
 };
 
 export const ScrollableGrid: StoryObj<typeof MDSFileUploader.Dropzone> = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'ScrollWrapper를 사용하면 스크롤 가능한 영역과 하단 sticky 요소를 표시할 수 있습니다.',
+      },
+    },
+  },
   args: {
     label: {
       main: 'Images',
@@ -304,6 +446,14 @@ const ButtonItem = ({
 };
 
 export const ButtonList: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Dropzone과 파일 목록을 분리한 레이아웃입니다. useMDSFileUploadState로 개별 아이템 상태를 구독하여 불필요한 리렌더링을 방지합니다.',
+      },
+    },
+  },
   args: {
     defaultValue: [...Array(32)].map((_, index) => ({
       data: { file: dummyFile, url: '', fileName: `파일명_수정_완성_파이널_이게진짜_${index}.png` },
@@ -335,6 +485,13 @@ export const ButtonList: StoryObj<UseMDSFileUploaderOptions> = {
 };
 
 export const ButtonUpload: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dropzone 없이 버튼으로만 파일을 선택하는 예시입니다. add() 함수를 직접 호출합니다.',
+      },
+    },
+  },
   render: function Render(props) {
     const { isUploading, add, value, remove, store } = useMDSFileUploader(props);
 

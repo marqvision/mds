@@ -302,7 +302,7 @@ export function useFileUploader<T extends FileData = FileData>(
         if (added.length > 0 && getPresignedUrl) {
           added.forEach((item, i) => {
             const index = multiple ? startIndex + i : 0;
-            item.data.file && void uploadFile(item.data.file, index);
+            item.data.file && uploadFile(item.data.file, index);
           });
         }
       } finally {
@@ -323,7 +323,7 @@ export function useFileUploader<T extends FileData = FileData>(
     const inputAccept = convertAcceptToInputAccept(accept);
     if (inputAccept) input.accept = inputAccept;
     input.multiple = multiple;
-    input.onchange = () => input.files && void addFiles(input.files);
+    input.onchange = () => input.files && addFiles(input.files);
     input.click();
   }, [isDisabled, accept, multiple, store, addFiles]);
 
@@ -351,7 +351,7 @@ export function useFileUploader<T extends FileData = FileData>(
             // 런타임 구조 검증
             if (!isValidDropData<T>(parsed)) {
               // 잘못된 구조면 무시하고 파일 드롭으로 처리
-              event.dataTransfer?.files && void addFiles(event.dataTransfer.files);
+              event.dataTransfer?.files && addFiles(event.dataTransfer.files);
               return;
             }
             if (dropKey && parsed.key !== dropKey) {
@@ -364,7 +364,7 @@ export function useFileUploader<T extends FileData = FileData>(
             // JSON 파싱 실패
           }
         }
-        event.dataTransfer?.files && void addFiles(event.dataTransfer.files);
+        event.dataTransfer?.files && addFiles(event.dataTransfer.files);
       },
       onDragOver: (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -383,7 +383,7 @@ export function useFileUploader<T extends FileData = FileData>(
         const files = event.clipboardData?.files;
         if (files && files.length > 0) {
           event.preventDefault();
-          void addFiles(files);
+          addFiles(files);
         }
       },
     }),

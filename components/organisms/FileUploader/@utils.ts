@@ -459,7 +459,10 @@ export const formatFileSize = (bytes: number): string => {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
 };
 
-/** 파일명에서 XSS 위험 문자 이스케이프 (HTML 특수문자 제거) */
+/**
+ * 파일명에서 HTML 특수문자 이스케이프
+ * 에러 메시지 파라미터에서 사용됨 (React 자동 이스케이프와 중복되나 방어적 코딩)
+ */
 export const sanitizeFileName = (fileName: string): string => {
   return fileName
     .replace(/&/g, '&amp;')
@@ -658,7 +661,7 @@ export const createItemFromFile = (file: File, hasPresignedUrl: boolean): Item =
   data: {
     file,
     url: '',
-    fileName: file.name,
+    fileName: sanitizeFileName(file.name),
   },
   progress: hasPresignedUrl ? { percentage: 0, isUploading: true } : undefined,
 });

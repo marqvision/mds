@@ -97,4 +97,8 @@ export type StyleProps = {
   padding?: string | number;
   style?: CSSProperties;
   margin?: number;
+  /**
+   * default: white
+   */
+  bgColor?: 'white' | 'black';
 };

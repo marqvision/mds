@@ -8,6 +8,7 @@ export type TooltipProps = {
   size?: 'small' | 'medium';
   width?: number | string;
   style?: CSSProperties;
+  bgColor?: 'black' | 'white';
   /**
    * Whether to dismiss the tooltip when the user leaves the dialog element.
    * @default true

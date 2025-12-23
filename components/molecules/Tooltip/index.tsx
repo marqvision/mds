@@ -1,6 +1,5 @@
-import { isValidElement, useRef } from 'react';
+import { isValidElement } from 'react';
 import styled from '@emotion/styled';
-import { useTheme } from '@emotion/react';
 import { MDSPopover } from '../Popover';
 import { MDSTypography } from '../../atoms/Typography';
 import { MDSIcon } from '../../atoms/Icon';
@@ -14,8 +13,16 @@ const StyledIcon = styled(MDSIcon.Help)`
 `;
 
 export const MDSTooltip = (props: TooltipProps) => {
-  const { children, title, size = 'medium', position = 'top-center', width, interactive = true, style } = props;
-  const { color } = useTheme();
+  const {
+    children,
+    title,
+    size = 'medium',
+    position = 'top-center',
+    width,
+    interactive = true,
+    bgColor = 'black',
+    style,
+  } = props;
 
   return (
     <MDSPopover
@@ -26,8 +33,8 @@ export const MDSTooltip = (props: TooltipProps) => {
       anchor={children || <StyledIcon variant="border" size={16} color="color/content/neutral/secondary/normal" />}
       width="auto"
       margin={Theme.size[size].margin}
+      bgColor={bgColor}
       style={{
-        backgroundColor: color.bg.surface.inverse.light,
         borderRadius: '4px',
         maxWidth: width || Theme.size[size].maxWidth,
         width,

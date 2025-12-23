@@ -3,7 +3,6 @@ import { DropdownItem, InferType, Props, SortType, StickyBottomItemType, ValueTy
 import { flattenDropdown, getFilteredList, getItemFromList, getValueFromList } from './@utils';
 
 export const useDropdown = <T>({
-  value,
   list,
   hasSort,
   hasCustomSearch,
@@ -20,20 +19,6 @@ export const useDropdown = <T>({
     () => getFilteredList(list, hasCustomSearch ? '' : search, sort),
     [hasCustomSearch, search, list, sort]
   );
-
-  useEffect(() => {
-    if (!value || Array.isArray(value)) return;
-    const el = document.getElementById(`mds-drop-item-${CSS.escape(String(value))}`);
-    if (!el) return;
-
-    const raf = requestAnimationFrame(() => {
-      el.scrollIntoView({ block: 'center', inline: 'center' });
-    });
-
-    return () => {
-      cancelAnimationFrame(raf);
-    };
-  }, [value]);
 
   return {
     search,

@@ -10,7 +10,7 @@ import { findScrollOffset } from './@utils';
 const MIN_PADDING = 4;
 const TRANSITION = '300ms ease-out';
 
-const Dialog = styled.dialog<{ margin?: number; arrowPosition?: string }>`
+const Dialog = styled.dialog<{ margin?: number; arrowPosition?: string; bgColor: 'white' | 'black' }>`
   border: none;
   padding: ${({ margin }) => (margin === undefined ? MIN_PADDING : margin)}px;
   margin: 0;
@@ -50,7 +50,12 @@ const Dialog = styled.dialog<{ margin?: number; arrowPosition?: string }>`
     position: absolute;
     background-image: url('data:image/svg+xml,%3Csvg%20width%3D%228%22%20height%3D%226%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%2C0%20L3.5%2C5%20Q4%2C5.5%204.5%2C5%20L8%2C0%20Z%22%20fill%3D%22${({
       theme,
-    }) => theme.color.bg.surface.inverse.light.replace('#', '%23')}%22%20/%3E%3C/svg%3E');
+      bgColor,
+    }) => {
+      const bg =
+        bgColor === 'white' ? theme.color.bg.surface.neutral.default.normal : theme.color.bg.surface.inverse.light;
+      return bg.replace('#', '%23');
+    }}%22%20/%3E%3C/svg%3E');
     ${({ arrowPosition }) => arrowPosition}
   }
   &.dismissOnLeave {
@@ -62,7 +67,8 @@ const DialogContent = styled.div<StyleProps>`
   position: relative;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};
+  background-color: ${({ theme, bgColor }) =>
+    bgColor === 'white' ? theme.color.bg.surface.neutral.default.normal : theme.color.bg.surface.inverse.light};
   width: ${({ width }) => width};
   max-height: ${({ maxHeight }) => maxHeight};
   padding: ${({ padding }) => padding};
@@ -92,6 +98,7 @@ const Popover = (
     isLoading,
     width = '280px',
     maxHeight: _maxHeight = '480px',
+    bgColor = 'white',
     padding = '16px 20px',
     children: _children,
     isOpen,
@@ -298,12 +305,14 @@ const Popover = (
         zIndex,
         visibility: coordinates ? 'visible' : 'hidden',
       }}
+      bgColor={bgColor}
       arrowPosition={Theme.position[getPositionKey()]}
     >
       <DialogContent
         width={typeof width === 'string' ? width : `${width}px`}
         maxHeight={`${maxHeight}px`}
         padding={padding}
+        bgColor={bgColor}
         style={{ ...style }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -516,6 +525,7 @@ export const MDSPopover = (props: Props & StyleProps) => {
         handleOpenPopover(e);
       }
       handleMouseEnter();
+      anchor.props.onMouseEnter?.(e);
     },
     onMouseLeave: handleMouseLeave,
   });

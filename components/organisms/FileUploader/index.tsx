@@ -18,7 +18,7 @@ import {
   UseFileUploaderOptions,
   UseFileUploaderReturn,
 } from './@types';
-import { checkIsImage, getExtensionFromFileName, setDropData } from './@utils';
+import { checkIsImage, getExtensionFromFileName, setDropData, toastMDSSnackbarError } from './@utils';
 
 type BaseProps = {
   isReadonly?: boolean;
@@ -91,6 +91,7 @@ const utils = {
   setDropData,
   checkIsImage,
   getExtensionFromFileName,
+  toastMDSSnackbarError,
 };
 
 export const MDSFileUploader = FileUploader;

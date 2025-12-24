@@ -125,8 +125,8 @@ export type UseFileUploaderOptions<Multiple extends boolean = true, T extends Fi
   onChange?: (value: Multiple extends true ? Item<T>[] : Item<T>) => void;
   /** 업로드 완료 시 콜백 */
   onUploadComplete?: (index: number, url: string) => void;
-  /** 에러 발생 시 콜백 */
-  onError?: (error: FileUploaderError) => void;
+  /** 에러 발생 시 콜백 (`false`: 기본 이벤트 실행 방지) */
+  onError?: ((error: FileUploaderError) => void) | false;
 };
 
 export type DropzoneHandlers = {

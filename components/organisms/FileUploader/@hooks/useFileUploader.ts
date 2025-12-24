@@ -20,6 +20,7 @@ import {
   getBaseUrl,
   isValidDropData,
   revokeBlobUrl,
+  toastMDSSnackbarError,
   uploadFileToS3,
   validateFiles,
 } from '../@utils';
@@ -87,7 +88,10 @@ export function useFileUploader<T extends FileData = FileData>(
         message: ERROR_MESSAGE[error.code](params),
       };
       store.setGlobalError(fullError);
-      onError?.(fullError);
+
+      if (onError === false) return;
+      const toastError = onError || toastMDSSnackbarError;
+      toastError?.(fullError);
     },
     [store, onError]
   );

@@ -4,6 +4,7 @@ import {
   MDSFileUploader,
   MDSIcon,
   MDSPlainButton,
+  MDSSnackbarContainer,
   useMDSFileUploader,
   UseMDSFileUploaderOptions,
   UseMDSFileUploaderReturn,
@@ -23,7 +24,7 @@ const meta: Meta = {
 
 **기본 사용법**
 \`\`\`tsx
-const fileUploader = useMDSFileUploader({ onError: (e) => alert(e.message.ko) });
+const fileUploader = useMDSFileUploader();
 return <MDSFileUploader {...fileUploader} />;
 \`\`\`
 
@@ -45,6 +46,14 @@ return <MDSFileUploader {...fileUploader} />;
     },
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <>
+        <Story />
+        <MDSSnackbarContainer />
+      </>
+    ),
+  ],
 };
 
 export default meta;
@@ -85,9 +94,6 @@ export const Preview: StoryObj<UseMDSFileUploaderOptions> = {
   },
   args: {
     isDisabled: false,
-    onError: (error) => {
-      alert(error.message.en);
-    },
   },
   render: function Render(props) {
     const fileUploaderProps = useMDSFileUploader(props);
@@ -131,7 +137,6 @@ export const SingleFile: StoryObj<UseMDSFileUploaderOptions> = {
   render: function Render() {
     const fileUploader = useMDSFileUploader({
       limit: 1,
-      onError: (e) => alert(e.message.ko),
     });
     return (
       <Wrapper>
@@ -153,7 +158,6 @@ export const AcceptTypes: StoryObj<UseMDSFileUploaderOptions> = {
   render: function Render() {
     const fileUploader = useMDSFileUploader({
       accept: 'image',
-      onError: (e) => alert(e.message.ko),
     });
     return (
       <Wrapper>
@@ -174,7 +178,6 @@ export const MaxFileSize: StoryObj<UseMDSFileUploaderOptions> = {
   render: function Render() {
     const fileUploader = useMDSFileUploader({
       maxFileSize: 1024 * 1024, // 1MB
-      onError: (e) => alert(e.message.ko),
     });
     return (
       <Wrapper>

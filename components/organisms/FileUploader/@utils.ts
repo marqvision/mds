@@ -1,4 +1,5 @@
 import React from 'react';
+import { MDSSnackbar } from '../Snackbar';
 import {
   ERROR_CODE,
   FILE_CATEGORY,
@@ -665,3 +666,5 @@ export const createItemFromFile = (file: File, hasPresignedUrl: boolean): Item =
   },
   progress: hasPresignedUrl ? { percentage: 0, isUploading: true } : undefined,
 });
+
+export const toastMDSSnackbarError = (error: FileUploaderError) => MDSSnackbar({ type: 'error', title: error.message.en });

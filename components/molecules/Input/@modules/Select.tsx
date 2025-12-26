@@ -102,40 +102,64 @@ export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElemen
     ? labels.join(', ')
     : labels.map((label, index) => (isValidElement(label) ? cloneElement(label, { key: `label-${index}` }) : label));
 
-  const ChipList =
-    custom?.withChip && valueList.length > 0 ? (
-      valueList.map((v) => {
-        if (typeof custom.withChip === 'function') {
-          return custom.withChip(v);
-        }
-        return (
-          <MDSButton
-            key={v}
-            size={theme.size[size].chipSize}
-            color="bluegray"
-            variant="tint"
-            isDisabled={isDisabled}
-            endIcon={
-              <StyledIcon
-                as={MDSIcon.CloseDelete}
-                className={clsx(onChange ? 'show' : undefined, 'mds-delete-icon')}
-                variant="fill"
-                disabled={isDisabled}
-                size={16}
-                color={isDisabled ? 'color/content/neutral/default/disabled' : undefined}
-                onClick={(e) => handleDelete(e, v)}
-              />
-            }
-          >
-            {getLabelFromList(v)}
-          </MDSButton>
-        );
-      })
-    ) : (
-      <Placeholder size={theme.size[size].typographySize} color="color/content/placeholder/normal">
-        {placeholder || '\u00A0'}
-      </Placeholder>
-    );
+  const chipList = (() => {
+    if (!custom?.withChip) {
+      return undefined;
+    }
+
+    const limit =
+      typeof custom?.withChip === 'object' && custom.withChip.maxVisibleCount
+        ? custom.withChip.maxVisibleCount
+        : Infinity;
+
+    const length = valueList.length;
+
+    if (!length) {
+      return (
+        <Placeholder size={theme.size[size].typographySize} color="color/content/placeholder/normal">
+          {placeholder || '\u00A0'}
+        </Placeholder>
+      );
+    }
+
+    const chips = valueList.slice(0, limit).map((v) => {
+      if (typeof custom.withChip === 'function') {
+        return custom.withChip(v);
+      }
+      return (
+        <MDSButton
+          key={v}
+          size={theme.size[size].chipSize}
+          color="bluegray"
+          variant="tint"
+          isDisabled={isDisabled}
+          endIcon={
+            <StyledIcon
+              as={MDSIcon.CloseDelete}
+              className={clsx(onChange ? 'show' : undefined, 'mds-delete-icon')}
+              variant="fill"
+              disabled={isDisabled}
+              size={16}
+              color={isDisabled ? 'color/content/neutral/default/disabled' : undefined}
+              onClick={(e) => handleDelete(e, v)}
+            />
+          }
+        >
+          {getLabelFromList(v)}
+        </MDSButton>
+      );
+    });
+
+    if (length > limit) {
+      chips.push(
+        <MDSButton key="more-chip" size={theme.size[size].chipSize} color="bluegray" variant="tint">
+          +{length - limit}
+        </MDSButton>
+      );
+    }
+
+    return chips;
+  })();
 
   return (
     <StyledLabel
@@ -166,7 +190,7 @@ export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElemen
                 readOnly: isReadOnly,
               })}
             >
-              {ChipList}
+              {chipList}
             </StyledChipList>
           ) : (
             <StyledButton

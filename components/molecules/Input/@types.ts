@@ -78,7 +78,7 @@ export type TextFieldCustom = {
  * @property {boolean} [flatRight] 오론쪽 radius 제거
  */
 type SelectCustom<T> = {
-  withChip?: boolean | ((value: ElementType<T>) => ReactElement);
+  withChip?: boolean | ((value: ElementType<T>) => ReactElement) | { maxVisibleCount: number };
   flatLeft?: boolean;
   flatRight?: boolean;
 };

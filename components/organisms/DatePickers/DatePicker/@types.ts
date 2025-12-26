@@ -11,7 +11,7 @@ export type AnchorProps =
       width?: MDSInputProps<string>['width'];
       mdsInputProps?: Omit<
         MDSInputProps<string>,
-        'variant' | 'list' | 'value' | 'format' | 'isMultiline' | 'ref' | 'inputProps' | 'onChange' | 'onBlur' // variant='input' 의 props 제거
+        'variant' | 'list' | 'value' | 'format' | 'isMultiline' | 'ref' | 'inputProps' | 'onChange' | 'onBlur' | 'width' // variant='input' 의 props 제거
       >;
     }
   | {

@@ -255,7 +255,7 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
               key={errorIndex}
               size="small"
               color="red"
-              title={`[${code}] ${message.en}`}
+              title={`[${code}] ${message}`}
               message={files?.map((f) => f.name).join(', ')}
             />
           ))}
@@ -522,7 +522,7 @@ const ButtonItem = ({
       }
     >
       {item.data.fileName}
-      {item.error && ` : ${item.error.message.en}`}
+      {item.error && ` : ${item.error.message}`}
     </MDSButton>
   );
 };
@@ -553,7 +553,7 @@ export const ButtonList: StoryObj<UseMDSFileUploaderOptions> = {
           {progress.isUploading ? (
             <MDSFileUploader.Loading progress={progress} />
           ) : (
-            <MDSFileUploader.Placeholder onAdd={add} errorMessage={errors.map((e) => e.message.en).join('\n')} />
+            <MDSFileUploader.Placeholder onAdd={add} errorMessage={errors.map((e) => e.message).join('\n')} />
           )}
         </MDSFileUploader.Dropzone>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>

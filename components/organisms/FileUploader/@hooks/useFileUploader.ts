@@ -46,6 +46,7 @@ export function useFileUploader<T extends FileData = FileData>(
     getPresignedUrl,
     dropKey,
     isDisabled,
+    language = 'en',
     onChange,
     onUploadComplete,
     onError,
@@ -85,7 +86,7 @@ export function useFileUploader<T extends FileData = FileData>(
       const { params, ...rest } = error;
       const fullError: FileUploaderError = {
         ...rest,
-        message: ERROR_MESSAGE[error.code](params),
+        message: ERROR_MESSAGE[error.code](params)[language],
       };
       store.addGlobalError(fullError);
 
@@ -93,7 +94,7 @@ export function useFileUploader<T extends FileData = FileData>(
       const toastError = onError || toastMDSSnackbarError;
       toastError?.(fullError);
     },
-    [store, onError]
+    [store, onError, language]
   );
 
   // error 클리어 (index 없으면 전체 아이템 error + 전역 globalErrors)
@@ -160,9 +161,10 @@ export function useFileUploader<T extends FileData = FileData>(
   const setError = useMemo(
     () =>
       multiple
-        ? (index: number, error?: ErrorCode) => setValueAt(index, (prev) => ({ ...prev, error: getErrorData(error) }))
-        : (error?: ErrorCode) => setValueAt(0, (prev) => ({ ...prev, error: getErrorData(error) })),
-    [multiple, setValueAt]
+        ? (index: number, error?: ErrorCode) =>
+            setValueAt(index, (prev) => ({ ...prev, error: getErrorData(language, error) }))
+        : (error?: ErrorCode) => setValueAt(0, (prev) => ({ ...prev, error: getErrorData(language, error) })),
+    [multiple, setValueAt, language]
   );
 
   // 아이템 삭제
@@ -260,13 +262,13 @@ export function useFileUploader<T extends FileData = FileData>(
 
         store.setItem(index, (prev) => ({
           ...prev,
-          error: getErrorData(ERROR_CODE.UPLOAD_FAILED),
+          error: getErrorData(language, ERROR_CODE.UPLOAD_FAILED),
           progress: { percentage: 0, isUploading: false },
         }));
         notifyChange(store.getItems());
       }
     },
-    [getPresignedUrl, store, notifyChange, onUploadComplete]
+    [getPresignedUrl, store, notifyChange, onUploadComplete, language]
   );
 
   // 파일 추가 공통 로직

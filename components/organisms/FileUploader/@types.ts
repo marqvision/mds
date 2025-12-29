@@ -27,7 +27,7 @@ export type FileData = {
 };
 export type ErrorData = {
   code: ErrorCode;
-  message: Record<Language, string>;
+  message: string;
 };
 
 export type Item<T extends FileData = FileData> = {
@@ -131,6 +131,8 @@ export type UseFileUploaderOptions<Multiple extends boolean = true, T extends Fi
   dropKey?: string;
   /** 파일 업로드 비활성화 여부 */
   isDisabled?: boolean;
+  /** 언어 (기본값: 'en') */
+  language?: Language;
   /** 아이템 변경 시 콜백 */
   onChange?: (value: Multiple extends true ? Item<T>[] : Item<T>) => void;
   /** 업로드 완료 시 콜백 */

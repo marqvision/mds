@@ -22,6 +22,7 @@ import {
   FileUploaderError,
   FileUploaderStore,
   Item,
+  Language,
   Listener,
   Progress,
   ValidationError,
@@ -644,9 +645,9 @@ export const createItemFromFile = (file: File, hasPresignedUrl: boolean): Item =
 });
 
 export const toastMDSSnackbarError = (error: FileUploaderError) =>
-  MDSSnackbar({ type: 'error', title: error.message.en });
+  MDSSnackbar({ type: 'error', title: error.message });
 
-export const getErrorData = (code?: ErrorCode): ErrorData | undefined => {
+export const getErrorData = (language: Language, code?: ErrorCode): ErrorData | undefined => {
   if (!code) return undefined;
-  return { code, message: ERROR_MESSAGE[code]() };
+  return { code, message: ERROR_MESSAGE[code]()[language] };
 };

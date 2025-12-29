@@ -2,6 +2,7 @@ import React from 'react';
 import { MDSSnackbar } from '../Snackbar';
 import {
   ERROR_CODE,
+  ERROR_MESSAGE,
   FILE_CATEGORY,
   FILE_TYPE,
   IMAGE_EXTENSIONS,
@@ -13,6 +14,7 @@ import {
   DerivedState,
   DropData,
   ErrorCode,
+  ErrorData,
   ErrorItem,
   FileCategory,
   FileData,
@@ -22,7 +24,26 @@ import {
   Item,
   Listener,
   Progress,
+  ValidationError,
 } from './@types';
+
+/** 아이템이 업로드 진행 중인지 판단 */
+export const checkIsItemUploading = (progress: Progress | null | undefined): boolean => {
+  if (!progress) return false;
+  if (progress.isUploading === true) return true;
+  if (progress.percentage !== undefined && progress.percentage > 0 && progress.percentage < 100) return true;
+  if (progress.count && progress.count.current < progress.count.total) return true;
+  return false;
+};
+
+/** 아이템이 업로드 완료되었는지 판단 */
+export const checkIsItemCompleted = (progress: Progress | undefined): boolean => {
+  if (!progress) return false;
+  if (progress.isUploading === false) return true;
+  if (progress.percentage === 100) return true;
+  if (progress.count && progress.count.current === progress.count.total && progress.count.total > 0) return true;
+  return false;
+};
 
 export const calculateDerivedState = <T extends FileData = FileData>(items: Item<T>[]): DerivedState<T> => {
   const errorItems: ErrorItem<T>[] = items.map((item, index) => ({ index, item })).filter(({ item }) => item.error);
@@ -72,8 +93,9 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
   initialItems: Item<T>[] = []
 ): FileUploaderStore<T> => {
   let items: Item<T>[] = [...initialItems];
-  let globalError: FileUploaderError | null = null;
+  let globalErrors: FileUploaderError[] = [];
   let batchProgress: Progress | null = null;
+  let cachedCombinedErrors: FileUploaderError[] = [];
   const derivedState: DerivedState<T> = calculateDerivedState(items);
 
   const itemListeners = new Map<number, Set<Listener>>();
@@ -82,7 +104,18 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
   const isUploadingListeners = new Set<Listener>();
   const errorsListeners = new Set<Listener>();
   const isErrorListeners = new Set<Listener>();
-  let prevIsError = globalError !== null || derivedState.errors.length > 0;
+  let prevIsError = globalErrors.length > 0 || derivedState.errors.length > 0;
+
+  // combinedErrors 캐시 업데이트
+  const updateCachedCombinedErrors = () => {
+    const itemErrors: FileUploaderError[] = derivedState.errors.map(({ index, item }) => ({
+      ...item.error!,
+      files: item.data.file ? [item.data.file] : undefined,
+      index,
+    }));
+    cachedCombinedErrors = [...globalErrors, ...itemErrors];
+  };
+  updateCachedCombinedErrors();
 
   const notifyItem = (index: number) => {
     itemListeners.get(index)?.forEach((listener) => listener());
@@ -92,10 +125,11 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
     globalListeners.forEach((listener) => listener());
   };
 
-  const clearGlobalError = () => {
-    if (!globalError) return;
+  const clearGlobalErrors = () => {
+    if (globalErrors.length === 0) return;
 
-    globalError = null;
+    globalErrors = [];
+    updateCachedCombinedErrors();
     errorsListeners.forEach((listener) => listener());
 
     const hasError = derivedState.errors.length > 0;
@@ -139,11 +173,12 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     if (errorsChanged) {
       derivedState.errors = newState.errors;
+      updateCachedCombinedErrors();
       errorsListeners.forEach((listener) => listener());
     }
 
     // isError 변경 체크
-    const hasError = globalError !== null || derivedState.errors.length > 0;
+    const hasError = globalErrors.length > 0 || derivedState.errors.length > 0;
     if (hasError !== prevIsError) {
       prevIsError = hasError;
       isErrorListeners.forEach((listener) => listener());
@@ -180,8 +215,9 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
       notifyItem(index);
 
       // data 변경 시 글로벌 에러도 클리어
-      if (dataChanged && globalError) {
-        globalError = null;
+      if (dataChanged && globalErrors.length > 0) {
+        globalErrors = [];
+        updateCachedCombinedErrors();
         errorsListeners.forEach((listener) => listener());
       }
 
@@ -200,45 +236,16 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     // isUploading 구독
     subscribeIsUploading: createSubscriber(isUploadingListeners),
-    getIsUploading: () => {
-      if (batchProgress) {
-        if (batchProgress.isUploading === true) return true;
-        if (
-          batchProgress.percentage !== undefined &&
-          batchProgress.percentage > 0 &&
-          batchProgress.percentage < 100
-        )
-          return true;
-        if (batchProgress.count && batchProgress.count.current < batchProgress.count.total) return true;
-      }
-      return derivedState.isUploading;
-    },
+    getIsUploading: () => checkIsItemUploading(batchProgress) || derivedState.isUploading,
 
     // 배치 progress 직접 설정
     getBatchProgress: () => batchProgress,
     setBatchProgress: (progress: Progress | null) => {
-      // 변경 전 isUploading 상태 저장
-      const wasUploading =
-        (batchProgress?.isUploading === true ||
-          (batchProgress?.percentage !== undefined &&
-            batchProgress.percentage > 0 &&
-            batchProgress.percentage < 100) ||
-          (batchProgress?.count && batchProgress.count.current < batchProgress.count.total)) ||
-        derivedState.isUploading;
-
+      const wasUploading = checkIsItemUploading(batchProgress) || derivedState.isUploading;
       batchProgress = progress;
       progressListeners.forEach((listener) => listener());
 
-      // 변경 후 isUploading 상태 확인
-      const nowUploading =
-        (batchProgress?.isUploading === true ||
-          (batchProgress?.percentage !== undefined &&
-            batchProgress.percentage > 0 &&
-            batchProgress.percentage < 100) ||
-          (batchProgress?.count && batchProgress.count.current < batchProgress.count.total)) ||
-        derivedState.isUploading;
-
-      // isUploading 상태가 변경되었으면 리스너 알림
+      const nowUploading = checkIsItemUploading(batchProgress) || derivedState.isUploading;
       if (wasUploading !== nowUploading) {
         isUploadingListeners.forEach((listener) => listener());
       }
@@ -247,29 +254,33 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
     // errors 구독
     subscribeErrors: createSubscriber(errorsListeners),
     getErrors: () => derivedState.errors,
-    getErrorsState: () => globalError,
+    getGlobalErrors: () => cachedCombinedErrors,
 
     // isError 구독
     subscribeIsError: createSubscriber(isErrorListeners),
-    getIsError: () => globalError !== null || derivedState.errors.length > 0,
+    getIsError: () => globalErrors.length > 0 || derivedState.errors.length > 0,
 
-    // 전역 에러 설정
-    setGlobalError: (error: FileUploaderError | null) => {
-      const wasError = globalError !== null || derivedState.errors.length > 0;
-      globalError = error;
+    // 전역 에러 추가
+    addGlobalError: (error: FileUploaderError) => {
+      const wasError = globalErrors.length > 0 || derivedState.errors.length > 0;
+      globalErrors = [...globalErrors, error];
+      updateCachedCombinedErrors();
       errorsListeners.forEach((listener) => listener());
 
       // isError 변경 체크
-      const hasError = globalError !== null || derivedState.errors.length > 0;
+      const hasError = globalErrors.length > 0 || derivedState.errors.length > 0;
       if (hasError !== wasError) {
         prevIsError = hasError;
         isErrorListeners.forEach((listener) => listener());
       }
     },
 
+    // 전역 에러 클리어
+    clearGlobalErrors,
+
     // 아이템 추가
     addItems: (newItems: Item<T>[]) => {
-      clearGlobalError();
+      clearGlobalErrors();
       items = [...items, ...newItems];
       notifyGlobal();
       updateDerivedState();
@@ -277,7 +288,7 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     // 아이템 삭제
     removeItem: (index: number) => {
-      clearGlobalError();
+      clearGlobalErrors();
       items = items.filter((_, i) => i !== index);
 
       // 리스너 인덱스 시프트 (삭제된 인덱스 제외, 큰 인덱스는 -1)
@@ -300,7 +311,7 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     // 전체 리셋
     reset: (newItems: Item<T>[] = []) => {
-      clearGlobalError();
+      clearGlobalErrors();
       items = [...newItems];
       notifyGlobal();
       itemListeners.forEach((listeners) => {
@@ -433,24 +444,6 @@ export const checkIsFileAccepted = async (file: File, accept?: AcceptType | Acce
   return targetMimeTypes.includes(file.type);
 };
 
-/** 아이템이 업로드 진행 중인지 판단 */
-export const checkIsItemUploading = (progress: Progress | undefined): boolean => {
-  if (!progress) return false;
-  if (progress.isUploading === true) return true;
-  if (progress.percentage !== undefined && progress.percentage > 0 && progress.percentage < 100) return true;
-  if (progress.count && progress.count.current < progress.count.total) return true;
-  return false;
-};
-
-/** 아이템이 업로드 완료되었는지 판단 */
-export const checkIsItemCompleted = (progress: Progress | undefined): boolean => {
-  if (!progress) return false;
-  if (progress.isUploading === false) return true;
-  if (progress.percentage === 100) return true;
-  if (progress.count && progress.count.current === progress.count.total && progress.count.total > 0) return true;
-  return false;
-};
-
 /** 파일 크기를 읽기 쉬운 형식으로 변환 */
 export const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 B';
@@ -502,19 +495,14 @@ export const checkIsImage = (data: FileData): boolean => {
   return ext ? IMAGE_EXTENSIONS.includes(ext) : false;
 };
 
-/** 파일 검증 결과 타입 */
-export type FileValidationResult = {
-  valid: File[];
-  invalidType: File[];
-  empty: File[];
-  oversized: File[];
-};
-
 /** 파일 목록 검증 (accept, size 체크) */
 export const validateFiles = async (
   files: File[],
   options: { accept?: AcceptType | AcceptType[]; maxFileSize?: number }
-): Promise<FileValidationResult> => {
+): Promise<{
+  valid: File[];
+  errors: ValidationError[];
+}> => {
   const { accept, maxFileSize } = options;
 
   const acceptResults = await Promise.all(
@@ -530,7 +518,31 @@ export const validateFiles = async (
   const oversized = maxFileSize ? accepted.filter((f) => f.size > maxFileSize) : [];
   const valid = accepted.filter((f) => f.size > 0 && (!maxFileSize || f.size <= maxFileSize));
 
-  return { valid, invalidType, empty, oversized };
+  // 에러 생성
+  const errors: ValidationError[] = [];
+  if (invalidType.length > 0) {
+    errors.push({
+      code: ERROR_CODE.INVALID_FILE_TYPE,
+      files: invalidType,
+      params: { filename: invalidType.map((f) => sanitizeFileName(f.name)).join(', ') },
+    });
+  }
+  if (empty.length > 0) {
+    errors.push({
+      code: ERROR_CODE.EMPTY_FILE,
+      files: empty,
+      params: { filename: empty.map((f) => sanitizeFileName(f.name)).join(', ') },
+    });
+  }
+  if (oversized.length > 0 && maxFileSize) {
+    errors.push({
+      code: ERROR_CODE.FILE_SIZE_EXCEEDED,
+      files: oversized,
+      params: { maxFileSize: formatFileSize(maxFileSize) },
+    });
+  }
+
+  return { valid, errors };
 };
 
 /** subscribe 헬퍼 함수 생성 */
@@ -621,42 +633,6 @@ export const isValidDropData = <T extends FileData>(data: unknown): data is Drop
   });
 };
 
-/** 파일 검증 에러 정보 타입 */
-export type ValidationError = {
-  code: ErrorCode;
-  files: File[];
-  params?: Record<string, string | number>;
-};
-
-/** 파일 검증 결과에 대한 에러 리포트 생성 */
-export const createValidationErrors = (result: FileValidationResult, maxFileSize?: number): ValidationError[] => {
-  const errors: ValidationError[] = [];
-
-  if (result.invalidType.length > 0) {
-    errors.push({
-      code: ERROR_CODE.INVALID_FILE_TYPE,
-      files: result.invalidType,
-      params: { filename: result.invalidType.map((f) => sanitizeFileName(f.name)).join(', ') },
-    });
-  }
-  if (result.empty.length > 0) {
-    errors.push({
-      code: ERROR_CODE.EMPTY_FILE,
-      files: result.empty,
-      params: { filename: result.empty.map((f) => sanitizeFileName(f.name)).join(', ') },
-    });
-  }
-  if (result.oversized.length > 0 && maxFileSize) {
-    errors.push({
-      code: ERROR_CODE.FILE_SIZE_EXCEEDED,
-      files: result.oversized,
-      params: { maxFileSize: formatFileSize(maxFileSize) },
-    });
-  }
-
-  return errors;
-};
-
 /** 파일을 Item 객체로 변환 */
 export const createItemFromFile = (file: File, hasPresignedUrl: boolean): Item => ({
   data: {
@@ -667,4 +643,10 @@ export const createItemFromFile = (file: File, hasPresignedUrl: boolean): Item =
   progress: hasPresignedUrl ? { percentage: 0, isUploading: true } : undefined,
 });
 
-export const toastMDSSnackbarError = (error: FileUploaderError) => MDSSnackbar({ type: 'error', title: error.message.en });
+export const toastMDSSnackbarError = (error: FileUploaderError) =>
+  MDSSnackbar({ type: 'error', title: error.message.en });
+
+export const getErrorData = (code?: ErrorCode): ErrorData | undefined => {
+  if (!code) return undefined;
+  return { code, message: ERROR_MESSAGE[code]() };
+};

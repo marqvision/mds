@@ -16,8 +16,8 @@ import {
   convertAcceptToInputAccept,
   createFileUploaderStore,
   createItemFromFile,
-  createValidationErrors,
   getBaseUrl,
+  getErrorData,
   isValidDropData,
   revokeBlobUrl,
   toastMDSSnackbarError,
@@ -87,7 +87,7 @@ export function useFileUploader<T extends FileData = FileData>(
         ...rest,
         message: ERROR_MESSAGE[error.code](params),
       };
-      store.setGlobalError(fullError);
+      store.addGlobalError(fullError);
 
       if (onError === false) return;
       const toastError = onError || toastMDSSnackbarError;
@@ -96,7 +96,7 @@ export function useFileUploader<T extends FileData = FileData>(
     [store, onError]
   );
 
-  // error 클리어 (index 없으면 전체 아이템 error + 전역 globalError)
+  // error 클리어 (index 없으면 전체 아이템 error + 전역 globalErrors)
   const clearError = useCallback(
     (index?: number) => {
       if (index !== undefined) {
@@ -105,7 +105,7 @@ export function useFileUploader<T extends FileData = FileData>(
         store.getItems().forEach((_, i) => {
           store.setItem(i, (prev) => ({ ...prev, error: undefined }));
         });
-        store.setGlobalError(null);
+        store.clearGlobalErrors();
       }
       notifyChange(store.getItems());
     },
@@ -160,8 +160,8 @@ export function useFileUploader<T extends FileData = FileData>(
   const setError = useMemo(
     () =>
       multiple
-        ? (index: number, error?: ErrorCode) => setValueAt(index, (prev) => ({ ...prev, error }))
-        : (error?: ErrorCode) => setValueAt(0, (prev) => ({ ...prev, error })),
+        ? (index: number, error?: ErrorCode) => setValueAt(index, (prev) => ({ ...prev, error: getErrorData(error) }))
+        : (error?: ErrorCode) => setValueAt(0, (prev) => ({ ...prev, error: getErrorData(error) })),
     [multiple, setValueAt]
   );
 
@@ -260,14 +260,13 @@ export function useFileUploader<T extends FileData = FileData>(
 
         store.setItem(index, (prev) => ({
           ...prev,
-          error: ERROR_CODE.UPLOAD_FAILED,
+          error: getErrorData(ERROR_CODE.UPLOAD_FAILED),
           progress: { percentage: 0, isUploading: false },
         }));
         notifyChange(store.getItems());
-        raiseError({ code: ERROR_CODE.UPLOAD_FAILED, files: [file], index });
       }
     },
-    [getPresignedUrl, store, notifyChange, onUploadComplete, raiseError]
+    [getPresignedUrl, store, notifyChange, onUploadComplete]
   );
 
   // 파일 추가 공통 로직
@@ -284,16 +283,17 @@ export function useFileUploader<T extends FileData = FileData>(
 
       try {
         // 1. 파일 검증
-        const validationResult = await validateFiles(fileArray, { accept, maxFileSize });
+        const { valid, errors: validationErrors } = await validateFiles(fileArray, { accept, maxFileSize });
 
-        // 2. 에러 리포트
-        createValidationErrors(validationResult, maxFileSize).forEach(raiseError);
-
-        const { valid } = validationResult;
-        if (valid.length === 0) return;
+        // 2. 유효한 파일이 없으면 에러만 리포트
+        if (valid.length === 0) {
+          validationErrors.forEach(raiseError);
+          return;
+        }
 
         // 3. limit 초과 체크
         if (limit && store.getLength() + valid.length > limit) {
+          validationErrors.forEach(raiseError);
           raiseError({ code: ERROR_CODE.LIMIT_EXCEEDED, files: valid, params: { limit } });
           return;
         }
@@ -302,7 +302,10 @@ export function useFileUploader<T extends FileData = FileData>(
         const newItems = valid.map((file) => createItemFromFile(file, !!getPresignedUrl) as Item<T>);
         const { added, startIndex } = applyItems(newItems);
 
-        // 5. 업로드 시작
+        // 5. 에러 리포트 (아이템 추가 후에 실행해야 클리어되지 않음)
+        validationErrors.forEach(raiseError);
+
+        // 6. 업로드 시작
         if (added.length > 0 && getPresignedUrl) {
           added.forEach((item, i) => {
             const index = multiple ? startIndex + i : 0;

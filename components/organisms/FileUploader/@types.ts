@@ -25,10 +25,15 @@ export type FileData = {
   url: string;
   fileName: string;
 };
+export type ErrorData = {
+  code: ErrorCode;
+  message: Record<Language, string>;
+};
+
 export type Item<T extends FileData = FileData> = {
   data: T;
   progress?: Progress;
-  error?: ErrorCode;
+  error?: ErrorData;
 };
 
 export type Value<T extends FileData = FileData> = Item<T> | Item<T>[];
@@ -53,11 +58,15 @@ export type PlaceholderProps = {
 
 export type ErrorItem<T extends FileData = FileData> = { index: number; item: Item<T> };
 
-export type FileUploaderError = {
-  code: ErrorCode;
-  message: Record<Language, string>;
+export type FileUploaderError = ErrorData & {
   files?: File[];
   index?: number;
+};
+
+export type ValidationError = {
+  code: ErrorCode;
+  files: File[];
+  params?: Record<string, string | number>;
 };
 
 export type Listener = () => void;
@@ -92,14 +101,15 @@ export type FileUploaderStore<T extends FileData = FileData> = {
 
   subscribeErrors: (listener: Listener) => () => void;
   getErrors: () => ErrorItem<T>[];
-  getErrorsState: () => FileUploaderError | null;
+  getGlobalErrors: () => FileUploaderError[];
 
   // isError 구독
   subscribeIsError: (listener: Listener) => () => void;
   getIsError: () => boolean;
 
   // 전역 에러 설정
-  setGlobalError: (error: FileUploaderError | null) => void;
+  addGlobalError: (error: FileUploaderError) => void;
+  clearGlobalErrors: () => void;
 
   // 아이템 추가/삭제
   addItems: (items: Item<T>[]) => void;

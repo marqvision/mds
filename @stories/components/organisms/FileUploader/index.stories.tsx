@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MDSButton,
+  MDSCheckbox,
   MDSFileUploader,
   MDSIcon,
+  MDSMessageBox,
   MDSPlainButton,
   MDSSnackbarContainer,
   useMDSFileUploader,
@@ -182,6 +184,82 @@ export const MaxFileSize: StoryObj<UseMDSFileUploaderOptions> = {
     return (
       <Wrapper>
         <MDSFileUploader placeholder={{ description: '최대 1MB까지 업로드 가능합니다' }} {...fileUploader} />
+      </Wrapper>
+    );
+  },
+};
+
+export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story: `에러 상태를 스낵바 없이 리스트로 표시하는 예시입니다.
+
+**에러 테스트 방법:**
+- 이미지가 아닌 파일 업로드 → INVALID_FILE_TYPE 에러
+- 1MB 초과 파일 업로드 → FILE_SIZE_EXCEEDED 에러
+- "Simulate Upload Fail" 토글 ON 상태에서 업로드 → UPLOAD_FAILED 에러`,
+      },
+    },
+  },
+  args: {
+    accept: 'image',
+    maxFileSize: 1024 * 1024,
+    onError: false,
+  },
+  render: function Render(props) {
+    const [isSimulateUploadFail, setIsSimulateUploadFail] = useState<boolean>(false);
+
+    // 체크 ON일 때만 getPresignedUrl 제공 (업로드 시도 → 실패)
+    const getPresignedUrl = isSimulateUploadFail
+      ? async () => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          throw new Error('Simulated upload failure');
+        }
+      : undefined;
+
+    const { isUploading, add, value, remove, store, reset } = useMDSFileUploader({
+      ...props,
+      getPresignedUrl,
+    });
+    const errors = useMDSFileUploadState(store, 'errors');
+
+    return (
+      <Wrapper>
+        <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <span style={{ color: '#666', fontSize: '14px' }}>에러 개수: {errors.length}개</span>
+          <MDSCheckbox value={isSimulateUploadFail} onChange={setIsSimulateUploadFail} label="Simulate Upload Fail" />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <MDSButton
+            variant="border"
+            startIcon={<MDSIcon.Upload />}
+            isLoading={isUploading}
+            isDisabled={props.isDisabled}
+            onClick={add}
+          >
+            Upload
+          </MDSButton>
+          {(errors.length > 0 || value.length > 0) && (
+            <MDSPlainButton startIcon={<MDSIcon.Reset />} onClick={() => reset()}>
+              Reset
+            </MDSPlainButton>
+          )}
+          {value.map((_, index) => (
+            <ButtonItem key={index} index={index} store={store} remove={remove} />
+          ))}
+        </div>
+        <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {errors.map(({ code, files, message }, errorIndex) => (
+            <MDSMessageBox
+              key={errorIndex}
+              size="small"
+              color="red"
+              title={`[${code}] ${message.en}`}
+              message={files?.map((f) => f.name).join(', ')}
+            />
+          ))}
+        </div>
       </Wrapper>
     );
   },
@@ -431,19 +509,20 @@ const ButtonItem = ({
     <MDSButton
       key={index}
       variant="tint"
-      color="bluegray"
+      color={item.error ? 'red' : 'bluegray'}
       isLoading={item.progress?.isUploading}
       startIcon={<ExtensionIcon fileName={item.data.fileName} />}
       endIcon={
         <MDSPlainButton
           size="small"
-          color="bluegray"
+          color={item.error ? 'red' : 'bluegray'}
           icon={<MDSIcon.CloseDelete variant="border" />}
           onClick={() => remove(index)}
         />
       }
     >
       {item.data.fileName}
+      {item.error && ` : ${item.error.message.en}`}
     </MDSButton>
   );
 };
@@ -474,7 +553,7 @@ export const ButtonList: StoryObj<UseMDSFileUploaderOptions> = {
           {progress.isUploading ? (
             <MDSFileUploader.Loading progress={progress} />
           ) : (
-            <MDSFileUploader.Placeholder onAdd={add} errorMessage={errors?.message.en} />
+            <MDSFileUploader.Placeholder onAdd={add} errorMessage={errors.map((e) => e.message.en).join('\n')} />
           )}
         </MDSFileUploader.Dropzone>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>

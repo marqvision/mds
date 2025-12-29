@@ -13,13 +13,13 @@ import { FileData, FileUploaderError, FileUploaderStore, Item, Progress } from '
  * const item = useFileUploaderState(store, 'value.0');
  */
 export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: 'progress'): Progress;
-export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: 'errors'): FileUploaderError | null;
+export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: 'errors'): FileUploaderError[];
 export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: 'value'): Item<T>[];
 export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: `value.${number}`): Item<T> | undefined;
 export function useFileUploadState<T extends FileData = FileData>(
   store: FileUploaderStore<T>,
   key: 'progress' | 'errors' | 'value' | `value.${number}`
-): Progress | FileUploaderError | null | Item<T>[] | Item<T> | undefined {
+): Progress | FileUploaderError[] | Item<T>[] | Item<T> | undefined {
   const subscribe = useCallback(
     (listener: () => void) => {
       switch (key) {
@@ -43,7 +43,7 @@ export function useFileUploadState<T extends FileData = FileData>(
       case 'progress':
         return store.getProgress();
       case 'errors':
-        return store.getErrorsState();
+        return store.getGlobalErrors();
       case 'value':
         return store.getItems();
       default: {

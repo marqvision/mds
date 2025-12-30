@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useSyncExternalStore } from 'react';
-import { ERROR_CODE, ERROR_MESSAGE } from '../@constants';
+import { CONCURRENT_UPLOAD_LIMIT, ERROR_CODE, ERROR_MESSAGE } from '../@constants';
 import {
   DropzoneHandlers,
   ErrorCode,
@@ -309,10 +309,29 @@ export function useFileUploader<T extends FileData = FileData>(
 
         // 6. 업로드 시작
         if (added.length > 0 && getPresignedUrl) {
-          added.forEach((item, i) => {
-            const index = multiple ? startIndex + i : 0;
-            item.data.file && uploadFile(item.data.file, index);
-          });
+          const uploadQueue = added.map((item, i) => ({
+            file: item.data.file,
+            index: multiple ? startIndex + i : 0,
+          }));
+
+          let queueIndex = 0;
+
+          const uploadNext = async (): Promise<void> => {
+            if (queueIndex >= uploadQueue.length) return;
+
+            const current = uploadQueue[queueIndex];
+            queueIndex++;
+
+            if (current.file) {
+              await uploadFile(current.file, current.index);
+            }
+
+            await uploadNext();
+          };
+
+          // 동시 업로드 제한 적용
+          const workerCount = Math.min(CONCURRENT_UPLOAD_LIMIT, uploadQueue.length);
+          await Promise.all(Array.from({ length: workerCount }, () => uploadNext()));
         }
       } finally {
         // 처리 완료

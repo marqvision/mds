@@ -2,6 +2,7 @@ import { ErrorCode, Language } from './@types';
 
 export const TRANSITION_TIMING = '225ms';
 export const DEFAULT_COLUMN = 3;
+export const CONCURRENT_UPLOAD_LIMIT = 3;
 
 // 개별 파일 타입
 export const FILE_TYPE = {

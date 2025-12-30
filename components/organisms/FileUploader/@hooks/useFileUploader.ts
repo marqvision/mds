@@ -236,17 +236,15 @@ export function useFileUploader<T extends FileData = FileData>(
       if (!getPresignedUrl) return;
 
       try {
-        const finalUrl = await (async () => {
-          const presignedUrl = await getPresignedUrl(file.name);
+        const presignedUrl = await getPresignedUrl(file.name);
 
-          await uploadFileToS3(file, presignedUrl, (percentage) => {
-            if (!store.getItem(index)) return;
-            store.setItem(index, (prev) => ({ ...prev, progress: { percentage, isUploading: true } }));
-            notifyChange(store.getItems());
-          });
+        await uploadFileToS3(file, presignedUrl, (percentage) => {
+          if (!store.getItem(index)) return;
+          store.setItem(index, (prev) => ({ ...prev, progress: { percentage, isUploading: true } }));
+          notifyChange(store.getItems());
+        });
 
-          return getBaseUrl(presignedUrl);
-        })();
+        const finalUrl = getBaseUrl(presignedUrl);
 
         if (!store.getItem(index)) return;
 

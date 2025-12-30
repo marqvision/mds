@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useEffect, useState } from 'react';
 import {
   MDSButton,
   MDSCheckbox,
@@ -13,7 +14,7 @@ import {
   useMDSFileUploadState,
 } from '../../../../components';
 import { ExtensionIcon } from '../../../../components/organisms/FileUploader/@components/ExtensionIcon';
-import type { Meta, StoryObj } from '@storybook/react';
+import { applyMockXHR, createMockGetPresignedUrl, disposeMockXHR } from './mock';
 
 const meta: Meta = {
   title: '2. Components/organisms/FileUploader',
@@ -265,6 +266,64 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
   },
 };
 
+export const UploadProgress: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story: `실제 업로드처럼 progress가 표시되는 예시입니다.`,
+      },
+    },
+  },
+  render: function Render() {
+    useEffect(() => {
+      applyMockXHR();
+      return () => {
+        disposeMockXHR();
+      };
+    }, []);
+
+    const mockGetPresignedUrl = createMockGetPresignedUrl(300);
+
+    const { isUploading, store, value, length, add, dropzoneHandlers, remove } = useMDSFileUploader({
+      getPresignedUrl: mockGetPresignedUrl,
+    });
+
+    const progress = useMDSFileUploadState(store, 'progress');
+
+    return (
+      <Wrapper>
+        <MDSFileUploader.Dropzone
+          label={{ main: 'Upload Progress Simulation' }}
+          height="auto"
+          minHeight="200px"
+          {...dropzoneHandlers}
+        >
+          {isUploading ? (
+            <MDSFileUploader.Loading progress={progress} />
+          ) : !length ? (
+            <MDSFileUploader.Placeholder onAdd={add} />
+          ) : (
+            <MDSFileUploader.Grid column={4}>
+              {value.map(({ data }, index) => (
+                <MDSFileUploader.GridImage key={index} onDelete={() => remove(index)} data={data} />
+              ))}
+            </MDSFileUploader.Grid>
+          )}
+        </MDSFileUploader.Dropzone>
+        <div>
+          <p>Progress: {progress.percentage}%</p>
+          <p>Uploading: {progress.isUploading ? 'Yes' : 'No'}</p>
+          {progress.count && (
+            <p>
+              Files: {progress.count.current} / {progress.count.total}
+            </p>
+          )}
+        </div>
+      </Wrapper>
+    );
+  },
+};
+
 export const WithLabel: StoryObj<typeof MDSFileUploader.Dropzone> = {
   parameters: {
     docs: {
@@ -284,14 +343,12 @@ export const WithLabel: StoryObj<typeof MDSFileUploader.Dropzone> = {
     },
   },
   render: function Render(props) {
-    const { isUploading, store, add } = useMDSFileUploader();
-
-    const progress = useMDSFileUploadState(store, 'progress');
+    const { add } = useMDSFileUploader();
 
     return (
       <Wrapper>
         <MDSFileUploader.Dropzone {...props}>
-          {isUploading ? <MDSFileUploader.Loading progress={progress} /> : <MDSFileUploader.Placeholder onAdd={add} />}
+          <MDSFileUploader.Placeholder onAdd={add} />
         </MDSFileUploader.Dropzone>
       </Wrapper>
     );

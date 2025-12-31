@@ -25,25 +25,57 @@ const meta: Meta = {
         component: `
 파일 업로드를 위한 컴포넌트입니다.
 
-**기본 사용법**
 \`\`\`tsx
 const fileUploader = useMDSFileUploader();
 return <MDSFileUploader {...fileUploader} />;
 \`\`\`
 
-**주요 옵션 (useMDSFileUploader)**
-- \`accept\`: 허용할 파일 타입 ('image', 'jpg', ['png', 'gif'])
-- \`limit\`: 최대 파일 개수 (1이면 단일 파일 모드)
-- \`maxFileSize\`: 최대 파일 크기 (bytes)
-- \`onError\`: 에러 발생 시 콜백
-- \`onChange\`: 파일 변경 시 콜백
+---
+
+## useMDSFileUploader
+
+파일 업로드를 위한 상태와 액션을 제공하는 훅입니다.
+
+**옵션**
+| 옵션 | 타입 | 설명 |
+|------|------|------|
+| \`accept\` | FileType | 허용할 파일 타입 ('image', 'jpg', ['png', 'gif']) |
+| \`limit\` | number | 최대 파일 개수 (1이면 단일 파일 모드) |
+| \`maxFileSize\` | number | 최대 파일 크기 (bytes) |
+| \`onError\` | function \\| false | 에러 발생 시 콜백 (false면 스낵바 비활성화) |
+| \`onChange\` | function | 파일 변경 시 콜백 |
 
 **반환값**
-- \`value\`: 파일 목록 (또는 단일 파일)
-- \`add\`: 파일 선택창 열기
-- \`remove(index)\`: 파일 삭제
-- \`dropzoneHandlers\`: Dropzone에 전달할 이벤트
-- \`store\`: useMDSFileUploadState에서 사용
+| 반환값 | 타입 | 설명 |
+|--------|------|------|
+| \`value\` | Item[] | 파일 목록 (length 변경 시에만 리렌더) |
+| \`isUploading\` | boolean | 업로드 중 여부 |
+| \`isError\` | boolean | 에러 존재 여부 |
+| \`add\` | function | 파일 선택창 열기 |
+| \`remove\` | function | 파일 삭제 |
+| \`dropzoneHandlers\` | object | Dropzone에 전달할 이벤트 |
+| \`store\` | Store | useMDSFileUploadState와 함께 사용 |
+
+---
+
+## useMDSFileUploadState
+
+store를 통해 특정 상태만 구독하여 **불필요한 리렌더를 방지**합니다.
+
+**구독 옵션**
+| key | 반환값 | 설명 |
+|-----|--------|------|
+| \`progress\` | Progress | 업로드 진행상황 (percentage, count) |
+| \`errors\` | Error[] | 전체 에러 리스트 |
+| \`value\` | Item[] | 전체 파일 리스트 (개별 progress/error 포함) |
+| \`value.{index}\` | Item | 특정 인덱스의 파일 정보 |
+
+**사용 시나리오**
+- Button 업로드: \`isUploading\`만 사용
+- Dropzone 내 progress: \`useMDSFileUploadState(store, 'progress')\`
+- 에러 리스트 표시: \`useMDSFileUploadState(store, 'errors')\`
+- 테이블/Chip 리스트: \`useMDSFileUploadState(store, 'value')\`
+- 대량 파일 최적화: \`useMDSFileUploadState(store, 'value.{index}')\`
         `,
       },
     },
@@ -194,7 +226,10 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
   parameters: {
     docs: {
       description: {
-        story: `에러 상태를 스낵바 없이 리스트로 표시하는 예시입니다.
+        story: `\`useMDSFileUploadState(store, 'errors')\`로 에러를 리스트 형태로 표시합니다.
+
+기본적으로 에러는 MDSSnackbar로 표시되지만, 커스텀 UI가 필요할 때 \`errors\`를 구독하여 별도로 출력할 수 있습니다.
+이 예시에서는 \`onError: false\`로 스낵바를 비활성화하고 MessageBox로 에러를 표시합니다.
 
 **에러 테스트 방법:**
 - 이미지가 아닌 파일 업로드 → INVALID_FILE_TYPE 에러
@@ -270,7 +305,10 @@ export const UploadProgress: StoryObj<UseMDSFileUploaderOptions> = {
   parameters: {
     docs: {
       description: {
-        story: `실제 업로드처럼 progress가 표시되는 예시입니다.`,
+        story: `\`useMDSFileUploadState(store, 'progress')\`로 상세 진행상황을 구독합니다.
+
+Dropzone 내에 progress를 표시할 때 유용합니다.
+\`useFileUploader\`의 \`isUploading\`은 boolean만 제공하지만, \`progress\`는 percentage, count(current/total) 정보를 포함합니다.`,
       },
     },
   },
@@ -588,8 +626,12 @@ export const ButtonList: StoryObj<UseMDSFileUploaderOptions> = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Dropzone과 파일 목록을 분리한 레이아웃입니다. useMDSFileUploadState로 개별 아이템 상태를 구독하여 불필요한 리렌더링을 방지합니다.',
+        story: `Dropzone과 파일 목록을 분리한 레이아웃입니다.
+
+\`useMDSFileUploadState(store, 'value.{index}')\`로 개별 아이템만 구독하여 변경이 있는 아이템만 리렌더됩니다.
+업로드할 파일이 아주 많은 경우, 개별 아이템의 progress를 분리해서 구독하여 성능을 최적화할 수 있습니다.
+
+\`useFileUploader\`의 \`value\`는 length 변경 시에만 리렌더되므로, 테이블이나 Chip 리스트처럼 개별 아이템의 progress가 필요한 경우 \`useMDSFileUploadState\`를 사용합니다.`,
       },
     },
   },
@@ -627,7 +669,10 @@ export const ButtonUpload: StoryObj<UseMDSFileUploaderOptions> = {
   parameters: {
     docs: {
       description: {
-        story: 'Dropzone 없이 버튼으로만 파일을 선택하는 예시입니다. add() 함수를 직접 호출합니다.',
+        story: `Dropzone 없이 버튼으로만 파일을 선택하는 예시입니다.
+
+단순한 Button 업로드의 경우 상세 progress가 불필요하므로, \`useFileUploader\`의 \`isUploading\`만 사용하면 됩니다.
+\`useMDSFileUploadState\`를 사용하지 않아도 기본적인 업로드 기능을 구현할 수 있습니다.`,
       },
     },
   },

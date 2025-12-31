@@ -25,6 +25,29 @@ import {
   validateFiles,
 } from '../@utils';
 
+/**
+ * 파일 업로드를 위한 상태와 액션을 제공하는 훅
+ *
+ * ## 반환값
+ *
+ * - **value**: 파일 목록 (length 변경 시에만 리렌더)
+ * - **store**: useFileUploaderState와 함께 사용하여 특정 상태만 구독
+ *   - 상세 progress, 에러 리스트, 개별 아이템 상태가 필요한 경우 사용
+ * - **isUploading**: 업로드 중 여부 (Button 업로드 시 이것만으로 충분)
+ * - **isError**: 에러 존재 여부
+ * - **add**: 파일 선택창 열기
+ * - **remove(index)**: 파일 삭제
+ * - **dropzoneHandlers**: Dropzone에 전달할 이벤트 핸들러
+ *
+ * @example
+ * // 기본 사용법
+ * const { value, add, remove, dropzoneHandlers } = useMDSFileUploader();
+ *
+ * @example
+ * // 상세 progress가 필요한 경우
+ * const { store, ...rest } = useMDSFileUploader();
+ * const progress = useMDSFileUploadState(store, 'progress');
+ */
 // 오버로드 시그니처
 export function useFileUploader(): UseFileUploaderReturn<true, FileData>;
 export function useFileUploader<T extends FileData>(

@@ -128,10 +128,17 @@ const stringSort = (a: string, b: string, orderBy: SortType) => {
   return 0;
 };
 
-export const getAllListIndex = <T>(list: DropdownItem<T>[]) => {
+export const getAllListIndex = <T>(
+  list: DropdownItem<T>[],
+  value?: T
+): { arr: string[]; valueIndex: string | undefined } => {
   const arr: string[] = [];
+  let valueIndex: string | undefined = undefined;
 
   const loop = (curItem: DropdownItem<T>, index: string) => {
+    if (value && value === curItem.value) {
+      valueIndex = index;
+    }
     if (curItem.children) {
       arr.push(index);
       curItem.children.forEach((item, index2) => {
@@ -142,7 +149,10 @@ export const getAllListIndex = <T>(list: DropdownItem<T>[]) => {
 
   list.forEach((item, index) => loop(item, `${index}`));
 
-  return arr;
+  return {
+    arr,
+    valueIndex,
+  };
 };
 
 export const getItemFromList = <T>(value: T, list: MDSDropdownItem<T>[]) =>

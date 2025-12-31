@@ -171,6 +171,7 @@ const Dropdown = <T, SortT>(
   });
 
   const [isScrollTop, setIsScrollTop] = useState(false);
+  const [needToFocus, setNeedToFocus] = useState(false);
   const [minWidth, setMinWidth] = useState<number>(30);
   const [foldedItemIndex, setFoldedItemIndex] = useAtom(foldedItemIndexAtom);
 
@@ -390,16 +391,62 @@ const Dropdown = <T, SortT>(
 
   useEffect(() => {
     if (isFoldAll) {
-      setFoldedItemIndex(getAllListIndex(list));
+      const { arr, valueIndex } = getAllListIndex(
+        list,
+        value && !Array.isArray(value) ? (value as ValueType<T>) : undefined
+      );
+      let allIndex = arr;
+      if (typeof isFoldAll === 'number') {
+        allIndex = allIndex.filter((v) => v.split('_').length > isFoldAll);
+      }
+      if (valueIndex !== undefined) {
+        allIndex = allIndex.filter((v) => valueIndex.indexOf(v) !== 0);
+
+        setNeedToFocus(true);
+      }
+
+      setFoldedItemIndex(allIndex);
     }
-    // intentionally omitting list
-  }, [getAllListIndex, isFoldAll]);
+    // intentionally omitting list, value
+  }, [getAllListIndex, isFoldAll, setFoldedItemIndex]);
 
   useEffect(() => {
     if (hasCustomSearch) {
       onSearching(hasSearchValue);
     }
   }, [hasSearchValue, hasCustomSearch, onSearching]);
+
+  useEffect(() => {
+    const el = document.getElementById(`mds-drop-item-${CSS.escape(String(value))}`);
+    const scrollSection = wrapperRef.current?.querySelector('.mds-dropdown-scroll');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) {
+          if (el) {
+            el.scrollIntoView({ block: 'center', inline: 'center' });
+          }
+        }
+      },
+      {
+        root: scrollSection || undefined,
+      }
+    );
+
+    if (needToFocus) {
+      if (el) {
+        el.scrollIntoView({ block: 'center', inline: 'center' });
+        observer.observe(el);
+      }
+      setTimeout(() => {
+        setNeedToFocus(false);
+      }, 500);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [needToFocus]);
 
   return (
     <StyledDropdownWrap ref={wrapperRef} style={{ minWidth }}>
@@ -491,7 +538,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
   const openFnRef = useRef<() => void | undefined>();
   const closeFnRef = useRef<() => void | undefined>();
 
-  const { selectedItems, selectableValue, indeterminate, labels, handler } = useInitDropdown<T, SortT>({
+  const { selectedItems, selectableValue, indeterminate, anchorValues, handler } = useInitDropdown<T, SortT>({
     ...restProps,
     closeRef,
   });
@@ -506,11 +553,11 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
     | undefined;
 
   const anchor = renderAnchor ? (
-    renderAnchor(value, (Array.isArray(value) ? selectedItems : selectedItems[0]) as ObjType<T>, selectableValue)
+    renderAnchor(value, (Array.isArray(value) ? anchorValues : anchorValues[0]) as ObjType<T>, selectableValue)
   ) : (
     <FilterButton
       label={props.label || ''}
-      selectedLabel={labels}
+      selectedLabel={anchorValues.flatMap((v) => v.label)}
       isLoading={!isOpen && isLoading}
       isDisabled={isDisabled || selectableValue.length === 0}
       {...filterButtonProps}

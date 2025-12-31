@@ -114,7 +114,8 @@ export type Props<T, SortT = unknown> = {
   modules?: Module<SortT>[];
   isLoading?: boolean;
   isDisabled?: boolean;
-  isFoldAll?: boolean;
+  /* boolean or depth(number) */
+  isFoldAll?: boolean | number;
   onChange?: (value: InferType<T>, indeterminate?: InferType<T>) => void;
   onSelect?: (value: ValueType<T>[], selectedValues: ValueType<T>[], isSelected: boolean) => ValueType<T>[];
   renderAnchor?: (value: T | undefined, selectedItems: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;

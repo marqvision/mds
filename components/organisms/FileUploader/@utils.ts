@@ -90,6 +90,16 @@ export const calculateDerivedState = <T extends FileData = FileData>(items: Item
   return { progress, isUploading: true, errors: errorItems };
 };
 
+/**
+ * FileUploader의 상태 저장소
+ *
+ * ## 역할 (Store의 책임)
+ * - **순수 상태 저장**: items, globalErrors, batchProgress
+ * - **파생 상태 계산**: progress, isUploading, errors (items로부터 자동 계산)
+ * - **구독 메커니즘**: useSyncExternalStore 호환
+ *
+ * @see useFileUploader - 비즈니스 로직을 담당하는 Hook
+ */
 export const createFileUploaderStore = <T extends FileData = FileData>(
   initialItems: Item<T>[] = []
 ): FileUploaderStore<T> => {
@@ -207,21 +217,8 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
       const currentItem = items[index];
       if (!currentItem) return;
 
-      const newItem = typeof itemOrUpdater === 'function' ? itemOrUpdater(currentItem) : itemOrUpdater;
-
-      // data가 변경되면 에러 자동 클리어
-      const dataChanged = currentItem.data !== newItem.data;
-
-      items[index] = dataChanged ? { ...newItem, error: undefined } : newItem;
+      items[index] = typeof itemOrUpdater === 'function' ? itemOrUpdater(currentItem) : itemOrUpdater;
       notifyItem(index);
-
-      // data 변경 시 글로벌 에러도 클리어
-      if (dataChanged && globalErrors.length > 0) {
-        globalErrors = [];
-        updateCachedCombinedErrors();
-        errorsListeners.forEach((listener) => listener());
-      }
-
       updateDerivedState();
     },
 
@@ -281,7 +278,6 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     // 아이템 추가
     addItems: (newItems: Item<T>[]) => {
-      clearGlobalErrors();
       items = [...items, ...newItems];
       notifyGlobal();
       updateDerivedState();
@@ -289,7 +285,6 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     // 아이템 삭제
     removeItem: (index: number) => {
-      clearGlobalErrors();
       items = items.filter((_, i) => i !== index);
 
       // 리스너 인덱스 시프트 (삭제된 인덱스 제외, 큰 인덱스는 -1)
@@ -312,7 +307,6 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     // 전체 리셋
     reset: (newItems: Item<T>[] = []) => {
-      clearGlobalErrors();
       items = [...newItems];
       notifyGlobal();
       itemListeners.forEach((listeners) => {

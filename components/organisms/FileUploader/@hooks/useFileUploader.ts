@@ -28,16 +28,23 @@ import {
 /**
  * 파일 업로드를 위한 상태와 액션을 제공하는 훅
  *
- * ## 반환값
+ * ## 역할 (Hook의 책임)
+ * - **비즈니스 로직**: 파일 검증, 업로드 orchestration
+ * - **부수효과 처리**: data 변경 시 error 클리어, globalErrors 클리어
+ * - **UI 이벤트 처리**: 파일 선택, 드래그앤드롭, 붙여넣기
+ * - **콜백 연동**: onChange, onUploadComplete, onError
+ * - **가드 조건**: isDisabled, isUploading 체크
  *
+ * ## 반환값
  * - **value**: 파일 목록 (length 변경 시에만 리렌더)
  * - **store**: useFileUploaderState와 함께 사용하여 특정 상태만 구독
- *   - 상세 progress, 에러 리스트, 개별 아이템 상태가 필요한 경우 사용
- * - **isUploading**: 업로드 중 여부 (Button 업로드 시 이것만으로 충분)
+ * - **isUploading**: 업로드 중 여부
  * - **isError**: 에러 존재 여부
  * - **add**: 파일 선택창 열기
  * - **remove(index)**: 파일 삭제
  * - **dropzoneHandlers**: Dropzone에 전달할 이벤트 핸들러
+ *
+ * @see createFileUploaderStore - 순수 상태 저장소
  *
  * @example
  * // 기본 사용법
@@ -91,6 +98,15 @@ export function useFileUploader<T extends FileData = FileData>(
 
   // 파일 추가 처리 중 플래그 (경합 조건 방지)
   const isProcessingRef = useRef(false);
+
+  // 수정 가능 여부 체크 (공통 가드)
+  const checkCanModify = useCallback(() => !isDisabled && !store.getIsUploading(), [isDisabled, store]);
+
+  // 파일 추가 가능 여부 체크
+  const checkCanAddFiles = useCallback(
+    () => !isProcessingRef.current && checkCanModify(),
+    [checkCanModify]
+  );
 
   // 내부에서 사용할 getValue 헬퍼
   const getValue = useCallback((items: Item<T>[]) => (multiple ? items : items[0]), [multiple]);
@@ -151,7 +167,18 @@ export function useFileUploader<T extends FileData = FileData>(
   // 아이템 업데이트 (내부 구현)
   const setValueAt = useCallback(
     (index: number, item: Item<T> | ((prev: Item<T>) => Item<T>)) => {
+      const prevItem = store.getItem(index);
       store.setItem(index, item);
+
+      // data 변경 시 해당 아이템 error + globalErrors 명시적 클리어
+      const newItem = store.getItem(index);
+      if (prevItem && newItem && prevItem.data !== newItem.data) {
+        if (newItem.error) {
+          store.setItem(index, (prev) => ({ ...prev, error: undefined }));
+        }
+        store.clearGlobalErrors();
+      }
+
       notifyChange(store.getItems());
     },
     [store, notifyChange]
@@ -198,6 +225,7 @@ export function useFileUploader<T extends FileData = FileData>(
       if (item?.data.url) {
         revokeBlobUrl(item.data.url);
       }
+      store.clearGlobalErrors();
       store.removeItem(targetIndex);
       notifyChange(store.getItems());
     },
@@ -210,6 +238,7 @@ export function useFileUploader<T extends FileData = FileData>(
       store.getItems().forEach((item) => {
         revokeBlobUrl(item.data.url);
       });
+      store.clearGlobalErrors();
       const newItems = newValue ? (Array.isArray(newValue) ? newValue : [newValue]) : normalizedDefaultValue.current;
       store.reset(newItems);
       notifyChange(store.getItems());
@@ -241,6 +270,8 @@ export function useFileUploader<T extends FileData = FileData>(
 
       if (itemsToAdd.length === 0) return { added: [], rejected: rejectedItems, startIndex: 0 };
 
+      store.clearGlobalErrors();
+
       const startIndex = store.getLength();
       if (multiple) {
         store.addItems(itemsToAdd);
@@ -263,40 +294,36 @@ export function useFileUploader<T extends FileData = FileData>(
 
         await uploadFileToS3(file, presignedUrl, (percentage) => {
           if (!store.getItem(index)) return;
-          store.setItem(index, (prev) => ({ ...prev, progress: { percentage, isUploading: true } }));
-          notifyChange(store.getItems());
+          setValueAt(index, (prev) => ({ ...prev, progress: { percentage, isUploading: true } }));
         });
 
         const finalUrl = getBaseUrl(presignedUrl);
 
         if (!store.getItem(index)) return;
 
-        store.setItem(index, (prev) => ({
+        setValueAt(index, (prev) => ({
           ...prev,
           data: { ...prev.data, url: finalUrl },
           progress: { percentage: 100, isUploading: false },
         }));
-        notifyChange(store.getItems());
         onUploadComplete?.(index, finalUrl);
       } catch (error) {
         if (!store.getItem(index)) return;
 
-        store.setItem(index, (prev) => ({
+        setValueAt(index, (prev) => ({
           ...prev,
           error: getErrorData(language, ERROR_CODE.UPLOAD_FAILED),
           progress: { percentage: 0, isUploading: false },
         }));
-        notifyChange(store.getItems());
       }
     },
-    [getPresignedUrl, store, notifyChange, onUploadComplete, language]
+    [getPresignedUrl, store, setValueAt, onUploadComplete, language]
   );
 
   // 파일 추가 공통 로직
   const addFiles = useCallback(
     async (files: FileList | File[]) => {
-      if (isProcessingRef.current) return;
-      if (isDisabled || store.getProgress().isUploading) return;
+      if (!checkCanAddFiles()) return;
 
       const fileArray = Array.from(files);
       if (fileArray.length === 0) return;
@@ -359,13 +386,12 @@ export function useFileUploader<T extends FileData = FileData>(
         isProcessingRef.current = false;
       }
     },
-    [isDisabled, multiple, limit, maxFileSize, store, accept, applyItems, raiseError, getPresignedUrl, uploadFile]
+    [checkCanAddFiles, multiple, limit, maxFileSize, store, accept, applyItems, raiseError, getPresignedUrl, uploadFile]
   );
 
   // 파일 선택창 열기
   const add = useCallback(() => {
-    if (isDisabled) return;
-    if (store.getProgress().isUploading) return;
+    if (!checkCanModify()) return;
 
     const input = document.createElement('input');
     input.type = 'file';
@@ -374,7 +400,7 @@ export function useFileUploader<T extends FileData = FileData>(
     input.multiple = multiple;
     input.onchange = () => input.files && addFiles(input.files);
     input.click();
-  }, [isDisabled, accept, multiple, store, addFiles]);
+  }, [checkCanModify, accept, multiple, addFiles]);
 
   // Item 객체 추가 (업로드 없이)
   const addItems = useCallback(
@@ -392,7 +418,7 @@ export function useFileUploader<T extends FileData = FileData>(
       onDrop: (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         event.currentTarget.classList.remove('isHighlighted');
-        if (isDisabled || store.getIsUploading()) return;
+        if (!checkCanModify()) return;
         const jsonData = event.dataTransfer?.getData('application/json');
         if (jsonData) {
           try {
@@ -417,7 +443,7 @@ export function useFileUploader<T extends FileData = FileData>(
       },
       onDragOver: (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
-        if (isDisabled || store.getIsUploading()) return;
+        if (!checkCanModify()) return;
         if (checkIsDroppable(event, accept, dropKey)) {
           event.currentTarget.classList.add('isHighlighted');
         }
@@ -428,7 +454,7 @@ export function useFileUploader<T extends FileData = FileData>(
         }
       },
       onPaste: (event: React.ClipboardEvent<HTMLDivElement>) => {
-        if (store.getIsUploading()) return;
+        if (!checkCanModify()) return;
         const files = event.clipboardData?.files;
         if (files && files.length > 0) {
           event.preventDefault();
@@ -436,7 +462,7 @@ export function useFileUploader<T extends FileData = FileData>(
         }
       },
     }),
-    [isDisabled, store, dropKey, raiseError, addItems, addFiles, accept]
+    [checkCanModify, dropKey, raiseError, addItems, addFiles, accept]
   );
 
   return {

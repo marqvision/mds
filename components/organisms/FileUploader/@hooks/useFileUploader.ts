@@ -187,7 +187,7 @@ export function useFileUploader<T extends FileData = FileData>(
       store.getItems().forEach((item) => {
         revokeBlobUrl(item.data.url);
       });
-      const newItems = newValue ? (Array.isArray(newValue) ? newValue : [newValue]) : undefined;
+      const newItems = newValue ? (Array.isArray(newValue) ? newValue : [newValue]) : normalizedDefaultValue.current;
       store.reset(newItems);
       notifyChange(store.getItems());
     },

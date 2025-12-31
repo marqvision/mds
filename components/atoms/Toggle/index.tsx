@@ -94,11 +94,13 @@ const Wrapper = styled.label<WrapperProps>`
 
 const ToggleThumb = styled.div<StyledToggleProps>`
   position: absolute;
-  left: ${({ value, size }) => (value ? `${TOGGLE_CONFIG[size].activeLeft}px` : '0px')};
+  left: 0;
+  transform: translateX(${({ value, size }) => (value ? `${TOGGLE_CONFIG[size].activeLeft}px` : '0')});
   width: ${({ size }) => TOGGLE_CONFIG[size].thumbSize}px;
   height: ${({ size }) => TOGGLE_CONFIG[size].thumbSize}px;
   border-radius: 50%;
-  transition: left 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.37);
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.37);
+  will-change: transform;
   display: flex;
   align-items: center;
   justify-content: center;

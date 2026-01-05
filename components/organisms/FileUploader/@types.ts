@@ -32,7 +32,7 @@ export type ErrorData = {
 
 export type Item<T extends FileData = FileData> = {
   data: T;
-  progress?: Progress;
+  progress?: Omit<Progress, 'count'>;
   error?: ErrorData;
 };
 

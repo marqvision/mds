@@ -2,7 +2,7 @@
 export {
   checkIsItemUploading,
   checkIsItemCompleted,
-  calculateDerivedState,
+  calculateBatchProgress,
   createFileUploaderStore,
 } from './store';
 

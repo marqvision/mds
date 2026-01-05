@@ -197,12 +197,12 @@ export function useFileUploader<T extends FileData = FileData>(
         if (typeof indexOrProgress === 'number') {
           setValueAt(indexOrProgress, (prev) => ({ ...prev, progress }));
         } else {
-          store.setBatchProgress(indexOrProgress);
+          store.setProgress(indexOrProgress);
         }
       };
     } else {
       return (progress: Progress | null) => {
-        store.setBatchProgress(progress);
+        store.setProgress(progress);
       };
     }
   }, [multiple, setValueAt, store]);

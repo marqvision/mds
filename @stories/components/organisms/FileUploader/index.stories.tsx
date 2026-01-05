@@ -1,4 +1,3 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect, useState } from 'react';
 import {
   MDSButton,
@@ -15,6 +14,7 @@ import {
 } from '../../../../components';
 import { ExtensionIcon } from '../../../../components/organisms/FileUploader/@components/ExtensionIcon';
 import { applyMockXHR, createMockGetPresignedUrl, disposeMockXHR } from './mock';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta = {
   title: '2. Components/organisms/FileUploader',

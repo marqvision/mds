@@ -71,11 +71,6 @@ export type ValidationError = {
 
 export type Listener = () => void;
 
-export type DerivedState<T extends FileData = FileData> = {
-  progress: Progress;
-  isUploading: boolean;
-  errors: ErrorItem<T>[];
-};
 
 export type FileUploaderStore<T extends FileData = FileData> = {
   // 개별 아이템 구독
@@ -91,13 +86,10 @@ export type FileUploaderStore<T extends FileData = FileData> = {
   // 파생 상태 구독 (progress, isUploading, errors)
   subscribeProgress: (listener: Listener) => () => void;
   getProgress: () => Progress;
+  setProgress: (progress: Progress | null) => void;
 
   subscribeIsUploading: (listener: Listener) => () => void;
   getIsUploading: () => boolean;
-
-  // 배치 progress 직접 설정
-  getBatchProgress: () => Progress | null;
-  setBatchProgress: (progress: Progress | null) => void;
 
   subscribeErrors: (listener: Listener) => () => void;
   getErrors: () => ErrorItem<T>[];

@@ -21,7 +21,11 @@ export default meta;
 type Story = StoryObj<typeof MDSPageHeader>;
 
 const Wrapper = ({ style, children }: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>>) => {
-  return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', ...style }}>{children}</div>;
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', ...style }}>
+      {children}
+    </div>
+  );
 };
 
 export const Preview: Story = {
@@ -82,7 +86,7 @@ export const WithChildren: Story = {
           >
             Button
           </MDSButton>
-          <MDSDropdown label="Filter" list={[]} />
+          <MDSDropdown label="Filter" list={[]} value={undefined} />
         </div>
       </MDSPageHeader>
     </Wrapper>

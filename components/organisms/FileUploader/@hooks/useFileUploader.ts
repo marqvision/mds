@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo, useRef, useSyncExternalStore } from 'react';
+import { useCallback, useMemo, useRef, useSyncExternalStore } from 'react';
 import { CONCURRENT_UPLOAD_LIMIT, ERROR_CODE, ERROR_MESSAGE } from '../@constants';
 import {
-  DropzoneHandlers,
   ErrorCode,
   FileData,
+  FileUploaderController,
   FileUploaderError,
   FileUploaderStore,
   Item,
@@ -12,13 +12,11 @@ import {
   UseFileUploaderReturn,
 } from '../@types';
 import {
-  checkIsDroppable,
   convertAcceptToInputAccept,
   createFileUploaderStore,
   createItemFromFile,
   getBaseUrl,
   getErrorData,
-  isValidDropData,
   revokeBlobUrl,
   toastMDSSnackbarError,
   uploadFileToS3,
@@ -31,29 +29,28 @@ import {
  * ## 역할 (Hook의 책임)
  * - **비즈니스 로직**: 파일 검증, 업로드 orchestration
  * - **부수효과 처리**: data 변경 시 error 클리어, globalErrors 클리어
- * - **UI 이벤트 처리**: 파일 선택, 드래그앤드롭, 붙여넣기
+ * - **UI 이벤트 처리**: 파일 선택
  * - **콜백 연동**: onChange, onUploadComplete, onError
  * - **가드 조건**: isDisabled, isUploading 체크
  *
  * ## 반환값
- * - **value**: 파일 목록 (length 변경 시에만 리렌더)
- * - **store**: useFileUploaderState와 함께 사용하여 특정 상태만 구독
- * - **isUploading**: 업로드 중 여부
- * - **isError**: 에러 존재 여부
- * - **add**: 파일 선택창 열기
- * - **remove(index)**: 파일 삭제
- * - **dropzoneHandlers**: Dropzone에 전달할 이벤트 핸들러
+ * - **controller**: 하위 컴포넌트 전달용 (store, options, actions)
+ * - **files**: 파일 관련 값과 액션 (value, length, open, remove, setValue, reset)
+ * - **progress**: 진행 상태 관련 (isUploading, setProgress, clearProgress)
+ * - **error**: 에러 관련 (isError, setError, clearError)
  *
  * @see createFileUploaderStore - 순수 상태 저장소
  *
  * @example
  * // 기본 사용법
- * const { value, add, remove, dropzoneHandlers } = useMDSFileUploader();
+ * const { files, progress, controller } = useMDSFileUploader();
+ * const { value, open, remove } = files;
+ * const { isUploading } = progress;
  *
  * @example
  * // 상세 progress가 필요한 경우
- * const { store, ...rest } = useMDSFileUploader();
- * const progress = useMDSFileUploadState(store, 'progress');
+ * const { controller } = useMDSFileUploader();
+ * const progress = useMDSFileUploadState(controller, 'progress');
  */
 // 오버로드 시그니처
 export function useFileUploader(): UseFileUploaderReturn<true, FileData>;
@@ -390,7 +387,7 @@ export function useFileUploader<T extends FileData = FileData>(
   );
 
   // 파일 선택창 열기
-  const add = useCallback(() => {
+  const open = useCallback(() => {
     if (!checkCanModify()) return;
 
     const input = document.createElement('input');
@@ -412,73 +409,31 @@ export function useFileUploader<T extends FileData = FileData>(
     [store, applyItems]
   );
 
-  // Dropzone 이벤트 핸들러 (onDrop, onDragOver, onDragLeave, onPaste)
-  const dropzoneHandlers: DropzoneHandlers = useMemo(
+  // controller 객체 구성 (하위 컴포넌트용)
+  const controller: FileUploaderController<boolean, T> = useMemo(
     () => ({
-      onDrop: (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.currentTarget.classList.remove('isHighlighted');
-        if (!checkCanModify()) return;
-        const jsonData = event.dataTransfer?.getData('application/json');
-        if (jsonData) {
-          try {
-            const parsed: unknown = JSON.parse(jsonData);
-            // 런타임 구조 검증
-            if (!isValidDropData<T>(parsed)) {
-              // 잘못된 구조면 무시하고 파일 드롭으로 처리
-              event.dataTransfer?.files && addFiles(event.dataTransfer.files);
-              return;
-            }
-            if (dropKey && parsed.key !== dropKey) {
-              raiseError({ code: ERROR_CODE.INVALID_DROP_KEY });
-              return;
-            }
-            addItems(parsed.items);
-            return;
-          } catch {
-            // JSON 파싱 실패
-          }
-        }
-        event.dataTransfer?.files && addFiles(event.dataTransfer.files);
+      store,
+      options: {
+        language,
+        accept,
+        dropKey,
+        isDisabled,
       },
-      onDragOver: (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        if (!checkCanModify()) return;
-        if (checkIsDroppable(event, accept, dropKey)) {
-          event.currentTarget.classList.add('isHighlighted');
-        }
-      },
-      onDragLeave: (event: React.DragEvent<HTMLDivElement>) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node)) {
-          event.currentTarget.classList.remove('isHighlighted');
-        }
-      },
-      onPaste: (event: React.ClipboardEvent<HTMLDivElement>) => {
-        if (!checkCanModify()) return;
-        const files = event.clipboardData?.files;
-        if (files && files.length > 0) {
-          event.preventDefault();
-          addFiles(files);
-        }
+      actions: {
+        open,
+        addFiles,
+        addItems,
+        raiseError,
+        remove,
       },
     }),
-    [checkCanModify, dropKey, raiseError, addItems, addFiles, accept]
+    [store, language, accept, dropKey, isDisabled, open, addFiles, addItems, raiseError, remove]
   );
 
   return {
-    store,
-    value,
-    length,
-    isUploading,
-    isError,
-    setValue,
-    setProgress,
-    setError,
-    remove,
-    reset,
-    add,
-    dropzoneHandlers,
-    clearProgress,
-    clearError,
+    controller,
+    file: { value, length, open, remove, setValue, reset },
+    progress: { isUploading, setProgress, clearProgress },
+    error: { isError, setError, clearError },
   };
 }

@@ -26,11 +26,11 @@ const meta: Meta = {
 파일 업로드를 위한 컴포넌트입니다.
 
 \`\`\`tsx
-const fileUploader = useMDSFileUploader();
-return <MDSFileUploader {...fileUploader} />;
+const { controller } = useMDSFileUploader();
+return <MDSFileUploader controller={controller} />;
 \`\`\`
 
----
+***
 
 ## useMDSFileUploader
 
@@ -38,44 +38,61 @@ return <MDSFileUploader {...fileUploader} />;
 
 **옵션**
 | 옵션 | 타입 | 설명 |
-|------|------|------|
+|:-|:-|:-|
 | \`accept\` | FileType | 허용할 파일 타입 ('image', 'jpg', ['png', 'gif']) |
 | \`limit\` | number | 최대 파일 개수 (1이면 단일 파일 모드) |
 | \`maxFileSize\` | number | 최대 파일 크기 (bytes) |
-| \`onError\` | function \\| false | 에러 발생 시 콜백 (false면 스낵바 비활성화) |
+| \`onError\` | function &#124; false | 에러 발생 시 콜백 (false면 스낵바 비활성화) |
 | \`onChange\` | function | 파일 변경 시 콜백 |
 
 **반환값**
-| 반환값 | 타입 | 설명 |
-|--------|------|------|
-| \`value\` | Item[] | 파일 목록 (length 변경 시에만 리렌더) |
-| \`isUploading\` | boolean | 업로드 중 여부 |
-| \`isError\` | boolean | 에러 존재 여부 |
-| \`add\` | function | 파일 선택창 열기 |
-| \`remove\` | function | 파일 삭제 |
-| \`dropzoneHandlers\` | object | Dropzone에 전달할 이벤트 |
-| \`store\` | Store | useMDSFileUploadState와 함께 사용 |
 
----
+\`controller\` - 하위 컴포넌트에 전달하는 객체
+
+\`file\` - 파일 관련
+| 속성 | 타입 | 설명 |
+|:-|:-|:-|
+| value | Item[] | 파일 목록 |
+| length | number | 아이템 개수 |
+| open | function | 파일 선택창 열기 |
+| remove | function | 파일 삭제 |
+| setValue | function | 아이템 업데이트 |
+| reset | function | 전체 리셋 |
+
+\`progress\` - 진행 상태 관련
+| 속성 | 타입 | 설명 |
+|:-|:-|:-|
+| isUploading | boolean | 업로드 중 여부 |
+| setProgress | function | progress 설정 |
+| clearProgress | function | progress 클리어 |
+
+\`error\` - 에러 관련
+| 속성 | 타입 | 설명 |
+|:-|:-|:-|
+| isError | boolean | 에러 존재 여부 |
+| setError | function | error 설정 |
+| clearError | function | error 클리어 |
+
+***
 
 ## useMDSFileUploadState
 
-store를 통해 특정 상태만 구독하여 **불필요한 리렌더를 방지**합니다.
+controller를 통해 특정 상태만 구독하여 **불필요한 리렌더를 방지**합니다.
 
 **구독 옵션**
 | key | 반환값 | 설명 |
-|-----|--------|------|
+|:-|:-|:-|
 | \`progress\` | Progress | 업로드 진행상황 (percentage, count) |
 | \`errors\` | Error[] | 전체 에러 리스트 |
 | \`value\` | Item[] | 전체 파일 리스트 (개별 progress/error 포함) |
 | \`value.{index}\` | Item | 특정 인덱스의 파일 정보 |
 
 **사용 시나리오**
-- Button 업로드: \`isUploading\`만 사용
-- Dropzone 내 progress: \`useMDSFileUploadState(store, 'progress')\`
-- 에러 리스트 표시: \`useMDSFileUploadState(store, 'errors')\`
-- 테이블/Chip 리스트: \`useMDSFileUploadState(store, 'value')\`
-- 대량 파일 최적화: \`useMDSFileUploadState(store, 'value.{index}')\`
+- Button 업로드: \`progress.isUploading\`만 사용
+- Dropzone 내 상세 progress: \`useMDSFileUploadState(controller, 'progress')\`
+- 에러 리스트 표시: \`useMDSFileUploadState(controller, 'errors')\`
+- 테이블/Chip 리스트: \`useMDSFileUploadState(controller, 'value')\`
+- 대량 파일 최적화: \`useMDSFileUploadState(controller, 'value.{index}')\`
         `,
       },
     },
@@ -131,15 +148,14 @@ export const Preview: StoryObj<UseMDSFileUploaderOptions> = {
     isDisabled: false,
   },
   render: function Render(props) {
-    const fileUploaderProps = useMDSFileUploader(props);
+    const { controller } = useMDSFileUploader(props);
 
     return (
       <Wrapper>
-        <MDSFileUploader isDisabled={props.isDisabled} {...fileUploaderProps} />
+        <MDSFileUploader controller={controller} />
         <br />
         <MDSFileUploader
           label="Images"
-          isDisabled={props.isDisabled}
           column={4}
           height="300px"
           placeholder={{
@@ -154,7 +170,7 @@ export const Preview: StoryObj<UseMDSFileUploaderOptions> = {
             title: '파일 업로더',
             description: '파일을 넣어봐용',
           }}
-          {...fileUploaderProps}
+          controller={controller}
         />
       </Wrapper>
     );
@@ -170,12 +186,12 @@ export const SingleFile: StoryObj<UseMDSFileUploaderOptions> = {
     },
   },
   render: function Render() {
-    const fileUploader = useMDSFileUploader({
+    const { controller } = useMDSFileUploader({
       limit: 1,
     });
     return (
       <Wrapper>
-        <MDSFileUploader {...fileUploader} />
+        <MDSFileUploader controller={controller} />
       </Wrapper>
     );
   },
@@ -191,12 +207,12 @@ export const AcceptTypes: StoryObj<UseMDSFileUploaderOptions> = {
     },
   },
   render: function Render() {
-    const fileUploader = useMDSFileUploader({
+    const { controller } = useMDSFileUploader({
       accept: 'image',
     });
     return (
       <Wrapper>
-        <MDSFileUploader placeholder={{ description: '이미지 파일만 허용됩니다' }} {...fileUploader} />
+        <MDSFileUploader placeholder={{ description: '이미지 파일만 허용됩니다' }} controller={controller} />
       </Wrapper>
     );
   },
@@ -211,12 +227,12 @@ export const MaxFileSize: StoryObj<UseMDSFileUploaderOptions> = {
     },
   },
   render: function Render() {
-    const fileUploader = useMDSFileUploader({
+    const { controller } = useMDSFileUploader({
       maxFileSize: 1024 * 1024, // 1MB
     });
     return (
       <Wrapper>
-        <MDSFileUploader placeholder={{ description: '최대 1MB까지 업로드 가능합니다' }} {...fileUploader} />
+        <MDSFileUploader placeholder={{ description: '최대 1MB까지 업로드 가능합니다' }} controller={controller} />
       </Wrapper>
     );
   },
@@ -226,7 +242,7 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
   parameters: {
     docs: {
       description: {
-        story: `\`useMDSFileUploadState(store, 'errors')\`로 에러를 리스트 형태로 표시합니다.
+        story: `\`useMDSFileUploadState(controller, 'errors')\`로 에러를 리스트 형태로 표시합니다.
 
 기본적으로 에러는 MDSSnackbar로 표시되지만, 커스텀 UI가 필요할 때 \`errors\`를 구독하여 별도로 출력할 수 있습니다.
 이 예시에서는 \`onError: false\`로 스낵바를 비활성화하고 MessageBox로 에러를 표시합니다.
@@ -254,11 +270,13 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
         }
       : undefined;
 
-    const { isUploading, add, value, remove, store, reset } = useMDSFileUploader({
+    const { file, progress, controller } = useMDSFileUploader({
       ...props,
       getPresignedUrl,
     });
-    const errors = useMDSFileUploadState(store, 'errors');
+    const { value, open, reset } = file;
+    const { isUploading } = progress;
+    const errors = useMDSFileUploadState(controller, 'errors');
 
     return (
       <Wrapper>
@@ -272,7 +290,7 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
             startIcon={<MDSIcon.Upload />}
             isLoading={isUploading}
             isDisabled={props.isDisabled}
-            onClick={add}
+            onClick={open}
           >
             Upload
           </MDSButton>
@@ -282,7 +300,7 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
             </MDSPlainButton>
           )}
           {value.map((_, index) => (
-            <ButtonItem key={index} index={index} store={store} remove={remove} />
+            <ButtonItem key={index} index={index} controller={controller} />
           ))}
         </div>
         <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -305,7 +323,7 @@ export const UploadProgress: StoryObj<UseMDSFileUploaderOptions> = {
   parameters: {
     docs: {
       description: {
-        story: `\`useMDSFileUploadState(store, 'progress')\`로 상세 진행상황을 구독합니다.
+        story: `\`useMDSFileUploadState(controller, 'progress')\`로 상세 진행상황을 구독합니다.
 
 Dropzone 내에 progress를 표시할 때 유용합니다.
 \`useFileUploader\`의 \`isUploading\`은 boolean만 제공하지만, \`progress\`는 percentage, count(current/total) 정보를 포함합니다.`,
@@ -322,11 +340,11 @@ Dropzone 내에 progress를 표시할 때 유용합니다.
 
     const mockGetPresignedUrl = createMockGetPresignedUrl(300);
 
-    const { isUploading, store, value, length, add, dropzoneHandlers, remove } = useMDSFileUploader({
+    const { file, controller } = useMDSFileUploader({
       getPresignedUrl: mockGetPresignedUrl,
     });
-
-    const progress = useMDSFileUploadState(store, 'progress');
+    const { value, length } = file;
+    const progress = useMDSFileUploadState(controller, 'progress');
 
     return (
       <Wrapper>
@@ -334,16 +352,16 @@ Dropzone 내에 progress를 표시할 때 유용합니다.
           label={{ main: 'Upload Progress Simulation' }}
           height="auto"
           minHeight="200px"
-          {...dropzoneHandlers}
+          controller={controller}
         >
-          {isUploading ? (
+          {progress.isUploading ? (
             <MDSFileUploader.Loading progress={progress} />
           ) : !length ? (
-            <MDSFileUploader.Placeholder onAdd={add} />
+            <MDSFileUploader.Placeholder controller={controller} />
           ) : (
             <MDSFileUploader.Grid column={4}>
               {value.map(({ data }, index) => (
-                <MDSFileUploader.GridImage key={index} onDelete={() => remove(index)} data={data} />
+                <MDSFileUploader.GridImage key={index} controller={controller} index={index} data={data} />
               ))}
             </MDSFileUploader.Grid>
           )}
@@ -381,12 +399,12 @@ export const WithLabel: StoryObj<typeof MDSFileUploader.Dropzone> = {
     },
   },
   render: function Render(props) {
-    const { add } = useMDSFileUploader();
+    const { controller } = useMDSFileUploader();
 
     return (
       <Wrapper>
-        <MDSFileUploader.Dropzone {...props}>
-          <MDSFileUploader.Placeholder onAdd={add} />
+        <MDSFileUploader.Dropzone {...props} controller={controller}>
+          <MDSFileUploader.Placeholder controller={controller} />
         </MDSFileUploader.Dropzone>
       </Wrapper>
     );
@@ -483,7 +501,7 @@ export const Readonly: StoryObj<typeof MDSFileUploader.Dropzone> = {
     isReadonly: true,
   },
   render: function Render(props) {
-    const fileUploader = useMDSFileUploader({
+    const { controller } = useMDSFileUploader({
       defaultValue: [...Array(3)].map(() => ({
         data: { file: dummyFile, url: '', fileName: '' },
       })),
@@ -491,7 +509,7 @@ export const Readonly: StoryObj<typeof MDSFileUploader.Dropzone> = {
 
     return (
       <Wrapper>
-        <MDSFileUploader {...props} {...fileUploader} />
+        <MDSFileUploader {...props} controller={controller} />
       </Wrapper>
     );
   },
@@ -514,24 +532,26 @@ export const Grid: StoryObj<typeof MDSFileUploader.Dropzone> = {
     isDisabled: false,
   },
   render: function Render(props) {
-    const { isUploading, store, value, length, add, dropzoneHandlers, remove } = useMDSFileUploader({
+    const { file, progress: progressState, controller } = useMDSFileUploader({
       defaultValue: [...Array(3)].map(() => ({
         data: { file: dummyFile, url: '', fileName: '' },
       })),
     });
-    const progress = useMDSFileUploadState(store, 'progress');
+    const { value, length } = file;
+    const { isUploading } = progressState;
+    const progress = useMDSFileUploadState(controller, 'progress');
 
     return (
       <Wrapper>
-        <MDSFileUploader.Dropzone {...props} {...dropzoneHandlers}>
+        <MDSFileUploader.Dropzone {...props} controller={controller}>
           {isUploading ? (
             <MDSFileUploader.Loading progress={progress} />
           ) : !length ? (
-            <MDSFileUploader.Placeholder onAdd={add} />
+            <MDSFileUploader.Placeholder controller={controller} />
           ) : (
             <MDSFileUploader.Grid column={length}>
               {value.map(({ data }, index) => (
-                <MDSFileUploader.GridImage key={index} onDelete={() => remove(index)} data={data} />
+                <MDSFileUploader.GridImage key={index} controller={controller} index={index} data={data} />
               ))}
             </MDSFileUploader.Grid>
           )}
@@ -557,28 +577,30 @@ export const ScrollableGrid: StoryObj<typeof MDSFileUploader.Dropzone> = {
     isDisabled: false,
   },
   render: function Render(props) {
-    const { isUploading, store, value, length, add, dropzoneHandlers, remove } = useMDSFileUploader({
+    const { file, progress: progressState, controller } = useMDSFileUploader({
       defaultValue: [...Array(32)].map(() => ({
         data: { file: dummyFile, url: '', fileName: '' },
       })),
     });
-    const progress = useMDSFileUploadState(store, 'progress');
+    const { value, length } = file;
+    const { isUploading } = progressState;
+    const progress = useMDSFileUploadState(controller, 'progress');
 
     return (
       <Wrapper>
-        <MDSFileUploader.Dropzone {...props} height="400px" {...dropzoneHandlers}>
+        <MDSFileUploader.Dropzone {...props} height="400px" controller={controller}>
           {isUploading ? (
             <MDSFileUploader.Loading progress={progress} />
           ) : !length ? (
-            <MDSFileUploader.Placeholder onAdd={add} />
+            <MDSFileUploader.Placeholder controller={controller} />
           ) : (
-            <MDSFileUploader.ScrollWrapper stickyElement={<MDSFileUploader.Placeholder icon={false} onAdd={add} />}>
+            <MDSFileUploader.ScrollWrapper stickyElement={<MDSFileUploader.Placeholder icon={false} controller={controller} />}>
               <MDSFileUploader.Grid column={5}>
                 {value.map(({ data }, index) => (
-                  <MDSFileUploader.GridImage key={`image-${index}`} data={data} onDelete={() => remove(index)} />
+                  <MDSFileUploader.GridImage key={`image-${index}`} data={data} controller={controller} index={index} />
                 ))}
               </MDSFileUploader.Grid>
-              <MDSFileUploader.Placeholder onAdd={add} />
+              <MDSFileUploader.Placeholder controller={controller} />
             </MDSFileUploader.ScrollWrapper>
           )}
         </MDSFileUploader.Dropzone>
@@ -588,15 +610,13 @@ export const ScrollableGrid: StoryObj<typeof MDSFileUploader.Dropzone> = {
 };
 
 const ButtonItem = ({
-  store,
-  remove,
+  controller,
   index,
 }: {
-  store: UseMDSFileUploaderReturn['store'];
-  remove: (index: number) => void;
+  controller: UseMDSFileUploaderReturn['controller'];
   index: number;
 }) => {
-  const item = useMDSFileUploadState(store, `value.${index}`);
+  const item = useMDSFileUploadState(controller, `value.${index}`);
 
   if (!item) return null;
 
@@ -612,7 +632,7 @@ const ButtonItem = ({
           size="small"
           color={item.error ? 'red' : 'bluegray'}
           icon={<MDSIcon.CloseDelete variant="border" />}
-          onClick={() => remove(index)}
+          onClick={() => controller.actions.remove(index)}
         />
       }
     >
@@ -628,7 +648,7 @@ export const ButtonList: StoryObj<UseMDSFileUploaderOptions> = {
       description: {
         story: `Dropzone과 파일 목록을 분리한 레이아웃입니다.
 
-\`useMDSFileUploadState(store, 'value.{index}')\`로 개별 아이템만 구독하여 변경이 있는 아이템만 리렌더됩니다.
+\`useMDSFileUploadState(controller, 'value.{index}')\`로 개별 아이템만 구독하여 변경이 있는 아이템만 리렌더됩니다.
 업로드할 파일이 아주 많은 경우, 개별 아이템의 progress를 분리해서 구독하여 성능을 최적화할 수 있습니다.
 
 \`useFileUploader\`의 \`value\`는 length 변경 시에만 리렌더되므로, 테이블이나 Chip 리스트처럼 개별 아이템의 progress가 필요한 경우 \`useMDSFileUploadState\`를 사용합니다.`,
@@ -641,23 +661,27 @@ export const ButtonList: StoryObj<UseMDSFileUploaderOptions> = {
     })),
   },
   render: function Render(props) {
-    const { store, value, add, remove, dropzoneHandlers } = useMDSFileUploader(props);
+    const { file, controller } = useMDSFileUploader(props);
+    const { value } = file;
 
-    const progress = useMDSFileUploadState(store, 'progress');
-    const errors = useMDSFileUploadState(store, 'errors');
+    const progress = useMDSFileUploadState(controller, 'progress');
+    const errors = useMDSFileUploadState(controller, 'errors');
 
     return (
       <Wrapper>
-        <MDSFileUploader.Dropzone {...dropzoneHandlers}>
+        <MDSFileUploader.Dropzone controller={controller}>
           {progress.isUploading ? (
             <MDSFileUploader.Loading progress={progress} />
           ) : (
-            <MDSFileUploader.Placeholder onAdd={add} errorMessage={errors.map((e) => e.message).join('\n')} />
+            <MDSFileUploader.Placeholder
+              controller={controller}
+              errorMessage={errors.map((e) => e.message).join('\n')}
+            />
           )}
         </MDSFileUploader.Dropzone>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
           {value.map((_, index) => (
-            <ButtonItem key={index} store={store} remove={remove} index={index} />
+            <ButtonItem key={index} controller={controller} index={index} />
           ))}
         </div>
       </Wrapper>
@@ -671,13 +695,15 @@ export const ButtonUpload: StoryObj<UseMDSFileUploaderOptions> = {
       description: {
         story: `Dropzone 없이 버튼으로만 파일을 선택하는 예시입니다.
 
-단순한 Button 업로드의 경우 상세 progress가 불필요하므로, \`useFileUploader\`의 \`isUploading\`만 사용하면 됩니다.
+단순한 Button 업로드의 경우 상세 progress가 불필요하므로, \`progress.isUploading\`만 사용하면 됩니다.
 \`useMDSFileUploadState\`를 사용하지 않아도 기본적인 업로드 기능을 구현할 수 있습니다.`,
       },
     },
   },
   render: function Render(props) {
-    const { isUploading, add, value, remove, store } = useMDSFileUploader(props);
+    const { file, progress, controller } = useMDSFileUploader(props);
+    const { value, open } = file;
+    const { isUploading } = progress;
 
     return (
       <Wrapper>
@@ -687,12 +713,12 @@ export const ButtonUpload: StoryObj<UseMDSFileUploaderOptions> = {
             startIcon={<MDSIcon.Upload />}
             isLoading={isUploading}
             isDisabled={props.isDisabled}
-            onClick={add}
+            onClick={open}
           >
             Upload
           </MDSButton>
           {value.map((_, index) => (
-            <ButtonItem key={index} index={index} store={store} remove={remove} />
+            <ButtonItem key={index} index={index} controller={controller} />
           ))}
         </div>
       </Wrapper>

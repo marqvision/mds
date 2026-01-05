@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
-import { GridItemProps } from '../@types';
+import { FileData, GridItemProps } from '../@types';
 import { ExtensionIcon } from './ExtensionIcon';
 
 const Styled = {
@@ -49,15 +49,16 @@ const Styled = {
   `,
 };
 
-type Props = GridItemProps & {
+type Props<T extends FileData = FileData> = GridItemProps<T> & {
   icon?: React.ReactNode;
   fileName: string;
 };
 
-export const GridFile = (props: Props) => {
-  const { icon, fileName, isReadonly, isDisabled, action, onDelete } = props;
+export const GridFile = <T extends FileData = FileData>(props: Props<T>) => {
+  const { icon, fileName, isReadonly, isDisabled, action, controller, index } = props;
 
-  const isActive = !isReadonly && !isDisabled && !!(action || onDelete);
+  const canDelete = controller && index !== undefined;
+  const isActive = !isReadonly && !isDisabled && !!(action || canDelete);
 
   return (
     <Styled.Wrapper>
@@ -66,12 +67,12 @@ export const GridFile = (props: Props) => {
       {isActive && (
         <Styled.Actions className="actions">
           {action}
-          {onDelete && (
+          {canDelete && (
             <MDSPlainButton
               size="large"
               color="white"
               icon={<MDSIcon.CloseDelete variant="fill" />}
-              onClick={onDelete}
+              onClick={() => controller.actions.remove(index)}
             />
           )}
         </Styled.Actions>

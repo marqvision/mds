@@ -2,7 +2,8 @@ import React, { Children, cloneElement, isValidElement } from 'react';
 import styled from '@emotion/styled';
 import clsx from 'clsx';
 import { TRANSITION_TIMING } from '../@constants';
-import { LabelType } from '../@types';
+import { useDropzoneHandlers } from '../@hooks/useDropzoneHandlers';
+import { FileData, FileUploaderController, LabelType } from '../@types';
 import { Label } from './Label';
 
 const Styled = {
@@ -33,37 +34,34 @@ const Styled = {
   `,
 };
 
-type Props = {
+type Props<T extends FileData = FileData> = {
+  controller?: FileUploaderController<boolean, T>;
   isReadonly?: boolean;
   isDisabled?: boolean;
   label?: LabelType;
   height?: string;
   minHeight?: string;
   maxHeight?: string;
-  onDrop?: React.DragEventHandler<HTMLDivElement>;
-  onDragOver?: React.DragEventHandler<HTMLDivElement>;
-  onDragLeave?: React.DragEventHandler<HTMLDivElement>;
-  onPaste?: React.ClipboardEventHandler<HTMLDivElement>;
   className?: string;
   style?: React.CSSProperties;
 };
 
-export const Dropzone = (props: React.PropsWithChildren<Props>) => {
+export const Dropzone = <T extends FileData = FileData>(props: React.PropsWithChildren<Props<T>>) => {
   const {
+    controller,
     label,
-    onDrop,
-    onDragOver,
-    onDragLeave,
-    onPaste,
     children: _children,
     isReadonly,
-    isDisabled,
     className,
     height = '200px',
     minHeight,
     maxHeight,
     style,
   } = props;
+
+  const isDisabled = controller?.options.isDisabled;
+
+  const handlers = useDropzoneHandlers(controller);
 
   const isActive = !isDisabled && !isReadonly;
   const children = Children.map(_children, injectProps({ isDisabled, isReadonly }));
@@ -73,10 +71,10 @@ export const Dropzone = (props: React.PropsWithChildren<Props>) => {
       className={clsx({ isDisabled, isReadonly }, className)}
       style={{ height, minHeight, maxHeight, ...style }}
       tabIndex={isActive ? 0 : undefined}
-      onDrop={isActive ? onDrop : undefined}
-      onDragOver={isActive ? onDragOver : undefined}
-      onDragLeave={isActive ? onDragLeave : undefined}
-      onPaste={isActive ? onPaste : undefined}
+      onDrop={isActive ? handlers?.onDrop : undefined}
+      onDragOver={isActive ? handlers?.onDragOver : undefined}
+      onDragLeave={isActive ? handlers?.onDragLeave : undefined}
+      onPaste={isActive ? handlers?.onPaste : undefined}
     >
       {children}
     </Styled.Dropzone>

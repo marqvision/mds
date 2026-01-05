@@ -18,12 +18,13 @@ const Styled = {
   `,
 };
 
-type Props<T extends FileData = FileData> = GridItemProps & Item<T> & Omit<MDSImageProps, 'src' | 'custom'>;
+type Props<T extends FileData = FileData> = GridItemProps<T> & Item<T> & Omit<MDSImageProps, 'src' | 'custom'>;
 
 export const GridImage = <T extends FileData = FileData>(props: Props<T>) => {
-  const { isReadonly, isDisabled, data, action, onDelete, ...restProps } = props;
+  const { isReadonly, isDisabled, data, action, controller, index, ...restProps } = props;
 
-  const isActive = !isReadonly && !isDisabled && !!(action || onDelete);
+  const canDelete = controller && index !== undefined;
+  const isActive = !isReadonly && !isDisabled && !!(action || canDelete);
   const isImage = useMemo(() => checkIsImage(data), [data]);
   const src = useMemo(() => (data.file ? URL.createObjectURL(data.file) : data.url), [data.file, data.url]);
 
@@ -51,12 +52,12 @@ export const GridImage = <T extends FileData = FileData>(props: Props<T>) => {
               element: (
                 <Styled.Actions>
                   {action}
-                  {onDelete && (
+                  {canDelete && (
                     <MDSPlainButton
                       size="large"
                       color="white"
                       icon={<MDSIcon.CloseDelete variant="fill" />}
-                      onClick={onDelete}
+                      onClick={() => controller.actions.remove(index)}
                     />
                   )}
                 </Styled.Actions>

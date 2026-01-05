@@ -43,18 +43,20 @@ export type DropData<T extends FileData = FileData> = {
   items: Item<T>[];
 };
 
-export type GridItemProps = {
+export type GridItemProps<T extends FileData = FileData> = {
   isReadonly?: boolean;
   isDisabled?: boolean;
   action?: React.ReactNode;
-  onDelete?: React.MouseEventHandler<HTMLButtonElement>;
+  controller?: FileUploaderController<boolean, T>;
+  index?: number;
 };
 
-export type PlaceholderProps = {
+export type PlaceholderProps<T extends FileData = FileData> = {
   icon?: React.ReactNode;
   description?: React.ReactNode;
   errorMessage?: React.ReactNode;
-} & TitleOrLanguage<{ onAdd?: never }, { onAdd: React.MouseEventHandler<HTMLButtonElement> }>;
+  controller?: FileUploaderController<boolean, T>;
+} & TitleOrLanguage;
 
 export type ErrorItem<T extends FileData = FileData> = { index: number; item: Item<T> };
 
@@ -70,7 +72,6 @@ export type ValidationError = {
 };
 
 export type Listener = () => void;
-
 
 export type FileUploaderStore<T extends FileData = FileData> = {
   // 개별 아이템 구독
@@ -133,47 +134,63 @@ export type UseFileUploaderOptions<Multiple extends boolean = true, T extends Fi
   onError?: ((error: FileUploaderError) => void) | false;
 };
 
-export type DropzoneHandlers = {
-  onDrop: React.DragEventHandler<HTMLDivElement>;
-  onDragOver: React.DragEventHandler<HTMLDivElement>;
-  onDragLeave: React.DragEventHandler<HTMLDivElement>;
-  onPaste: React.ClipboardEventHandler<HTMLDivElement>;
+// controller.actions 타입 (하위 컴포넌트용)
+export type FileUploaderControllerActions<Multiple extends boolean, T extends FileData = FileData> = {
+  /** 파일 선택창 열기 */
+  open: () => void;
+  /** 파일 추가 (검증 + 업로드) */
+  addFiles: (files: FileList | File[]) => Promise<void>;
+  /** Item 객체 추가 (업로드 없이) */
+  addItems: (items: Item<T>[]) => void;
+  /** 에러 발생 */
+  raiseError: (error: Omit<FileUploaderError, 'message'> & { params?: Record<string, string | number> }) => void;
+  /** 아이템 삭제 */
+  remove: Multiple extends true ? (index: number) => void : () => void;
+};
+
+// controller 타입
+export type FileUploaderController<Multiple extends boolean = true, T extends FileData = FileData> = {
+  store: FileUploaderStore<T>;
+  options: Pick<UseFileUploaderOptions<Multiple, T>, 'language' | 'accept' | 'dropKey' | 'isDisabled'>;
+  actions: FileUploaderControllerActions<Multiple, T>;
 };
 
 export type UseFileUploaderReturn<Multiple extends boolean = true, T extends FileData = FileData> = {
-  /** store (useMDSFileUploaderState에서 사용) */
-  store: FileUploaderStore<T>;
-  /** 값 (multiple: false면 Item, true면 Item[]) */
-  value: Multiple extends true ? Item<T>[] : Item<T> | undefined;
-  /** 아이템 개수 */
-  length: number;
-  /** 업로드 진행 중 여부 */
-  isUploading: boolean;
-  /** 아이템 업데이트 */
-  setValue: Multiple extends true
-    ? (index: number, item: Item<T> | ((prev: Item<T>) => Item<T>)) => void
-    : (item: Item<T> | ((prev: Item<T>) => Item<T>)) => void;
-  /** progress 업데이트 */
-  setProgress: Multiple extends true
-    ? {
-        (index: number, progress: Progress | undefined): void;
-        (progress: Progress | null): void;
-      }
-    : (progress: Progress | null) => void;
-  /** error 상태 업데이트 */
-  setError: Multiple extends true ? (index: number, error?: ErrorCode) => void : (error?: ErrorCode) => void;
-  /** 파일 선택창 열어서 아이템 추가 */
-  add: () => void;
-  /** 아이템 삭제 */
-  remove: Multiple extends true ? (index: number) => void : () => void;
-  /** 전체 리셋 */
-  reset: (value?: Multiple extends true ? Item<T>[] : Item<T>) => void;
-  /** Dropzone 이벤트 핸들러 (onDrop, onDragOver, onDragLeave, onPaste) */
-  dropzoneHandlers: DropzoneHandlers;
-  /** 에러 유무 */
-  isError: boolean;
-  /** progress 클리어 (index 없으면 전체) */
-  clearProgress: Multiple extends true ? (index?: number) => void : () => void;
-  /** error 클리어 (index 없으면 전체 아이템 error + 전역 globalError) */
-  clearError: Multiple extends true ? (index?: number) => void : () => void;
+  /**
+   * @internal 하위 컴포넌트 전달용. 가급적 직접 사용하지 않습니다
+   */
+  controller: FileUploaderController<Multiple, T>;
+  file: Pick<FileUploaderControllerActions<Multiple>, 'open' | 'remove'> & {
+    /** 값 (multiple: false면 Item, true면 Item[]) */
+    value: Multiple extends true ? Item<T>[] : Item<T> | undefined;
+    /** 아이템 개수 */
+    length: number;
+    /** 아이템 업데이트 */
+    setValue: Multiple extends true
+      ? (index: number, item: Item<T> | ((prev: Item<T>) => Item<T>)) => void
+      : (item: Item<T> | ((prev: Item<T>) => Item<T>)) => void;
+    /** 전체 리셋 */
+    reset: (value?: Multiple extends true ? Item<T>[] : Item<T>) => void;
+  };
+  progress: {
+    /** 업로드 진행 중 여부 */
+    isUploading: boolean;
+    /** progress 업데이트 */
+    setProgress: Multiple extends true
+      ? {
+          (index: number, progress: Progress | undefined): void;
+          (progress: Progress | null): void;
+        }
+      : (progress: Progress | null) => void;
+    /** progress 클리어 (index 없으면 전체) */
+    clearProgress: Multiple extends true ? (index?: number) => void : () => void;
+  };
+  error: {
+    /** 에러 유무 */
+    isError: boolean;
+    /** error 상태 업데이트 */
+    setError: Multiple extends true ? (index: number, error?: ErrorCode) => void : (error?: ErrorCode) => void;
+    /** error 클리어 (index 없으면 전체 아이템 error + 전역 globalError) */
+    clearError: Multiple extends true ? (index?: number) => void : () => void;
+  };
 };

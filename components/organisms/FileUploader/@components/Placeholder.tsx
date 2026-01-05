@@ -4,7 +4,7 @@ import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { DEFAULT_DISPLAY_MESSAGE } from '../@constants';
-import { PlaceholderProps } from '../@types';
+import { FileData, PlaceholderProps } from '../@types';
 
 const Styled = {
   Wrapper: styled.div`
@@ -28,13 +28,13 @@ const Styled = {
   `,
 };
 
-type Props = {
+type Props<T extends FileData = FileData> = {
   isReadonly?: boolean;
   isDisabled?: boolean;
-} & PlaceholderProps;
+} & PlaceholderProps<T>;
 
-export const Placeholder = (props: Props) => {
-  const { icon, language = 'en', onAdd, title, description, errorMessage, isReadonly, isDisabled } = props;
+export const Placeholder = <T extends FileData = FileData>(props: Props<T>) => {
+  const { icon, language = 'en', controller, title, description, errorMessage, isReadonly, isDisabled } = props;
 
   const isIconVisible = icon !== false;
 
@@ -67,7 +67,7 @@ export const Placeholder = (props: Props) => {
         <Styled.Title as={isValidElement(title) || !title ? 'div' : undefined}>
           {title || DEFAULT_DISPLAY_MESSAGE[language].dragAndDrop}
           {!title && (
-            <MDSPlainButton isDisabled={isReadonly} onClick={onAdd}>
+            <MDSPlainButton isDisabled={isReadonly} onClick={() => controller?.actions.open()}>
               {DEFAULT_DISPLAY_MESSAGE[language].browse}
             </MDSPlainButton>
           )}

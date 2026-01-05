@@ -10,6 +10,7 @@ import { useFileUploader } from './@hooks/useFileUploader';
 import { useFileUploadState } from './@hooks/useFileUploadState';
 import {
   FileData,
+  FileUploaderController,
   FileUploaderError,
   Item,
   LabelType,
@@ -20,44 +21,35 @@ import {
 } from './@types';
 import { checkIsImage, getExtensionFromFileName, setDropData, toastMDSSnackbarError } from './@utils';
 
-type BaseProps = {
+type Props<T extends FileData = FileData> = {
   isReadonly?: boolean;
-  isDisabled?: boolean;
   height?: string;
   label?: LabelType;
   column?: number;
   placeholder?: Partial<PlaceholderProps>;
+  controller: FileUploaderController<boolean, T>;
 };
 
-type SingleProps<T extends FileData = FileData> = BaseProps & UseFileUploaderReturn<false, T>;
-type MultipleProps<T extends FileData = FileData> = BaseProps & UseFileUploaderReturn<true, T>;
-type Props<T extends FileData = FileData> = SingleProps<T> | MultipleProps<T>;
-
 export const FileUploader = <T extends FileData = FileData>(props: Props<T>) => {
-  const {
-    isDisabled,
-    isReadonly,
-    label,
-    column,
-    height,
-    dropzoneHandlers,
-    isUploading,
-    store,
-    value,
-    remove,
-    add,
-    placeholder,
-  } = props;
+  const { isReadonly, label, column, height, controller, placeholder } = props;
 
-  const progress = useFileUploadState(store, 'progress');
+  const { options } = controller;
+  const { isDisabled } = options;
 
-  const isMultiple = Array.isArray(value);
-  const items: Item<T>[] = isMultiple ? value : value ? [value] : [];
-  const placeholderProps = { ...placeholder, onAdd: placeholder?.onAdd || add } as PlaceholderProps;
+  const value = useFileUploadState(controller, 'value');
+  const progress = useFileUploadState(controller, 'progress');
+
+  const items: Item<T>[] = value as Item<T>[];
+  const placeholderProps = { ...placeholder, controller } as PlaceholderProps<T>;
 
   return (
-    <Dropzone label={label} isDisabled={isDisabled} isReadonly={isReadonly} height={height} {...dropzoneHandlers}>
-      {isUploading ? (
+    <Dropzone
+      controller={controller as FileUploaderController<boolean, T>}
+      label={label}
+      isReadonly={isReadonly}
+      height={height}
+    >
+      {progress.isUploading ? (
         <Loading progress={progress} />
       ) : items.length ? (
         <Grid column={column ?? Math.min(DEFAULT_COLUMN, items.length)}>
@@ -67,7 +59,8 @@ export const FileUploader = <T extends FileData = FileData>(props: Props<T>) => 
               data={data}
               isDisabled={isDisabled}
               isReadonly={isReadonly}
-              onDelete={() => remove(index)}
+              controller={controller as FileUploaderController<boolean, T>}
+              index={index}
             />
           ))}
         </Grid>

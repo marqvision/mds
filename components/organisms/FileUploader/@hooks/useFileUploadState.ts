@@ -1,5 +1,5 @@
 import { useCallback, useSyncExternalStore } from 'react';
-import { FileData, FileUploaderError, FileUploaderStore, Item, Progress } from '../@types';
+import { FileData, FileUploaderController, FileUploaderError, Item, Progress } from '../@types';
 
 /**
  * FileUploader의 특정 상태를 구독하는 훅
@@ -27,36 +27,37 @@ import { FileData, FileUploaderError, FileUploaderStore, Item, Progress } from '
  * ## 사용 시나리오
  *
  * 1. Button 업로드 (상세 progress 불필요): useFileUploader의 isUploading만 사용
- * 2. Dropzone 내 progress 표시: useFileUploaderState(store, 'progress')
- * 3. 에러 리스트 표시: useFileUploaderState(store, 'errors')
- * 4. 테이블/Chip 리스트: useFileUploaderState(store, 'value')
- * 5. 대량 파일 최적화: useFileUploaderState(store, 'value.{index}')
+ * 2. Dropzone 내 progress 표시: useFileUploaderState(controller, 'progress')
+ * 3. 에러 리스트 표시: useFileUploaderState(controller, 'errors')
+ * 4. 테이블/Chip 리스트: useFileUploaderState(controller, 'value')
+ * 5. 대량 파일 최적화: useFileUploaderState(controller, 'value.{index}')
  *
  * @example
  * // 기본 사용법 - progress 구독
- * const { store } = useMDSFileUploader();
- * const progress = useFileUploaderState(store, 'progress');
+ * const { controller } = useMDSFileUploader();
+ * const progress = useFileUploaderState(controller, 'progress');
  *
  * @example
  * // 에러 리스트 구독
- * const errors = useFileUploaderState(store, 'errors');
+ * const errors = useFileUploaderState(controller, 'errors');
  *
  * @example
  * // 전체 파일 리스트 구독 (개별 아이템 progress 포함)
- * const items = useFileUploaderState(store, 'value');
+ * const items = useFileUploaderState(controller, 'value');
  *
  * @example
  * // 특정 인덱스의 파일만 구독 (대량 파일 최적화)
- * const item = useFileUploaderState(store, 'value.0');
+ * const item = useFileUploaderState(controller, 'value.0');
  */
-export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: 'progress'): Progress;
-export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: 'errors'): FileUploaderError[];
-export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: 'value'): Item<T>[];
-export function useFileUploadState<T extends FileData = FileData>(store: FileUploaderStore<T>, key: `value.${number}`): Item<T> | undefined;
+export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: 'progress'): Progress;
+export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: 'errors'): FileUploaderError[];
+export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: 'value'): Item<T>[];
+export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: `value.${number}`): Item<T> | undefined;
 export function useFileUploadState<T extends FileData = FileData>(
-  store: FileUploaderStore<T>,
+  controller: FileUploaderController<boolean, T>,
   key: 'progress' | 'errors' | 'value' | `value.${number}`
 ): Progress | FileUploaderError[] | Item<T>[] | Item<T> | undefined {
+  const { store } = controller;
   const subscribe = useCallback(
     (listener: () => void) => {
       switch (key) {

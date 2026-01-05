@@ -209,7 +209,7 @@ export const StickyTop = <T, SortT>(props: Props<T, SortT>) => {
   };
 
   const handleSelectAll = () => {
-    if (infinite) {
+    if (infinite && searchedValues.length === 0) {
       onChange(
         [
           {

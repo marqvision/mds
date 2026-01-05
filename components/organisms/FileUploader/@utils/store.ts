@@ -164,7 +164,13 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
   const updateErrorItems = () => {
     const newErrors = calculateErrorItems(items);
-    const errorsChanged = newErrors.length !== cachedErrorItems.length;
+
+    const errorsChanged =
+      newErrors.length !== cachedErrorItems.length ||
+      newErrors.some((newError, index) => {
+        const cachedError = cachedErrorItems[index];
+        return newError.index !== cachedError?.index || newError.item !== cachedError?.item;
+      });
 
     if (errorsChanged) {
       cachedErrorItems = newErrors;

@@ -1,6 +1,6 @@
 import { _MDSThemeValue } from '../foundation';
 import { MDSTheme, Path } from '../types';
-import { BodySize, MDSTypographyProps, TitleSize } from '../components';
+import { BodySize, MDSDropdownItem, MDSTypographyProps, TitleSize } from '../components';
 
 /**
  * @deprecated
@@ -58,4 +58,34 @@ export const resolveLineHeight = (
 ) => {
   if (!features.variant) return;
   return theme.comp.typography[features.variant].lineHeight;
+};
+
+/**
+ * SelectWithChip 컴포넌트의 label을 반환합니다.
+ */
+export const resolveSelectWithChipLabel = <T>(selected: T | T[], options: MDSDropdownItem<T>[]) => {
+  const selectedValues = selected instanceof Array ? selected : [selected];
+
+  if (selectedValues.length === 0) {
+    return undefined;
+  }
+
+  const getTotalOptionsCount = (opts?: MDSDropdownItem<T>[]): number => {
+    return (
+      opts?.reduce((total, option) => {
+        if (Array.isArray(option.children)) {
+          return total + getTotalOptionsCount(option.children);
+        }
+        return total + 1;
+      }, 0) || 0
+    );
+  };
+
+  const totalOptionsCount = getTotalOptionsCount(options);
+
+  if (selectedValues.length === totalOptionsCount) {
+    return [{ label: 'All', value: 'all' }];
+  }
+
+  return selectedValues;
 };

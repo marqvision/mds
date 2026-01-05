@@ -13,10 +13,10 @@ export const useDropdown = <T>({
   stickyItem?: DropdownItem<ValueType<T>>;
 }) => {
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState<SortType | undefined>(hasSort ? 'asc' : undefined);
+  const [sort, setSort] = useState<SortType>('asc');
 
   const filteredList = useMemo(
-    () => getFilteredList(list, hasCustomSearch ? '' : search, sort),
+    () => getFilteredList(list, hasCustomSearch ? '' : search, hasSort ? sort : undefined),
     [hasCustomSearch, search, list, sort]
   );
 

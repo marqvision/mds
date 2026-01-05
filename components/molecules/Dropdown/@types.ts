@@ -29,7 +29,11 @@ export type DropdownItem<T> = {
 
 export type InferType<T> = T extends (infer U)[] ? U[] : T;
 export type ValueType<T> = T extends (infer U)[] ? U : T;
-export type ObjType<T> = T extends (infer U)[] ? DropdownItem<ValueType<U>>[] : DropdownItem<ValueType<T>>;
+export type ObjType<T> = T extends (infer U)[]
+  ? DropdownItem<ValueType<U>>[]
+  : Extract<T, null | undefined> extends never
+  ? DropdownItem<ValueType<T>>
+  : DropdownItem<ValueType<NonNullable<T>>> | undefined;
 
 export type ModuleType =
   | 'search'
@@ -105,24 +109,39 @@ export type CustomModule<T> = {
 
 export type Module<T> = 'search' | 'sort' | '1-depth-single' | 'hide-select-all' | CustomModule<T>;
 
-export type Props<T, SortT = unknown> = {
-  value?: T;
-  indeterminate?: T;
-  list: DropdownItem<ValueType<T>>[];
+type BaseProps = {
   label?: string;
   width?: string | number | 'fit-anchor';
-  modules?: Module<SortT>[];
   isLoading?: boolean;
   isDisabled?: boolean;
   /* boolean or depth(number) */
   isFoldAll?: boolean | number;
-  onChange?: (value: InferType<T>, indeterminate?: InferType<T>) => void;
-  onSelect?: (value: ValueType<T>[], selectedValues: ValueType<T>[], isSelected: boolean) => ValueType<T>[];
-  renderAnchor?: (value: T | undefined, selectedItems: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
   style?: CSSProperties;
   position?: PopoverPosition;
   onOpen?: () => void;
   onClose?: () => void;
+};
+
+type WithoutValue = BaseProps & {
+  value?: never;
+  list: DropdownItem<undefined>[];
+  indeterminate?: never;
+  renderAnchor: () => ReactElement;
+  onChange?: never;
+  onSelect?: never;
+};
+
+type WithValue<T> = BaseProps & {
+  value: T;
+  list: DropdownItem<ValueType<T>>[];
+  indeterminate?: T;
+  renderAnchor?: (value: T, selectedItems: ObjType<T>, list: DropdownItem<ValueType<T>>[]) => ReactElement;
+  onChange?: (value: InferType<T>, indeterminate?: InferType<T>) => void;
+  onSelect?: (value: ValueType<T>[], selectedValues: ValueType<T>[], isSelected: boolean) => ValueType<T>[];
+};
+
+export type Props<T, SortT = unknown> = (WithoutValue | WithValue<T>) & {
+  modules?: Module<SortT>[];
 };
 
 export type SortType = 'asc' | 'desc';

@@ -191,8 +191,9 @@ const Dropdown = <T, SortT>(
   const hideSelectAll = is1DepthSingle || (!!infinite?.hideSelectAll && selectedValues.length === 0);
 
   const isMultiple = Array.isArray(value);
-  const isShowStaticActionBar = hasSearch || ((hasSort || isMultiple) && !hideSelectAllAndCount);
-  const isShowStickyHeader = isShowStaticActionBar || stickyTopElement;
+  const hasAction = (isMultiple || hasSort) && !hideSelectAllAndCount;
+  const isShowStaticActionBar = hasSearch || hasAction;
+  const isShowStickyHeader = isShowStaticActionBar || !!stickyTopElement;
 
   const isSelectedAll =
     isMultiple &&
@@ -224,32 +225,34 @@ const Dropdown = <T, SortT>(
     return `All (${allCount})`;
   })();
 
-  const sortEle = customSort ? (
-    <MDSDropdown<SortT>
-      value={customSort.value}
-      list={customSort.list as DropdownItem<ValueType<SortT>>[]}
-      onChange={customSort.onChange as (value: SetStateAction<InferType<SortT>>) => void}
-      renderAnchor={() => (
-        <StyledSort>
-          <MDSIcon.Sort size={24} />
-        </StyledSort>
-      )}
-    />
-  ) : (
-    <MDSDropdown<SortType>
-      value={sort}
-      list={[
-        { label: 'A-Z', value: 'asc' },
-        { label: 'Z-A', value: 'desc' },
-      ]}
-      onChange={handler.sort}
-      renderAnchor={() => (
-        <StyledSort>
-          <MDSIcon.Sort size={24} />
-        </StyledSort>
-      )}
-    />
-  );
+  const sortEle = hasSort ? (
+    customSort ? (
+      <MDSDropdown<SortT>
+        value={customSort.value}
+        list={customSort.list as DropdownItem<ValueType<SortT>>[]}
+        onChange={customSort.onChange as (value: SetStateAction<InferType<SortT>>) => void}
+        renderAnchor={() => (
+          <StyledSort>
+            <MDSIcon.Sort size={24} />
+          </StyledSort>
+        )}
+      />
+    ) : (
+      <MDSDropdown<SortType>
+        value={sort}
+        list={[
+          { label: 'A-Z', value: 'asc' },
+          { label: 'Z-A', value: 'desc' },
+        ]}
+        onChange={handler.sort}
+        renderAnchor={() => (
+          <StyledSort>
+            <MDSIcon.Sort size={24} />
+          </StyledSort>
+        )}
+      />
+    )
+  ) : undefined;
 
   const handleChangeSearch = (s: string) => {
     if (customSearch) {
@@ -461,7 +464,7 @@ const Dropdown = <T, SortT>(
                   onChange={handleChangeSearch}
                 />
               )}
-              {(isMultiple || hasSort) && !hideSelectAllAndCount && (
+              {hasAction && (
                 <StyledAction>
                   <StyledSelectAll as={!hideSelectAll && isMultiple ? 'label' : 'div'}>
                     {!hideSelectAll && isMultiple && (
@@ -475,7 +478,7 @@ const Dropdown = <T, SortT>(
                       {countLabel}
                     </MDSTypography>
                   </StyledSelectAll>
-                  {hasSort && sortEle}
+                  {sortEle}
                 </StyledAction>
               )}
             </StyledStickyContent>
@@ -553,7 +556,7 @@ export const MDSDropdown = <T = unknown, SortT = unknown>(props: Props<T, SortT>
     | undefined;
 
   const anchor = renderAnchor ? (
-    renderAnchor(value, (Array.isArray(value) ? anchorValues : anchorValues[0]) as ObjType<T>, selectableValue)
+    renderAnchor(value as T, (Array.isArray(value) ? anchorValues : anchorValues[0]) as ObjType<T>, selectableValue)
   ) : (
     <FilterButton
       label={props.label || ''}

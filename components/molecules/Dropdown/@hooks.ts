@@ -24,7 +24,9 @@ export const useDropdown = <T>({
     search,
     sort,
     filteredList,
-    searchedValues: [...getValueFromList(filteredList), ...(stickyItem ? [stickyItem] : [])],
+    searchedValues: [...getValueFromList(filteredList), ...(stickyItem ? [stickyItem] : [])] as DropdownItem<
+      ValueType<T>
+    >[],
     handler: {
       search: setSearch,
       sort: setSort,
@@ -315,3 +317,5 @@ export const useInitDropdown = <T, SortT>(
     },
   };
 };
+
+export type UseDropdownReturn<T> = ReturnType<typeof useDropdown<T>>;

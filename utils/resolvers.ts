@@ -1,6 +1,6 @@
 import { _MDSThemeValue } from '../foundation';
 import { MDSTheme, Path } from '../types';
-import { BodySize, MDSDropdownItem, MDSTypographyProps, TitleSize } from '../components';
+import { BodySize, MDSTypographyProps, TitleSize } from '../components';
 
 /**
  * @deprecated

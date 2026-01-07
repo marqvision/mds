@@ -27,7 +27,7 @@ export type DropdownItem<T> = {
   onClick?: () => void;
 } & ({ children: DropdownItem<T>[]; value?: any } | { children?: undefined; value?: T });
 
-export type InferType<T> = T extends (infer U)[] ? U[] : T;
+export type InferType<T> = T extends (infer U)[] ? Exclude<U, undefined>[] : Exclude<T, undefined>;
 export type ValueType<T> = T extends (infer U)[] ? U : T;
 export type ObjType<T> = T extends (infer U)[]
   ? DropdownItem<ValueType<U>>[]

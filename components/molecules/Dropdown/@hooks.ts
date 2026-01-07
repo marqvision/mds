@@ -13,10 +13,10 @@ export const useDropdown = <T>({
   stickyItem?: DropdownItem<ValueType<T>>;
 }) => {
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState<SortType | undefined>(hasSort ? 'asc' : undefined);
+  const [sort, setSort] = useState<SortType>('asc');
 
   const filteredList = useMemo(
-    () => getFilteredList(list, hasCustomSearch ? '' : search, sort),
+    () => getFilteredList(list, hasCustomSearch ? '' : search, hasSort ? sort : undefined),
     [hasCustomSearch, search, list, sort]
   );
 
@@ -24,7 +24,9 @@ export const useDropdown = <T>({
     search,
     sort,
     filteredList,
-    searchedValues: [...getValueFromList(filteredList), ...(stickyItem ? [stickyItem] : [])],
+    searchedValues: [...getValueFromList(filteredList), ...(stickyItem ? [stickyItem] : [])] as DropdownItem<
+      ValueType<T>
+    >[],
     handler: {
       search: setSearch,
       sort: setSort,
@@ -315,3 +317,5 @@ export const useInitDropdown = <T, SortT>(
     },
   };
 };
+
+export type UseDropdownReturn<T> = ReturnType<typeof useDropdown<T>>;

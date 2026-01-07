@@ -12,6 +12,9 @@ export const INPUT_THEME = {
       error: RAW_COLORS.red600,
       hover: RAW_COLORS.bluegray300,
       disabled: RAW_COLORS.bluegray200,
+      focus: RAW_COLORS.blue700,
+      'focus-effect': RAW_COLORS.blue200,
+      'error-focus-effect': RAW_COLORS.red100,
     },
   },
 };

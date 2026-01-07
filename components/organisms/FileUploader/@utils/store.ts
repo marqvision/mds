@@ -1,12 +1,4 @@
-import {
-  ErrorItem,
-  FileData,
-  FileUploaderError,
-  FileUploaderStore,
-  Item,
-  Listener,
-  Progress,
-} from '../@types';
+import { ErrorItem, FileData, FileUploaderError, FileUploaderStore, Item, Listener, Progress } from '../@types';
 
 /** 아이템이 업로드 진행 중인지 판단 */
 export const checkIsItemUploading = (progress: Progress | null | undefined): boolean => {
@@ -26,14 +18,14 @@ export const checkIsItemCompleted = (progress: Progress | undefined): boolean =>
   return false;
 };
 
-export const calculateBatchProgress = (items: Item[]): Progress => {
-  const defaultProgress: Progress = {
-    count: { current: 0, total: 0 },
-    percentage: 0,
-    isUploading: false,
-  };
+const DEFAULT_PROGRESS: Progress = {
+  count: { current: 0, total: 0 },
+  percentage: 0,
+  isUploading: false,
+};
 
-  if (items.length === 0) return defaultProgress;
+export const calculateBatchProgress = (items: Item[]): Progress => {
+  if (items.length === 0) return DEFAULT_PROGRESS;
 
   // progress가 있는 아이템 = 현재 배치에 포함된 아이템
   const batchItems = items.filter((item) => item.progress !== undefined);
@@ -43,7 +35,7 @@ export const calculateBatchProgress = (items: Item[]): Progress => {
   const isUploading = activeItems.length > 0;
 
   // 배치가 없거나 모든 업로드가 완료되면 초기화
-  if (batchItems.length === 0 || !isUploading) return defaultProgress;
+  if (batchItems.length === 0 || !isUploading) return DEFAULT_PROGRESS;
 
   // 완료된 아이템 수
   const completedCount = batchItems.filter((item) => checkIsItemCompleted(item.progress)).length;
@@ -60,8 +52,8 @@ export const calculateBatchProgress = (items: Item[]): Progress => {
   };
 };
 
-const calculateErrorItems = <T extends FileData>(items: Item<T>[]): ErrorItem<T>[] => {
-  return items.map((item, index) => ({ index, item })).filter(({ item }) => item.error);
+const calculateErrorItems = <T extends FileData>(items: Item<T>[]) => {
+  return items.map((item, index) => ({ index, item })).filter(({ item }) => item.error) as ErrorItem<T>[];
 };
 
 /** subscribe 헬퍼 함수 생성 */
@@ -101,13 +93,11 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
   // combinedErrors 캐시 업데이트
   const updateCachedCombinedErrors = () => {
-    const itemErrors: FileUploaderError[] = cachedErrorItems.map(
-      ({ index, item }: ErrorItem<T>) => ({
-        ...item.error!,
-        files: item.data.file ? [item.data.file] : undefined,
-        index,
-      })
-    );
+    const itemErrors: FileUploaderError[] = cachedErrorItems.map(({ index, item }: ErrorItem<T>) => ({
+      ...item.error,
+      files: item.data.file ? [item.data.file] : undefined,
+      index,
+    }));
     cachedCombinedErrors = [...globalErrors, ...itemErrors];
   };
   updateCachedCombinedErrors();

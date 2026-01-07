@@ -58,7 +58,7 @@ export type PlaceholderProps<T extends FileData = FileData> = {
   controller?: FileUploaderController<boolean, T>;
 } & TitleOrLanguage;
 
-export type ErrorItem<T extends FileData = FileData> = { index: number; item: Item<T> };
+export type ErrorItem<T extends FileData = FileData> = { index: number; item: Required<Pick<Item<T>, 'error'>> & Item<T> };
 
 export type FileUploaderError = ErrorData & {
   files?: File[];

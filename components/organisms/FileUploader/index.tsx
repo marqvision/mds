@@ -39,33 +39,25 @@ export const FileUploader = <T extends FileData = FileData>(props: Props<T>) => 
   const value = useFileUploadState(controller, 'value');
   const progress = useFileUploadState(controller, 'progress');
 
-  const items: Item<T>[] = value as Item<T>[];
-  const placeholderProps = { ...placeholder, controller } as PlaceholderProps<T>;
-
   return (
-    <Dropzone
-      controller={controller as FileUploaderController<boolean, T>}
-      label={label}
-      isReadonly={isReadonly}
-      height={height}
-    >
+    <Dropzone controller={controller} label={label} isReadonly={isReadonly} height={height}>
       {progress.isUploading ? (
         <Loading progress={progress} />
-      ) : items.length ? (
-        <Grid column={column ?? Math.min(DEFAULT_COLUMN, items.length)}>
-          {items.map(({ data }, index) => (
+      ) : value.length ? (
+        <Grid column={column ?? Math.min(DEFAULT_COLUMN, value.length)}>
+          {value.map(({ data }, index) => (
             <GridImage
               key={data.url || data.fileName || index}
               data={data}
               isDisabled={isDisabled}
               isReadonly={isReadonly}
-              controller={controller as FileUploaderController<boolean, T>}
+              controller={controller}
               index={index}
             />
           ))}
         </Grid>
       ) : (
-        <Placeholder {...placeholderProps} />
+        <Placeholder {...placeholder} controller={controller} />
       )}
     </Dropzone>
   );

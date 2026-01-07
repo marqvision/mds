@@ -25,7 +25,7 @@ export const GridImage = <T extends FileData = FileData>(props: Props<T>) => {
 
   const canDelete = controller && index !== undefined;
   const isActive = !isReadonly && !isDisabled && !!(action || canDelete);
-  const isImage = useMemo(() => checkIsImage(data), [data]);
+  const isImage = checkIsImage(data);
   const src = useMemo(() => (data.file ? URL.createObjectURL(data.file) : data.url), [data.file, data.url]);
 
   useEffect(() => {

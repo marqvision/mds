@@ -1,4 +1,4 @@
-# MDS v2 (Material Design System v2)
+# MDS v2 (MarqVision Design System v2)
 
 ## 개요
 

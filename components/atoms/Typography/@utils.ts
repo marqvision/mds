@@ -27,6 +27,12 @@ export const resolveFontWeightLetterSpacing = (
   theme: MDSTheme,
   features: Pick<InnerTypographyStyleProps, 'variant' | 'weight' | 'size'>
 ) => {
+  if (features.weight === 'inherit') {
+    return {
+      fontWeight: 'inherit',
+      letterSpacing: 'inherit',
+    };
+  }
   if (features.variant === 'title') {
     const defaultWeight = features.size === '2xl' || features.size === 'xl' ? 'medium' : 'semibold';
     const weight = (features.weight || defaultWeight) as TitleWeight;

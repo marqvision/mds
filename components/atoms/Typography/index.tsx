@@ -20,7 +20,7 @@ const TypographyStyles = styled.span<InnerTypographyStyleProps<any>>`
     const textAlignStyles = textAlign ? `text-align: ${textAlign};` : '';
 
     return `
-      font-size: ${fontSize}px;
+      font-size: ${fontSize};
       color: ${fontColor};
       font-weight: ${fontWeight};
       letter-spacing: ${letterSpacing};

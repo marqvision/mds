@@ -40,12 +40,15 @@ export const resolveFontSize = (
   theme: MDSTheme,
   features: Pick<MDSTypographyProps, 'variant' | 'size'>
 ) => {
+  if (features.size === 'inherit') {
+    return 'inherit';
+  }
   if (features.variant === 'title') {
     const size = features.size as TitleSize;
-    return theme.comp.typography.title.size[size];
+    return `${theme.comp.typography.title.size[size]}px`;
   } else if (features.variant === 'body') {
     const size = features.size as BodySize;
-    return theme.comp.typography.body.size[size];
+    return `${theme.comp.typography.body.size[size]}px`;
   }
 };
 

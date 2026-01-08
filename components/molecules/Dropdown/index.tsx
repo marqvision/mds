@@ -233,6 +233,8 @@ const Dropdown = <T, SortT>(
       }
 
       setFoldedItemIndex(allIndex);
+    } else if (value !== undefined && !Array.isArray(value)) {
+      setNeedToFocus(true);
     }
     // intentionally omitting list, value
   }, [getAllListIndex, isFoldAll, setFoldedItemIndex]);

@@ -107,7 +107,7 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
   return (
     <Wrapper
       as={path ? LinkComponent : undefined}
-      to={path}
+      {...(path && { to: path })}
       type={type}
       isOpen={isOpen}
       selected={selected}

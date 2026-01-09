@@ -24,6 +24,21 @@ export const MDSTooltip = (props: TooltipProps) => {
     style,
   } = props;
 
+  const contents = title ? (
+    isValidElement(title) ? (
+      title
+    ) : (
+      <MDSTypography
+        variant={Theme.size[size].variant}
+        size={Theme.size[size].size}
+        weight={Theme.size[size].weight}
+        color="color/content/on_default_color"
+      >
+        {title}
+      </MDSTypography>
+    )
+  ) : undefined;
+
   return (
     <MDSPopover
       position={position}
@@ -44,18 +59,7 @@ export const MDSTooltip = (props: TooltipProps) => {
       }}
       withArrow={size === 'medium'}
     >
-      {isValidElement(title) ? (
-        title
-      ) : (
-        <MDSTypography
-          variant={Theme.size[size].variant}
-          size={Theme.size[size].size}
-          weight={Theme.size[size].weight}
-          color="color/content/on_default_color"
-        >
-          {title}
-        </MDSTypography>
-      )}
+      {contents}
     </MDSPopover>
   );
 };

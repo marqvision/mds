@@ -76,7 +76,8 @@ export type Props = {
   children:
     | ((handler: { close: () => void; isOpen: boolean }) => ReactElement | ReactElement[])
     | ReactElement
-    | ReactElement[];
+    | ReactElement[]
+    | undefined;
   onClose?: () => void;
   onVisibleChange?: (isOpen: boolean) => void;
   blockAutoClose?: boolean;

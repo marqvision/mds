@@ -572,18 +572,20 @@ export const MDSPopover = (props: Props & StyleProps) => {
   return (
     <>
       {anchorEle}
-      <Popover
-        {...props}
-        isOpen={isOpen}
-        anchorRef={anchorRef}
-        dialogRef={dialogRef}
-        focusRef={focusRef}
-        onClosePopover={handleClosePopover}
-        onMouseEnter={interactive ? handleMouseEnter : undefined}
-        onMouseLeave={interactive ? handleMouseLeave : undefined}
-      >
-        {props.children}
-      </Popover>
+      {props.children && (
+        <Popover
+          {...props}
+          isOpen={isOpen}
+          anchorRef={anchorRef}
+          dialogRef={dialogRef}
+          focusRef={focusRef}
+          onClosePopover={handleClosePopover}
+          onMouseEnter={interactive ? handleMouseEnter : undefined}
+          onMouseLeave={interactive ? handleMouseLeave : undefined}
+        >
+          {props.children}
+        </Popover>
+      )}
     </>
   );
 };

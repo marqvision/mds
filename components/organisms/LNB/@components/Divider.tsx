@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 
-export const Divider = styled.hr<{ isOpen: boolean }>`
+export const Divider = styled.hr`
   ${({ theme }) => {
-
     return `
       margin: 4px 0;
       width: 100%;

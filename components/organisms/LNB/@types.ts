@@ -30,7 +30,9 @@ type Group = {
 
 export type LNBItem = Group | Item<'group'>;
 
-type CommonProps = Required<Omit<LNBProps, 'list' | 'onItemClick'>> & Pick<LNBProps, 'onItemClick'>;
+type CommonProps = Required<Omit<LNBProps, 'list' | 'onItemClick'>> &
+  Pick<LNBProps, 'onItemClick'> &
+  Pick<React.HTMLAttributes<HTMLElement>, 'onMouseEnter' | 'onMouseLeave'>; // 접힘 시 MDSPopover 형태로 서브메뉴 나타남
 
 export type GroupProps = CommonProps & LNBItem;
 

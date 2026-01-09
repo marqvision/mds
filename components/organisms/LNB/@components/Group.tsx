@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
+import isPropValid from '@emotion/is-prop-valid';
 import styled from '@emotion/styled';
 import { GroupProps } from '../@types';
 import { checkIsMatched } from '../@utils';
 import { GroupMainItem } from './GroupMainItem';
 import { NavItem } from './NavItem';
 
-const CollapseWrapper = styled.div<{ isOpen: boolean }>`
+const CollapseWrapper = styled('div', {
+  shouldForwardProp: (prop) => isPropValid(prop),
+})<{ isOpen: boolean }>`
   ${({ isOpen }) => {
     const gridTemplateRows = isOpen ? '1fr' : '0fr';
 
@@ -31,7 +34,10 @@ export const Group = (props: GroupProps) => {
   const { items, ...restProps } = props;
 
   const selected = useMemo(() => checkIsMatched(props.path, props.value), [props.path, props.value]);
-  const defaultSubOpen = useMemo(() => selected || items?.some(({ path }) => checkIsMatched(path, props.value)) || false, [items, props.value, selected]);
+  const defaultSubOpen = useMemo(
+    () => selected || items?.some(({ path }) => checkIsMatched(path, props.value)) || false,
+    [items, props.value, selected]
+  );
 
   const [isSubOpen, setIsSubOpen] = useState<boolean>(false);
 
@@ -74,10 +80,12 @@ export const Group = (props: GroupProps) => {
     parentLabel: props.label,
   };
 
+  const isNew = props.isNew || (!isSubVisible && items.some(({ isNew }) => isNew));
+
   return (
     <div>
       <GroupMainItem {...mainItemProps} items={items}>
-        <NavItem type="group" {...mainItemProps} />
+        <NavItem type="group" {...mainItemProps} isNew={isNew} />
       </GroupMainItem>
 
       <CollapseWrapper isOpen={isSubVisible}>

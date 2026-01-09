@@ -1,5 +1,7 @@
 import { cloneElement, MouseEvent } from 'react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import isPropValid from '@emotion/is-prop-valid';
 import { LinkComponentProps } from '../../../../types';
 import { MDSIcon } from '../../../atoms/Icon';
 import { MDSTypography } from '../../../atoms/Typography';
@@ -7,12 +9,14 @@ import { MDSTag } from '../../../molecules/Tag';
 import { ItemProps, ItemType } from '../@types';
 import { resolveNavItemColor, resolveNavItemPadding } from '../@utils';
 
-const Wrapper = styled.div<{ isOpen: boolean; type: ItemType; selected?: boolean } & Partial<LinkComponentProps>>`
+const Wrapper = styled('div', {
+  shouldForwardProp: (prop) => isPropValid(prop),
+})<{ isOpen: boolean; type: ItemType; selected?: boolean } & Partial<LinkComponentProps>>`
   ${({ theme, isOpen, type, selected }) => {
     const padding = resolveNavItemPadding({ isOpen, type });
     const { color, hoverColor, backgroundColor, hoverBackgroundColor } = resolveNavItemColor({ theme, selected });
 
-    return `
+    return css`
       display: grid;
       grid-template-columns: auto 1fr auto;
       gap: 8px;
@@ -25,12 +29,13 @@ const Wrapper = styled.div<{ isOpen: boolean; type: ItemType; selected?: boolean
       padding: ${padding};
       color: ${color};
       background-color: ${backgroundColor};
-      
-      &:active, &:visited {
+
+      &:active,
+      &:visited {
         color: ${color};
         background-color: ${backgroundColor};
       }
-      
+
       &:hover {
         color: ${hoverColor};
         background-color: ${hoverBackgroundColor};
@@ -47,7 +52,7 @@ const FlexRow = styled.div<{ isFolded: boolean }>`
   flex-grow: 1;
   ${({ isFolded }) => {
     const opacity = isFolded ? 0 : 1;
-    return `
+    return css`
       flex-wrap: ${isFolded ? 'nowrap' : 'normal'};
       opacity: ${opacity};
     `;
@@ -57,6 +62,8 @@ const FlexRow = styled.div<{ isFolded: boolean }>`
 export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
   const {
     LinkComponent,
+    isOpen,
+    selected,
     path,
     label,
     icon,
@@ -69,13 +76,15 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
     onClick,
     onItemClick,
     parentLabel,
+    onMouseEnter,
+    onMouseLeave,
   } = props;
 
   const Icon = icon && cloneElement(icon, { size: 20, color: 'currentColor' });
 
   const isFoldVisible = typeof isSubOpen === 'boolean';
   const FoldIcon = isSubOpen ? MDSIcon.ArrowUp : MDSIcon.ArrowDown;
-  const isLabelVisible = props.isOpen || type === 'popover';
+  const isLabelVisible = isOpen || type === 'popover';
 
   const handleClick = (e: MouseEvent<HTMLDivElement | HTMLAnchorElement>) => {
     if (isFoldVisible) {
@@ -96,7 +105,16 @@ export const NavItem = <Type extends ItemType>(props: ItemProps<Type>) => {
   };
 
   return (
-    <Wrapper as={path ? LinkComponent : undefined} to={path} {...props} onClick={handleClick}>
+    <Wrapper
+      as={path ? LinkComponent : undefined}
+      {...(path && { to: path })}
+      type={type}
+      isOpen={isOpen}
+      selected={selected}
+      onClick={handleClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       {Icon}
       <FlexRow isFolded={!isLabelVisible}>
         <MDSTypography color="inherit" weight="medium" whiteSpace="nowrap">

@@ -8,6 +8,12 @@ export type TitleWeight = keyof MDSTheme['comp']['typography'][Extract<Variant, 
 export type BodyWeight = keyof MDSTheme['comp']['typography'][Extract<Variant, 'body'>]['weight'];
 export type Char = 'letter' | 'number';
 
+/**
+ * 부모 스타일 상속('inherit')을 허용하는 유틸리티 타입.
+ * 현재 필요에 의해 size, color, weight 에만 적용됨. 다른 속성에는 필요시 추가 사용 해 주세요.
+ */
+type WithInherit<T> = T | 'inherit';
+
 type BaseFeatures<T extends ElementType = 'p'> = {
   /**
    * 말줄일 라인 수.
@@ -18,7 +24,7 @@ type BaseFeatures<T extends ElementType = 'p'> = {
    * 타이포그래피의 색상.
    * 기본값은 content.neutral.default(=bluegray900)입니다.
    */
-  color?: MDSThemeColorPath | 'inherit';
+  color?: WithInherit<MDSThemeColorPath>;
 
   /**
    * 타이포그래피의 태그. 기본값은 variant에 따라 자동으로 결정됩니다.
@@ -70,45 +76,45 @@ type NewTypographyStyle =
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'letter'>;
-      size?: Extract<TitleSize, '2xl' | 'xl' | 'l'>;
+      size?: WithInherit<Extract<TitleSize, '2xl' | 'xl' | 'l'>>;
       /**
        * 타이포그래피의 굵기. - variant와 size에 따라 사용 가능한 값이 다릅니다
        * - title+2xl, title+xl, title+l: semibold, medium
        * - body의 모든 size: medium, regular
        */
-      weight?: Extract<TitleWeight, 'semibold' | 'medium'>;
+      weight?: WithInherit<Extract<TitleWeight, 'semibold' | 'medium'>>;
     }
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'letter'>;
-      size?: Extract<TitleSize, 'm' | 's'>;
-      weight?: Extract<TitleWeight, 'semibold'>;
+      size?: WithInherit<Extract<TitleSize, 'm' | 's'>>;
+      weight?: WithInherit<Extract<TitleWeight, 'semibold'>>;
     }
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'number'>;
-      size?: Extract<TitleSize, 'xl' | 'l'>;
-      weight?: Extract<TitleWeight, 'semibold' | 'medium'>;
+      size?: WithInherit<Extract<TitleSize, 'xl' | 'l'>>;
+      weight?: WithInherit<Extract<TitleWeight, 'semibold' | 'medium'>>;
     }
   | {
       variant?: Extract<Variant, 'title'>;
       char?: Extract<Char, 'number'>;
-      size?: Extract<TitleSize, 'm' | 's'>;
-      weight?: Extract<TitleWeight, 'semibold'>;
+      size?: WithInherit<Extract<TitleSize, 'm' | 's'>>;
+      weight?: WithInherit<Extract<TitleWeight, 'semibold'>>;
     }
   | {
       variant?: Extract<Variant, 'body'>;
       char?: Char;
-      size?: Extract<BodySize, 'l' | 'm' | 's' | 'xs'>;
-      weight?: Extract<BodyWeight, 'medium' | 'regular'>;
+      size?: WithInherit<Extract<BodySize, 'l' | 'm' | 's' | 'xs'>>;
+      weight?: WithInherit<Extract<BodyWeight, 'medium' | 'regular'>>;
     };
 
 // 내부적으로 사용되는 타이포그래피 스타일 속성
 export type InnerTypographyStyleProps<T extends ElementType = 'p'> = {
   variant: Variant;
   char: Char;
-  size: TitleSize | BodySize;
-  weight?: TitleWeight | BodyWeight | 'bold' | 'light'; // todo-@jamie: [PROD-12758] bold, light: 예전 폰트 하위 호환성을 위해 유지 - 완료되면 반드시 삭제!!!
+  size: WithInherit<TitleSize | BodySize>;
+  weight?: WithInherit<TitleWeight | BodyWeight>;
 } & BaseFeatures<T>;
 
 // 최종 + 외부 노출을 위한 Props 타입

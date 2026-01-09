@@ -1,5 +1,5 @@
 import React, { forwardRef, isValidElement } from 'react';
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { Divider } from './@components/Divider';
@@ -25,7 +25,7 @@ const Button = styled.button<StyledButtonProps>`
     const defaultPadding = props.isIconButton && !props.flat ? sizeStyle.iconPadding : sizeStyle.padding;
     const { paddingLeft, paddingRight, borderLeft, borderRight, marginRight } = resolveFlatStyles(theme, props);
 
-    return `
+    return css`
       position: relative;
       vertical-align: middle;
       justify-content: center;
@@ -39,7 +39,7 @@ const Button = styled.button<StyledButtonProps>`
       & svg {
         flex-shrink: 0;
       }
-      
+
       display: ${displayStyle};
       width: ${widthStyle};
       border-radius: ${borderRadiusStyle};
@@ -49,14 +49,14 @@ const Button = styled.button<StyledButtonProps>`
       color: ${colorStyle.content.normal};
       background-color: ${colorStyle.background.normal};
       border-color: ${colorStyle.border.normal};
-      
+
       /* flat 적용 시 스타일 */
       padding-left: ${paddingLeft || ''};
       padding-right: ${paddingRight || ''};
       border-left: ${borderLeft || ''};
       border-right: ${borderRight || ''};
       margin-right: ${marginRight || ''};
-      
+
       /* clickable 상태 시 스타일 */
       cursor: ${props.isClickable ? 'pointer' : ''};
       &:hover {
@@ -64,13 +64,11 @@ const Button = styled.button<StyledButtonProps>`
         background-color: ${colorStyle.background.hover};
         border-color: ${colorStyle.border.hover};
       }
-      
+
       /* isLoading === hideLabel 시 */
-      ${
-        props.isLoading === 'hideLabel'
-          ? `& *:not([role=loading-indicator], [role=loading-indicator] *, hr) { opacity: 0; }`
-          : ''
-      }
+      ${props.isLoading === 'hideLabel'
+        ? `& *:not([role=loading-indicator], [role=loading-indicator] *, hr) { opacity: 0; }`
+        : ''}
     `;
   }}
 `;
@@ -171,20 +169,17 @@ export const MDSButton = forwardRef<
       )}
 
       <TagGap size={commonProps.size}>
-        {isValidElement(label)
-          ? label
-          : label && (
-              <MDSTypography
-                variant="body"
-                weight="medium"
-                size={sizeStyle.size}
-                color="inherit"
-                lineClamp={1}
-                wordBreak="break-all"
-              >
-                {label}
-              </MDSTypography>
-            )}
+        {label && (
+          <MDSTypography
+            variant="body"
+            weight="medium"
+            size={sizeStyle.size}
+            color="inherit"
+            as={isValidElement(label) ? 'div' : undefined}
+          >
+            {label}
+          </MDSTypography>
+        )}
 
         {tags && <TagWrapper>{Array.isArray(tags) ? tags.map((tag) => tag) : tags}</TagWrapper>}
       </TagGap>

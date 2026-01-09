@@ -438,3 +438,36 @@ export const IconButton: Story = {
     </Wrapper>
   ),
 };
+
+export const LineClamp: Story = {
+  args: {
+    width: '100px',
+    children: (
+      <MDSTypography color="inherit" size="inherit" weight="inherit" lineClamp={1} wordBreak="break-all">
+        말줄임을 하고 싶어요 사실은 되게 긴데 말이죠.
+      </MDSTypography>
+    ),
+  },
+  render: (args) => (
+    <Wrapper>
+      <MDSTypography>
+        line clamp 등 label 에 typography 의 속성을 사용하고 싶다면 MDSTypography 를 직접 사용하세요.
+      </MDSTypography>
+      <MDSTypography>
+        다만 버튼 label 의 스타일을 상속받기 위해{' '}
+        <MDSTypography as="span" weight="medium">
+          color, size, weight
+        </MDSTypography>{' '}
+        를{' '}
+        <MDSTag size="medium" variant="tint" color="bluegray">
+          inherit
+        </MDSTag>{' '}
+        으로 지정하는 것을 추천합니다.
+      </MDSTypography>
+      <MDSButton {...args} />
+      <MDSButton isDisabled {...args} />
+      <MDSButton size="large" {...args} />
+      <MDSButton variant="border" color="bluegray" {...args} />
+    </Wrapper>
+  ),
+};

@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { resolveFontSize, resolveLineHeight } from '../../../utils';
 import { CircleProps, CommonProps, RectProps, TextProps } from './@types';
 import { parsePixelSize } from './@utils';
 
 const Common = styled.div<Required<CommonProps>>`
-  display: ${({ display }) => display};
-  background-color: ${({ theme }) => `${theme._raw_color.bluegray750}1F`};
   animation: skeleton-pulse 1.5s ease-in-out 0.5s infinite;
   @keyframes skeleton-pulse {
     0% {
@@ -15,6 +14,10 @@ const Common = styled.div<Required<CommonProps>>`
       opacity: 0.4;
     }
   }
+  ${({ theme, display }) => css`
+    display: ${display};
+    background-color: ${theme._raw_color.bluegray750}1F;
+  `}
 `;
 
 export const Styled = {
@@ -22,20 +25,26 @@ export const Styled = {
     box-sizing: content-box;
     border-radius: 4px;
     min-height: 1em;
-    width: ${({ width }) => parsePixelSize(width)};
-    margin: ${({ variant, theme }) => `calc((${resolveLineHeight(theme, { variant })}em - 1em) / 2)`} 0;
-    font-size: ${({ variant, size, theme }) => resolveFontSize(theme, { variant, size })}px;
+    ${({ variant, size, theme, width }) => css`
+      width: ${parsePixelSize(width)};
+      margin: calc((${resolveLineHeight(theme, { variant })}em - 1em) / 2) 0;
+      font-size: ${resolveFontSize(theme, { variant, size })};
+    `}
   `,
 
   circle: styled(Common)<Required<CircleProps>>`
     border-radius: 50%;
-    width: ${({ size }) => parsePixelSize(size)};
-    height: ${({ size }) => parsePixelSize(size)};
+    ${({ size }) => css`
+      width: ${parsePixelSize(size)};
+      height: ${parsePixelSize(size)};
+    `}
   `,
 
   rect: styled(Common)<Required<RectProps>>`
-    border-radius: ${({ borderRadius }) => parsePixelSize(borderRadius)};
-    width: ${({ width }) => parsePixelSize(width)};
-    height: ${({ height }) => parsePixelSize(height)};
+    ${({ borderRadius, width, height }) => css`
+      border-radius: ${parsePixelSize(borderRadius)};
+      width: ${parsePixelSize(width)};
+      height: ${parsePixelSize(height)};
+    `}
   `,
 };

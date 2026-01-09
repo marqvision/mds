@@ -1,5 +1,5 @@
 import React, { forwardRef, isValidElement, JSX, Ref } from 'react';
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { Icon } from './@components/Icon';
@@ -13,7 +13,7 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
     const sizeStyle = resolveSize(theme, props);
     const colorStyle = resolveColor(theme, props);
 
-    return `
+    return css`
       position: relative;
       display: inline-flex;
       vertical-align: middle;
@@ -28,13 +28,13 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
       & svg {
         flex-shrink: 0;
       }
-      
+
       gap: ${sizeStyle.gap};
       color: ${colorStyle.content.normal};
-      
+
       /* clickable 상태 시 스타일 */
       cursor: ${props.isClickable ? 'pointer' : ''};
-      
+
       &:after {
         position: absolute;
         content: '';
@@ -50,7 +50,7 @@ const PlainButton = styled.button<StyledPlainButtonProps>`
         transition: 0.3s;
         transform: translate(-50%, -50%);
       }
-      
+
       &:hover {
         color: ${colorStyle.content.hover};
         &:after {
@@ -118,13 +118,17 @@ export const MDSPlainButton = forwardRef((props, ref) => {
     <PlainButton {...commonProps} ref={ref}>
       {startIcon && <Icon type="withLabel" size={size} icon={startIcon} />}
 
-      {isValidElement(label)
-        ? label
-        : label && (
-            <MDSTypography variant="body" weight={weight} size={sizeStyle.typography} color="inherit">
-              {label}
-            </MDSTypography>
-          )}
+      {label && (
+        <MDSTypography
+          as={isValidElement(label) ? 'div' : undefined}
+          variant="body"
+          weight={weight}
+          size={sizeStyle.typography}
+          color="inherit"
+        >
+          {label}
+        </MDSTypography>
+      )}
 
       {endIcon && <Icon type="withLabel" size={size} icon={endIcon} />}
     </PlainButton>

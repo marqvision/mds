@@ -1,5 +1,6 @@
-import React, { cloneElement, forwardRef } from 'react';
+import React, { cloneElement, forwardRef, isValidElement } from 'react';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { MDSTypography } from '../../atoms/Typography';
 import { theme as TagTheme } from './@constants';
 import { IconProps, StyledTagProps, TagProps } from './@types';
@@ -18,22 +19,20 @@ const Tag = styled.button<StyledTagProps>`
   transition: 0.3s;
 
   ${({ size }) => {
-    return `
+    return css`
       gap: ${TagTheme.size[size].gap};
       padding: ${TagTheme.size[size].padding};
       border-width: ${TagTheme.size[size].borderWidth}px;
       border-radius: ${TagTheme.size[size].radius};
       min-height: ${TagTheme.size[size].minHeight};
-      
-      ${
-        size === 'x-small'
-          ? `
+
+      ${size === 'x-small'
+        ? css`
         height: ${TagTheme.size[size].minHeight}; 
         min-width: ${TagTheme.size[size].minHeight};
         overflow: hidden;
       `
-          : ''
-      }
+        : ''}
     `;
   }}
 
@@ -47,39 +46,39 @@ const Tag = styled.button<StyledTagProps>`
       TagTheme.size[size].clickAreaPadding * 2
     }px)`;
 
-    return `
+    return css`
       color: ${getColor(themeColor.normal.color)};
       background: ${getColor(normalBackgroundColor)};
       border-color: ${getColor(themeColor.normal.borderColor)};
       
       ${
         isClickable
-          ? `
-            cursor: pointer;
-              
-            &:after {
-              content: '';
-              position: absolute;
-              width: ${clickAreaSize};
-              height: ${clickAreaSize};
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              border-radius: 8px;
-              transition: 0.3s;
-              border: ${TagTheme.size[size].clickAreaPadding}px solid transparent;
-            }
-            
-            &:hover {
-              color: ${getColor(themeColor.hover.color)};
-              background: ${getColor(hoverBackgroundColor)};
-              border-color: ${getColor(themeColor.hover.borderColor)};
-              
+          ? css`
+              cursor: pointer;
+
               &:after {
-                border-color: ${getColor(themeColor.hover.clickAreaColor)};
+                content: '';
+                position: absolute;
+                width: ${clickAreaSize};
+                height: ${clickAreaSize};
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 8px;
+                transition: 0.3s;
+                border: ${TagTheme.size[size].clickAreaPadding}px solid transparent;
               }
-            }
-          `
+
+              &:hover {
+                color: ${getColor(themeColor.hover.color)};
+                background: ${getColor(hoverBackgroundColor)};
+                border-color: ${getColor(themeColor.hover.borderColor)};
+
+                &:after {
+                  border-color: ${getColor(themeColor.hover.clickAreaColor)};
+                }
+              }
+            `
           : ''
       }
       
@@ -117,19 +116,7 @@ const Icon = (props: IconProps) => {
 };
 
 export const MDSTag = forwardRef<HTMLButtonElement, React.PropsWithChildren<TagProps>>((props, ref) => {
-  const {
-    children: label,
-    size,
-    icon,
-    color,
-    variant,
-    startIcon,
-    endIcon,
-    isDisabled,
-    onClick,
-    lineClamp,
-    ...restProps
-  } = props;
+  const { children: label, size, icon, color, variant, startIcon, endIcon, isDisabled, onClick, ...restProps } = props;
 
   return (
     <Tag
@@ -150,12 +137,10 @@ export const MDSTag = forwardRef<HTMLButtonElement, React.PropsWithChildren<TagP
         weight="medium"
         size={TagTheme.size[size].size}
         color="inherit"
-        overflowWrap="normal"
         style={{
           lineHeight: TagTheme.size[size].lineHeight,
-          ...(lineClamp === 1 && { wordBreak: 'break-all' }),
         }}
-        lineClamp={lineClamp}
+        as={isValidElement(label) ? 'div' : undefined}
       >
         {label}
       </MDSTypography>

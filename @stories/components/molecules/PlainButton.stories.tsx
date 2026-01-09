@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDSIcon, MDSPlainButton, MDSTypography } from '../../../components';
+import { MDSIcon, MDSPlainButton, MDSTag, MDSTypography } from '../../../components';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MDSPlainButton> = {
@@ -38,8 +38,12 @@ export default meta;
 type CompositeButtonStory = StoryObj<typeof MDSPlainButton<'composite'>>;
 type IconButtonStory = StoryObj<typeof MDSPlainButton<'icon'>>;
 
-const Wrapper = ({ children }: React.PropsWithChildren) => {
-  return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>{children}</div>;
+const Wrapper = ({ children, style }: React.PropsWithChildren<{ style?: React.CSSProperties }>) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', ...style }}>
+      {children}
+    </div>
+  );
 };
 
 export const Preview: CompositeButtonStory = {
@@ -162,6 +166,40 @@ export const IconButton: IconButtonStory = {
         <MDSPlainButton size="large" color="green" icon={<MDSIcon.Image variant="fill" />} onClick={() => {}} />{' '}
         <MDSPlainButton size="large" color="bluegray" icon={<MDSIcon.ZoomIn />} onClick={() => {}} />
       </div>
+    </Wrapper>
+  ),
+};
+
+export const LineClamp: CompositeButtonStory = {
+  args: {
+    children: (
+      <MDSTypography color="inherit" size="inherit" weight="inherit" lineClamp={1} wordBreak="break-all">
+        말줄임을 하고 싶어요 사실은 되게 긴데 말이죠.
+      </MDSTypography>
+    ),
+  },
+  render: (args) => (
+    <Wrapper>
+      <MDSTypography>
+        line clamp 등 label 에 typography 의 속성을 사용하고 싶다면 MDSTypography 를 직접 사용하세요.
+      </MDSTypography>
+      <MDSTypography>
+        다만 버튼 label 의 스타일을 상속받기 위해{' '}
+        <MDSTypography as="span" weight="medium">
+          color, size, weight
+        </MDSTypography>{' '}
+        를{' '}
+        <MDSTag size="medium" variant="tint" color="bluegray">
+          inherit
+        </MDSTag>{' '}
+        으로 지정하는 것을 추천합니다.
+      </MDSTypography>
+      <Wrapper style={{ width: '100px' }}>
+        <MDSPlainButton {...args} />
+        <MDSPlainButton isDisabled {...args} />
+        <MDSPlainButton size="large" {...args} />
+        <MDSPlainButton color="bluegray" {...args} />
+      </Wrapper>
     </Wrapper>
   ),
 };

@@ -2,7 +2,7 @@ import { MouseEvent } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { MDSTabs } from '../../../../components/organisms/Tabs';
-import { MDSDivider, MDSIcon, MDSTag } from '../../../..';
+import { MDSDivider, MDSIcon, MDSTag, MDSTypography } from '../../../..';
 import { Doc } from './Doc';
 
 const meta: Meta<typeof MDSTabs> = {
@@ -38,8 +38,9 @@ export const TextTab: StoryObj<typeof MDSTabs> = {
   render: function Render(props) {
     const [tab, setTab] = useState<'TAB1' | 'TAB2' | 'TAB3' | 'TAB4' | 'TAB5' | 'TAB6' | 'TAB7' | 'TAB8'>('TAB1');
     const [tab2, setTab2] = useState<'TAB1' | 'TAB2' | 'TAB3' | 'TAB4' | 'TAB5' | 'TAB6' | 'TAB7' | 'TAB8'>('TAB1');
+    const [tab3, setTab3] = useState<'TAB1' | 'TAB2' | 'TAB3' | 'TAB4' | 'TAB5' | 'TAB6' | 'TAB7' | 'TAB8'>('TAB1');
 
-    const options = [...Array(8)].map((_, i) => `TAB${[...Array(i)].map(() => '_').join('')}${i + 1}`);
+    const options = [...Array(8)].map((_, i) => `TAB ${[...Array(i)].map(() => '_').join('')}${i + 1}`);
 
     const getTags = (index: number) => {
       if (index === 2) {
@@ -85,7 +86,7 @@ export const TextTab: StoryObj<typeof MDSTabs> = {
         </div>
         <div style={{ backgroundColor: '#FFF', borderRadius: '8px', padding: '12px' }}>
           <p style={{ paddingBottom: '16px' }}>disabled example (TAB3, TAB5 disabled)</p>
-          <MDSTabs {...props} value={tab} onChange={setTab}>
+          <MDSTabs {...props} value={tab3} onChange={setTab3}>
             {options.map((label, index) => (
               <MDSTabs.TextItem
                 key={index}
@@ -93,7 +94,7 @@ export const TextTab: StoryObj<typeof MDSTabs> = {
                 tags={getTags(index)}
                 isDisabled={index === 2 || index === 4}
               >
-                {label}
+                {`${label} ${[...Array(index)].map(() => 's').join(' ')}`}
               </MDSTabs.TextItem>
             ))}
           </MDSTabs>
@@ -110,8 +111,9 @@ export const CardTab: StoryObj<typeof MDSTabs> = {
   render: function Render(props) {
     const [tab, setTab] = useState<'TAB1' | 'TAB2' | 'TAB3' | 'TAB4' | 'TAB5' | 'TAB6' | 'TAB7' | 'TAB8'>('TAB1');
     const [tab2, setTab2] = useState<'TAB1' | 'TAB2' | 'TAB3' | 'TAB4' | 'TAB5' | 'TAB6' | 'TAB7' | 'TAB8'>('TAB1');
+    const [tab3, setTab3] = useState<'TAB1' | 'TAB2' | 'TAB3' | 'TAB4' | 'TAB5' | 'TAB6' | 'TAB7' | 'TAB8'>('TAB1');
 
-    const options = [...Array(8)].map((_, i) => `TAB${[...Array(i)].map(() => '_').join('')}${i + 1}`);
+    const options = [...Array(8)].map((_, i) => `TAB${[...Array(i)].map(() => '_').join(' ')}${i + 1}`);
 
     const getTags = (index: number) => {
       if (index === 2) {
@@ -131,6 +133,58 @@ export const CardTab: StoryObj<typeof MDSTabs> = {
           </MDSTag>
         );
       }
+    };
+
+    const getTitle = (index: number, label: string) => {
+      if (index === 1) {
+        return (
+          <div>
+            <MDSTypography color="inherit">커스텀 타이틀</MDSTypography>
+            <div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  alert('커스텀 타이틀 버튼 클릭');
+                }}
+              >
+                커스텀 타이틀 버튼
+              </button>
+            </div>
+          </div>
+        );
+      }
+      if (index === 3) {
+        return label + (index === 3 ? '\n\\n 줄바꿈' : '');
+      }
+      if (index === 5) {
+        return (
+          <>
+            {label}
+            <br />
+            {'<br />'}로 줄바꿈
+          </>
+        );
+      }
+
+      return label;
+    };
+
+    const getDescription = (index: number) => {
+      if (index === 0) {
+        return (
+          <div>
+            <MDSTypography>커스텀</MDSTypography>
+            <MDSTypography whiteSpace="pre">디스크립션</MDSTypography>
+          </div>
+        );
+      }
+      if (index === 1) {
+        return 'description with long text';
+      }
+      if (index === 3) {
+        return undefined;
+      }
+      return 'description';
     };
 
     return (
@@ -171,14 +225,14 @@ export const CardTab: StoryObj<typeof MDSTabs> = {
         </div>
         <div style={{ backgroundColor: '#FFF', borderRadius: '8px', padding: '12px' }}>
           <p style={{ paddingBottom: '16px' }}>disabled example (TAB3, TAB5 disabled)</p>
-          <MDSTabs {...props} value={tab} onChange={setTab}>
+          <MDSTabs {...props} value={tab3} onChange={setTab3}>
             {options.map((label, index) => (
               <MDSTabs.CardItem
                 key={index}
                 value={`TAB${index + 1}`}
                 tags={getTags(index)}
-                title={label}
-                description="description"
+                title={getTitle(index, label)}
+                description={getDescription(index)}
                 isDisabled={index === 2 || index === 4}
               />
             ))}

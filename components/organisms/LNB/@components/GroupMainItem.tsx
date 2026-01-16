@@ -1,6 +1,6 @@
 import React from 'react';
-import { MDSPopover } from '../../../molecules/Popover';
 import { SubNavPopoverProps } from '../@types';
+import { MDSTooltip } from '../../../molecules/Tooltip';
 import { SubPopoverContent } from './SubPopoverContent';
 
 export const GroupMainItem = (props: SubNavPopoverProps & { children: React.ReactElement }) => {
@@ -11,18 +11,25 @@ export const GroupMainItem = (props: SubNavPopoverProps & { children: React.Reac
   const isGroupTitle = !!(props.items && props.items.length);
   const position = isGroupTitle ? 'right-bottom' : 'right-center';
   const width = isGroupTitle ? '172px' : 'auto';
-  const padding = isGroupTitle ? '0px' : '4px 8px';
-  const marginLeft = isGroupTitle ? '8px' : undefined;
+
+  const style = isGroupTitle
+    ? {
+        padding: '0px',
+        marginLeft: '8px',
+      }
+    : undefined;
 
   return (
-    <MDSPopover
-      trigger="hover"
+    <MDSTooltip
+      size="small"
+      interactive={isGroupTitle}
       position={position}
       width={width}
-      anchor={children}
-      style={{ padding, marginLeft, borderRadius: '4px' }}
+      title={<SubPopoverContent {...restProps} />}
+      style={style}
+      bgColor="white"
     >
-      <SubPopoverContent {...restProps} />
-    </MDSPopover>
+      {children}
+    </MDSTooltip>
   );
 };

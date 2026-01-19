@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 import { CONCURRENT_UPLOAD_LIMIT, ERROR_CODE, ERROR_MESSAGE } from '../@constants';
 import {
   ErrorCode,
@@ -22,6 +22,7 @@ import {
   uploadFileToS3,
   validateFiles,
 } from '../@utils';
+import { getIsValueEqual, getNormalizedValue } from '../@utils/helpers';
 
 /**
  * 파일 업로드를 위한 상태와 액션을 제공하는 훅
@@ -82,9 +83,7 @@ export function useFileUploader<T extends FileData = FileData>(
   const multiple = limit !== 1;
 
   // defaultValue를 Item[]로 정규화
-  const normalizedDefaultValue = useRef<Item<T>[]>(
-    defaultValue ? (Array.isArray(defaultValue) ? defaultValue : [defaultValue]) : []
-  );
+  const normalizedDefaultValue = useRef<Item<T>[]>(getNormalizedValue(defaultValue));
 
   // store는 한 번만 생성
   const storeRef = useRef<FileUploaderStore<T>>();
@@ -429,6 +428,13 @@ export function useFileUploader<T extends FileData = FileData>(
     }),
     [store, language, accept, dropKey, isDisabled, open, addFiles, addItems, raiseError, remove]
   );
+
+  useEffect(() => {
+    // 외부 주입 값 변경 시 store 연동
+    const normalizedDefaultValue = getNormalizedValue(defaultValue);
+    if (getIsValueEqual(normalizedDefaultValue, store)) return;
+    store.reset(normalizedDefaultValue);
+  }, [defaultValue, store]);
 
   return {
     controller,

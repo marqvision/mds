@@ -1,4 +1,5 @@
 import React from 'react';
+import isEqual from 'lodash/isEqual';
 import { MDSSnackbar } from '../../Snackbar';
 import {
   ERROR_CODE,
@@ -18,6 +19,7 @@ import {
   FileData,
   FileType,
   FileUploaderError,
+  FileUploaderStore,
   Item,
   Language,
   ValidationError,
@@ -338,10 +340,24 @@ export const createItemFromFile = (file: File, hasPresignedUrl: boolean): Item =
   progress: hasPresignedUrl ? { percentage: 0, isUploading: true } : undefined,
 });
 
-export const toastMDSSnackbarError = (error: FileUploaderError) =>
-  MDSSnackbar({ type: 'error', title: error.message });
+export const toastMDSSnackbarError = (error: FileUploaderError) => MDSSnackbar({ type: 'error', title: error.message });
 
 export const getErrorData = (language: Language, code?: ErrorCode): ErrorData | undefined => {
   if (!code) return undefined;
   return { code, message: ERROR_MESSAGE[code]()[language] };
+};
+
+export const getNormalizedValue = <T extends FileData = FileData>(value?: Item<T> | Item<T>[]): Item<T>[] => {
+  return value ? (Array.isArray(value) ? value : [value]) : [];
+};
+
+/** 외부에서 주입하는 value 변경 확인 */
+export const getIsValueEqual = <T extends FileData = FileData>(
+  value: Item<T>[],
+  store: FileUploaderStore<T>
+): boolean => {
+  return isEqual(
+    value.map(({ data: { url } }) => url),
+    store.getItems().map(({ data: { url } }) => url)
+  );
 };

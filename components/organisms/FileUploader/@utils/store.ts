@@ -79,6 +79,7 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
   let globalErrors: FileUploaderError[] = [];
   let manualProgress: Progress | null = null;
   let cachedCombinedErrors: FileUploaderError[] = [];
+  let isProcessing = false;
 
   let batchProgress: Progress = calculateBatchProgress(items);
   let cachedErrorItems: ErrorItem<T>[] = calculateErrorItems(items);
@@ -229,7 +230,12 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     // isUploading 구독
     subscribeIsUploading: createSubscriber(isUploadingListeners),
-    getIsUploading: () => checkIsItemUploading(manualProgress) || batchProgress.isUploading === true,
+    getIsUploading: () => isProcessing || checkIsItemUploading(manualProgress) || batchProgress.isUploading === true,
+    setIsProcessing: (value: boolean) => {
+      if (isProcessing === value) return;
+      isProcessing = value;
+      isUploadingListeners.forEach((listener) => listener());
+    },
 
     // errors 구독
     subscribeErrors: createSubscriber(errorsListeners),

@@ -52,10 +52,11 @@ const Styled = {
 type Props<T extends FileData = FileData> = GridItemProps<T> & {
   icon?: React.ReactNode;
   fileName: string;
+  description?: React.ReactNode;
 };
 
 export const GridFile = <T extends FileData = FileData>(props: Props<T>) => {
-  const { icon, fileName, isReadonly, isDisabled, action, controller, index } = props;
+  const { icon, fileName, description, isReadonly, isDisabled, action, controller, index } = props;
 
   const canDelete = controller && index !== undefined;
   const isActive = !isReadonly && !isDisabled && !!(action || canDelete);
@@ -64,6 +65,7 @@ export const GridFile = <T extends FileData = FileData>(props: Props<T>) => {
     <Styled.Wrapper>
       <Styled.Icon>{icon || <ExtensionIcon fileName={fileName} />}</Styled.Icon>
       <MDSTypography wordBreak="break-all">{fileName}</MDSTypography>
+      {description}
       {isActive && (
         <Styled.Actions className="actions">
           {action}

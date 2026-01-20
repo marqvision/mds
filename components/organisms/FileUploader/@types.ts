@@ -91,6 +91,7 @@ export type FileUploaderStore<T extends FileData = FileData> = {
 
   subscribeIsUploading: (listener: Listener) => () => void;
   getIsUploading: () => boolean;
+  setIsProcessing: (value: boolean) => void;
 
   subscribeErrors: (listener: Listener) => () => void;
   getErrors: () => ErrorItem<T>[];
@@ -151,7 +152,7 @@ export type FileUploaderControllerActions<Multiple extends boolean, T extends Fi
 // controller 타입
 export type FileUploaderController<Multiple extends boolean = true, T extends FileData = FileData> = {
   store: FileUploaderStore<T>;
-  options: Pick<UseFileUploaderOptions<Multiple, T>, 'language' | 'accept' | 'dropKey' | 'isDisabled'>;
+  options: Pick<UseFileUploaderOptions<Multiple, T>, 'language' | 'accept' | 'dropKey' | 'isDisabled' | 'getPresignedUrl'>;
   actions: FileUploaderControllerActions<Multiple, T>;
 };
 

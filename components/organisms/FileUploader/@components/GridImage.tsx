@@ -5,6 +5,7 @@ import { MDSImage, MDSImageProps } from '../../../atoms/Image';
 import { MDSPlainButton } from '../../../molecules/PlainButton';
 import { FileData, GridItemProps, Item } from '../@types';
 import { checkIsImage } from '../@utils';
+import { MDSTypography } from '../../../atoms/Typography';
 import { GridFile } from './GridFile';
 
 const Styled = {
@@ -31,6 +32,22 @@ export const GridImage = <T extends FileData = FileData>(props: Props<T>) => {
   useEffect(() => {
     return () => URL.revokeObjectURL(src);
   }, [src]);
+
+  if (controller?.options.getPresignedUrl && !data.url) {
+    return (
+      <GridFile
+        controller={controller}
+        index={props.index}
+        icon={<MDSIcon.ErrorWarning variant="fill" color="color/content/critical/default/normal" />}
+        fileName={data.fileName}
+        description={
+          <MDSTypography weight="medium" color="color/content/critical/default/normal">
+            Upload failed
+          </MDSTypography>
+        }
+      />
+    );
+  }
 
   if (!isImage) {
     return <GridFile {...props} fileName={data.fileName} />;

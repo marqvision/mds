@@ -326,6 +326,9 @@ export function useFileUploader<T extends FileData = FileData>(
 
       // 처리 시작
       isProcessingRef.current = true;
+      if (getPresignedUrl) {
+        store.setIsProcessing(true);
+      }
 
       try {
         // 1. 파일 검증
@@ -380,6 +383,9 @@ export function useFileUploader<T extends FileData = FileData>(
       } finally {
         // 처리 완료
         isProcessingRef.current = false;
+        if (getPresignedUrl) {
+          store.setIsProcessing(false);
+        }
       }
     },
     [checkCanAddFiles, multiple, limit, maxFileSize, store, accept, applyItems, raiseError, getPresignedUrl, uploadFile]
@@ -417,6 +423,7 @@ export function useFileUploader<T extends FileData = FileData>(
         accept,
         dropKey,
         isDisabled,
+        getPresignedUrl,
       },
       actions: {
         open,
@@ -426,7 +433,7 @@ export function useFileUploader<T extends FileData = FileData>(
         remove,
       },
     }),
-    [store, language, accept, dropKey, isDisabled, open, addFiles, addItems, raiseError, remove]
+    [store, language, accept, dropKey, isDisabled, getPresignedUrl, open, addFiles, addItems, raiseError, remove]
   );
 
   useEffect(() => {

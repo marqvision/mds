@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect, useState } from 'react';
 import {
   MDSButton,
@@ -6,6 +7,7 @@ import {
   MDSIcon,
   MDSMessageBox,
   MDSPlainButton,
+  MDSSegmentedButton,
   MDSSnackbarContainer,
   useMDSFileUploader,
   UseMDSFileUploaderOptions,
@@ -13,8 +15,7 @@ import {
   useMDSFileUploadState,
 } from '../../../../components';
 import { ExtensionIcon } from '../../../../components/organisms/FileUploader/@components/ExtensionIcon';
-import { applyMockXHR, createMockGetPresignedUrl, disposeMockXHR } from './mock';
-import type { Meta, StoryObj } from '@storybook/react';
+import { applyMockXHR, applyMockXHRFail, createMockGetPresignedUrl, disposeMockXHR } from './mock';
 
 const meta: Meta = {
   title: '2. Components/organisms/FileUploader',
@@ -42,8 +43,31 @@ return <MDSFileUploader controller={controller} />;
 | \`accept\` | FileType | 허용할 파일 타입 ('image', 'jpg', ['png', 'gif']) |
 | \`limit\` | number | 최대 파일 개수 (1이면 단일 파일 모드) |
 | \`maxFileSize\` | number | 최대 파일 크기 (bytes) |
+| \`presignedUrl\` | function &#124; object | presigned URL 설정 (있으면 자동 업로드) |
 | \`onError\` | function &#124; false | 에러 발생 시 콜백 (false면 스낵바 비활성화) |
 | \`onChange\` | function | 파일 변경 시 콜백 |
+
+**presignedUrl 옵션**
+
+함수 또는 객체 형태로 전달할 수 있습니다.
+
+\`\`\`tsx
+// 함수 형태 (간단한 경우)
+presignedUrl: (fileName) => getPresignedUrl(fileName)
+
+// 객체 형태 (추가 옵션 필요 시)
+presignedUrl: {
+  getUrl: (fileName) => getPresignedUrl(fileName),
+  onUploadComplete: (index, url) => console.log('완료:', url),
+  failedFile: 'keep' // 'remove' (기본값) | 'keep'
+}
+\`\`\`
+
+| 속성 | 타입 | 설명 |
+|:-|:-|:-|
+| \`getUrl\` | \`(fileName: string) => Promise\` | presigned URL을 반환하는 함수 (필수) |
+| \`onUploadComplete\` | \`(index: number, url: string) => void\` | 업로드 완료 시 콜백 |
+| \`failedFile\` | \`'remove' \\| 'keep'\` | 업로드 실패 시 파일 처리 방식 (기본값: 'remove') |
 
 **반환값**
 
@@ -319,6 +343,90 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
   },
 };
 
+export const FailedFileOption: StoryObj<UseMDSFileUploaderOptions> = {
+  parameters: {
+    docs: {
+      description: {
+        story: `\`presignedUrl\` 옵션의 \`failedFile\` 설정으로 업로드 실패 시 파일 처리 방식을 지정합니다.
+
+- \`'remove'\` (기본값): 업로드 실패 시 파일이 리스트에서 제거됨
+- \`'keep'\`: 업로드 실패 시 파일이 리스트에 남고 에러 상태로 표시됨
+
+**Use Case**
+- \`'remove'\`: 실패한 파일을 자동으로 정리하고 싶을 때 (예: 백그라운드 업로드)
+- \`'keep'\`: 사용자가 실패한 파일을 확인하고 재업로드하거나 삭제할 수 있게 하고 싶을 때`,
+      },
+    },
+  },
+  args: {
+    onError: false,
+  },
+  render: function Render(props) {
+    const [failedFile, setFailedFile] = useState<'keep' | 'remove'>('remove');
+
+    // S3 PUT 레벨에서 실패하도록 mock 적용
+    useEffect(() => {
+      applyMockXHRFail();
+      return () => {
+        disposeMockXHR();
+      };
+    }, []);
+
+    // getUrl은 정상적으로 presigned URL 반환, PUT 요청 시 실패
+    const mockGetPresignedUrl = createMockGetPresignedUrl(300);
+
+    const presignedUrl = {
+      getUrl: mockGetPresignedUrl,
+      failedFile,
+    };
+
+    const { file, progress, controller } = useMDSFileUploader({
+      ...props,
+      presignedUrl,
+    });
+    const { value, open, reset } = file;
+    const { isUploading } = progress;
+
+    return (
+      <Wrapper>
+        <MDSSegmentedButton
+          list={[
+            { value: 'remove', label: 'Remove' },
+            { value: 'keep', label: 'Keep' },
+          ]}
+          value={failedFile}
+          type="hug"
+          variant="border"
+          onChange={setFailedFile}
+        />
+        <MDSMessageBox
+          size="small"
+          color="bluegray"
+          title={failedFile === 'remove' ? '실패 시 파일 제거' : '실패 시 파일 유지'}
+          message={
+            failedFile === 'remove'
+              ? '업로드 실패 시 파일이 리스트에서 자동으로 제거됩니다.'
+              : '업로드 실패 시 파일이 리스트에 남고 에러 상태로 표시됩니다.'
+          }
+        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '12px' }}>
+          <MDSButton variant="border" startIcon={<MDSIcon.Upload />} isLoading={isUploading} onClick={open}>
+            Upload (Always Fails)
+          </MDSButton>
+          {value.length > 0 && (
+            <MDSPlainButton startIcon={<MDSIcon.Reset />} onClick={() => reset()}>
+              Reset
+            </MDSPlainButton>
+          )}
+          {value.map((_, index) => (
+            <ButtonItem key={index} index={index} controller={controller} />
+          ))}
+        </div>
+      </Wrapper>
+    );
+  },
+};
+
 export const UploadProgress: StoryObj<UseMDSFileUploaderOptions> = {
   parameters: {
     docs: {
@@ -532,7 +640,11 @@ export const Grid: StoryObj<typeof MDSFileUploader.Dropzone> = {
     isDisabled: false,
   },
   render: function Render(props) {
-    const { file, progress: progressState, controller } = useMDSFileUploader({
+    const {
+      file,
+      progress: progressState,
+      controller,
+    } = useMDSFileUploader({
       defaultValue: [...Array(3)].map(() => ({
         data: { file: dummyFile, url: '', fileName: '' },
       })),
@@ -577,7 +689,11 @@ export const ScrollableGrid: StoryObj<typeof MDSFileUploader.Dropzone> = {
     isDisabled: false,
   },
   render: function Render(props) {
-    const { file, progress: progressState, controller } = useMDSFileUploader({
+    const {
+      file,
+      progress: progressState,
+      controller,
+    } = useMDSFileUploader({
       defaultValue: [...Array(32)].map(() => ({
         data: { file: dummyFile, url: '', fileName: '' },
       })),
@@ -594,7 +710,9 @@ export const ScrollableGrid: StoryObj<typeof MDSFileUploader.Dropzone> = {
           ) : !length ? (
             <MDSFileUploader.Placeholder controller={controller} />
           ) : (
-            <MDSFileUploader.ScrollWrapper stickyElement={<MDSFileUploader.Placeholder icon={false} controller={controller} />}>
+            <MDSFileUploader.ScrollWrapper
+              stickyElement={<MDSFileUploader.Placeholder icon={false} controller={controller} />}
+            >
               <MDSFileUploader.Grid column={5}>
                 {value.map(({ data }, index) => (
                   <MDSFileUploader.GridImage key={`image-${index}`} data={data} controller={controller} index={index} />
@@ -609,13 +727,7 @@ export const ScrollableGrid: StoryObj<typeof MDSFileUploader.Dropzone> = {
   },
 };
 
-const ButtonItem = ({
-  controller,
-  index,
-}: {
-  controller: UseMDSFileUploaderReturn['controller'];
-  index: number;
-}) => {
+const ButtonItem = ({ controller, index }: { controller: UseMDSFileUploaderReturn['controller']; index: number }) => {
   const item = useMDSFileUploadState(controller, `value.${index}`);
 
   if (!item) return null;

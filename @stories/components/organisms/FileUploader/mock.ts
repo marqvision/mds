@@ -42,10 +42,21 @@ const simulateSuccessResponse = (xhr: XMLHttpRequest) => {
   xhr.dispatchEvent(new Event('loadend'));
 };
 
+const simulateErrorResponse = (xhr: XMLHttpRequest) => {
+  Object.defineProperty(xhr, 'status', { value: 500 });
+  Object.defineProperty(xhr, 'readyState', { value: 4 });
+  Object.defineProperty(xhr, 'responseText', { value: 'Internal Server Error' });
+  // onload 호출 시 status 체크로 인해 reject됨 (xhr.onerror는 dispatchEvent로 트리거 안됨)
+  if (typeof xhr.onload === 'function') {
+    xhr.onload(new ProgressEvent('load'));
+  }
+  xhr.dispatchEvent(new Event('loadend'));
+};
+
 // 원본 XMLHttpRequest 저장
 const OriginalXHR = window.XMLHttpRequest;
 
-// MockXHR 클래스
+// MockXHR 클래스 (성공)
 class MockXHR extends OriginalXHR {
   private _url = '';
 
@@ -63,9 +74,31 @@ class MockXHR extends OriginalXHR {
   }
 }
 
+// MockXHR 클래스 (실패)
+class MockXHRFail extends OriginalXHR {
+  private _url = '';
+
+  open(method: string, url: string | URL, async = true, username: string | null = null, password: string | null = null) {
+    this._url = url.toString();
+    return super.open(method, url, async, username, password);
+  }
+
+  send(body?: Document | XMLHttpRequestBodyInit | null) {
+    if (isFakeS3Request(this._url)) {
+      simulateProgress(this, getFileSize(body), () => simulateErrorResponse(this));
+      return;
+    }
+    super.send(body);
+  }
+}
+
 // Public API
 export const applyMockXHR = () => {
   window.XMLHttpRequest = MockXHR;
+};
+
+export const applyMockXHRFail = () => {
+  window.XMLHttpRequest = MockXHRFail;
 };
 
 export const disposeMockXHR = () => {

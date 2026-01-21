@@ -1,3 +1,4 @@
+import { isValidElement } from 'react';
 import styled from '@emotion/styled';
 import { MDSTypography } from '../../atoms/Typography';
 import { THEME } from './@constants';
@@ -7,6 +8,7 @@ const Styled = {
   Root: styled.button`
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 2px;
     border: 1px solid ${({ theme }) => theme.color.border.neutral.default.normal};
     padding: 8px 12px;
@@ -18,6 +20,7 @@ const Styled = {
     text-align: left;
     flex-shrink: 1;
     transition: border-color ${THEME.transitionTiming} ease;
+    height: stretch;
     &.selected {
       border-color: ${({ theme }) => theme.color.border.primary.default.normal};
     }
@@ -30,6 +33,7 @@ const Styled = {
     display: flex;
     gap: 4px;
     align-items: center;
+    white-space: nowrap;
   `,
 };
 
@@ -48,14 +52,24 @@ export const CardItem = <T,>(props: Props<T>) => {
 
   return (
     <Styled.Root className={className} onClick={handleClick} style={style} disabled={isDisabled}>
-      <MDSTypography weight="medium" color={isSelected ? 'color/content/primary/default/normal' : undefined}>
+      <MDSTypography
+        whiteSpace="nowrap"
+        weight="medium"
+        color={isSelected ? 'color/content/primary/default/normal' : undefined}
+      >
         {title}
       </MDSTypography>
       <Styled.Description>
         {description && (
-          <MDSTypography size="s" color="color/content/neutral/secondary/normal">
-            {description}
-          </MDSTypography>
+          <>
+            {isValidElement(description) ? (
+              description
+            ) : (
+              <MDSTypography whiteSpace="nowrap" size="s" color="color/content/neutral/secondary/normal">
+                {description}
+              </MDSTypography>
+            )}
+          </>
         )}
         {tags}
       </Styled.Description>

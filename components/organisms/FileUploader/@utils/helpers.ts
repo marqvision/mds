@@ -28,7 +28,7 @@ import {
 /** 파일을 S3에 업로드하는 함수 (progress 콜백 지원) */
 export const uploadFileToS3 = async (
   file: File,
-  presignedUrl: string,
+  uploadUrl: string,
   onProgress?: (percentage: number) => void
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -51,15 +51,15 @@ export const uploadFileToS3 = async (
 
     xhr.onerror = () => reject(new Error('Upload failed'));
 
-    xhr.open('PUT', presignedUrl);
+    xhr.open('PUT', uploadUrl);
     xhr.setRequestHeader('Content-Type', file.type);
     xhr.send(file);
   });
 };
 
-/** presigned URL에서 query string 제거 */
-export const getBaseUrl = (presignedUrl: string): string => {
-  return presignedUrl.split('?')[0];
+/** URL에서 query string 제거 */
+export const getBaseUrl = (url: string): string => {
+  return url.split('?')[0];
 };
 
 /** 드래그 시작 시 사용할 drop 데이터 생성 헬퍼 */

@@ -73,11 +73,11 @@ export type ValidationError = {
 
 export type Listener = () => void;
 
-// presignedUrl 관련 타입
-export type PresignedUrlFunction = (fileName: string) => Promise<string>;
-export type PresignedUrlConfig = {
-  /** presigned URL을 받아오는 함수 (필수) */
-  getUrl: PresignedUrlFunction;
+// uploadUrl 관련 타입
+export type UploadUrlFunction = (fileName: string) => Promise<string>;
+export type UploadUrlConfig = {
+  /** 업로드 URL을 받아오는 함수 (필수) */
+  getUrl: UploadUrlFunction;
   /** 업로드 성공 시 콜백 */
   onSuccess?: (index: number, url: string) => void;
   /**
@@ -134,8 +134,8 @@ export type UseFileUploaderOptions<Multiple extends boolean = true, T extends Fi
   limit?: number;
   /** 개별 파일 최대 크기 (bytes) */
   maxFileSize?: number;
-  /** presigned URL 설정 (함수 또는 객체 형태, 있으면 자동 업로드) */
-  presignedUrl?: PresignedUrlFunction | PresignedUrlConfig;
+  /** 업로드 URL 설정 (함수 또는 객체 형태, 있으면 자동 업로드) */
+  uploadUrl?: UploadUrlFunction | UploadUrlConfig;
   /** Item 객체 drop 허용 key (설정하면 해당 key만 허용, 파일 drop은 항상 허용) */
   dropKey?: string;
   /** 파일 업로드 비활성화 여부 */
@@ -165,7 +165,7 @@ export type FileUploaderControllerActions<Multiple extends boolean, T extends Fi
 // controller 타입
 export type FileUploaderController<Multiple extends boolean = true, T extends FileData = FileData> = {
   store: FileUploaderStore<T>;
-  options: Pick<UseFileUploaderOptions<Multiple, T>, 'language' | 'accept' | 'dropKey' | 'isDisabled' | 'presignedUrl'>;
+  options: Pick<UseFileUploaderOptions<Multiple, T>, 'language' | 'accept' | 'dropKey' | 'isDisabled' | 'uploadUrl'>;
   actions: FileUploaderControllerActions<Multiple, T>;
 };
 

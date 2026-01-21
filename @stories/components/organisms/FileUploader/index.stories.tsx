@@ -43,21 +43,21 @@ return <MDSFileUploader controller={controller} />;
 | \`accept\` | FileType | 허용할 파일 타입 ('image', 'jpg', ['png', 'gif']) |
 | \`limit\` | number | 최대 파일 개수 (1이면 단일 파일 모드) |
 | \`maxFileSize\` | number | 최대 파일 크기 (bytes) |
-| \`presignedUrl\` | function &#124; object | presigned URL 설정 (있으면 자동 업로드) |
+| \`uploadUrl\` | function &#124; object | 업로드 URL 설정 (있으면 자동 업로드) |
 | \`onError\` | function &#124; false | 에러 발생 시 콜백 (false면 스낵바 비활성화) |
 | \`onChange\` | function | 파일 변경 시 콜백 |
 
-**presignedUrl 옵션**
+**uploadUrl 옵션**
 
 함수 또는 객체 형태로 전달할 수 있습니다.
 
 \`\`\`tsx
 // 함수 형태 (간단한 경우)
-presignedUrl: (fileName) => getPresignedUrl(fileName)
+uploadUrl: (fileName) => getUploadUrl(fileName)
 
 // 객체 형태 (추가 옵션 필요 시)
-presignedUrl: {
-  getUrl: (fileName) => getPresignedUrl(fileName),
+uploadUrl: {
+  getUrl: (fileName) => getUploadUrl(fileName),
   onSuccess: (index, url) => console.log('성공:', url),
   failedFile: 'keep' // 'remove' (기본값) | 'keep'
 }
@@ -65,7 +65,7 @@ presignedUrl: {
 
 | 속성 | 타입 | 설명 |
 |:-|:-|:-|
-| \`getUrl\` | \`(fileName: string) => Promise\` | presigned URL을 반환하는 함수 (필수) |
+| \`getUrl\` | \`(fileName: string) => Promise\` | 업로드 URL을 반환하는 함수 (필수) |
 | \`onSuccess\` | \`(index: number, url: string) => void\` | 업로드 성공 시 콜백 |
 | \`failedFile\` | \`'remove' \\| 'keep'\` | 업로드 실패 시 파일 처리 방식 (기본값: 'remove') |
 
@@ -286,8 +286,8 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
   render: function Render(props) {
     const [isSimulateUploadFail, setIsSimulateUploadFail] = useState<boolean>(false);
 
-    // 체크 ON일 때만 presignedUrl 제공 (업로드 시도 → 실패)
-    const presignedUrl = isSimulateUploadFail
+    // 체크 ON일 때만 uploadUrl 제공 (업로드 시도 → 실패)
+    const uploadUrl = isSimulateUploadFail
       ? async () => {
           await new Promise((resolve) => setTimeout(resolve, 500));
           throw new Error('Simulated upload failure');
@@ -296,7 +296,7 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
 
     const { file, progress, controller } = useMDSFileUploader({
       ...props,
-      presignedUrl,
+      uploadUrl,
     });
     const { value, open, reset } = file;
     const { isUploading } = progress;
@@ -347,7 +347,7 @@ export const FailedFileOption: StoryObj<UseMDSFileUploaderOptions> = {
   parameters: {
     docs: {
       description: {
-        story: `\`presignedUrl\` 옵션의 \`failedFile\` 설정으로 업로드 실패 시 파일 처리 방식을 지정합니다.
+        story: `\`uploadUrl\` 옵션의 \`failedFile\` 설정으로 업로드 실패 시 파일 처리 방식을 지정합니다.
 
 - \`'remove'\` (기본값): 업로드 실패 시 파일이 리스트에서 제거됨
 - \`'keep'\`: 업로드 실패 시 파일이 리스트에 남고 에러 상태로 표시됨
@@ -372,17 +372,17 @@ export const FailedFileOption: StoryObj<UseMDSFileUploaderOptions> = {
       };
     }, []);
 
-    // getUrl은 정상적으로 presigned URL 반환, PUT 요청 시 실패
-    const mockGetPresignedUrl = createMockGetPresignedUrl(300);
+    // getUrl은 정상적으로 업로드 URL 반환, PUT 요청 시 실패
+    const mockGetUploadUrl = createMockGetPresignedUrl(300);
 
-    const presignedUrl = {
-      getUrl: mockGetPresignedUrl,
+    const uploadUrl = {
+      getUrl: mockGetUploadUrl,
       failedFile,
     };
 
     const { file, progress, controller } = useMDSFileUploader({
       ...props,
-      presignedUrl,
+      uploadUrl,
     });
     const { value, open, reset } = file;
     const { isUploading } = progress;
@@ -446,10 +446,10 @@ Dropzone 내에 progress를 표시할 때 유용합니다.
       };
     }, []);
 
-    const mockGetPresignedUrl = createMockGetPresignedUrl(300);
+    const mockGetUploadUrl = createMockGetPresignedUrl(300);
 
     const { file, controller } = useMDSFileUploader({
-      presignedUrl: mockGetPresignedUrl,
+      uploadUrl: mockGetUploadUrl,
     });
     const { value, length } = file;
     const progress = useMDSFileUploadState(controller, 'progress');

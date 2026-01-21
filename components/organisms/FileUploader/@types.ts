@@ -78,8 +78,8 @@ export type PresignedUrlFunction = (fileName: string) => Promise<string>;
 export type PresignedUrlConfig = {
   /** presigned URL을 받아오는 함수 (필수) */
   getUrl: PresignedUrlFunction;
-  /** 업로드 완료 시 콜백 */
-  onUploadComplete?: (index: number, url: string) => void;
+  /** 업로드 성공 시 콜백 */
+  onSuccess?: (index: number, url: string) => void;
   /** 업로드 실패 시 파일 처리 방식 (기본값: 'remove') */
   failedFile?: 'keep' | 'remove';
 };

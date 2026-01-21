@@ -86,13 +86,13 @@ export function useFileUploader<T extends FileData = FileData>(
     if (typeof presignedUrl === 'function') {
       return {
         getUrl: presignedUrl,
-        onUploadComplete: undefined,
+        onSuccess: undefined,
         failedFile: 'remove',
       };
     }
     return {
       getUrl: presignedUrl.getUrl,
-      onUploadComplete: presignedUrl.onUploadComplete,
+      onSuccess: presignedUrl.onSuccess,
       failedFile: presignedUrl.failedFile ?? 'remove',
     };
   }, [presignedUrl]);
@@ -319,7 +319,7 @@ export function useFileUploader<T extends FileData = FileData>(
           data: { ...prev.data, url: finalUrl },
           progress: { percentage: 100, isUploading: false },
         }));
-        presignedUrlConfig.onUploadComplete?.(index, finalUrl);
+        presignedUrlConfig.onSuccess?.(index, finalUrl);
       } catch (error) {
         if (!store.getItem(index)) return;
 

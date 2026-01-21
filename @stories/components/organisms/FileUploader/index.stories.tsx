@@ -58,7 +58,7 @@ presignedUrl: (fileName) => getPresignedUrl(fileName)
 // 객체 형태 (추가 옵션 필요 시)
 presignedUrl: {
   getUrl: (fileName) => getPresignedUrl(fileName),
-  onUploadComplete: (index, url) => console.log('완료:', url),
+  onSuccess: (index, url) => console.log('성공:', url),
   failedFile: 'keep' // 'remove' (기본값) | 'keep'
 }
 \`\`\`
@@ -66,7 +66,7 @@ presignedUrl: {
 | 속성 | 타입 | 설명 |
 |:-|:-|:-|
 | \`getUrl\` | \`(fileName: string) => Promise\` | presigned URL을 반환하는 함수 (필수) |
-| \`onUploadComplete\` | \`(index: number, url: string) => void\` | 업로드 완료 시 콜백 |
+| \`onSuccess\` | \`(index: number, url: string) => void\` | 업로드 성공 시 콜백 |
 | \`failedFile\` | \`'remove' \\| 'keep'\` | 업로드 실패 시 파일 처리 방식 (기본값: 'remove') |
 
 **반환값**

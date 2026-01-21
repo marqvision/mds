@@ -7,6 +7,7 @@ import {
   FileUploaderError,
   FileUploaderStore,
   Item,
+  PresignedUrlConfig,
   Progress,
   UseFileUploaderOptions,
   UseFileUploaderReturn,
@@ -71,14 +72,30 @@ export function useFileUploader<T extends FileData = FileData>(
     accept,
     limit,
     maxFileSize,
-    getPresignedUrl,
+    presignedUrl,
     dropKey,
     isDisabled,
     language = 'en',
     onChange,
-    onUploadComplete,
     onError,
   } = options;
+
+  // presignedUrl 옵션 정규화
+  const presignedUrlConfig = useMemo((): PresignedUrlConfig | null => {
+    if (!presignedUrl) return null;
+    if (typeof presignedUrl === 'function') {
+      return {
+        getUrl: presignedUrl,
+        onUploadComplete: undefined,
+        failedFile: 'remove',
+      };
+    }
+    return {
+      getUrl: presignedUrl.getUrl,
+      onUploadComplete: presignedUrl.onUploadComplete,
+      failedFile: presignedUrl.failedFile ?? 'remove',
+    };
+  }, [presignedUrl]);
 
   const multiple = limit !== 1;
 
@@ -283,10 +300,10 @@ export function useFileUploader<T extends FileData = FileData>(
   // 단일 파일 업로드 처리
   const uploadFile = useCallback(
     async (file: File, index: number) => {
-      if (!getPresignedUrl) return;
+      if (!presignedUrlConfig) return;
 
       try {
-        const presignedUrl = await getPresignedUrl(file.name);
+        const presignedUrl = await presignedUrlConfig.getUrl(file.name);
 
         await uploadFileToS3(file, presignedUrl, (percentage) => {
           if (!store.getItem(index)) return;
@@ -302,18 +319,29 @@ export function useFileUploader<T extends FileData = FileData>(
           data: { ...prev.data, url: finalUrl },
           progress: { percentage: 100, isUploading: false },
         }));
-        onUploadComplete?.(index, finalUrl);
+        presignedUrlConfig.onUploadComplete?.(index, finalUrl);
       } catch (error) {
         if (!store.getItem(index)) return;
 
-        setValueAt(index, (prev) => ({
-          ...prev,
-          error: getErrorData(language, ERROR_CODE.UPLOAD_FAILED),
-          progress: { percentage: 0, isUploading: false },
-        }));
+        switch (presignedUrlConfig.failedFile) {
+          case 'remove': {
+            // 실패 시 파일 제거
+            store.removeItem(index);
+            notifyChange(store.getItems());
+            break;
+          }
+          case 'keep': {
+            // 실패 시 에러 표시하고 파일 유지
+            setValueAt(index, (prev) => ({
+              ...prev,
+              error: getErrorData(language, ERROR_CODE.UPLOAD_FAILED),
+              progress: { percentage: 0, isUploading: false },
+            }));
+          }
+        }
       }
     },
-    [getPresignedUrl, store, setValueAt, onUploadComplete, language]
+    [presignedUrlConfig, store, setValueAt, notifyChange, language]
   );
 
   // 파일 추가 공통 로직
@@ -326,7 +354,7 @@ export function useFileUploader<T extends FileData = FileData>(
 
       // 처리 시작
       isProcessingRef.current = true;
-      if (getPresignedUrl) {
+      if (presignedUrlConfig) {
         store.setIsProcessing(true);
       }
 
@@ -348,14 +376,14 @@ export function useFileUploader<T extends FileData = FileData>(
         }
 
         // 4. Item 생성 및 적용
-        const newItems = valid.map((file) => createItemFromFile(file, !!getPresignedUrl) as Item<T>);
+        const newItems = valid.map((file) => createItemFromFile(file, !!presignedUrlConfig) as Item<T>);
         const { added, startIndex } = applyItems(newItems);
 
         // 5. 에러 리포트 (아이템 추가 후에 실행해야 클리어되지 않음)
         validationErrors.forEach(raiseError);
 
         // 6. 업로드 시작
-        if (added.length > 0 && getPresignedUrl) {
+        if (added.length > 0 && presignedUrlConfig) {
           const uploadQueue = added.map((item, i) => ({
             file: item.data.file,
             index: multiple ? startIndex + i : 0,
@@ -383,12 +411,12 @@ export function useFileUploader<T extends FileData = FileData>(
       } finally {
         // 처리 완료
         isProcessingRef.current = false;
-        if (getPresignedUrl) {
+        if (presignedUrlConfig) {
           store.setIsProcessing(false);
         }
       }
     },
-    [checkCanAddFiles, multiple, limit, maxFileSize, store, accept, applyItems, raiseError, getPresignedUrl, uploadFile]
+    [checkCanAddFiles, multiple, limit, maxFileSize, store, accept, applyItems, raiseError, presignedUrlConfig, uploadFile]
   );
 
   // 파일 선택창 열기
@@ -423,7 +451,7 @@ export function useFileUploader<T extends FileData = FileData>(
         accept,
         dropKey,
         isDisabled,
-        getPresignedUrl,
+        presignedUrl,
       },
       actions: {
         open,
@@ -433,7 +461,7 @@ export function useFileUploader<T extends FileData = FileData>(
         remove,
       },
     }),
-    [store, language, accept, dropKey, isDisabled, getPresignedUrl, open, addFiles, addItems, raiseError, remove]
+    [store, language, accept, dropKey, isDisabled, presignedUrl, open, addFiles, addItems, raiseError, remove]
   );
 
   useEffect(() => {

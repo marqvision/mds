@@ -33,7 +33,7 @@ export const GridImage = <T extends FileData = FileData>(props: Props<T>) => {
     return () => URL.revokeObjectURL(src);
   }, [src]);
 
-  if (controller?.options.getPresignedUrl && !data.url) {
+  if (controller?.options.presignedUrl && !data.url) {
     return (
       <GridFile
         controller={controller}

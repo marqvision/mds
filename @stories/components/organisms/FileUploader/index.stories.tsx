@@ -262,8 +262,8 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
   render: function Render(props) {
     const [isSimulateUploadFail, setIsSimulateUploadFail] = useState<boolean>(false);
 
-    // 체크 ON일 때만 getPresignedUrl 제공 (업로드 시도 → 실패)
-    const getPresignedUrl = isSimulateUploadFail
+    // 체크 ON일 때만 presignedUrl 제공 (업로드 시도 → 실패)
+    const presignedUrl = isSimulateUploadFail
       ? async () => {
           await new Promise((resolve) => setTimeout(resolve, 500));
           throw new Error('Simulated upload failure');
@@ -272,7 +272,7 @@ export const ErrorList: StoryObj<UseMDSFileUploaderOptions> = {
 
     const { file, progress, controller } = useMDSFileUploader({
       ...props,
-      getPresignedUrl,
+      presignedUrl,
     });
     const { value, open, reset } = file;
     const { isUploading } = progress;
@@ -341,7 +341,7 @@ Dropzone 내에 progress를 표시할 때 유용합니다.
     const mockGetPresignedUrl = createMockGetPresignedUrl(300);
 
     const { file, controller } = useMDSFileUploader({
-      getPresignedUrl: mockGetPresignedUrl,
+      presignedUrl: mockGetPresignedUrl,
     });
     const { value, length } = file;
     const progress = useMDSFileUploadState(controller, 'progress');

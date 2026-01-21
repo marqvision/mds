@@ -73,6 +73,17 @@ export type ValidationError = {
 
 export type Listener = () => void;
 
+// presignedUrl 관련 타입
+export type PresignedUrlFunction = (fileName: string) => Promise<string>;
+export type PresignedUrlConfig = {
+  /** presigned URL을 받아오는 함수 (필수) */
+  getUrl: PresignedUrlFunction;
+  /** 업로드 완료 시 콜백 */
+  onUploadComplete?: (index: number, url: string) => void;
+  /** 업로드 실패 시 파일 처리 방식 (기본값: 'remove') */
+  failedFile?: 'keep' | 'remove';
+};
+
 export type FileUploaderStore<T extends FileData = FileData> = {
   // 개별 아이템 구독
   subscribeItem: (index: number, listener: Listener) => () => void;
@@ -119,8 +130,8 @@ export type UseFileUploaderOptions<Multiple extends boolean = true, T extends Fi
   limit?: number;
   /** 개별 파일 최대 크기 (bytes) */
   maxFileSize?: number;
-  /** presigned URL을 받아오는 함수 (있으면 자동 업로드) */
-  getPresignedUrl?: (fileName: string) => Promise<string>;
+  /** presigned URL 설정 (함수 또는 객체 형태, 있으면 자동 업로드) */
+  presignedUrl?: PresignedUrlFunction | PresignedUrlConfig;
   /** Item 객체 drop 허용 key (설정하면 해당 key만 허용, 파일 drop은 항상 허용) */
   dropKey?: string;
   /** 파일 업로드 비활성화 여부 */
@@ -129,8 +140,6 @@ export type UseFileUploaderOptions<Multiple extends boolean = true, T extends Fi
   language?: Language;
   /** 아이템 변경 시 콜백 */
   onChange?: (value: Multiple extends true ? Item<T>[] : Item<T>) => void;
-  /** 업로드 완료 시 콜백 */
-  onUploadComplete?: (index: number, url: string) => void;
   /** 에러 발생 시 콜백 (`false`: 기본 이벤트 실행 방지) */
   onError?: ((error: FileUploaderError) => void) | false;
 };
@@ -152,7 +161,7 @@ export type FileUploaderControllerActions<Multiple extends boolean, T extends Fi
 // controller 타입
 export type FileUploaderController<Multiple extends boolean = true, T extends FileData = FileData> = {
   store: FileUploaderStore<T>;
-  options: Pick<UseFileUploaderOptions<Multiple, T>, 'language' | 'accept' | 'dropKey' | 'isDisabled' | 'getPresignedUrl'>;
+  options: Pick<UseFileUploaderOptions<Multiple, T>, 'language' | 'accept' | 'dropKey' | 'isDisabled' | 'presignedUrl'>;
   actions: FileUploaderControllerActions<Multiple, T>;
 };
 

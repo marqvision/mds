@@ -80,7 +80,11 @@ export type PresignedUrlConfig = {
   getUrl: PresignedUrlFunction;
   /** 업로드 성공 시 콜백 */
   onSuccess?: (index: number, url: string) => void;
-  /** 업로드 실패 시 파일 처리 방식 (기본값: 'remove') */
+  /**
+   * 업로드 실패 시 파일 처리 방식 (기본값: 'remove')
+   * - 'remove': 업로드 실패 시 파일을 리스트에서 자동 제거
+   * - 'keep': 업로드 실패 시 파일을 리스트에 유지하고 에러 상태로 표시
+   */
   failedFile?: 'keep' | 'remove';
 };
 

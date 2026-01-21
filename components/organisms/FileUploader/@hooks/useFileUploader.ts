@@ -83,18 +83,14 @@ export function useFileUploader<T extends FileData = FileData>(
   // presignedUrl 옵션 정규화
   const presignedUrlConfig = useMemo((): PresignedUrlConfig | null => {
     if (!presignedUrl) return null;
-    if (typeof presignedUrl === 'function') {
-      return {
-        getUrl: presignedUrl,
-        onSuccess: undefined,
-        failedFile: 'remove',
-      };
-    }
-    return {
-      getUrl: presignedUrl.getUrl,
-      onSuccess: presignedUrl.onSuccess,
-      failedFile: presignedUrl.failedFile ?? 'remove',
-    };
+
+    return typeof presignedUrl === 'function'
+      ? { getUrl: presignedUrl, onSuccess: undefined, failedFile: 'remove' }
+      : {
+          getUrl: presignedUrl.getUrl,
+          onSuccess: presignedUrl.onSuccess,
+          failedFile: presignedUrl.failedFile ?? 'remove',
+        };
   }, [presignedUrl]);
 
   const multiple = limit !== 1;
@@ -337,6 +333,7 @@ export function useFileUploader<T extends FileData = FileData>(
               error: getErrorData(language, ERROR_CODE.UPLOAD_FAILED),
               progress: { percentage: 0, isUploading: false },
             }));
+            break;
           }
         }
       }

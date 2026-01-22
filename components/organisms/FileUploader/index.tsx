@@ -24,6 +24,8 @@ import { checkIsImage, getExtensionFromFileName, setDropData, toastMDSSnackbarEr
 type Props<T extends FileData = FileData> = {
   isReadonly?: boolean;
   height?: string;
+  minHeight?: string;
+  maxHeight?: string;
   label?: LabelType;
   column?: number;
   placeholder?: Partial<PlaceholderProps>;
@@ -31,7 +33,7 @@ type Props<T extends FileData = FileData> = {
 };
 
 export const FileUploader = <T extends FileData = FileData>(props: Props<T>) => {
-  const { isReadonly, label, column, height, controller, placeholder } = props;
+  const { isReadonly, label, column, height, minHeight, maxHeight, controller, placeholder } = props;
 
   const { options } = controller;
   const { isDisabled } = options;
@@ -40,7 +42,14 @@ export const FileUploader = <T extends FileData = FileData>(props: Props<T>) => 
   const progress = useFileUploadState(controller, 'progress');
 
   return (
-    <Dropzone controller={controller} label={label} isReadonly={isReadonly} height={height}>
+    <Dropzone
+      controller={controller}
+      label={label}
+      isReadonly={isReadonly}
+      height={height}
+      minHeight={minHeight}
+      maxHeight={maxHeight}
+    >
       {progress.isUploading ? (
         <Loading progress={progress} />
       ) : value.length ? (

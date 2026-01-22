@@ -28,7 +28,7 @@ const Styled = {
       }
     }
 
-    &.isDisabled {
+    &.isDisabled:not(.isReadonly) {
       background-color: ${({ theme }) => theme.comp.input.color.bg.disabled};
     }
   `,

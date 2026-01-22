@@ -25,7 +25,7 @@ const Wrapper = styled.i<{ size: number; padding: number }>`
   overflow: hidden;
   display: grid;
   place-items: center;
-  ${({ size, padding }) => `
+  ${({ size, padding }) => css`
     width: ${size}px;
     height: ${size}px;
     padding: ${padding}px;
@@ -33,7 +33,7 @@ const Wrapper = styled.i<{ size: number; padding: number }>`
 `;
 
 const SVG = styled.svg<{ color: string; progress?: LoadingIndicatorProps['progress'] }>`
-  ${({ color }) => `
+  ${({ color }) => css`
     color: ${color};
     width: 100%;
     height: 100%;;
@@ -63,6 +63,8 @@ const CircleKeyframes = keyframes`
 
 const Circle = styled.circle<{ progress: LoadingIndicatorProps['progress'] }>`
   stroke: currentColor;
+  transition: 0.2s;
+
   ${({ r, progress }) =>
     progress === undefined
       ? css`
@@ -145,7 +147,7 @@ export const MDSLoadingIndicator = forwardRef<HTMLElement, LoadingIndicatorProps
         <Circle cx={cxy} cy={cxy} r={r} fill="none" progress={progress} />
       </SVG>
       {typeof label === 'number' && (
-        <Label variant="body" size="xs" weight="regular" customColor={color}>
+        <Label variant="body" size="xs" weight="regular" whiteSpace="nowrap" customColor={color}>
           {label}%
         </Label>
       )}

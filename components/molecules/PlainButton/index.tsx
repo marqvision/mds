@@ -73,6 +73,7 @@ export const MDSPlainButton = forwardRef((props, ref) => {
     isCompleted,
     onClick,
     icon,
+    type = 'button',
     ...restProps
   } = props;
 
@@ -101,6 +102,7 @@ export const MDSPlainButton = forwardRef((props, ref) => {
     disabled: isButton && (isDisabled || isCompleted),
     isDisabled,
     isCompleted,
+    type,
     ...restProps,
   };
 

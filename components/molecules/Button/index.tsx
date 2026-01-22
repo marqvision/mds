@@ -107,6 +107,7 @@ export const MDSButton = forwardRef<
     tags,
     flat,
     icon,
+    type = 'button',
     ...restProps
   } = props;
 
@@ -143,6 +144,7 @@ export const MDSButton = forwardRef<
     isDisabled,
     isCompleted,
     flat,
+    type,
     ...restProps,
   };
 

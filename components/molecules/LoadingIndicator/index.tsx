@@ -36,7 +36,7 @@ const SVG = styled.svg<{ color: string; progress?: LoadingIndicatorProps['progre
   ${({ color }) => css`
     color: ${color};
     width: 100%;
-    height: 100%;;
+    height: 100%;
   `}
   ${({ progress }) =>
     progress === undefined

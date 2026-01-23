@@ -75,11 +75,14 @@ const StyledMDSButton = styled(MDSButton)<StyledMDSButtonProps>`
     border: none;
   `}
 
-  ${({ isSelected, segmentVariant }) =>
+  ${({ theme, isSelected, segmentVariant }) =>
     segmentVariant === 'border' &&
     !isSelected &&
     `
       outline: none;
+      &:hover {
+        background-color: ${theme.color.bg.fill.neutral.default.hover};
+      }
     `}
 
   ${({ segmentVariant, height: tintHeight }) =>

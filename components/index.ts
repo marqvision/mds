@@ -24,6 +24,7 @@ export * from './molecules/SegmentedButton';
 export * from './molecules/Search';
 export * from './molecules/TableButton';
 export * from './molecules/Pagination';
+export * from './molecules/Slider';
 
 // ORGANISMS
 export * from './organisms/DatePickers/Calendar';

@@ -170,8 +170,16 @@ export function useFileUploader<T extends FileData = FileData>(
   // 전체 목록 구독 (아이템 추가/삭제만 감지)
   const length = useSyncExternalStore(store.subscribe, store.getLength, store.getLength);
 
-  // value는 length 변경 시에만 재계산 (개별 item progress 변경 시 리렌더 안 됨)
-  const value = useMemo(() => getValue(store.getItems()), [store, length, getValue]);
+  // url 변경 감지용 스냅샷
+  const urlsSnapshot = useSyncExternalStore(
+    store.subscribe,
+    () => store.getItems().map((item) => item.data.url).join(','),
+    () => store.getItems().map((item) => item.data.url).join(',')
+  );
+
+  // value는 length 또는 url 변경 시 재계산 (개별 item progress 변경 시 리렌더 안 됨)
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- length, urlsSnapshot은 재계산 트리거 용도
+  const value = useMemo(() => getValue(store.getItems()), [store, length, urlsSnapshot, getValue]);
 
   // 아이템 업데이트 (내부 구현)
   const setValueAt = useCallback(

@@ -55,7 +55,7 @@ const IconWrapper = styled.div<StyledWrapperProps>`
     transition: 0.3s;
   }
 
-  &:hover:after, ${Wrapper}:has(:focus) &:after {
+  &:hover:after, ${Wrapper}:has(:focus-visible) &:after {
     ${({ theme, type }) => (type === 'normal' ? `background-color: ${theme.color.border.target.default};` : '')};
   }
 `;

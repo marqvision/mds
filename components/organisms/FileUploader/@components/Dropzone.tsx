@@ -19,6 +19,7 @@ const Styled = {
     display: grid;
     place-items: center;
     transition: ${TRANSITION_TIMING};
+    background-color: ${({ theme }) => theme.comp.input.color.bg.normal};
 
     &.isHighlighted,
     &:focus-within {

@@ -307,7 +307,7 @@ export function useFileUploader<T extends FileData = FileData>(
       if (!uploadUrlConfig) return;
 
       try {
-        const uploadUrl = await uploadUrlConfig.getUrl(file.name);
+        const uploadUrl = await uploadUrlConfig.getUrl(file.name, file.type);
 
         await uploadFileToS3(file, uploadUrl, (percentage) => {
           if (!store.getItem(index)) return;

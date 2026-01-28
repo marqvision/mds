@@ -74,7 +74,7 @@ export type ValidationError = {
 export type Listener = () => void;
 
 // uploadUrl 관련 타입
-export type UploadUrlFunction = (fileName: string) => Promise<string>;
+export type UploadUrlFunction = (fileName: string, contentType: string) => Promise<string>;
 export type UploadUrlConfig = {
   /** 업로드 URL을 받아오는 함수 (필수) */
   getUrl: UploadUrlFunction;

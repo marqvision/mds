@@ -145,7 +145,9 @@ export const Select = forwardRef(<T,>(props: Props<T>, ref: Ref<HTMLButtonElemen
             />
           }
         >
-          {getLabelFromList(v)}
+          <MDSTypography size="inherit" color="inherit" weight="inherit" wordBreak="break-all" textAlign="left">
+            {getLabelFromList(v)}
+          </MDSTypography>
         </MDSButton>
       );
     });

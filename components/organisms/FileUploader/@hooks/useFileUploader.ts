@@ -171,11 +171,15 @@ export function useFileUploader<T extends FileData = FileData>(
   const length = useSyncExternalStore(store.subscribe, store.getLength, store.getLength);
 
   // url 변경 감지용 스냅샷
-  const urlsSnapshot = useSyncExternalStore(
-    store.subscribe,
-    () => store.getItems().map((item) => item.data.url).join(','),
-    () => store.getItems().map((item) => item.data.url).join(',')
+  const getUrlsSnapshot = useCallback(
+    () =>
+      store
+        .getItems()
+        .map((item) => item.data.url)
+        .join(','),
+    [store]
   );
+  const urlsSnapshot = useSyncExternalStore(store.subscribe, getUrlsSnapshot, getUrlsSnapshot);
 
   // value는 length 또는 url 변경 시 재계산 (개별 item progress 변경 시 리렌더 안 됨)
   // eslint-disable-next-line react-hooks/exhaustive-deps -- length, urlsSnapshot은 재계산 트리거 용도

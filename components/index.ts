@@ -12,6 +12,7 @@ export * from './atoms/Toggle';
 // MOLECULES
 export * from './molecules/Button';
 export * from './molecules/Dropdown';
+export * from './molecules/InlineButton';
 export * from './molecules/Input';
 export * from './molecules/LoadingIndicator';
 export * from './molecules/PlainButton';

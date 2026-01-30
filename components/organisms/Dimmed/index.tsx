@@ -1,11 +1,11 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
-import styled from '@emotion/styled';
-import { createPortal } from 'react-dom';
 import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
+import clsx from 'clsx';
+import { createPortal } from 'react-dom';
 import { composeRef } from '../../../utils/composeRef';
-import { Props, StyledProps } from './@types';
 import { theme } from './@constants';
+import { Props, StyledProps } from './@types';
 
 const transition = 300; //TODO-@morgan: 디자인 팀 확인 필요
 
@@ -83,11 +83,15 @@ export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, forwardedRef)
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     // 이벤트의 시작 지점이 dimmed 인 경우만 onClick 의 close 이벤트를 발생시킴
     mouseTriggerRef.current = event.target === event.currentTarget;
-    stopPropagation(event);
+    if (mouseTriggerRef.current) {
+      event.stopPropagation();
+    }
   };
 
   const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation();
+    if (mouseTriggerRef.current) {
+      event.stopPropagation();
+    }
   };
 
   useEffect(() => {
@@ -152,21 +156,21 @@ export const MDSDimmed = forwardRef<HTMLDivElement, Props>((props, forwardedRef)
 
   return mountNode
     ? createPortal(
-        <Wrapper
-          ref={ref}
-          className={clsx({ isOpen }, 'mds-dimmed')}
-          onMouseMove={stopPropagation}
-          onMouseDown={handleMouseDown}
-          onMouseUp={stopPropagation}
-          onClick={handleClose}
-          padding={padding}
-          intensity={intensity}
-          style={style}
-        >
-          {(_isOpen || mountNode) && children}
-        </Wrapper>,
-        mountNode
-      )
+      <Wrapper
+        ref={ref}
+        className={clsx({ isOpen }, 'mds-dimmed')}
+        onMouseMove={stopPropagation}
+        onMouseDown={handleMouseDown}
+        onMouseUp={stopPropagation}
+        onClick={handleClose}
+        padding={padding}
+        intensity={intensity}
+        style={style}
+      >
+        {(_isOpen || mountNode) && children}
+      </Wrapper>,
+      mountNode
+    )
     : mountNode;
 });
 MDSDimmed.displayName = 'MDSDimmed';

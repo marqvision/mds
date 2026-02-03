@@ -15,6 +15,10 @@ import { FileData, FileResult, FileUploaderController, FileUploaderError, Item, 
  * - **'errors'**: 전체 에러 리스트 (FileUploaderError[])
  *   - 기본적으로 MDSSnackbar로 표시되나, 리스트 형태로 에러를 출력하고 싶을 때 사용
  *
+ * - **'results'**: 파일 처리 결과 리스트 (FileResult[])
+ *   - 각 파일의 성공/실패 결과를 확인할 때 사용
+ *   - errors와 달리 성공한 파일 정보도 포함
+ *
  * - **'value'**: 전체 파일 리스트 (Item<T>[])
  *   - 각 아이템의 progress, error 상태가 포함됨
  *   - 테이블이나 Chip 리스트 형태에서 개별 아이템의 progress를 표시하고 싶을 때 사용
@@ -31,6 +35,7 @@ import { FileData, FileResult, FileUploaderController, FileUploaderError, Item, 
  * 3. 에러 리스트 표시: useFileUploaderState(controller, 'errors')
  * 4. 테이블/Chip 리스트: useFileUploaderState(controller, 'value')
  * 5. 대량 파일 최적화: useFileUploaderState(controller, 'value.{index}')
+ * 6. 파일 처리 결과 확인: useMDSFileUploadState(controller, 'results')
  *
  * @example
  * // 기본 사용법 - progress 구독
@@ -40,6 +45,10 @@ import { FileData, FileResult, FileUploaderController, FileUploaderError, Item, 
  * @example
  * // 에러 리스트 구독
  * const errors = useFileUploaderState(controller, 'errors');
+ *
+ * @example
+ * // 파일 처리 결과 구독
+ * const results = useFileUploaderState(controller, 'results');
  *
  * @example
  * // 전체 파일 리스트 구독 (개별 아이템 progress 포함)

@@ -30,6 +30,16 @@ export type ErrorData = {
   message: string;
 };
 
+export type FileResult = {
+  file: File;
+  status: 'success' | 'error';
+  url?: string;
+  error?: {
+    code: ErrorCode;
+    message: string;
+  };
+};
+
 export type Item<T extends FileData = FileData> = {
   data: T;
   progress?: Omit<Progress, 'count'>;
@@ -119,6 +129,12 @@ export type FileUploaderStore<T extends FileData = FileData> = {
   // 전역 에러 설정
   addGlobalError: (error: FileUploaderError) => void;
   clearGlobalErrors: () => void;
+
+  // results 구독
+  subscribeResults: (listener: Listener) => () => void;
+  getResults: () => FileResult[];
+  addResult: (result: FileResult) => void;
+  clearResults: () => void;
 
   // 아이템 추가/삭제
   addItems: (items: Item<T>[]) => void;

@@ -1,5 +1,5 @@
 import { useCallback, useSyncExternalStore } from 'react';
-import { FileData, FileUploaderController, FileUploaderError, Item, Progress } from '../@types';
+import { FileData, FileResult, FileUploaderController, FileUploaderError, Item, Progress } from '../@types';
 
 /**
  * FileUploader의 특정 상태를 구독하는 훅
@@ -51,12 +51,13 @@ import { FileData, FileUploaderController, FileUploaderError, Item, Progress } f
  */
 export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: 'progress'): Progress;
 export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: 'errors'): FileUploaderError[];
+export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: 'results'): FileResult[];
 export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: 'value'): Item<T>[];
 export function useFileUploadState<T extends FileData = FileData>(controller: FileUploaderController<boolean, T>, key: `value.${number}`): Item<T> | undefined;
 export function useFileUploadState<T extends FileData = FileData>(
   controller: FileUploaderController<boolean, T>,
-  key: 'progress' | 'errors' | 'value' | `value.${number}`
-): Progress | FileUploaderError[] | Item<T>[] | Item<T> | undefined {
+  key: 'progress' | 'errors' | 'results' | 'value' | `value.${number}`
+): Progress | FileUploaderError[] | FileResult[] | Item<T>[] | Item<T> | undefined {
   const { store } = controller;
   const subscribe = useCallback(
     (listener: () => void) => {
@@ -65,6 +66,8 @@ export function useFileUploadState<T extends FileData = FileData>(
           return store.subscribeProgress(listener);
         case 'errors':
           return store.subscribeErrors(listener);
+        case 'results':
+          return store.subscribeResults(listener);
         case 'value':
           return store.subscribe(listener);
         default: {
@@ -82,6 +85,8 @@ export function useFileUploadState<T extends FileData = FileData>(
         return store.getProgress();
       case 'errors':
         return store.getGlobalErrors();
+      case 'results':
+        return store.getResults();
       case 'value':
         return store.getItems();
       default: {

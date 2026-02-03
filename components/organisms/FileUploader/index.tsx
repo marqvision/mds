@@ -10,6 +10,7 @@ import { useFileUploader } from './@hooks/useFileUploader';
 import { useFileUploadState } from './@hooks/useFileUploadState';
 import {
   FileData,
+  FileResult,
   FileUploaderController,
   FileUploaderError,
   Item,
@@ -93,6 +94,7 @@ export const useMDSFileUploader = useFileUploader;
 export const useMDSFileUploadState = useFileUploadState;
 export const MDSFileUploaderUtils = utils;
 
+export type MDSFileResult = FileResult;
 export type MDSFileUploaderError = FileUploaderError;
 export type MDSFileUploaderProgress = Progress;
 export type UseMDSFileUploaderOptions = UseFileUploaderOptions;

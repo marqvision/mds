@@ -19,6 +19,7 @@ import {
   getBaseUrl,
   getErrorData,
   revokeBlobUrl,
+  sanitizeFileName,
   toastMDSSnackbarError,
   uploadFileToS3,
   validateFiles,
@@ -132,6 +133,21 @@ export function useFileUploader<T extends FileData = FileData>(
   const raiseError = useCallback(
     (error: Omit<FileUploaderError, 'message'> & { params?: Record<string, string | number> }) => {
       const { params, ...rest } = error;
+
+      if (error.code !== ERROR_CODE.LIMIT_EXCEEDED) {
+        error.files?.forEach((file) => {
+          const perFileParams = { ...params };
+          if (error.code === ERROR_CODE.INVALID_FILE_TYPE || error.code === ERROR_CODE.EMPTY_FILE) {
+            perFileParams.filename = sanitizeFileName(file.name);
+          }
+          store.addResult({
+            file,
+            status: 'error',
+            error: { code: error.code, message: ERROR_MESSAGE[error.code](perFileParams)[language] },
+          });
+        });
+      }
+
       const fullError: FileUploaderError = {
         ...rest,
         message: ERROR_MESSAGE[error.code](params)[language],
@@ -155,6 +171,7 @@ export function useFileUploader<T extends FileData = FileData>(
           store.setItem(i, (prev) => ({ ...prev, error: undefined }));
         });
         store.clearGlobalErrors();
+        store.clearResults();
       }
       notifyChange(store.getItems());
     },
@@ -327,9 +344,17 @@ export function useFileUploader<T extends FileData = FileData>(
           data: { ...prev.data, url: finalUrl },
           progress: { percentage: 100, isUploading: false },
         }));
+        store.addResult({ file, status: 'success', url: finalUrl });
         uploadUrlConfig.onSuccess?.(index, finalUrl);
       } catch (error) {
         if (!store.getItem(index)) return;
+
+        const errorData = getErrorData(language, ERROR_CODE.UPLOAD_FAILED);
+        store.addResult({
+          file,
+          status: 'error',
+          error: errorData ? { code: ERROR_CODE.UPLOAD_FAILED, message: errorData.message } : undefined,
+        });
 
         switch (uploadUrlConfig.failedFile) {
           case 'remove': {
@@ -363,6 +388,7 @@ export function useFileUploader<T extends FileData = FileData>(
 
       // 처리 시작
       isProcessingRef.current = true;
+      store.clearResults();
       if (uploadUrlConfig) {
         store.setIsProcessing(true);
       }
@@ -391,7 +417,16 @@ export function useFileUploader<T extends FileData = FileData>(
         // 5. 에러 리포트 (아이템 추가 후에 실행해야 클리어되지 않음)
         validationErrors.forEach(raiseError);
 
-        // 6. 업로드 시작
+        // 6. uploadUrl 없이 파일 추가 성공 시 결과 기록
+        if (added.length > 0 && !uploadUrlConfig) {
+          added.forEach((item) => {
+            if (item.data.file) {
+              store.addResult({ file: item.data.file, status: 'success' });
+            }
+          });
+        }
+
+        // 7. 업로드 시작
         if (added.length > 0 && uploadUrlConfig) {
           const uploadQueue = added.map((item, i) => ({
             file: item.data.file,

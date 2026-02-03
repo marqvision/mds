@@ -1,4 +1,4 @@
-import { ErrorItem, FileData, FileUploaderError, FileUploaderStore, Item, Listener, Progress } from '../@types';
+import { ErrorItem, FileData, FileResult, FileUploaderError, FileUploaderStore, Item, Listener, Progress } from '../@types';
 
 /** 아이템이 업로드 진행 중인지 판단 */
 export const checkIsItemUploading = (progress: Progress | null | undefined): boolean => {
@@ -80,6 +80,7 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
   let manualProgress: Progress | null = null;
   let cachedCombinedErrors: FileUploaderError[] = [];
   let isProcessing = false;
+  let fileResults: FileResult[] = [];
 
   let batchProgress: Progress = calculateBatchProgress(items);
   let cachedErrorItems: ErrorItem<T>[] = calculateErrorItems(items);
@@ -90,6 +91,7 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
   const isUploadingListeners = new Set<Listener>();
   const errorsListeners = new Set<Listener>();
   const isErrorListeners = new Set<Listener>();
+  const resultsListeners = new Set<Listener>();
   let prevIsError = globalErrors.length > 0 || cachedErrorItems.length > 0;
 
   // combinedErrors 캐시 업데이트
@@ -263,6 +265,19 @@ export const createFileUploaderStore = <T extends FileData = FileData>(
 
     // 전역 에러 클리어
     clearGlobalErrors,
+
+    // results 구독
+    subscribeResults: createSubscriber(resultsListeners),
+    getResults: () => fileResults,
+    addResult: (result: FileResult) => {
+      fileResults = [...fileResults, result];
+      resultsListeners.forEach((listener) => listener());
+    },
+    clearResults: () => {
+      if (fileResults.length === 0) return;
+      fileResults = [];
+      resultsListeners.forEach((listener) => listener());
+    },
 
     // 아이템 추가
     addItems: (newItems: Item<T>[]) => {

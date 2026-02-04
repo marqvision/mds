@@ -18,12 +18,13 @@ const Tag = styled.button<StyledTagProps>`
   display: inline-flex;
   transition: 0.3s;
 
-  ${({ size }) => {
+  ${({ size, theme }) => {
+    const radius = theme.comp.tag.size[size].radius;
     return css`
       gap: ${TagTheme.size[size].gap};
       padding: ${TagTheme.size[size].padding};
       border-width: ${TagTheme.size[size].borderWidth}px;
-      border-radius: ${TagTheme.size[size].radius};
+      border-radius: ${radius};
       min-height: ${TagTheme.size[size].minHeight};
 
       ${size === 'x-small'
@@ -36,8 +37,9 @@ const Tag = styled.button<StyledTagProps>`
     `;
   }}
 
-  ${({ variant, color, isClickable, size }) => {
+  ${({ variant, color, isClickable, size, theme }) => {
     const themeColor = variant === 'ai' || !color ? TagTheme.color.ai : TagTheme.color[color][variant];
+    const radius = theme.comp.tag.size[size].radius;
 
     const normalBackgroundColor = themeColor.normal.backgroundColor;
     const disabledBackgroundColor = themeColor.disabled.backgroundColor;
@@ -64,7 +66,7 @@ const Tag = styled.button<StyledTagProps>`
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                border-radius: 8px;
+                border-radius: ${radius};
                 transition: 0.3s;
                 border: ${TagTheme.size[size].clickAreaPadding}px solid transparent;
               }

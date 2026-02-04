@@ -11,7 +11,7 @@ const Container = styled.div`
   min-height: 24px;
   padding: 6px;
   background-color: white;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.comp.hoverActionToolbar.radius};
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04),
     0px 1px 8px 0px rgba(0, 0, 0, 0.12);
 `;

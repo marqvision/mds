@@ -21,7 +21,7 @@ const Wrapper = styled('div', {
       grid-template-columns: auto 1fr auto;
       gap: 8px;
       align-items: center;
-      border-radius: 8px;
+      border-radius: ${theme.comp.lnb.radius};
       text-decoration: none;
       cursor: pointer;
       overflow: hidden;

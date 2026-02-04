@@ -24,7 +24,7 @@ type StyledMDSButtonProps = {
 
 const SegmentedButtonWrapper = styled.div<SegmentedButtonWrapperProps>`
   display: flex;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.comp.segmentedButton.radius};
   height: ${({ height: tintHeight }) => `${tintHeight}px`};
   min-height: ${({ height: tintHeight }) => `${tintHeight}px`};
   width: ${({ fixedWidth }) => fixedWidth || 'auto'};

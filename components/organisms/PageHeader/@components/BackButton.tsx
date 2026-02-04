@@ -11,7 +11,7 @@ const Wrapper = styled.button<Partial<LinkComponentProps>>`
       border: none;
       width: 26px;
       height: 26px;
-      border-radius: 8px;
+      border-radius: ${theme.comp.pageHeader.backButton.radius};
       background-color: ${theme.color.bg.fill.target.default};
       cursor: pointer;
       transition: 0.2s;

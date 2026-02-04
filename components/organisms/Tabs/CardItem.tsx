@@ -12,7 +12,7 @@ const Styled = {
     gap: 2px;
     border: 1px solid ${({ theme }) => theme.color.border.neutral.default.normal};
     padding: 8px 12px;
-    border-radius: 8px;
+    border-radius: ${({ theme }) => theme.comp.tabs.radius};
     align-self: center;
     margin: 11px 8px 11px 0;
     background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.normal};

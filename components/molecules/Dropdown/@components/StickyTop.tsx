@@ -47,7 +47,7 @@ const StyledSelectAll = styled.label`
   align-items: center;
   gap: 12px;
   padding-right: 4px;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.comp.dropdown.radius};
   transition: background-color 225ms ease;
   ${({ as, theme }) =>
     as === 'label'
@@ -65,7 +65,7 @@ const StyledSort = styled.button`
   background: transparent;
   padding: 0;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.comp.dropdown.radius};
   transition: background-color 225ms ease;
   &:hover {
     background-color: ${({ theme }) => theme.color.content.inverse.default.hover};

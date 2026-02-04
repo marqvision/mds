@@ -25,7 +25,7 @@ const Styled = {
       opacity: 0;
       transition: opacity ${THEME.transitionTiming} ease;
       z-index: 0;
-      border-radius: 8px;
+      border-radius: ${({ theme }) => theme.comp.tabs.radius};
       pointer-events: none;
     }
     &:hover:not(:disabled):before {

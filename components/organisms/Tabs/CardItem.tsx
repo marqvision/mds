@@ -28,6 +28,9 @@ const Styled = {
       opacity: 0.5;
       cursor: default;
     }
+    &:hover:not(.disabled) {
+      background-color: ${({ theme }) => theme.color.bg.surface.neutral.default.hover};
+    }
   `,
   Description: styled.div`
     display: flex;

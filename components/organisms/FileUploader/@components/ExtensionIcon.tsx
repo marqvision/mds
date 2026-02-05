@@ -29,6 +29,7 @@ const ICON_LIST: Record<string, React.ReactElement> = {
   csv: <MDSIcon.ExcelSheet color="color/content/success/default/normal" />,
   xls: <MDSIcon.ExcelSheet color="color/content/success/default/normal" />,
   xlsx: <MDSIcon.ExcelSheet color="color/content/success/default/normal" />,
+  xlsm: <MDSIcon.ExcelSheet color="color/content/success/default/normal" />,
 };
 
 type PropsWithFileName = {

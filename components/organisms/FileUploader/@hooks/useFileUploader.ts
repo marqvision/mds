@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
+import { useCallback, useMemo, useRef, useSyncExternalStore } from 'react';
 import { CONCURRENT_UPLOAD_LIMIT, ERROR_CODE, ERROR_MESSAGE } from '../@constants';
 import {
   ErrorCode,
@@ -25,6 +25,7 @@ import {
   validateFiles,
 } from '../@utils';
 import { getIsValueEqual, getNormalizedValue } from '../@utils/helpers';
+import { useDeepCompareEffect } from './useDeepCompareEffect';
 
 /**
  * 파일 업로드를 위한 상태와 액션을 제공하는 훅
@@ -508,7 +509,7 @@ export function useFileUploader<T extends FileData = FileData>(
     [store, language, accept, dropKey, isDisabled, uploadUrl, open, addFiles, addItems, raiseError, remove]
   );
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     // 외부 주입 값 변경 시 store 연동
     const normalizedDefaultValue = getNormalizedValue(defaultValue);
     if (getIsValueEqual(normalizedDefaultValue, store)) return;

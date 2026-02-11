@@ -17,7 +17,7 @@ export const useDropdown = <T>({
 
   const filteredList = useMemo(
     () => getFilteredList(list, hasCustomSearch ? '' : search, hasSort ? sort : undefined),
-    [hasCustomSearch, search, list, sort]
+    [hasCustomSearch, search, list, hasSort, sort]
   );
 
   return {
@@ -218,21 +218,29 @@ export const useInitDropdown = <T, SortT>(
 
   const storeValues = useCallback(
     (newValues: ValueType<T>[]) => {
+      const flatItemMap = new Map(flatItems.map((item) => [item.value, item]));
       const temp = [...storedItemsRef.current];
+      const tempIndexMap = new Map(temp.map((item, i) => [item.value, i]));
 
       newValues.forEach((v) => {
-        const findIndex = temp.findIndex((v2) => v2.value === v);
-        if (findIndex < 0) {
-          const item = getItemFromList(v, flatItems);
+        const existingIndex = tempIndexMap.get(v);
+        const flatItem = flatItemMap.get(v);
+
+        if (existingIndex === undefined) {
+          const item = flatItem ?? { label: String(v), value: v };
           if (item.value !== undefined) {
+            tempIndexMap.set(v, temp.length);
             temp.push(item);
           }
         } else {
-          if (temp[findIndex].label === `${temp[findIndex].value}`) {
-            const item = getItemFromList(v, flatItems);
+          const stored = temp[existingIndex];
+          if (stored.label === `${stored.value}`) {
+            const item = flatItem ?? { label: String(v), value: v };
             if (item.value !== undefined) {
-              temp[findIndex] = item;
+              temp[existingIndex] = item;
             }
+          } else if (flatItem) {
+            temp[existingIndex] = { ...stored, label: flatItem.label };
           }
         }
       });

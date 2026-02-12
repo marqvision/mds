@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MDSDropdown, MDSTypography } from '../../../../components';
 import { Story } from './index.stories';
 import { Wrapper } from './@components';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSDropdown> = {
   component: MDSDropdown,

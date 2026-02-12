@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MDSMessageBox } from '../../../components/molecules/MessageBox';
 import { MDSIcon } from '../../../components/atoms/Icon';
 

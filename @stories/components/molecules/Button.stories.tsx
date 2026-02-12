@@ -2,7 +2,7 @@ import React from 'react';
 import { Story } from '@storybook/addon-docs/blocks';
 import { MDSButton, MDSButtonProps } from '../../../components/molecules/Button';
 import { MDSIcon, MDSTag, MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSButton> = {
   component: MDSButton,

@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from 'react';
 import { MDSPageHeader } from '../../../components/organisms/PageHeader';
 import { MDSButton, MDSDivider, MDSDropdown, MDSIcon, MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSPageHeader> = {
   component: MDSPageHeader,

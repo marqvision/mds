@@ -3,7 +3,7 @@ import { MDSButton, MDSIcon, MDSInput, MDSPlainButton, MDSTypography } from '../
 import { TextFieldProps } from '../../../../components/molecules/Input/@types';
 import { useMDSInputKeywordManager } from '../../../../components/molecules/Input/@hooks/useMDSInputKeywordManager';
 import { Story, Wrapper } from './index.stories';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSInput> = {
   component: MDSInput,

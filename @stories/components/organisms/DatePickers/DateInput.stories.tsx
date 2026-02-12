@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { css } from '@emotion/react';
 import dayjs from 'dayjs';
 import { MDSDateInput } from '../../../../components/organisms/DatePickers/DateInput';

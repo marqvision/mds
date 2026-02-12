@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'storybook/preview-api';
 import { MDSButton, MDSDropdown, MDSIcon, MDSTooltip, MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const LONG_TEXT =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';

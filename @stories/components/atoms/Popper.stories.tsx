@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MDSPopper } from '../../../components/molecules/HoverActionToolbar/Popper';
 import { MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { PopperPosition } from '../../../components/molecules/HoverActionToolbar/Popper';
 
 const meta: Meta<typeof MDSPopper> = {

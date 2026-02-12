@@ -2,7 +2,7 @@ import React from 'react';
 import { useArgs } from 'storybook/preview-api';
 import { MDSToggle } from '../../../components/atoms/Toggle';
 import { MDSTag, MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSToggle> = {
   component: MDSToggle,

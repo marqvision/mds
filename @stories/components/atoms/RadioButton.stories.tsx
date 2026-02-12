@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useArgs } from 'storybook/preview-api';
 import { MDSRadioButton, MDSTag, MDSTypography } from '../../../components';
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSRadioButton> = {
   component: MDSRadioButton,

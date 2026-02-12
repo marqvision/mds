@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import { Meta } from '@storybook/react';
+import { Meta } from '@storybook/react-vite';
 import styled from '@emotion/styled';
 import { MDSIcon, MDSIconProps, MDSTypography } from '../../../components';
 import { MDSTHEME_COLORS } from '../../@helper';

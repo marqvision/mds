@@ -204,7 +204,7 @@ const Tabs = forwardRef(<T,>(props: TabsProps<T>, ref: Ref<HTMLDivElement>) => {
         left: selectedTab.offsetLeft,
       });
     }
-  }, [value, wrapWidth]);
+  }, [value, wrapWidth, children?.length]);
 
   useEffect(() => {
     const selectedTab = scrollerRef.current?.querySelector('.selected') as HTMLDivElement | null;

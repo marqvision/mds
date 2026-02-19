@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDSIcon, MDSPlainButton, MDSTag, MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSPlainButton> = {
   component: MDSPlainButton,

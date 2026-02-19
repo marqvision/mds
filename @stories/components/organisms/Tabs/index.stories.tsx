@@ -1,5 +1,5 @@
 import { MouseEvent } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
 import { MDSTabs } from '../../../../components/organisms/Tabs';
 import { MDSDivider, MDSIcon, MDSTag, MDSTypography } from '../../../..';

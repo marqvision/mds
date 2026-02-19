@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { MDSButton, MDSIcon, MDSLNB } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSLNB> = {
   component: MDSLNB,
@@ -49,6 +49,7 @@ const meta: Meta<typeof MDSLNB> = {
               key: 'marketplace',
               path: '/marketplace/review-needed',
               label: 'Review Needed',
+              isNew: true,
             },
           ],
         },

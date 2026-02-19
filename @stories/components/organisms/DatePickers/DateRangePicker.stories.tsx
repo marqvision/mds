@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef} from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
 import dayjs from 'dayjs';
 import { MDSDateRangePicker } from '../../../../components/organisms/DatePickers/DateRangePicker';

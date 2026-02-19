@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story } from '@storybook/addon-docs/blocks';
 import { MDSButton, MDSSnackbar, MDSTypography, MDSSnackbarContainer, dismissToast } from '../../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSSnackbarContainer> = {
   component: MDSSnackbarContainer,

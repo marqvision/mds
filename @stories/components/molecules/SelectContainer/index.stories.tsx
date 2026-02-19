@@ -3,7 +3,7 @@ import { MDSSelectContainer } from '../../../../components';
 import { Doc } from './Doc';
 import { ValueEnum } from './@types';
 import { LABEL_MAP } from './@constants';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSSelectContainer.Wrapper> = {
   title: '2. Components/molecules/Select container',

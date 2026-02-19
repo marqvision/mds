@@ -2,7 +2,7 @@ import React from 'react';
 import { useArgs } from 'storybook/preview-api';
 import { MDSSlider } from '../../../components/molecules/Slider';
 import { MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSSlider> = {
   component: MDSSlider,

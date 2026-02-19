@@ -3,7 +3,7 @@ import { useArgs } from 'storybook/preview-api';
 import { useTheme } from '@emotion/react';
 import { MDSCheckbox } from '../../../components/atoms/Checkbox';
 import { MDSTag, MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSCheckbox> = {
   component: MDSCheckbox,

@@ -4,7 +4,7 @@ import { MDSHoverActionToolbar } from '../../../components/molecules/HoverAction
 import { MDSIcon } from '../../../components/atoms/Icon';
 import { MDSTooltip } from '../../../components/molecules/Tooltip';
 import { MDSPopper } from '../../../components/molecules/HoverActionToolbar/Popper';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSHoverActionToolbar> = {
   component: MDSHoverActionToolbar,

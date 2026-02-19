@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MDSInput, MDSTypography, MDSButton } from '../../../../components';
 import { SelectProps, TextFieldProps } from '../../../../components/molecules/Input/@types';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSInput> = {
   component: MDSInput,

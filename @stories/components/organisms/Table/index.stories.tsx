@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MDSCheckbox, MDSButton, MDSTable, MDSTypography } from '../../../../components';
 
 const meta: Meta<typeof MDSTable> = {

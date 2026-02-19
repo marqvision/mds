@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDSButton, MDSEmptyView } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSEmptyView> = {
   component: MDSEmptyView,

@@ -4,7 +4,7 @@ import { MDSCheckbox, MDSDropdown, MDSInput, MDSTypography } from '../../../../c
 import { FolioCommonEnumsApplicationStepEnum, StatusList } from './@constants';
 import { Story } from './index.stories';
 import { Wrapper } from './@components';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSDropdown> = {
   component: MDSDropdown,

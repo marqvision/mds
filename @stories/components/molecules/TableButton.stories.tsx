@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { MDSIcon, MDSTypography } from '../../../components';
 import { MDSTableButton } from '../../../components/molecules/TableButton';

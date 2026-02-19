@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { MDSCheckbox } from '../../../components';
 import { MDSTypography } from '../../../components/atoms/Typography';
 import { MDSTHEME_COLORS } from '../../@helper';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSTypography> = {
   component: MDSTypography,

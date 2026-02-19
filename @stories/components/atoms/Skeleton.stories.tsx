@@ -1,7 +1,7 @@
 import React from 'react';
 import { MDSSkeleton } from '../../../components/atoms/Skeleton';
 import { MDSImage, MDSTypography } from '../../../components';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof MDSSkeleton> = {
   component: MDSSkeleton,

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useArgs, useState, useEffect } from 'storybook/preview-api';
 import { MDSButton, MDSModal, MDSPanel, MDSTypography } from '../../../../components';
 import { Doc } from './Doc';

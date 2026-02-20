@@ -1,10 +1,10 @@
-import { ErrorCode, Language } from './@types';
+import { ErrorCode, FileType, Language } from './@types';
 
 export const TRANSITION_TIMING = '225ms';
 export const DEFAULT_COLUMN = 3;
 export const CONCURRENT_UPLOAD_LIMIT = 3;
 
-// 개별 파일 타입
+// 개별 파일 타입 - accept 옵션에서 쓸 업로드 허용 확장자 리스트
 export const FILE_TYPE = {
   // 이미지
   jpg: 'image/jpeg',
@@ -12,6 +12,14 @@ export const FILE_TYPE = {
   gif: 'image/gif',
   webp: 'image/webp',
   svg: 'image/svg+xml',
+  jfif: 'image/jpeg',
+  bmp: 'image/bmp',
+  ico: 'image/x-icon',
+  avif: 'image/avif',
+  apng: 'image/apng',
+  tif: 'image/tiff',
+  heic: 'image/heic',
+  heif: 'image/heif',
   // 문서
   pdf: 'application/pdf',
   doc: 'application/msword',
@@ -107,4 +115,17 @@ export const DEFAULT_DISPLAY_MESSAGE = {
   },
 } satisfies Record<Language, Record<string, string>>;
 
-export const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'];
+// GridImage 컴포넌트에서 img 태그 그리기 위해 이미지인지 판별하는 확장자 리스트
+export const IMAGE_EXTENSIONS: string[] = [
+  'jpg',
+  'jpeg',
+  'png',
+  'gif',
+  'webp',
+  'svg',
+  'bmp',
+  'ico',
+  'jfif',
+  'avif',
+  'apng',
+] satisfies (FileType | 'jpeg')[];

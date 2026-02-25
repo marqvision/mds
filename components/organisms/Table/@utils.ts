@@ -2,8 +2,8 @@ export const findScrollableParent = (element: HTMLElement | null): HTMLElement |
   let currentElement = element;
 
   while (currentElement) {
-    const overflow = window.getComputedStyle(currentElement).overflow;
-    const isScrollable = overflow.includes('scroll') || overflow.includes('auto');
+    const { overflowX } = window.getComputedStyle(currentElement);
+    const isScrollable = overflowX === 'scroll' || overflowX === 'auto';
 
     if (isScrollable) return currentElement;
     currentElement = currentElement.parentElement;

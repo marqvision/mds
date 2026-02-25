@@ -279,7 +279,11 @@ export const TextField = forwardRef((props: Props, ref: Ref<HTMLInputElement>) =
         }}
       >
         {Prefix}
-        <StyledMirror ref={mirrorRef} isMultiline={isMultiline} style={{ maxWidth: mirrorMaxWidth }}>
+        <StyledMirror
+          ref={mirrorRef}
+          isMultiline={isMultiline}
+          style={{ maxWidth: mirrorMaxWidth, maxHeight: toFitMultiline?.maxHeight }}
+        >
           <MDSTypography size={typographySize} wordBreak="break-word">
             {String(mirrorText).split('\n').at(-1) === '' ? `${mirrorText} ` : mirrorText}
           </MDSTypography>

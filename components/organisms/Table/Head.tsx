@@ -14,7 +14,7 @@ const Wrapper = styled.thead<StyledTableHeadProps>`
       ? `
       position: sticky;
       top: 0;
-      z-index: 2;
+      z-index: 6;
     `
       : ''}
 

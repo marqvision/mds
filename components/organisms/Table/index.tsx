@@ -20,7 +20,7 @@ const Wrapper = styled.table<StyledTableProps>`
       &:first-of-type {
         position: sticky;
         left: 0;
-        z-index: 1;
+        z-index: 5;
         padding-right: 4px;
         ${isStickyLeft.isShadowVisible ? 'box-shadow: 5px 0px 5px -2px rgba(0, 0, 0, 0.06);' : ''}
                 
@@ -42,7 +42,7 @@ const Wrapper = styled.table<StyledTableProps>`
       &:last-of-type {
         position: sticky;
         right: 0;
-        z-index: 1;
+        z-index: 5;
         padding-left: 4px;
         ${isStickyRight.isShadowVisible ? 'box-shadow: -5px 0px 5px -2px rgba(0, 0, 0, 0.06);' : ''}
 

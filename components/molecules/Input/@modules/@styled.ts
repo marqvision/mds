@@ -58,6 +58,7 @@ export const StyledBaseLabel = styled.label<{ size: Size; isError?: boolean }>`
   transition: outline ${theme.transitionTiming} ease;
   border-radius: 8px;
   &:focus-within {
+    z-index: 1;
     outline: ${({ isError }) =>
       `3px solid ${isError ? theme.color.border['error-focus-effect'] : theme.color.border['focus-effect']}`};
   }

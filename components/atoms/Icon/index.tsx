@@ -198,6 +198,12 @@ export const MDSIcon = {
   Reply: createIcon(Symbols.Reply),
   GenerativeAI: createIcon(Symbols.GenerativeAI),
   Ads: createIcon(Symbols.Ads),
+  Facebook: createIcon(Symbols.Facebook),
+  Threads: createIcon(Symbols.Threads),
+  Instagram: createIcon(Symbols.Instagram),
+  Whatsapp: createIcon(Symbols.Whatsapp),
+  Messenger: createIcon(Symbols.Messenger),
+  AudienceNetwork: createIcon(Symbols.AudienceNetwork),
 
   // editor
   Bold: createIcon(Editor.Bold),

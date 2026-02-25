@@ -59,8 +59,8 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
   >(
     startDate?.value && endDate?.value
       ? {
-          startDate: dayjs(startDate.value, format).toDate(),
-          endDate: dayjs(endDate.value, format).toDate(),
+          startDate: dayjs(startDate.value).toDate(),
+          endDate: dayjs(endDate.value).toDate(),
         }
       : undefined
   );
@@ -86,12 +86,12 @@ export const DateRangePickerCore = (props: DateRangePickerProps) => {
         !dates?.startDate && !dates?.endDate
           ? undefined
           : {
-              startDate: dates.startDate ? dayjs(dates.startDate, format).toDate() : undefined,
-              endDate: dates.endDate ? dayjs(dates.endDate, format).toDate() : undefined,
+              startDate: dates.startDate ? dayjs(dates.startDate).toDate() : undefined,
+              endDate: dates.endDate ? dayjs(dates.endDate).toDate() : undefined,
             }
       );
     },
-    [format]
+    []
   );
 
   const handleCalendarChange = useCallback(

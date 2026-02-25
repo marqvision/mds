@@ -5,21 +5,11 @@ import { AvailableDateFormat } from '../../@types';
 import { DEFAULT_PROPS } from '../../@constants';
 import { validateDateAndMinMaxRange } from '../../@utils';
 
-const getInitialState = (
-  value: string | undefined,
-  anchor: AnchorProps,
-  valueFormat: AvailableDateFormat = DEFAULT_PROPS.format
-) => {
-  const format = getFormat(anchor, valueFormat);
-  return value ? dayjs(value, format).toDate() : null;
+const getInitialState = (value: string | undefined) => {
+  return value ? dayjs(value).toDate() : null;
 };
-const getDateObject = (
-  dateString: string | null,
-  anchor: AnchorProps,
-  valueFormat: AvailableDateFormat = DEFAULT_PROPS.format
-) => {
-  const format = getFormat(anchor, valueFormat);
-  return dayjs(dateString, format).toDate();
+const getDateObject = (dateString: string | null) => {
+  return dayjs(dateString).toDate();
 };
 
 /**
@@ -34,7 +24,7 @@ const getFormat = (anchor: AnchorProps, valueFormat: AvailableDateFormat = DEFAU
 export const useDatePickerAnchor = (params: DatePickerProps) => {
   const { anchor, format: valueFormat, value, minDate, maxDate, onChange } = params;
 
-  const [internalDate, setInternalDate] = useState<Date | null>(getInitialState(value, anchor, valueFormat));
+  const [internalDate, setInternalDate] = useState<Date | null>(getInitialState(value));
 
   const handleDateChange = (date?: Date) => {
     setInternalDate(date ?? null);
@@ -49,7 +39,7 @@ export const useDatePickerAnchor = (params: DatePickerProps) => {
       return;
     }
 
-    const newDate = value ? getDateObject(value, anchor, valueFormat) : internalDate;
+    const newDate = value ? getDateObject(value) : internalDate;
 
     const isValid = validateDateAndMinMaxRange({
       date: newDate,

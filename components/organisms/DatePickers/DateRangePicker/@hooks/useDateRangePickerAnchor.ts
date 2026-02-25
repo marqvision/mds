@@ -6,25 +6,14 @@ import { DEFAULT_PROPS } from '../../@constants';
 import { validateDateRange } from '../../@utils';
 import { SingleDateInput } from '../../DateInputGroup/@types';
 
-const getInitialState = (
-  startDate: SingleDateInput | undefined,
-  endDate: SingleDateInput | undefined,
-  anchor: AnchorProps,
-  valueFormat: AvailableDateFormat = DEFAULT_PROPS.format
-) => {
-  const format = getFormat(anchor, valueFormat);
+const getInitialState = (startDate: SingleDateInput | undefined, endDate: SingleDateInput | undefined) => {
   return {
-    startDate: startDate?.value ? dayjs(startDate.value, format).toDate() : null,
-    endDate: endDate?.value ? dayjs(endDate.value, format).toDate() : null,
+    startDate: startDate?.value ? dayjs(startDate.value).toDate() : null,
+    endDate: endDate?.value ? dayjs(endDate.value).toDate() : null,
   };
 };
-const getDateObject = (
-  dateString: string | null,
-  anchor: AnchorProps,
-  valueFormat: AvailableDateFormat = DEFAULT_PROPS.format
-) => {
-  const format = getFormat(anchor, valueFormat);
-  return dayjs(dateString, format).toDate();
+const getDateObject = (dateString: string | null) => {
+  return dayjs(dateString).toDate();
 };
 
 /**
@@ -42,7 +31,7 @@ export const useDateRangePickerAnchor = (params: DateRangePickerProps) => {
   const [internalDate, setInternalDate] = useState<{
     startDate: Date | null;
     endDate: Date | null;
-  }>(getInitialState(startDate, endDate, anchor, valueFormat));
+  }>(getInitialState(startDate, endDate));
 
   const handleDateChange = (dates?: { startDate: Date; endDate: Date }) => {
     setInternalDate(dates ?? { startDate: null, endDate: null });
@@ -60,10 +49,8 @@ export const useDateRangePickerAnchor = (params: DateRangePickerProps) => {
       return;
     }
 
-    const newStartDate = startDate?.value
-      ? getDateObject(startDate.value, anchor, valueFormat)
-      : internalDate.startDate;
-    const newEndDate = endDate?.value ? getDateObject(endDate.value, anchor, valueFormat) : internalDate.endDate;
+    const newStartDate = startDate?.value ? getDateObject(startDate.value) : internalDate.startDate;
+    const newEndDate = endDate?.value ? getDateObject(endDate.value) : internalDate.endDate;
 
     const isValid = validateDateRange({
       startDate: newStartDate,

@@ -88,6 +88,23 @@ describe('DateInputGroup 컴포넌트 유틸 함수', () => {
     });
   });
 
+  describe('parseDateStringToDate strict parsing 검증', () => {
+    it('존재하지 않는 날짜(2월 30일)는 strict 모드에서 null을 반환해야 합니다', () => {
+      expect(parseDateStringToDate('02/30/2024', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('2024-02-30', 'YYYY-MM-DD')).toBeNull();
+    });
+
+    it('유효한 날짜는 정상적으로 파싱되어야 합니다', () => {
+      expect(parseDateStringToDate('2024-03-15', 'YYYY-MM-DD')).toEqual(new Date(2024, 2, 15));
+      expect(parseDateStringToDate('03/15/2024', 'MM/DD/YYYY')).toEqual(new Date(2024, 2, 15));
+    });
+
+    it('포맷과 불일치하는 문자열은 null을 반환해야 합니다', () => {
+      expect(parseDateStringToDate('3/15/2024', 'MM/DD/YYYY')).toBeNull();
+      expect(parseDateStringToDate('2024/03/15', 'YYYY-MM-DD')).toBeNull();
+    });
+  });
+
   describe('isPartiallyValidDate 함수', () => {
     it('MM/DD/YYYY: 유효한 부분 날짜를 올바르게 판단해야 합니다', () => {
       expect(isPartiallyValidDate('12', 'MM/DD/YYYY')).toBe(true);

@@ -17,7 +17,7 @@ const StyledAddButton = styled.button<{ size: Size; isError?: boolean }>`
     disabled
       ? theme.color.button[isError ? 'error-disabled' : 'disabled']
       : theme.color.button[isError ? 'error' : 'normal']};
-  border-radius: 0 8px 8px 0;
+  border-radius: ${({ theme }) => `0 ${theme.comp.input.radius} ${theme.comp.input.radius} 0`};
   &:not(:disabled) {
     cursor: pointer;
   }

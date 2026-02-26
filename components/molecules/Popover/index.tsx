@@ -66,7 +66,7 @@ const Dialog = styled.dialog<{ margin?: number; arrowPosition?: string; bgColor:
 const DialogContent = styled.div<StyleProps>`
   position: relative;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16), 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.comp.popover.radius};
   background-color: ${({ theme, bgColor }) =>
     bgColor === 'white' ? theme.color.bg.surface.neutral.default.normal : theme.color.bg.surface.inverse.light};
   width: ${({ width }) => width};

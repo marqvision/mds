@@ -1,6 +1,7 @@
 import { RAW_COLORS } from '../colors';
 
 export const INPUT_THEME = {
+  radius: '8px',
   color: {
     bg: {
       normal: RAW_COLORS.white,

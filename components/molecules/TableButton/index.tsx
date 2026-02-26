@@ -29,7 +29,7 @@ const StyledButton = styled.button<{
     left: 50%;
     width: calc(100% + 12px);
     height: calc(100% + 8px);
-    border-radius: 8px;
+    border-radius: ${({ theme }) => theme.comp.tableButton.radius};
     background: ${({ theme, isClickable }) => (isClickable ? theme.color.bg.fill.target.default : 'transparent')};
     opacity: 0;
     transition: opacity 0.3s ease;

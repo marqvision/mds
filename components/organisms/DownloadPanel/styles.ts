@@ -12,7 +12,7 @@ const Container = styled.div<{ isFold: boolean }>`
   min-height: 52px;
 
   padding: 8px 0;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.comp.downloadPanel.radius};
 
   ${({ isFold }) => css`
     width: ${isFold ? '232px' : '412px'};

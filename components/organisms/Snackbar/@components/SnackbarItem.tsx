@@ -122,7 +122,7 @@ const SnackbarItemStyles = styled.div<SnackbarItemStyleProps>`
       bottom: 24px;
       margin: 0 16px;
       padding: 12px 16px;
-      border-radius: 8px;
+      border-radius: ${theme.comp.snackbar.radius};
       background-color: ${backgroundColor};
       box-shadow:
         0px 8px 16px 0px #00000033,
@@ -159,7 +159,7 @@ const BlurOverlay = styled.div<{ isBlurFadingOut?: boolean }>`
   background-color: rgba(255, 255, 255, 0);
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.comp.snackbar.radius};
   z-index: 1;
   display: flex;
   align-items: center;

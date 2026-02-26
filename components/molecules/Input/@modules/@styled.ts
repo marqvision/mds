@@ -16,8 +16,10 @@ export const StyledOutline = styled.div<{
   align-items: center;
   gap: 4px;
   width: 100%;
-  border-radius: ${({ flatLeft, flatRight }) =>
-    `${flatLeft ? 0 : '8px'} ${flatRight ? 0 : '8px'} ${flatRight ? 0 : '8px'} ${flatLeft ? 0 : '8px'}`};
+  border-radius: ${({ flatLeft, flatRight, theme }) => {
+    const radius = theme.comp.input.radius;
+    return `${flatLeft ? 0 : radius} ${flatRight ? 0 : radius} ${flatRight ? 0 : radius} ${flatLeft ? 0 : radius}`;
+  }};
   border: ${({ isError }) => `1px solid ${theme.color.border[isError ? 'error' : 'normal']}`};
   ${({ customSize }) => ({
     padding: `${theme.size[customSize].paddingY} ${theme.size[customSize].paddingX}`,
@@ -28,7 +30,10 @@ export const StyledOutline = styled.div<{
     disabled || readOnly ? theme.color.bg.disabled : theme.color.bg.normal};
   &:has(input:focus, textarea:focus, button:focus) {
     border-color: ${({ isError }) => theme.color.border[isError ? 'error' : 'active']};
-    border-radius: ${({ flatRight }) => (flatRight === 'add' ? '8px 0 0 8px' : `8px`)};
+    border-radius: ${({ flatRight, theme }) => {
+      const radius = theme.comp.input.radius;
+      return flatRight === 'add' ? `${radius} 0 0 ${radius}` : radius;
+    }};
   }
   &:has(button:not(:disabled):not(.readOnly)) {
     cursor: pointer;
@@ -56,7 +61,7 @@ export const StyledBaseLabel = styled.label<{ size: Size; isError?: boolean }>`
   min-height: ${({ size }) => theme.size[size].height};
   position: relative;
   transition: outline ${theme.transitionTiming} ease;
-  border-radius: 8px;
+  border-radius: ${({ theme: emotionTheme }) => emotionTheme.comp.input.radius};
   &:focus-within {
     outline: ${({ isError }) =>
       `3px solid ${isError ? theme.color.border['error-focus-effect'] : theme.color.border['focus-effect']}`};

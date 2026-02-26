@@ -1,4 +1,4 @@
-import dayjs from '../@dayjs';
+import dayjs from 'dayjs';
 import { SEPARATOR_MAP } from '../@constants';
 import { AvailableDateFormat, DateValidationError } from '../@types';
 import { isDateShapeValid, validateDateAndMinMaxRange } from '../@utils';

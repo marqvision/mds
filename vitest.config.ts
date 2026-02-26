@@ -8,6 +8,7 @@ export default defineConfig(
     plugins: [viteTsconfigPaths()],
     test: {
       include: ['**/*.test.{ts,tsx}'],
+      setupFiles: ['./bootstrap.ts'],
     },
   })
 );

@@ -7,12 +7,17 @@ import { validateDateRange } from '../../@utils';
 import { SingleDateInput } from '../../DateInputGroup/@types';
 
 const getInitialState = (startDate: SingleDateInput | undefined, endDate: SingleDateInput | undefined) => {
+  const parseDate = (value?: string) => {
+    if (!value) return null;
+    const d = dayjs(value);
+    return d.isValid() ? d.toDate() : null;
+  };
   return {
-    startDate: startDate?.value ? dayjs(startDate.value).toDate() : null,
-    endDate: endDate?.value ? dayjs(endDate.value).toDate() : null,
+    startDate: parseDate(startDate?.value),
+    endDate: parseDate(endDate?.value),
   };
 };
-const getDateObject = (dateString: string | null) => {
+const getDateObject = (dateString: string) => {
   return dayjs(dateString).toDate();
 };
 
@@ -31,7 +36,7 @@ export const useDateRangePickerAnchor = (params: DateRangePickerProps) => {
   const [internalDate, setInternalDate] = useState<{
     startDate: Date | null;
     endDate: Date | null;
-  }>(getInitialState(startDate, endDate));
+  }>(() => getInitialState(startDate, endDate));
 
   const handleDateChange = (dates?: { startDate: Date; endDate: Date }) => {
     setInternalDate(dates ?? { startDate: null, endDate: null });

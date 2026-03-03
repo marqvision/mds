@@ -116,7 +116,7 @@ export const LineClamp: Story = {
           급부상했습니다. 현재 중국, 호주, 베트남, 말레이시아 등에서 30개 이상의 매장을 운영하고 있으며, 지속적으로
           아시아 이외의 지역에도 추가 매장을 오픈할 계획입니다.
         </MDSTypography>
-        <MDSTypography color="color/content/primary/default/normal" weight="semibold" lineClamp={lineClamp}>
+        <MDSTypography variant="title" color="color/content/primary/default/normal" weight="semibold" lineClamp={lineClamp}>
           아크메드라비는 2017년부터 가장 핫한 트렌드를 시장에 선보이고 있는 젊은 스트리트 패션 브랜드입니다.
         </MDSTypography>
       </div>

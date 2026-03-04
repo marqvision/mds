@@ -204,6 +204,7 @@ export const MDSIcon = {
   Whatsapp: createIcon(Symbols.Whatsapp),
   Messenger: createIcon(Symbols.Messenger),
   AudienceNetwork: createIcon(Symbols.AudienceNetwork),
+  Equalizer: createIcon(Symbols.Equalizer),
 
   // editor
   Bold: createIcon(Editor.Bold),

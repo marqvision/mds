@@ -54,7 +54,12 @@ export type Props = {
    * 매개변수 'checked' 는 체크박스의 새로운 상태를 나타냅니다.
    * 두번째 매개변수 'event' 는 변경 이벤트 객체를 제공합니다.
    */
-  onChange: (value: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (value: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
+  /**
+   * 체크박스가 클릭되었을 때 호출되는 함수입니다.
+   * 매개변수 'event' 는 클릭 이벤트 객체를 제공합니다.
+   */
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   /**
    * 체크박스의 색상을 지정합니다.
    * @default 'blue'

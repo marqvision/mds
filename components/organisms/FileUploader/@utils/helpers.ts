@@ -134,8 +134,8 @@ export const checkIsFileAccepted = async (file: File, accept?: AcceptType | Acce
   const targetMimeTypes = mimeTypes.filter((type) => !type.endsWith('/*'));
   if (targetMimeTypes.length === 0) return false;
 
-  // 검증이 필요한 타입이 있는지 확인
-  const needsVerification = targetMimeTypes.some((type) => VERIFY_MIME_TYPES.includes(type));
+  // 현재 파일이 magic number 검증이 필요한 타입인지 확인
+  const needsVerification = VERIFY_MIME_TYPES.includes(file.type);
 
   if (needsVerification) {
     // jpg, png, gif는 magic number로 검증

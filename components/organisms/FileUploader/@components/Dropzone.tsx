@@ -14,7 +14,7 @@ const Styled = {
   `,
   Dropzone: styled.div`
     border: 1px solid ${({ theme }) => theme.comp.input.color.border.normal};
-    border-radius: 8px;
+    border-radius: ${({ theme }) => theme.comp.fileUploader.dropzone.radius};
     overflow: hidden;
     display: grid;
     place-items: center;

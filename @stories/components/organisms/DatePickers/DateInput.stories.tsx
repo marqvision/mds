@@ -32,7 +32,7 @@ export const DefaultWithMMDDYYYY: Story = {
   name: 'Default with MM/DD/YYYY format',
   render: function Render() {
     const format = 'MM/DD/YYYY';
-    const [date, setDate] = useState<string | undefined>(dayjs().format(format));
+    const [date, setDate] = useState<string | undefined>('01/15/2025');
 
     return (
       <div css={testGroupStyle}>
@@ -60,7 +60,7 @@ export const DefaultWithYYYYMMDD: Story = {
   name: 'Default with YYYY-MM-DD format',
   render: function Render() {
     const format = 'YYYY-MM-DD';
-    const [date, setDate] = useState<string | undefined>(dayjs().format(format));
+    const [date, setDate] = useState<string | undefined>('2025-01-15');
 
     return (
       <div css={testGroupStyle}>

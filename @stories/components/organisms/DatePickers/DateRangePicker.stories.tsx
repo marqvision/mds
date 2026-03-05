@@ -1,7 +1,6 @@
-import { useCallback, useMemo, useRef} from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
-import dayjs from 'dayjs';
 import { MDSDateRangePicker } from '../../../../components/organisms/DatePickers/DateRangePicker';
 import { MDSIcon, MDSPlainButton } from '../../../../components';
 import {
@@ -21,12 +20,12 @@ const meta: Meta<typeof MDSDateRangePicker> = {
   },
   args: {
     value: {
-      startDate: dayjs().subtract(3, 'day').format('YYYY-MM-DD'),
-      endDate: dayjs().add(8, 'day').format('YYYY-MM-DD'),
+      startDate: '2025-01-12',
+      endDate: '2025-01-23',
     },
     format: 'MMM DD, YYYY',
-    minDate: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
-    maxDate: dayjs().add(1, 'year').format('YYYY-MM-DD'),
+    minDate: '2024-01-15',
+    maxDate: '2026-01-15',
   },
   argTypes: {
     format: {
@@ -245,32 +244,32 @@ const createDatePresets = (): SegmentedProps['list'] => [
     label: '아무거나',
     value: '10d',
     resolveRange: () => ({
-      startDate: dayjs().format('YYYY-MM-DD'),
-      endDate: dayjs().add(10, 'day').format('YYYY-MM-DD'),
+      startDate: '2025-01-15',
+      endDate: '2025-01-25',
     }),
   },
   {
     label: '입력하고 싶은',
     value: '20d',
     resolveRange: () => ({
-      startDate: dayjs().subtract(20, 'day').format('YYYY-MM-DD'),
-      endDate: dayjs().format('YYYY-MM-DD'),
+      startDate: '2024-12-26',
+      endDate: '2025-01-15',
     }),
   },
   {
     label: '프리셋을',
     value: 'user-input-3',
     resolveRange: () => ({
-      startDate: dayjs().add(1, 'day').format('YYYY-MM-DD'),
-      endDate: dayjs().add(30, 'day').format('YYYY-MM-DD'),
+      startDate: '2025-01-16',
+      endDate: '2025-02-14',
     }),
   },
   {
     label: '만들어 넣으세요',
     value: 'user-input-4',
     resolveRange: () => ({
-      startDate: dayjs().add(1, 'day').format('YYYY-MM-DD'),
-      endDate: dayjs().add(40, 'day').format('YYYY-MM-DD'),
+      startDate: '2025-01-16',
+      endDate: '2025-02-24',
     }),
   },
 ];

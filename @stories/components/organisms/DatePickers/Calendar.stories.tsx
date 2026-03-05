@@ -57,13 +57,13 @@ export const DateRange: Story = {
         dayjs(endDate).format('YYYY-MM-DD')
       );
     };
-    return <MDSCalendar value={{ startDate: new Date(), endDate: new Date() }} onChange={onChange} />;
+    return <MDSCalendar value={{ startDate: new Date('2025-01-15'), endDate: new Date('2025-01-20') }} onChange={onChange} />;
   },
 };
 export const SingleDateWithMinMax: Story = {
   args: {
-    minDate: dayjs().subtract(5, 'day').toDate(),
-    maxDate: dayjs().add(5, 'day').toDate(),
+    minDate: new Date('2025-01-10'),
+    maxDate: new Date('2025-01-20'),
   },
   argTypes: {
     minDate: {
@@ -77,13 +77,13 @@ export const SingleDateWithMinMax: Story = {
     const onChange = (date: Date) => {
       console.log('date', date);
     };
-    return <MDSCalendar value={new Date()} onChange={onChange} minDate={args.minDate} maxDate={args.maxDate} />;
+    return <MDSCalendar value={new Date('2025-01-15')} onChange={onChange} minDate={args.minDate} maxDate={args.maxDate} />;
   },
 };
 export const DateRangeWithMinMax: Story = {
   args: {
-    minDate: dayjs().subtract(8, 'day').toDate(),
-    maxDate: dayjs().add(8, 'day').toDate(),
+    minDate: new Date('2025-01-07'),
+    maxDate: new Date('2025-01-23'),
   },
   render: function Render(args) {
     const onChange = (startDate: Date, endDate: Date) => {
@@ -93,7 +93,7 @@ export const DateRangeWithMinMax: Story = {
 
     return (
       <MDSCalendar
-        value={{ startDate: new Date(), endDate: new Date() }}
+        value={{ startDate: new Date('2025-01-15'), endDate: new Date('2025-01-20') }}
         onChange={onChange}
         minDate={args.minDate}
         maxDate={args.maxDate}

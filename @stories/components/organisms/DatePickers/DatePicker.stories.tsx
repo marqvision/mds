@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
-import dayjs from 'dayjs';
 import { MDSDatePicker } from '../../../../components/organisms/DatePickers/DatePicker';
 import { MDSIcon, MDSPlainButton } from '../../../../components';
 
@@ -16,10 +15,10 @@ const meta: Meta<typeof MDSDatePicker> = {
   },
 
   args: {
-    value: dayjs().format('YYYY-MM-DD'),
+    value: '2025-01-15',
     format: 'MMM DD, YYYY',
-    minDate: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
-    maxDate: dayjs().add(1, 'year').format('YYYY-MM-DD'),
+    minDate: '2024-01-15',
+    maxDate: '2026-01-15',
   },
   argTypes: {
     format: {

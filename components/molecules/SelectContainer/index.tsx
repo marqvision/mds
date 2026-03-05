@@ -68,7 +68,7 @@ const SelectContainerItemStyles = styled.div<SelectContainerItemFeatures>`
       position: relative;
       gap: 16px;
       padding: 12px 16px;
-      border-radius: 8px;
+      border-radius: ${theme.comp.selectContainer.radius};
       cursor: pointer;
       transition: all 0.2s ease-in-out; 
      

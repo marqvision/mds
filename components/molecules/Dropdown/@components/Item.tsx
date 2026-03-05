@@ -75,7 +75,7 @@ const StyledExpandIcon = styled.button<{ disabled?: boolean }>`
   outline: 4px solid transparent;
   display: flex;
   align-items: center;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.comp.dropdown.radius};
   ${({ theme, disabled }) =>
     disabled
       ? undefined
@@ -91,7 +91,7 @@ const StyledImg = styled.img`
   width: 48px;
   height: 48px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.comp.dropdown.radius};
 `;
 
 const StyledDivider = styled(MDSTypography)`

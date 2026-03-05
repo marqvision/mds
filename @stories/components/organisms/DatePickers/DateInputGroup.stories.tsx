@@ -41,8 +41,8 @@ export const DefaultWithMMDDYYYY: Story = {
   render: function Render() {
     const format = 'MM/DD/YYYY';
     const [date, setDate] = useState<{ start: string; end: string }>({
-      start: dayjs().format(format),
-      end: dayjs().add(1, 'day').format(format),
+      start: '01/15/2025',
+      end: '01/16/2025',
     });
 
     return (
@@ -76,8 +76,8 @@ export const DefaultWithYYYYMMDD: Story = {
   render: function Render() {
     const format = 'YYYY-MM-DD';
     const [date, setDate] = useState<{ start: string; end: string }>({
-      start: dayjs().format(format),
-      end: dayjs().add(1, 'day').format(format),
+      start: '2025-01-15',
+      end: '2025-01-16',
     });
 
     return (

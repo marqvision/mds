@@ -18,7 +18,7 @@ const Styled = {
     justify-content: center;
     gap: 4px;
     padding: 8px;
-    border-radius: 8px;
+    border-radius: ${({ theme }) => theme.comp.fileUploader.gridFile.radius};
     border: 1px solid ${({ theme }) => theme.color.border.neutral.weak.normal};
     overflow: hidden;
 

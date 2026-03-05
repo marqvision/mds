@@ -135,7 +135,7 @@ const StyledMessageBox = styled.div<MessageBoxStyleProps>`
 
     return css`
       padding: 12px 16px;
-      border-radius: 8px;
+      border-radius: ${theme.comp.messageBox.radius};
       background-color: ${backgroundColor};
       display: flex;
       align-items: center;

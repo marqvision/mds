@@ -39,12 +39,9 @@ export const DatePickerCore = (props: DatePickerProps) => {
   const [lockDuplicatedCloseAction, setLockDuplicatedCloseAction] = useState(false);
 
   const frozenOnChange = useRef(onChange);
-  const handleDateInputChange = useCallback(
-    (date: Date | null) => {
-      setStore(date ? dayjs(date, format).toDate() : undefined);
-    },
-    [format]
-  );
+  const handleDateInputChange = useCallback((date: Date | null) => {
+    setStore(date ? dayjs(date).toDate() : undefined);
+  }, []);
 
   const handleDateInputError = useCallback((error?: DateValidationError | undefined) => {
     setErrors(error ?? null);

@@ -4,8 +4,6 @@ import { AvailableDateFormat, DateValidationError } from '../@types';
 import { isDateShapeValid, validateDateAndMinMaxRange } from '../@utils';
 import { SingleDateInput } from './@types';
 
-// todo-@jamie: 아래의 format 검사하는 함수들을 dayjs의 customParseFormat를 사용하는 방법으로 바꾸기
-
 /**
  * 부분적으로 입력된 날짜 문자열의 각 세그먼트(월, 일)가 논리적으로 유효한지 검사합니다.
  * (예: 월은 1-12 사이, 일은 1-31 사이)
@@ -107,8 +105,9 @@ export const isPartiallyValidDate = (value: string, format: AvailableDateFormat)
  * @returns 파싱된 Date 객체 또는 null.
  */
 export const parseDateStringToDate = (dateString: string, format: AvailableDateFormat = 'MM/DD/YYYY'): Date | null => {
-  if (dayjs(dateString, format).isValid()) {
-    return dayjs(dateString, format).toDate();
+  const parsed = dayjs(dateString, format, true);
+  if (parsed.isValid()) {
+    return parsed.toDate();
   }
 
   return null;

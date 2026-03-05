@@ -52,12 +52,12 @@ export const Preview: Story = {
           renderAnchor 에서 제공하는 defaultButton 을 미리보기 이미지에서 사용할 수 있습니다.
         </MDSTypography>
         <MDSImageViewer
-          image="https://picsum.photos/200"
+          image="https://picsum.photos/id/10/200"
           renderAnchor={({ defaultButton }) => (
             <MDSImage
               width="200px"
               height="200px"
-              src="https://picsum.photos/200"
+              src="https://picsum.photos/id/10/200"
               custom={{
                 type: 'hover',
                 element: defaultButton,
@@ -68,12 +68,12 @@ export const Preview: Story = {
         <MDSTypography as="code" variant="body" size="m" style={CodeStyle}>
           {`
             <MDSImageViewer
-              image="https://picsum.photos/200"
+              image="https://picsum.photos/id/10/200"
               renderAnchor={({ defaultButton }) => (
                 <MDSImage
                   width="200px"
                   height="200px"
-                  src="https://picsum.photos/200"
+                  src="https://picsum.photos/id/10/200"
                   custom={{
                     type: 'hover',
                     element: defaultButton,
@@ -113,14 +113,14 @@ export const WithOverlayElement: Story = {
         </MDSTypography>
         <MDSImageViewer
           image={{
-            src: 'https://picsum.photos/200',
+            src: 'https://picsum.photos/id/10/200',
             overlay: <BoundingBox />, // 원본 이미지 내 BoundingBox 추가
           }}
           renderAnchor={({ defaultButton }) => (
             <MDSImage
               width="200px"
               height="200px"
-              src="https://picsum.photos/200"
+              src="https://picsum.photos/id/10/200"
               custom={{
                 type: 'hover',
                 element: defaultButton,
@@ -135,14 +135,14 @@ export const WithOverlayElement: Story = {
           {`
             <MDSImageViewer
               image={{
-                src: 'https://picsum.photos/200',
+                src: 'https://picsum.photos/id/10/200',
                 overlay: <BoundingBox />, // 원본 이미지 내 BoundingBox 추가
               }}
               renderAnchor={({ defaultButton }) => (
                 <MDSImage
                   width="200px"
                   height="200px"
-                  src="https://picsum.photos/200"
+                  src="https://picsum.photos/id/10/200"
                   custom={{
                     type: 'hover',
                     element: defaultButton,
@@ -168,7 +168,7 @@ export const CustomButton: Story = {
           renderAnchor 에서 제공하는 open 이벤트를 적용해 임의의 요소를 버튼으로 사용할 수 있습니다.
         </MDSTypography>
         <MDSImageViewer
-          image="https://picsum.photos/400"
+          image="https://picsum.photos/id/20/400"
           renderAnchor={({ open }) => (
             <MDSButton
               variant="border"
@@ -184,7 +184,7 @@ export const CustomButton: Story = {
         <MDSTypography as="code" variant="body" size="m" style={CodeStyle}>
           {`
             <MDSImageViewer
-              image="https://picsum.photos/400"
+              image="https://picsum.photos/id/20/400"
               renderAnchor={({ open }) => (
                 <MDSButton
                   variant="border"
@@ -206,7 +206,7 @@ export const CustomButton: Story = {
 
 export const BigImage: Story = {
   args: {
-    image: 'https://picsum.photos/3600/400',
+    image: 'https://picsum.photos/id/30/3600/400',
   },
   render: function Render(props) {
     return (
@@ -218,7 +218,7 @@ export const BigImage: Story = {
             <MDSImage
               width="200px"
               height="200px"
-              src="https://picsum.photos/200"
+              src="https://picsum.photos/id/10/200"
               custom={{
                 type: 'hover',
                 element: defaultButton,
@@ -233,7 +233,7 @@ export const BigImage: Story = {
 
 export const VerticalImage: Story = {
   args: {
-    image: 'https://picsum.photos/400/3600',
+    image: 'https://picsum.photos/id/20/400/3600',
   },
   render: function Render(props) {
     return (
@@ -246,7 +246,7 @@ export const VerticalImage: Story = {
               <MDSImage
                 width="200px"
                 height="200px"
-                src="https://picsum.photos/200"
+                src="https://picsum.photos/id/10/200"
                 custom={{
                   type: 'hover',
                   element: defaultButton,

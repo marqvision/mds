@@ -69,14 +69,14 @@ const Svg = styled.svg<{ isShow: boolean }>`
 `;
 
 export const MDSCheckbox = forwardRef<HTMLLabelElement, Props>((props, ref) => {
-  const { value, color = 'blue', size = 'medium', onChange, isDisabled = false, label, gap = 4 } = props;
+  const { value, color = 'blue', size = 'medium', onChange, onClick, isDisabled = false, label, gap = 4 } = props;
 
   const type = isDisabled ? 'disabled' : 'normal';
   const boxSize = CHECKBOX_THEME.size[size].boxSize;
   const isTranslucent = isDisabled && !value && color === 'white';
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.checked, event);
+    onChange?.(event.target.checked, event);
   };
 
   const stopPropagation = (event: React.MouseEvent<HTMLLabelElement>) => {
@@ -86,7 +86,7 @@ export const MDSCheckbox = forwardRef<HTMLLabelElement, Props>((props, ref) => {
 
   return (
     <Wrapper ref={ref} gap={gap} isClickable={!isDisabled} onClick={stopPropagation}>
-      <input type="checkbox" checked={!!value} disabled={isDisabled} onChange={handleChange} />
+      <input type="checkbox" checked={!!value} disabled={isDisabled} onChange={handleChange} onClick={onClick} />
       <IconWrapper size={size} type={type} color={color} value={value} isTranslucent={isTranslucent}>
         <Svg
           xmlns="http://www.w3.org/2000/svg"

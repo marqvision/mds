@@ -224,6 +224,11 @@ export const MDSResetCSS = () => (
         font-style: italic;
       }
 
+      strong,
+      b {
+        font-weight: bold;
+      }
+
       /* preformatted text - use only for this feature */
       :where(pre) {
         all: revert;
